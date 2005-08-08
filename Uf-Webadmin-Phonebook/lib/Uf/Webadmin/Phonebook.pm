@@ -5,7 +5,9 @@ use Catalyst qw/-Debug/;
 
 our $VERSION = '0.01';
 
-Uf::Webadmin::Phonebook->config( name => 'Uf::Webadmin::Phonebook' );
+Uf::Webadmin::Phonebook->config(
+    name => 'University of Florida Phonebook',
+);
 
 Uf::Webadmin::Phonebook->setup;
 
@@ -30,8 +32,19 @@ Catalyst based application.
 =cut
 
 sub default : Private {
-    my ( $self, $c ) = @_;
-    $c->res->output('Congratulations, Uf::Webadmin::Phonebook is on Catalyst!');
+    my ($self, $c) = @_;
+
+    $c->stash->{template} = 'index.tt';
+}
+
+=item end
+
+=cut
+
+sub end : Private {
+    my ($self, $c) = @_;
+
+    $c->forward(__PACKAGE__ . '::V::TT') unless $c->res->output;
 }
 
 =back
