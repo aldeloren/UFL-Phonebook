@@ -133,8 +133,9 @@ form#search input#image { vertical-align: top; }
 .search {
 	background: #ffffcc url(/static/images/pointer.gif) center left no-repeat;
 	border: 1px solid #ddd;
+	font-size: 140%;
 	padding-left: 10px;
-	min-width: 50%;
+	min-width: 70%;
 }
 
 .searchbutton {
