@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" media="screen" href="static/css/basic.css" />
-<link rel="stylesheet" type="text/css" media="print" href="static/css/print.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="/static/css/basic.css" />
+<link rel="stylesheet" type="text/css" media="print" href="/static/css/print.css" />
 <style type="text/css" media="screen">
-  @import "static/css/search.css";
+  @import "/static/css/search.css";
 </style>
