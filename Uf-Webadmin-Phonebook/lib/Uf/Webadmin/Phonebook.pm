@@ -17,7 +17,7 @@ Uf::Webadmin::Phonebook - Catalyst based application
 
 =head1 SYNOPSIS
 
-    script/uf_webadmin_phonebook_server.pl
+  script/uf_webadmin_phonebook_server.pl
 
 =head1 DESCRIPTION
 
@@ -25,9 +25,9 @@ Catalyst based application.
 
 =head1 METHODS
 
-=over 4
+=head2 default
 
-=item default
+Display the home page.
 
 =cut
 
@@ -37,7 +37,9 @@ sub default : Private {
     $c->stash->{template} = 'index.tt';
 }
 
-=item end
+=head2 end
+
+Forward to the application's view.
 
 =cut
 
@@ -47,16 +49,16 @@ sub end : Private {
     $c->forward(__PACKAGE__ . '::V::TT') unless $c->res->output;
 }
 
-=back
-
 =head1 AUTHOR
 
-Catalyst developer
+University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
+
+L<http://www.webadmin.ufl.edu/>
 
 =head1 LICENSE
 
-This library is free software . You can redistribute it and/or modify
-it under the same terms as perl itself.
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =cut
 
