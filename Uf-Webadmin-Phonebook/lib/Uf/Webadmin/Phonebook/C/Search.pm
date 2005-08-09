@@ -26,8 +26,6 @@ sub default : Private {
     $c->res->output('Congratulations, Uf::Webadmin::Phonebook::C::Search is on Catalyst!');
 }
 
-=back
-
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
