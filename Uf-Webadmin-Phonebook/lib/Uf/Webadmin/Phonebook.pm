@@ -6,7 +6,7 @@ use Catalyst qw/Static -Debug/;
 our $VERSION = '0.01';
 
 __PACKAGE__->config(
-    name => 'University of Florida Phonebook',
+    name => 'Phonebook',
 );
 
 __PACKAGE__->setup;
@@ -46,6 +46,8 @@ Forward to the application's view.
 sub end : Private {
     my ($self, $c) = @_;
 
+    # Only forward if we have a template, which allows the Static plugin to
+    # serve files
     $c->forward(__PACKAGE__ . '::V::TT') if ($c->stash->{template});
 }
 
