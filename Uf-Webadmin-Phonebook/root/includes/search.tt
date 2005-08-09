@@ -1,9 +1,9 @@
 <h3>Search the [% c.config.name %]</h3>
 <form method="post" action="/search">
   <div class="description">
-    <input name="person" class="search" value="Search UF People" />
-    <input class="searchbutton" type="submit" value="Search" />
-    <p><strong>Tip:</strong> You can search by full name, last name, or e-mail address.</p>
-    <p><strong>Note:</strong> Information obtained from this phonebook may not be used to provide addresses for mailings to students, employees or parents of students. This phonebook is provided for information of the University and those who have specific interest in reaching individual students or establishing their identity as students of the University of Florida. Any solicitation of business, information, contributions or other response from individuals listed in this publication by mail, telephone or other means is forbidden.</p>
+    <input type="text" name="query" value="Search UF People" class="search" />
+    <input type="submit" value="Search" class="searchbutton" />
+    <p><strong>Tip</strong>: You can search by full name, last name, or e-mail address.</p>
+    <p><strong>Note</strong>: Information obtained from this phonebook may not be used to provide addresses for mailings to students, employees or parents of students. This phonebook is provided for information of the University and those who have specific interest in reaching individual students or establishing their identity as students of the University of Florida. Any solicitation of business, information, contributions or other response from individuals listed in this publication by mail, telephone or other means is forbidden.</p>
   </div>
 </form>

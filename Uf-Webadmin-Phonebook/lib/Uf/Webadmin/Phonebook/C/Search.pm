@@ -19,11 +19,32 @@ Handle search requests.
 
 =head2 default
 
+Handle a search request.  If no query is specified, forward back to the home
+page.
+
 =cut
 
 sub default : Private {
-    my ( $self, $c ) = @_;
-    $c->res->output('Congratulations, Uf::Webadmin::Phonebook::C::Search is on Catalyst!');
+    my ($self, $c) = @_;
+
+    if ($c->req->params->{query}) {
+        $c->forward('search');
+    }
+    else {
+        $c->forward('/home');
+    }
+}
+
+=head2 search
+
+Perform a search.
+
+=cut
+
+sub search : Private {
+    my ($self, $c) = @_;
+
+    $c->res->output($c->req->params->{query});
 }
 
 =head1 AUTHOR

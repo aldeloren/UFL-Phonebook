@@ -27,11 +27,23 @@ Catalyst based application.
 
 =head2 default
 
-Display the home page.
+Forward to the home page.
 
 =cut
 
 sub default : Private {
+    my ($self, $c) = @_;
+
+    $c->forward('home');
+}
+
+=head2 home
+
+Display the home page.
+
+=cut
+
+sub home : Path('home') {
     my ($self, $c) = @_;
 
     $c->stash->{template} = 'home.tt';
