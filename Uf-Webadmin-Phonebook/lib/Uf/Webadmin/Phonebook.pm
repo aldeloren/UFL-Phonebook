@@ -1,15 +1,15 @@
 package Uf::Webadmin::Phonebook;
 
 use strict;
-use Catalyst qw/-Debug/;
+use Catalyst qw/Static -Debug/;
 
 our $VERSION = '0.01';
 
-Uf::Webadmin::Phonebook->config(
+__PACKAGE__->config(
     name => 'University of Florida Phonebook',
 );
 
-Uf::Webadmin::Phonebook->setup;
+__PACKAGE__->setup;
 
 =head1 NAME
 
@@ -46,7 +46,7 @@ Forward to the application's view.
 sub end : Private {
     my ($self, $c) = @_;
 
-    $c->forward(__PACKAGE__ . '::V::TT') unless $c->res->output;
+    $c->forward(__PACKAGE__ . '::V::TT') if ($c->stash->{template});
 }
 
 =head1 AUTHOR
