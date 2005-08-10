@@ -1,11 +1,11 @@
-package Uf::Webadmin::Phonebook::M::People;
+package Uf::Webadmin::Phonebook::M::Organizations;
 
 use strict;
 use base 'Catalyst::Model::LDAP';
 
 __PACKAGE__->config(
     host     => 'ldap.ufl.edu',
-    base     => 'ou=People,dc=ufl,dc=edu',
+    base     => 'ou=Organizations,dc=ufl,dc=edu',
     dn       => '',
     password => '',
     options  => {},
@@ -13,7 +13,7 @@ __PACKAGE__->config(
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::M::People - LDAP Catalyst model component
+Uf::Webadmin::Phonebook::M::Organizations - LDAP Catalyst model component
 
 =head1 SYNOPSIS
 
