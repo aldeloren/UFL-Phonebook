@@ -2,18 +2,22 @@
 \bRCS\b
 \bCVS\b
 ,v$
-\.svn\b
+\B\.svn\b
 
 # MakeMaker-generated files and directories
 ^MANIFEST\.
 ^Makefile$
 ^blib/
 ^MakeMaker-\d
+
+# Module::Build-generated files and directories
 ^Build$
 ^_build/
 
-# Emacs backup, temporary, and old files
+# Backup and temporary files
 ~$
+\.tmp$
 \.old$
-^#.*#$
-^\.#
+\.bak$
+\#$
+\b\.#
