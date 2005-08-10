@@ -19,6 +19,9 @@ Serve static content through L<Catalyst::Plugin::Static>.
 
 =head2 default
 
+Handle requests for any content found in the project directory
+C<root/static/>.
+
 =cut
 
 sub default : Path('/static') {
@@ -30,7 +33,7 @@ sub default : Path('/static') {
 
 =head2 favicon
 
-Handle requests for /favicon.ico.
+Handle requests for C</favicon.ico>.
 
 =cut
 

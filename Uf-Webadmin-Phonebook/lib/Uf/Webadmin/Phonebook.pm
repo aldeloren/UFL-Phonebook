@@ -21,7 +21,14 @@ Uf::Webadmin::Phonebook - Catalyst based application
 
 =head1 DESCRIPTION
 
-Catalyst based application.
+This application provides a Web interface to the University of Florida
+Directory. The application accesses the directory via LDAP, using the
+service provided by the Open Systems Group.
+
+L<http://www.bridges.ufl.edu/directory/>
+L<http://open-systems.ufl.edu/services/LDAP/>
+
+It is written using the L<Catalyst> framework.
 
 =head1 METHODS
 

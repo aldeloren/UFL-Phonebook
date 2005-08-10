@@ -13,7 +13,7 @@ See L<Uf::Webadmin::Phonebook>
 
 =head1 DESCRIPTION
 
-Handle search requests.
+Handle search requests for the University of Florida Phonebook.
 
 =head1 METHODS
 
@@ -98,6 +98,8 @@ sub departments : Path('/departments') {
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
+
+L<http://www.webadmin.ufl.edu/>
 
 =head1 LICENSE
 

@@ -21,11 +21,14 @@ See L<Uf::Webadmin::Phonebook>
 
 =head1 DESCRIPTION
 
-LDAP Catalyst model component.
+Catalyst model component for the University of Florida LDAP server.
+This component uses a base of C<ou=Organizations,dc=ufl,dc=edu>.
 
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
+
+L<http://www.webadmin.ufl.edu/>
 
 =head1 LICENSE
 
