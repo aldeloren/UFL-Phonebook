@@ -19,8 +19,8 @@ Handle search requests.
 
 =head2 default
 
-Handle a search request.  If no query is specified, forward back to the home
-page.
+Handle a search request.  If no query is specified, forward back to
+the home page.
 
 =cut
 

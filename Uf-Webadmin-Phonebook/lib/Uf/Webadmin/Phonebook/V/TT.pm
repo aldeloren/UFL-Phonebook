@@ -27,7 +27,11 @@ sub new {
     my $self = shift;
 
     # Cleanup whitespace
+    $self->config->{PRE_CHOMP}  = 1;
     $self->config->{POST_CHOMP} = 1;
+
+    # Disable Template::Timer
+    $self->config->{CONTEXT} = undef;
 
     return $self->SUPER::new(@_);
 }

@@ -58,8 +58,8 @@ Forward to the application's view.
 sub end : Private {
     my ($self, $c) = @_;
 
-    # Only forward if we have a template, which allows the Static plugin to
-    # serve files
+    # Only forward if we have a template, which allows the Static
+    # plugin to serve files
     $c->forward(__PACKAGE__ . '::V::TT') if ($c->stash->{template});
 }
 
