@@ -22,12 +22,28 @@
 [% INCLUDE includes/links.tt %]
 
 [% IF results %]
-    <p>Results:</p>
-    <ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Title</th>
+          <th>Department</th>
+          <th>Phone</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
   [% FOREACH result = results %]
-      <li>[% result.get_value('displayName') %]</li>
+        <tr>
+          <td><a href="/people/[% result.get_value('uflEduUniversityId') %]">[% result.get_value('displayName') %]</a></td>
+          <td>[% result.get_value('title') ? result.get_value('title') : result.get_value('eduPersonPrimaryAffiliation') %]</td>
+          <td><a href="/departments/[% result.get_value('departmentNumber') %]">[% result.get_value('o') %]</a></td>
+          <td>[% result.get_value('telephoneNumber') %]</td>
+          <td><a href="mailto:[% result.get_value('mail') %]">[% result.get_value('mail') %]</a></td>
+        </tr>
   [% END %]
-    </ul>
+      </tbody>
+    </table>
 [% ELSE %]
 
     <p class="error">No results found.</p>
