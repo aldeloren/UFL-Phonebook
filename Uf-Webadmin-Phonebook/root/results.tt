@@ -20,7 +20,7 @@
 
 [% INCLUDE includes/links.tt %]
 
-[% IF results %]
+[% IF results.size > 0 %]
     <table>
       <thead>
         <tr>
