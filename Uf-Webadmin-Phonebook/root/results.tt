@@ -1,20 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>University of Florida [% c.config.name %]</title>
-[% INCLUDE includes/css.tt %]
-[% INCLUDE includes/favicon.tt %]
-</head>
-<body>
-
-[% INCLUDE includes/header.tt %]
-
-<div id="mainContainer"> 
-  <div id="content">
-[% IF error %]
-    <p class="error">[% error %]</p>
-[% END %]
+[% INCLUDE includes/header.tt title = c.req.params.query %]
 
 [% INCLUDE includes/search.tt %]
 
@@ -49,10 +33,4 @@
 
 [% END %]
 
-  </div><!-- end content -->
-
 [% INCLUDE includes/footer.tt %]
-
-</div><!-- end mainContainer -->
-</body>
-</html>
