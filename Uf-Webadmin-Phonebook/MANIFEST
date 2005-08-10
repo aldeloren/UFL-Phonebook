@@ -3,6 +3,7 @@ Changes
 lib/Uf/Webadmin/Phonebook.pm
 lib/Uf/Webadmin/Phonebook/C/Search.pm
 lib/Uf/Webadmin/Phonebook/C/Static.pm
+lib/Uf/Webadmin/Phonebook/M/People.pm
 lib/Uf/Webadmin/Phonebook/V/TT.pm
 Makefile.PL
 MANIFEST
@@ -37,4 +38,5 @@ t/02pod.t
 t/03podcoverage.t
 t/C/Search.t
 t/C/Static.t
+t/M/People.t
 t/V/TT.t
