@@ -16,6 +16,7 @@
         </tr>
       </thead>
       <tbody>
+
   [% FOREACH result = results %]
         <tr>
           <td><a href="/people/[% FILTER html_entity %][% result.get_value('uflEduUniversityId') %][% END %]">[% FILTER html_entity %][% result.get_value('displayName') %][% END %]</a></td>
@@ -24,9 +25,11 @@
           <td>[% FILTER html_entity %][% result.get_value('telephoneNumber') %][% END %]</td>
           <td><a href="mailto:[% FILTER html_entity %][% result.get_value('mail') %][% END %]">[% FILTER html_entity %][% result.get_value('mail') %][% END %]</a></td>
         </tr>
+
   [% END %]
       </tbody>
     </table>
+
 [% ELSE %]
 
     <p class="error">No results found.</p>
