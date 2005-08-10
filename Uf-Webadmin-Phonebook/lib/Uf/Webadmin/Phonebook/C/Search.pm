@@ -37,7 +37,7 @@ sub default : Private {
 
 =head2 search
 
-Perform a search.
+Perform a search for people.
 
 =cut
 
@@ -58,6 +58,40 @@ sub search : Private {
         my @results = $rv->entries;
         $c->stash->{results} = \@results;
         $c->stash->{template} = 'results.tt';
+    }
+}
+
+=head2 people
+
+Display details for a person.
+
+=cut
+
+sub people : Path('/people') {
+    my ($self, $c) = @_;
+
+    if (my $ufid = $c->req->arguments->[0]) {
+        $c->res->output("UFID: [$ufid]");
+    }
+    else {
+        $c->forward('/home');
+    }
+}
+
+=head2 departments
+
+Display details for a department.
+
+=cut
+
+sub departments : Path('/departments') {
+    my ($self, $c) = @_;
+
+    if (my $ufid = $c->req->arguments->[0]) {
+        $c->res->output("UFID: [$ufid]");
+    }
+    else {
+        $c->forward('/home');
     }
 }
 
