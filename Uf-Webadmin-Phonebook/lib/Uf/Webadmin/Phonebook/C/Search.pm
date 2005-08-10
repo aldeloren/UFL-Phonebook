@@ -44,7 +44,25 @@ Perform a search.
 sub search : Private {
     my ($self, $c) = @_;
 
-    $c->res->output($c->req->params->{query});
+    my $output = '';
+
+    $output .= 'Query: [' . $c->req->params->{query} . "]\n";
+
+    my $rv = $c->comp('People')->search('sn=' . $c->req->params->{query});
+
+    if ($rv->code) {
+        $output .= 'ERROR: ' . $rv->error;
+    }
+    else {
+        foreach my $entry ($rv->entries) {
+            $output .= "\n###\n";
+            foreach my $attribute ($entry->attributes) {
+                $output .= join("\n ", $attribute, $entry->get_value($attribute)) . "\n";
+            }
+        }
+    }
+
+    $c->res->output($output);
 }
 
 =head1 AUTHOR
