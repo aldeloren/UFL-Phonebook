@@ -4,6 +4,7 @@
 <head>
 <title>University of Florida [% c.config.name %]</title>
 [% INCLUDE includes/css.tt %]
+[% INCLUDE includes/favicon.tt %]
 </head>
 <body>
 
@@ -11,15 +12,11 @@
 
 <div id="mainContainer"> 
   <div id="content">
-    <div class="searchcontainer">
-
 [% IF error %]
     <p class="error">[% error %]</p>
 [% END %]
 
 [% INCLUDE includes/search.tt %]
-
-    </div><!-- end searchcontainer -->
 
 [% INCLUDE includes/links.tt %]
 

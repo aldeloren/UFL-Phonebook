@@ -4,6 +4,7 @@
 <head>
 <title>University of Florida [% c.config.name %]</title>
 [% INCLUDE includes/css.tt %]
+[% INCLUDE includes/favicon.tt %]
 </head>
 <body>
 
@@ -15,9 +16,7 @@
     <p class="error">[% error %]</p>
 [% END %]
 
-    <div class="searchcontainer">
 [% INCLUDE includes/search.tt %]
-    </div><!-- end searchcontainer -->
 
 [% INCLUDE includes/links.tt %]
 
@@ -35,11 +34,11 @@
       <tbody>
   [% FOREACH result = results %]
         <tr>
-          <td><a href="/people/[% result.get_value('uflEduUniversityId') %]">[% result.get_value('displayName') %]</a></td>
-          <td>[% result.get_value('title') ? result.get_value('title') : result.get_value('eduPersonPrimaryAffiliation') %]</td>
-          <td><a href="/departments/[% result.get_value('departmentNumber') %]">[% result.get_value('o') %]</a></td>
-          <td>[% result.get_value('telephoneNumber') %]</td>
-          <td><a href="mailto:[% result.get_value('mail') %]">[% result.get_value('mail') %]</a></td>
+          <td><a href="/people/[% FILTER html_entity %][% result.get_value('uflEduUniversityId') %][% END %]">[% FILTER html_entity %][% result.get_value('displayName') %][% END %]</a></td>
+          <td>[% FILTER html_entity %][% result.get_value('title') ? result.get_value('title') : result.get_value('eduPersonPrimaryAffiliation') %][% END %]</td>
+          <td><a href="/departments/[% FILTER html_entity %][% result.get_value('departmentNumber') %][% END %]">[% FILTER html_entity %][% result.get_value('o') %][% END %]</a></td>
+          <td>[% FILTER html_entity %][% result.get_value('telephoneNumber') %][% END %]</td>
+          <td><a href="mailto:[% FILTER html_entity %][% result.get_value('mail') %][% END %]">[% FILTER html_entity %][% result.get_value('mail') %][% END %]</a></td>
         </tr>
   [% END %]
       </tbody>
