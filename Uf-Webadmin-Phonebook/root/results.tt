@@ -11,17 +11,28 @@
 
 <div id="mainContainer"> 
   <div id="content">
-    <div class="searchcontainer">
-
 [% IF error %]
     <p class="error">[% error %]</p>
 [% END %]
 
+    <div class="searchcontainer">
 [% INCLUDE includes/search.tt %]
-
     </div><!-- end searchcontainer -->
 
 [% INCLUDE includes/links.tt %]
+
+[% IF results %]
+    <p>Results:</p>
+    <ul>
+  [% FOREACH result = results %]
+      <li>[% result.get_value('displayName') %]</li>
+  [% END %]
+    </ul>
+[% ELSE %]
+
+    <p class="error">No results found.</p>
+
+[% END %]
 
   </div><!-- end content -->
 

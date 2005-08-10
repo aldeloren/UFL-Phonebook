@@ -51,18 +51,14 @@ sub search : Private {
     my $rv = $c->comp('People')->search('sn=' . $c->req->params->{query});
 
     if ($rv->code) {
-        $output .= 'ERROR: ' . $rv->error;
+        $c->stash->{error} = $rv->error;
+        $c->forward('/home');
     }
     else {
-        foreach my $entry ($rv->entries) {
-            $output .= "\n###\n";
-            foreach my $attribute ($entry->attributes) {
-                $output .= join("\n ", $attribute, $entry->get_value($attribute)) . "\n";
-            }
-        }
+        my @results = $rv->entries;
+        $c->stash->{results} = \@results;
+        $c->stash->{template} = 'results.tt';
     }
-
-    $c->res->output($output);
 }
 
 =head1 AUTHOR
