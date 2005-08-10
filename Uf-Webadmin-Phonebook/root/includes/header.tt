@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>[% IF title %][% FILTER html_entity %][% title %][% END %] - [% END %]University of Florida [% c.config.name %]</title>
+
 [% INCLUDE includes/css.tt %]
 [% INCLUDE includes/favicon.tt %]
 </head>
