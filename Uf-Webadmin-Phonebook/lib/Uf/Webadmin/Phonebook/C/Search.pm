@@ -44,11 +44,7 @@ Perform a search for people.
 sub search : Private {
     my ($self, $c) = @_;
 
-    my $output = '';
-
-    $output .= 'Query: [' . $c->req->params->{query} . "]\n";
-
-    my $rv = $c->comp('People')->search('sn=' . $c->req->params->{query});
+    my $rv = $c->comp('People')->search($c->req->params->{query});
 
     if ($rv->code) {
         $c->stash->{error} = $rv->error;
