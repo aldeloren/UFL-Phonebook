@@ -33,7 +33,7 @@ sub new {
 
     return unless $entry and $entry->attributes;
 
-    my $self = bless({}, $class);
+    my $self = bless({}, (ref $class or $class));
 
     foreach my $attribute ($entry->attributes) {
         my $value = $entry->get_value($attribute);

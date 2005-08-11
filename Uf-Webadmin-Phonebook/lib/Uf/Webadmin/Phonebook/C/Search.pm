@@ -58,7 +58,7 @@ sub search : Private {
     }
     else {
         my @results = map { Uf::Webadmin::Phonebook::Entry->new($_) } $mesg->entries;
-        $c->stash->{results} = \@results;
+        $c->stash->{results}  = \@results;
         $c->stash->{template} = 'results.tt';
     }
 }
@@ -86,29 +86,31 @@ sub _parseQuery {
         my $uid   = $1;
         my $email = shift @tokens;
 
-        $filter = Uf::Webadmin::Phonebook::Filter->new(
+        $filter = Uf::Webadmin::Phonebook::Filter->new({
             uid  => $uid,
+            mail => $uid . '@*',
             mail => $email,
-        );
+        });
     }
     elsif (scalar @tokens == 1) {  # One token: username or last name
-        $filter = Uf::Webadmin::Phonebook::Filter->new(
-            mail => $tokens[0] . '@*',
+        $filter = Uf::Webadmin::Phonebook::Filter->new({
             uid  => $tokens[0],
+            mail => $tokens[0] . '@*',
             cn   => $tokens[0] . ',*',
-        );
+        });
     }
     elsif (scalar @tokens == 2) {  # Two tokens: first and last name
-        $filter = Uf::Webadmin::Phonebook::Filter->new(
+        $filter = Uf::Webadmin::Phonebook::Filter->new({
             cn   => $tokens[1] . ',' . $tokens[0],
             mail => $tokens[1] . '@*',
-        );
+        });
     }
     else {                         # Three or more tokens
-        die('todo');
+        die('TODO');
     }
 
     # TODO: Add default filter on affiliation
+    Uf::Webadmin::Phonebook->log->debug($filter->new({test => 'poo'})->toString);
 
     return $filter->toString;
 }

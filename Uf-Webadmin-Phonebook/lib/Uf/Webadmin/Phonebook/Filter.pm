@@ -9,7 +9,7 @@ Uf::Webadmin::Phonebook::Filter - An abstract LDAP filter
 =head1 SYNOPSIS
 
   my $filter = Uf::Webadmin::Phonebook::Filter->new(
-    cn => 'Test,*',
+    cn => 'Test,*'
   );
   print $filter->toString;
 
@@ -21,33 +21,37 @@ An abstract representation of an LDAP filter.
 
 =head2 new
 
-
+Create a new abstract filter. Each key-value pair in C<$spec> is a
+mapping from attribute to filter value. Optionally, the logical
+operator to use in combining filters can be specified. The default is
+'|'.
 
 =cut
 
 sub new {
-    my ($class, %spec) = @_;
+    my ($class, $spec, $logic) = @_;
 
-    my $self = bless({}, $class);
-    $self->{spec} = \%spec;
+    my $self = bless({}, (ref $class or $class));
+
+    $self->{spec}  = $spec;
+    $self->{logic} = $logic || '|';
 
     return $self;
 }
 
 =head2 toString
 
-Return a string represenation of this filter. Optionally, the logical
-operator can be specified (e.g. '|' or '&').
+Return a string represenation of this filter.
 
 =cut
 
 sub toString {
-    my ($self, $operator) = @_;
+    my ($self) = @_;
 
-    $operator ||= '|';
-
+    my $logic = $self->{logic};
     my %spec = %{ $self->{spec} };
-    my $string = "($operator" . join('', map { '(' . $_ . '=' . $spec{$_} . ')' } keys %spec) . ')';
+
+    my $string = "($logic" . join('', map { '(' . $_ . '=' . $spec{$_} . ')' } keys %spec) . ')';
 
     return $string;
 }
