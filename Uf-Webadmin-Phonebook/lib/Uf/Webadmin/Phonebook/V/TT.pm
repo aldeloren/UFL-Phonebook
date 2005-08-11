@@ -35,7 +35,9 @@ sub new {
     $self->config->{CONTEXT} = undef;
 
     # Additional filters
-    $self->config->{FILTERS}->{spam_armor} = \&Uf::Webadmin::Phonebook::Utilities::spamArmor;
+    $self->config->{FILTERS}->{spam_armor}  = \&Uf::Webadmin::Phonebook::Utilities::spamArmor;
+    $self->config->{FILTERS}->{encode_ufid} = \&Uf::Webadmin::Phonebook::Utilities::encodeUfid;
+    $self->config->{FILTERS}->{decode_ufid} = \&Uf::Webadmin::Phonebook::Utilities::decodeUfid;
 
     return $self->SUPER::new(@_);
 }

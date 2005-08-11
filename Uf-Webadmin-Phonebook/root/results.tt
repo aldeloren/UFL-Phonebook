@@ -19,7 +19,7 @@
 
   [% FOREACH result = results %]
         <tr>
-          <td><a href="/people/[% result.uflEduUniversityId | html_entity %]">[% result.displayName | html_entity %]</a></td>
+          <td><a href="/people/[% result.uflEduUniversityId | encode_ufid | html_entity %]">[% result.displayName | html_entity %]</a></td>
           <td>[% (result.title ? result.title : result.eduPersonPrimaryAffiliation) | html_entity %]</td>
           <td>[% IF result.departmentNumber %]<a href="/departments/[% result.departmentNumber | html_entity %]">[% END %][% IF result.o %][% result.o | html_entity %][% ELSE %]&nbsp;[% END %][% IF result.departmentNumber %]</a>[% END %]</td>
           <td>[% IF result.telephoneNumber %][% result.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</td>

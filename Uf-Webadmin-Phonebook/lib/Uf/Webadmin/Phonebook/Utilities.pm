@@ -32,6 +32,30 @@ sub spamArmor {
     return $armor;
 }
 
+=head2 encodeUfid
+
+TODO
+
+=cut
+
+sub encodeUfid {
+    my ($decoded) = @_;
+
+    return $decoded . '_TODO';
+}
+
+=head2 decodeUfid
+
+TODO
+
+=cut
+
+sub decodeUfid {
+    my ($encoded) = @_;
+
+    return $encoded . '_TODO';
+}
+
 =head2 parseQuery
 
 Given a search query, return the correspoding LDAP search filter as a
