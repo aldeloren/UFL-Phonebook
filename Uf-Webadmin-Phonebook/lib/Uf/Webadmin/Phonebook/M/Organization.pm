@@ -1,4 +1,4 @@
-package Uf::Webadmin::Phonebook::M::Organizations;
+package Uf::Webadmin::Phonebook::M::Organization;
 
 use strict;
 use base 'Catalyst::Model::LDAP';
@@ -13,7 +13,7 @@ __PACKAGE__->config(
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::M::Organizations - LDAP Catalyst model component
+Uf::Webadmin::Phonebook::M::Organization - LDAP Catalyst model component
 
 =head1 SYNOPSIS
 

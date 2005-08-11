@@ -3,8 +3,10 @@ Changes
 lib/Uf/Webadmin/Phonebook.pm
 lib/Uf/Webadmin/Phonebook/C/Search.pm
 lib/Uf/Webadmin/Phonebook/C/Static.pm
-lib/Uf/Webadmin/Phonebook/M/Organizations.pm
-lib/Uf/Webadmin/Phonebook/M/People.pm
+lib/Uf/Webadmin/Phonebook/Entry.pm
+lib/Uf/Webadmin/Phonebook/Filter.pm
+lib/Uf/Webadmin/Phonebook/M/Organization.pm
+lib/Uf/Webadmin/Phonebook/M/Person.pm
 lib/Uf/Webadmin/Phonebook/V/TT.pm
 Makefile.PL
 MANIFEST
@@ -43,6 +45,6 @@ t/02pod.t
 t/03podcoverage.t
 t/C/Search.t
 t/C/Static.t
-t/M/Organizations.t
-t/M/People.t
+t/M/Organization.t
+t/M/Person.t
 t/V/TT.t
