@@ -47,6 +47,9 @@ sub search : Private {
     my ($self, $c) = @_;
 
     my $filter = $self->_parseQuery($c->req->params->{query});
+    $c->log->debug('Query: ' . $c->req->params->{query});
+    $c->log->debug('Filter: ' . $filter);
+
     my $mesg = $c->comp('Person')->search($filter);
 
     if ($mesg->code) {
@@ -96,14 +99,16 @@ sub _parseQuery {
         );
     }
     elsif (scalar @tokens == 2) {  # Two tokens: first and last name
+        $filter = Uf::Webadmin::Phonebook::Filter->new(
+            cn   => $tokens[1] . ',' . $tokens[0],
+            mail => $tokens[1] . '@*',
+        );
     }
-    else {
+    else {                         # Three or more tokens
+        die('todo');
     }
 
     # TODO: Add default filter on affiliation
-
-    Uf::Webadmin::Phonebook->log->debug("Query: $query");
-    Uf::Webadmin::Phonebook->log->debug('Filter: ' . $filter->toString);
 
     return $filter->toString;
 }
