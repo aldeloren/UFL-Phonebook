@@ -3,6 +3,7 @@ package Uf::Webadmin::Phonebook::C::Search;
 use strict;
 use base 'Catalyst::Base';
 use Uf::Webadmin::Phonebook::Entry;
+use Uf::Webadmin::Phonebook::Filter;
 
 =head1 NAME
 
@@ -45,17 +46,66 @@ Perform a search for people.
 sub search : Private {
     my ($self, $c) = @_;
 
-    my $rv = $c->comp('People')->search($c->req->params->{query});
+    my $filter = $self->_parseQuery($c->req->params->{query});
+    my $mesg = $c->comp('Person')->search($filter);
 
-    if ($rv->code) {
-        $c->stash->{error} = $rv->error;
+    if ($mesg->code) {
+        $c->stash->{error} = $mesg->error;
         $c->forward('/default');
     }
     else {
-        my @results = map { Uf::Webadmin::Phonebook::Entry->new($_) } $rv->entries;
+        my @results = map { Uf::Webadmin::Phonebook::Entry->new($_) } $mesg->entries;
         $c->stash->{results} = \@results;
         $c->stash->{template} = 'results.tt';
     }
+}
+
+=head2 _parseQuery
+
+Parse the specified query into an LDAP filter.
+
+=cut
+
+sub _parseQuery {
+    my ($self, $query) = @_;
+
+    # Remove wildcards
+    $query =~ tr/\*//d;
+
+    if ($query =~ m/[^a-z0-9 .\-_\'\@]/i) {
+        die 'Query contains invalid characters';
+    }
+
+    my @tokens = split(/\s+/, lc($query));
+
+    my $filter;
+    if ($query =~ m/(.*)\@/) {     # Email address
+        my $uid   = $1;
+        my $email = shift @tokens;
+
+        $filter = Uf::Webadmin::Phonebook::Filter->new(
+            uid  => $uid,
+            mail => $email,
+        );
+    }
+    elsif (scalar @tokens == 1) {  # One token: username or last name
+        $filter = Uf::Webadmin::Phonebook::Filter->new(
+            mail => $tokens[0] . '@*',
+            uid  => $tokens[0],
+            cn   => $tokens[0] . ',*',
+        );
+    }
+    elsif (scalar @tokens == 2) {  # Two tokens: first and last name
+    }
+    else {
+    }
+
+    # TODO: Add default filter on affiliation
+
+    Uf::Webadmin::Phonebook->log->debug("Query: $query");
+    Uf::Webadmin::Phonebook->log->debug('Filter: ' . $filter->toString);
+
+    return $filter->toString;
 }
 
 =head1 AUTHOR
