@@ -99,18 +99,12 @@ sub _parseQuery {
             cn   => $tokens[0] . ',*',
         });
     }
-    elsif (scalar @tokens == 2) {  # Two tokens: first and last name
+    else {                         # Two or more tokens: first and last name
         $filter = Uf::Webadmin::Phonebook::Filter->new({
-            cn   => $tokens[1] . ',' . $tokens[0],
+            cn   => $tokens[1] . ',' . $tokens[0] . '*',
             mail => $tokens[1] . '@*',
         });
     }
-    else {                         # Three or more tokens
-        die('TODO');
-    }
-
-    # TODO: Add default filter on affiliation
-    Uf::Webadmin::Phonebook->log->debug($filter->new({test => 'poo'})->toString);
 
     return $filter->toString;
 }

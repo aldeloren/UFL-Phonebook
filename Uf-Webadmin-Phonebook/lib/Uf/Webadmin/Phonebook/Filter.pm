@@ -24,7 +24,7 @@ An abstract representation of an LDAP filter.
 Create a new abstract filter. Each key-value pair in C<$spec> is a
 mapping from attribute to filter value. Optionally, the logical
 operator to use in combining filters can be specified. The default is
-'|'.
+C<|>.
 
 =cut
 
