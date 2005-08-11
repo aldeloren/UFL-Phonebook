@@ -61,6 +61,8 @@ sub _parseQuery {
         $filter = 'sn=' . $query;
     }
 
+    Uf::Webadmin::Phonebook->log->debug(__PACKAGE__ . "::_parseQuery: Filter = $filter");
+
     return $filter;
 }
 
