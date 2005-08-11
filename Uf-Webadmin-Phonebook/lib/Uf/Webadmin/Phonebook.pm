@@ -39,26 +39,48 @@ It is written using the L<Catalyst> framework.
 
 =head2 default
 
-Forward to the home page.
+Display the home page.
 
 =cut
 
 sub default : Private {
     my ($self, $c) = @_;
 
-    $c->forward('home');
+    $c->stash->{template} = 'home.tt';
 }
 
-=head2 home
+=head2 people
 
-Display the home page.
+Display details for a person.
 
 =cut
 
-sub home : Path('home') {
+sub people : Path('people') {
     my ($self, $c) = @_;
 
-    $c->stash->{template} = 'home.tt';
+    if (my $ufid = $c->req->arguments->[0]) {
+        $c->res->output("UFID: [$ufid]");
+    }
+    else {
+        $c->forward('default');
+    }
+}
+
+=head2 departments
+
+Display details for a department.
+
+=cut
+
+sub departments : Path('departments') {
+    my ($self, $c) = @_;
+
+    if (my $ufid = $c->req->arguments->[0]) {
+        $c->res->output("UFID: [$ufid]");
+    }
+    else {
+        $c->forward('default');
+    }
 }
 
 =head2 end
