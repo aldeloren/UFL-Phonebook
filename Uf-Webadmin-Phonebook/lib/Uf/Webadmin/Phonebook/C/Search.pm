@@ -95,11 +95,11 @@ sub _parseQuery {
             mail => $email,
         });
     }
-    elsif (scalar @tokens == 1) {  # One token: username or last name
+    elsif (scalar @tokens == 1) {  # One token: last name or username
         $filter = Uf::Webadmin::Phonebook::Filter->new({
+            cn   => $tokens[0] . ',*',
             uid  => $tokens[0],
             mail => $tokens[0] . '@*',
-            cn   => $tokens[0] . ',*',
         });
     }
     else {                         # Two or more tokens: first and last name
