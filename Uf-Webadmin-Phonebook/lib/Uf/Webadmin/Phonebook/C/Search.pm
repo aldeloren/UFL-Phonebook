@@ -46,20 +46,23 @@ Perform a search for people.
 sub search : Private {
     my ($self, $c) = @_;
 
-    my $filter = $self->_parseQuery($c->req->params->{query});
-    $c->log->debug('Query: ' . $c->req->params->{query});
-    $c->log->debug('Filter: ' . $filter);
+    eval {
+        my $filter = $self->_parseQuery($c->req->params->{query});
+        $c->log->debug('Query: ' . $c->req->params->{query});
+        $c->log->debug('Filter: ' . $filter);
 
-    my $mesg = $c->comp('Person')->search($filter);
+        my $mesg = $c->comp('Person')->search($filter);
+        if ($mesg->code) {
+            die $mesg->error;
+        }
 
-    if ($mesg->code) {
-        $c->stash->{error} = $mesg->error;
-        $c->forward('/default');
-    }
-    else {
         my @results = map { Uf::Webadmin::Phonebook::Entry->new($_) } $mesg->entries;
         $c->stash->{results}  = \@results;
         $c->stash->{template} = 'results.tt';
+    };
+    if ($@) {
+        $c->stash->{error} = $@;
+        $c->forward('/default');
     }
 }
 
