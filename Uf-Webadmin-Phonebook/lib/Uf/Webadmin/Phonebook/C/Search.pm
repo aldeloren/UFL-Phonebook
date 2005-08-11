@@ -56,7 +56,7 @@ sub search : Private {
             die $mesg->error;
         }
 
-        my @results = map { Uf::Webadmin::Phonebook::Entry->new($_) } $mesg->entries;
+        my @results = sort { $a->{cn} cmp $b->{cn} } map { Uf::Webadmin::Phonebook::Entry->new($_) } $mesg->entries;
         $c->stash->{results}  = \@results;
         $c->stash->{template} = 'results.tt';
     };
