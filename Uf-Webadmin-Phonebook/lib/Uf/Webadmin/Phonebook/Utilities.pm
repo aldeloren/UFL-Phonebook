@@ -16,6 +16,22 @@ Utility functions for the University of Florida phonebook.
 
 =head1 METHODS
 
+=head2 spamArmor
+
+Given an email address, protect against spam harvesting by encoding
+each character.
+
+=cut
+
+sub spamArmor {
+    my ($email) = @_;
+
+    my $armor = $email;
+    $armor =~ s/(.)/'&#' . ord($1) . ';'/eg;
+
+    return $armor;
+}
+
 =head2 parseQuery
 
 Given a search query, return the correspoding LDAP search filter as a

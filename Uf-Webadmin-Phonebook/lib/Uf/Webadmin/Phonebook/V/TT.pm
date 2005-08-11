@@ -2,6 +2,7 @@ package Uf::Webadmin::Phonebook::V::TT;
 
 use strict;
 use base 'Catalyst::View::TT';
+use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
 
@@ -32,6 +33,9 @@ sub new {
 
     # Disable Template::Timer
     $self->config->{CONTEXT} = undef;
+
+    # Additional filters
+    $self->config->{FILTERS}->{spam_armor} = \&Uf::Webadmin::Phonebook::Utilities::spamArmor;
 
     return $self->SUPER::new(@_);
 }
