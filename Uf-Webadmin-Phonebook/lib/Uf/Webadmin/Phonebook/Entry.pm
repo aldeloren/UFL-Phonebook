@@ -17,7 +17,8 @@ Uf::Webadmin::Phonebook::Entry - A phonebook entry
 
 =head1 DESCRIPTION
 
-
+Exposes attributes from a L<Net::LDAP::Entry> as instance variables,
+so repeated calls to C<get_value> are not necessary.
 
 =head1 METHODS
 
@@ -30,7 +31,7 @@ Given a L<Net::LDAP::Entry>, create our view of that entry.
 sub new {
     my ($class, $entry) = @_;
 
-    return unless ($entry and $entry->attributes);
+    return unless $entry and $entry->attributes;
 
     my $self = bless({}, $class);
 
@@ -44,6 +45,18 @@ sub new {
     }
 
     return $self;
+}
+
+=head2 attributes
+
+Return a list of attribute names for this phonebook entry.
+
+=cut
+
+sub attributes {
+    my $self = shift;
+
+    return keys %{ $self };
 }
 
 =head1 AUTHOR

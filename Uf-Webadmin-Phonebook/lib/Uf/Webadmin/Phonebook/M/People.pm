@@ -2,6 +2,7 @@ package Uf::Webadmin::Phonebook::M::People;
 
 use strict;
 use base 'Catalyst::Model::LDAP';
+use Uf::Webadmin::Phonebook::Filter;
 
 __PACKAGE__->config(
     host     => Uf::Webadmin::Phonebook->config->{ldap_host},
@@ -35,35 +36,56 @@ Search the directory for a person.
 sub search {
     my ($self, $query) = @_;
 
-    if ($query =~ /[^a-z0-9 ._\'*\-\@]/) {
-        die 'Query contains invalid characters';
-    }
-
     my $filter = $self->_parseQuery($query);
     $self->SUPER::search($filter);
 }
 
 =head2 _parseQuery
 
+Parse the specified query into an LDAP filter.
+
 =cut
 
 sub _parseQuery {
     my ($self, $query) = @_;
 
+    # Remove wildcards
+    $query =~ tr/\*//d;
+
+    if ($query =~ m/[^a-z0-9 .\-_\'\@]/i) {
+        die 'Query contains invalid characters';
+    }
+
     my @tokens = split(/\s+/, lc($query));
 
     my $filter;
-    if (my $pos = $query =~ m/\@/) {
+    if ($query =~ m/(.*)\@/) {     # Email address
+        my $uid   = $1;
         my $email = shift @tokens;
-        $filter = 'email=' . $email;
+
+        $filter = Uf::Webadmin::Phonebook::Filter->new(
+            uid  => $uid,
+            mail => $email,
+        );
+    }
+    elsif (scalar @tokens == 1) {  # One token: username or last name
+        $filter = Uf::Webadmin::Phonebook::Filter->new(
+            mail => $tokens[0] . '@*',
+            uid  => $tokens[0],
+            cn   => $tokens[0] . ',*',
+        );
+    }
+    elsif (scalar @tokens == 2) {  # Two tokens: first and last name
     }
     else {
-        $filter = 'sn=' . $query;
     }
 
-    Uf::Webadmin::Phonebook->log->debug("Filter: $filter");
+    # TODO: Add default filter on affiliation
 
-    return $filter;
+    Uf::Webadmin::Phonebook->log->debug("Query: $query");
+    Uf::Webadmin::Phonebook->log->debug('Filter: ' . $filter->toString);
+
+    return $filter->toString;
 }
 
 =head1 AUTHOR
