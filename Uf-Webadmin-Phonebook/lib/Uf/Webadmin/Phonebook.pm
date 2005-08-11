@@ -1,15 +1,20 @@
 package Uf::Webadmin::Phonebook;
 
 use strict;
-use Catalyst qw/Static -Debug/;
+use Catalyst;
 
 our $VERSION = '0.01';
 
 __PACKAGE__->config(
-    name => 'Phonebook',
+    name      => 'Phonebook',
+    ldap_host => 'ldap.ufl.edu',
+    ldap_base => 'dc=ufl,dc=edu',
 );
 
-__PACKAGE__->setup;
+my @plugins = qw/Static/;
+push(@plugins, '-Debug') if $ENV{USER};
+
+__PACKAGE__->setup(@plugins);
 
 =head1 NAME
 
