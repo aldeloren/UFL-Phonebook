@@ -29,12 +29,12 @@ C<|>.
 =cut
 
 sub new {
-    my ($class, $spec, $logic) = @_;
+    my ($class, $spec, $operator) = @_;
 
     my $self = bless({}, (ref $class or $class));
 
     $self->{spec}  = $spec;
-    $self->{logic} = $logic || '|';
+    $self->{operator} = $operator || '|';
 
     return $self;
 }
@@ -48,13 +48,29 @@ Return a string represenation of this filter.
 sub toString {
     my ($self) = @_;
 
-    my $logic = $self->{logic};
+    my $operator = $self->{operator};
     my %spec = %{ $self->{spec} };
 
-    my $string = "($logic" . join('', map { '(' . $_ . '=' . $spec{$_} . ')' } keys %spec) . ')';
+    my $string = "($operator" . join('', map { '(' . $_ . '=' . $spec{$_} . ')' } keys %spec) . ')';
 
     return $string;
 }
+
+=head1 TODO
+
+=over 4
+
+=item *
+
+Extend representation of to allow specification of more complex
+filters.
+
+=item *
+
+Handle cases where only one filter is specified - the operator isn't
+necessary.
+
+=back
 
 =head1 AUTHOR
 
