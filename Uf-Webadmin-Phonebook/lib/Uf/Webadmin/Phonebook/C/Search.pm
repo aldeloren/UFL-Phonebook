@@ -2,6 +2,7 @@ package Uf::Webadmin::Phonebook::C::Search;
 
 use strict;
 use base 'Catalyst::Base';
+use Uf::Webadmin::Phonebook::Entry;
 
 =head1 NAME
 
@@ -51,7 +52,7 @@ sub search : Private {
         $c->forward('/default');
     }
     else {
-        my @results = $rv->entries;
+        my @results = map { Uf::Webadmin::Phonebook::Entry->new($_) } $rv->entries;
         $c->stash->{results} = \@results;
         $c->stash->{template} = 'results.tt';
     }
