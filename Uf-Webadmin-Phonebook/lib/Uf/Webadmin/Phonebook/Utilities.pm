@@ -2,6 +2,9 @@ package Uf::Webadmin::Phonebook::Utilities;
 
 use strict;
 
+# Used to encode and decode UFIDs
+my $MASK = 56347812;
+
 =head1 NAME
 
 Uf::Webadmin::Phonebook::Utilities - Utility functions
@@ -34,26 +37,36 @@ sub spamArmor {
 
 =head2 encodeUfid
 
-TODO
+Encode the UFID by using an XOR mask, converting to octal, and
+translating to letters. This is the same algorithm used in the old
+phonebook.
 
 =cut
 
 sub encodeUfid {
-    my ($decoded) = @_;
+    my ($string) = @_;
 
-    return $decoded . '_TODO';
+    $string =~ m/^\d{8}$/ or return $string;
+    my $encoded = sprintf "%9.9o", $string ^ $MASK;
+    $encoded =~ tr/0-9/TSJWHEVN/;
+
+    return $encoded;
 }
 
 =head2 decodeUfid
 
-TODO
+Decode the UFID by doing the reverse of C<encodeUfid>.
 
 =cut
 
 sub decodeUfid {
-    my ($encoded) = @_;
+    my ($string) = @_;
 
-    return $encoded . '_TODO';
+    $string =~ m/^[A-Z]+$/ or return $string;
+    $string =~ tr/TSJWHEVN/0-7/;
+    my $decoded = sprintf "%8.8d", oct($string) ^ $MASK;
+
+    return $decoded;
 }
 
 =head2 parseQuery
