@@ -82,6 +82,7 @@ sub parseQuery {
     # Remove wildcards
     $query =~ tr/\*//d;
 
+    # TODO: Just strip invalid characters
     if ($query =~ m/[^a-z0-9 .\-_\'\@]/i) {
         die 'Query contains invalid characters';
     }
@@ -93,21 +94,20 @@ sub parseQuery {
         my $uid   = $1;
         my $email = shift @tokens;
 
-        $filter = Uf::Webadmin::Phonebook::Filter->new({
+        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
             uid  => $uid,
-            mail => $uid . '@*',
-            mail => $email,
+            mail => [ $email, $uid . '@*' ],
         });
     }
     elsif (scalar @tokens == 1) {  # One token: last name or username
-        $filter = Uf::Webadmin::Phonebook::Filter->new({
+        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
             cn   => $tokens[0] . ',*',
             uid  => $tokens[0],
             mail => $tokens[0] . '@*',
         });
     }
     else {                         # Two or more tokens: first and last name
-        $filter = Uf::Webadmin::Phonebook::Filter->new({
+        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
             cn   => $tokens[1] . ',' . $tokens[0] . '*',
             mail => $tokens[1] . '@*',
         });
