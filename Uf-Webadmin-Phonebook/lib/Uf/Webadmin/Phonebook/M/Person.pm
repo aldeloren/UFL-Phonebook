@@ -2,6 +2,7 @@ package Uf::Webadmin::Phonebook::M::Person;
 
 use strict;
 use base 'Catalyst::Model::LDAP';
+use Uf::Webadmin::Phonebook;
 
 __PACKAGE__->config(
     host     => Uf::Webadmin::Phonebook->config->{ldap_host},
