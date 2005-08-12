@@ -50,9 +50,9 @@ sub search : Private {
     eval {
         my $filter = Uf::Webadmin::Phonebook::Utilities::parseQuery($c->req->params->{query});
         $c->log->debug('Query: ' . $c->req->params->{query});
-        $c->log->debug('Filter: ' . $filter->toString);
+        $c->log->debug('Filter: ' . $filter->as_string);
 
-        my $mesg = $c->comp('Person')->search($filter->toString);
+        my $mesg = $c->comp('Person')->search($filter->as_string);
         if ($mesg->code) {
             die $mesg->error;
         }

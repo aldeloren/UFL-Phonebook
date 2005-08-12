@@ -4,6 +4,10 @@ use strict;
 use Data::Dumper;
 use Scalar::Util qw(blessed);
 
+my @UNARY_OPERATORS = qw(
+    !
+);
+
 =head1 NAME
 
 Uf::Webadmin::Phonebook::Filter - An abstract LDAP filter
@@ -13,7 +17,7 @@ Uf::Webadmin::Phonebook::Filter - An abstract LDAP filter
   my $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
       cn => 'Test,*'
   });
-  print $filter->toString;
+  print $filter->as_string;
 
 =head1 DESCRIPTION
 
@@ -40,19 +44,19 @@ sub new {
     return $self;
 }
 
-=head2 toString
+=head2 as_string
 
 Return a string represenation of this filter.
 
 =cut
 
-sub toString {
+sub as_string {
     my ($self) = @_;
 
     # Combine filter pieces
     my @parts = map {
         if (blessed $_ and $_->isa(__PACKAGE__)) {
-            $_->toString;
+            $_->as_string;
         }
         else {
             my %table = %{ $_ };
@@ -71,7 +75,7 @@ sub toString {
     # Build the filter string, adding the operator if necessary
     my $operator = $self->{operator};
     my $string = join('', @parts);
-    if ($operator eq '!' or scalar @parts > 1) {
+    if (grep { $operator eq $_ } @UNARY_OPERATORS or scalar @parts > 1) {
         $string = "($operator$string)";
     }
 
