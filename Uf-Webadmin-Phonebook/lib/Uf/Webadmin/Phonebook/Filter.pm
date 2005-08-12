@@ -49,9 +49,7 @@ Return a string represenation of this filter.
 sub toString {
     my ($self) = @_;
 
-    my $operator = $self->{operator};
-    my @spec = @{ $self->{spec} };
-
+    # Combine filter pieces
     my @parts = map {
         if (blessed $_ and $_->isa(__PACKAGE__)) {
             $_->toString;
@@ -68,11 +66,12 @@ sub toString {
                 }
             } keys %table;
         }
-    } @spec;
+    } @{ $self->{spec} };
 
     # Build the filter string, adding the operator if necessary
+    my $operator = $self->{operator};
     my $string = join('', @parts);
-    if (scalar @parts > 1) {
+    if ($operator eq '!' or scalar @parts > 1) {
         $string = "($operator$string)";
     }
 
@@ -90,22 +89,6 @@ sub _filter {
 
     return "($field=$value)";
 }
-
-=head1 TODO
-
-=over 4
-
-=item *
-
-Extend representation of to allow specification of more complex
-filters.
-
-=item *
-
-Handle cases where only one filter is specified - the operator isn't
-necessary.
-
-=back
 
 =head1 AUTHOR
 
