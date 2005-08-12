@@ -58,7 +58,7 @@ sub as_string {
         if (blessed $_ and $_->isa(__PACKAGE__)) {
             $_->as_string;
         }
-        else {
+        elsif (ref eq 'HASH') {
             my %table = %{ $_ };
             map {
                 if (ref $table{$_} eq 'ARRAY') {
@@ -69,6 +69,9 @@ sub as_string {
                     _filter($_, $table{$_});
                 }
             } keys %table;
+        }
+        else {
+            warn "Invalid spec entry";
         }
     } @{ $self->{spec} };
 
