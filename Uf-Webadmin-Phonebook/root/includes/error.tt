@@ -1,0 +1,4 @@
+[% IF error %]
+    <p class="error">[% FILTER html_entity %][% error | trim %][% END %]</p>
+
+[% END %]

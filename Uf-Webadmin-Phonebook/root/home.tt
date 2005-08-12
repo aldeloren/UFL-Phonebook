@@ -1,7 +1,5 @@
 [% INCLUDE includes/header.tt %]
-
 [% INCLUDE includes/search.tt %]
-
 [% INCLUDE includes/links.tt %]
-
+[% INCLUDE includes/error.tt %]
 [% INCLUDE includes/footer.tt %]
