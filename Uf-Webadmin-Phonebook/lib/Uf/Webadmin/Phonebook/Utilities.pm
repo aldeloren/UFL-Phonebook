@@ -79,13 +79,8 @@ L<Uf::Webadmin::Phonebook::Filter>.
 sub parseQuery {
     my ($query) = @_;
 
-    # Remove wildcards
-    $query =~ tr/\*//d;
-
-    # TODO: Just strip invalid characters
-    if ($query =~ m/[^a-z0-9 .\-_\'\@]/i) {
-        die 'Query contains invalid characters';
-    }
+    # Strip invalid characters
+    $query =~ s/[^a-z0-9 .\-_\'\@]//gi;
 
     my @tokens = split(/\s+/, lc($query));
 
