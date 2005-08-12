@@ -4,7 +4,7 @@
   @import "/static/css/main.css";
 
 [% FOREACH stylesheet = stylesheets %]
-  @import "[% FILTER html_entity %][% stylesheet %][% END %]";
+  @import "[% stylesheet | html_entity %]";
 
 [% END %]
 </style>
