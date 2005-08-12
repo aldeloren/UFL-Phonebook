@@ -8,9 +8,9 @@ Uf::Webadmin::Phonebook::Filter - An abstract LDAP filter
 
 =head1 SYNOPSIS
 
-  my $filter = Uf::Webadmin::Phonebook::Filter->new(
-    cn => 'Test,*'
-  );
+  my $filter = Uf::Webadmin::Phonebook::Filter->new({
+      cn => 'Test,*'
+  });
   print $filter->toString;
 
 =head1 DESCRIPTION
@@ -51,7 +51,20 @@ sub toString {
     my $operator = $self->{operator};
     my %spec = %{ $self->{spec} };
 
-    my $string = "($operator" . join('', map { '(' . $_ . '=' . $spec{$_} . ')' } keys %spec) . ')';
+    my @parts = map {
+        if (ref and $_->isa(__PACKAGE__)) {
+            $spec{$_}->toString;
+        }
+        else {
+            '(' . $_ . '=' . $spec{$_} . ')';
+        }
+    } keys %spec;
+
+    # Build the filter string, adding the operator if necessary
+    my $string = join('', @parts);
+    if (scalar @parts > 1) {
+        $string = "($operator$string)";
+    }
 
     return $string;
 }
