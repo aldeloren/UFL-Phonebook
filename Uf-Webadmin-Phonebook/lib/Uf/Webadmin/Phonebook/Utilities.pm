@@ -3,7 +3,7 @@ package Uf::Webadmin::Phonebook::Utilities;
 use strict;
 
 # Used to encode and decode UFIDs
-my $MASK = 56347812;
+my $MASK    = 56347812;
 
 =head1 NAME
 
@@ -44,10 +44,10 @@ phonebook.
 =cut
 
 sub encodeUfid {
-    my ($string) = @_;
+    my ($ufid) = @_;
 
-    $string =~ m/^\d{8}$/ or return $string;
-    my $encoded = sprintf "%9.9o", $string ^ $MASK;
+    $ufid =~ m/^\d{8}$/ or return $ufid;
+    my $encoded = sprintf "%9o", $ufid ^ $MASK;
     $encoded =~ tr/0-9/TSJWHEVN/;
 
     return $encoded;
@@ -60,13 +60,13 @@ Decode the UFID by doing the reverse of C<encodeUfid>.
 =cut
 
 sub decodeUfid {
-    my ($string) = @_;
+    my ($encoded) = @_;
 
-    $string =~ m/^[A-Z]+$/ or return $string;
-    $string =~ tr/TSJWHEVN/0-7/;
-    my $decoded = sprintf "%8.8d", oct($string) ^ $MASK;
+    $encoded =~ m/^[A-Z]+$/ or return $encoded;
+    $encoded =~ tr/TSJWHEVN/0-7/;
+    my $ufid = sprintf "%8d", oct($encoded) ^ $MASK;
 
-    return $decoded;
+    return $ufid;
 }
 
 =head2 parseQuery
