@@ -1,4 +1,4 @@
-use Test::More tests => 4;
+use Test::More tests => 6;
 use_ok('Uf::Webadmin::Phonebook::Filter');
 
 my $sn = 'TEST';
@@ -25,3 +25,17 @@ my $filter3 = Uf::Webadmin::Phonebook::Filter->new({
 }, '&');
 print $filter3->toString, "\n";
 ok($filter3->toString eq "(&(sn=$sn)(cn=$cn))" or $filter3->toString eq "(&(cn=$cn)(sn=$sn))");
+
+# Affiliation filter
+my $filter4 = Uf::Webadmin::Phonebook::Filter->new({
+    eduPersonPrimaryAffiliation => [ '-*-', 'affiliate' ],
+});
+print $filter4->toString, "\n";
+ok($filter4->toString eq "(|(eduPersonPrimaryAffiliation=-*-)(eduPersonPrimaryAffiliation=affiliate))");
+
+# Combine two filters
+my $filter5 = Uf::Webadmin::Phonebook::Filter->new({
+    $filter1,
+    $filter4,    
+}, '&');
+fail();

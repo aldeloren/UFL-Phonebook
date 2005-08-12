@@ -52,11 +52,15 @@ sub toString {
     my %spec = %{ $self->{spec} };
 
     my @parts = map {
-        if (ref and $_->isa(__PACKAGE__)) {
+        if ($_->isa(__PACKAGE__)) {
             $spec{$_}->toString;
         }
+        elsif (ref $spec{$_} eq 'ARRAY') {
+            my $field = $_;
+            map { _filter($field, $_) } @{ $spec{$_} };
+        }
         else {
-            '(' . $_ . '=' . $spec{$_} . ')';
+            _filter($_, $spec{$_});
         }
     } keys %spec;
 
@@ -67,6 +71,18 @@ sub toString {
     }
 
     return $string;
+}
+
+=head2 _filter
+
+Given a field and value, return the LDAP filter string.
+
+=cut
+
+sub _filter {
+    my ($field, $value) = @_;
+
+    return "($field=$value)";
 }
 
 =head1 TODO
