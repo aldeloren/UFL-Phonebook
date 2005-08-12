@@ -2,11 +2,10 @@ package Uf::Webadmin::Phonebook::M::Organization;
 
 use strict;
 use base 'Catalyst::Model::LDAP';
-use Uf::Webadmin::Phonebook;
 
 __PACKAGE__->config(
-    host     => Uf::Webadmin::Phonebook->config->{ldap_host},
-    base     => 'ou=Organizations,' . Uf::Webadmin::Phonebook->config->{ldap_base},
+    host     => 'ldap.ufl.edu',
+    base     => 'ou=Organizations,dc=ufl,dc=edu',
     dn       => '',
     password => '',
     options  => {},

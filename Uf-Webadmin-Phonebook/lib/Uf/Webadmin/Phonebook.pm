@@ -7,8 +7,6 @@ our $VERSION = '0.01';
 
 __PACKAGE__->config(
     name      => 'Phonebook',
-    ldap_host => 'ldap.ufl.edu',
-    ldap_base => 'dc=ufl,dc=edu',
 );
 
 my @plugins = qw/Static/;
