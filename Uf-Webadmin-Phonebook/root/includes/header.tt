@@ -4,8 +4,9 @@
 <head>
 <title>[% IF title %][% title | html_entity %] - [% END %]University of Florida [% c.config.name %]</title>
 
-[% INCLUDE includes/css.tt %]
 [% INCLUDE includes/favicon.tt %]
+[% INCLUDE includes/css.tt %]
+[% INCLUDE includes/js.tt %]
 </head>
 <body>
 <div id="header"> 
