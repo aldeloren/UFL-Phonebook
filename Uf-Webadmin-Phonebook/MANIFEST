@@ -7,6 +7,7 @@ lib/Uf/Webadmin/Phonebook/Entry.pm
 lib/Uf/Webadmin/Phonebook/Filter.pm
 lib/Uf/Webadmin/Phonebook/M/Organization.pm
 lib/Uf/Webadmin/Phonebook/M/Person.pm
+lib/Uf/Webadmin/Phonebook/Utilities.pm
 lib/Uf/Webadmin/Phonebook/V/TT.pm
 Makefile.PL
 MANIFEST
@@ -43,6 +44,9 @@ script/uf_webadmin_phonebook_test.pl
 t/01app.t
 t/02pod.t
 t/03podcoverage.t
+t/04entry.t
+t/05filter.t
+t/06utilities.t
 t/C/Search.t
 t/C/Static.t
 t/M/Organization.t
