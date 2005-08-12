@@ -1,6 +1,8 @@
 package Uf::Webadmin::Phonebook::Filter;
 
 use strict;
+use Data::Dumper;
+use Scalar::Util qw(blessed);
 
 =head1 NAME
 
@@ -8,7 +10,7 @@ Uf::Webadmin::Phonebook::Filter - An abstract LDAP filter
 
 =head1 SYNOPSIS
 
-  my $filter = Uf::Webadmin::Phonebook::Filter->new({
+  my $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
       cn => 'Test,*'
   });
   print $filter->toString;
@@ -21,20 +23,19 @@ An abstract representation of an LDAP filter.
 
 =head2 new
 
-Create a new abstract filter. Each key-value pair in C<$spec> is a
-mapping from attribute to filter value. Optionally, the logical
-operator to use in combining filters can be specified. The default is
-C<|>.
+Create a new abstract filter. The operator can be one defined in
+L<Net::LDAP::Filter>. C<@spec> is a list of hashrefs or
+L<Uf::Webadmin::Phonebook::Filter> objects.
 
 =cut
 
 sub new {
-    my ($class, $spec, $operator) = @_;
+    my ($class, $operator, @spec) = @_;
 
     my $self = bless({}, (ref $class or $class));
 
-    $self->{spec}  = $spec;
-    $self->{operator} = $operator || '|';
+    $self->{operator} = $operator;
+    $self->{spec} = \@spec;
 
     return $self;
 }
@@ -49,20 +50,25 @@ sub toString {
     my ($self) = @_;
 
     my $operator = $self->{operator};
-    my %spec = %{ $self->{spec} };
+    my @spec = @{ $self->{spec} };
 
     my @parts = map {
-        if ($_->isa(__PACKAGE__)) {
-            $spec{$_}->toString;
-        }
-        elsif (ref $spec{$_} eq 'ARRAY') {
-            my $field = $_;
-            map { _filter($field, $_) } @{ $spec{$_} };
+        if (blessed $_ and $_->isa(__PACKAGE__)) {
+            $_->toString;
         }
         else {
-            _filter($_, $spec{$_});
+            my %table = %{ $_ };
+            map {
+                if (ref $table{$_} eq 'ARRAY') {
+                    my $field = $_;
+                    map { _filter($field, $_) } @{ $table{$_} };
+                }
+                else {
+                    _filter($_, $table{$_});
+                }
+            } keys %table;
         }
-    } keys %spec;
+    } @spec;
 
     # Build the filter string, adding the operator if necessary
     my $string = join('', @parts);
