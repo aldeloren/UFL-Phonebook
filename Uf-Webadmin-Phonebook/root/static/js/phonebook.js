@@ -1,10 +1,11 @@
 var typed = false;
+
 function initBehavior() {
 	var query = $("query");
 
 	query.onkeyup = function(evt) {
 		typed = true;
-		autocomplete(evt, this, {
+		autocomplete(evt ? evt : window.event, this, {
 			"@": "ufl.edu"
 		});
 	}

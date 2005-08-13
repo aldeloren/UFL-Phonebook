@@ -8,17 +8,10 @@ function autocomplete(evt, f, completions) {
 
 	var completion = null;
 	for (c in completions) {
-		if (typeof c == "RegExp") {
-			if (c.test(field.value)) {
-				completion = completion[c];
-				break;
-			}
-		}
-		else {
-			if (field.value.substr(field.selectionEnd - c.length, c.length) == c) {
-				completion = completions[c];
-				break;
-			}
+		if ((typeof c == "RegExp" && c.test(field.value))
+		    || field.value.substr(field.selectionEnd - c.length, c.length) == c) {
+			completion = completions[c];
+			break;
 		}
 	}
 
