@@ -1,4 +1,9 @@
-function autocomplete(f, completions) {
+function autocomplete(evt, f, completions) {
+	// Short-circuit if someone presses delete
+	if (evt.keyCode == 8) {
+		return;
+	}
+
 	var field = $(f);
 
 	var completion = null;

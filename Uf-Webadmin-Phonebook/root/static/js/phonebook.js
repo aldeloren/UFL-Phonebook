@@ -1,6 +1,6 @@
 function initBehavior() {
-	$("query").onkeyup = function() {
-		autocomplete(this, {
+	$("query").onkeyup = function(evt) {
+		autocomplete(evt, this, {
 			"@": "ufl.edu"
 		});
 	}
