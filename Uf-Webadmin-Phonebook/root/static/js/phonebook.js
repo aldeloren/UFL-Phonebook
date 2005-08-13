@@ -15,4 +15,6 @@ function initBehavior() {
 			this.value = '';
 		}
 	}
+
+	query.select();
 }
