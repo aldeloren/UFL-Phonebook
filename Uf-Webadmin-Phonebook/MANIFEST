@@ -21,6 +21,7 @@ root/includes/error.tt
 root/includes/favicon.tt
 root/includes/footer.tt
 root/includes/header.tt
+root/includes/js.tt
 root/includes/links.tt
 root/includes/search.tt
 root/person.tt
@@ -37,6 +38,10 @@ root/static/images/smallWordmark.gif
 root/static/images/unitHeader.gif
 root/static/images/universityOfFlorida.gif
 root/static/images/whiteCornerNik.gif
+root/static/js/autocomplete.js
+root/static/js/common.js
+root/static/js/cookies.js
+root/static/js/phonebook.js
 script/uf_webadmin_phonebook_cgi.pl
 script/uf_webadmin_phonebook_create.pl
 script/uf_webadmin_phonebook_fastcgi.pl

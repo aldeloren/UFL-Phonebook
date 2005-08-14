@@ -1,0 +1,31 @@
+---
+name: Uf-Webadmin-Phonebook
+version: 0.01
+author:
+  - University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
+  - L<http://www.webadmin.ufl.edu/>
+abstract: Catalyst based application
+license: perl
+requires:
+  Catalyst: 5.10
+provides:
+  Uf::Webadmin::Phonebook:
+    file: lib/Uf/Webadmin/Phonebook.pm
+    version: 0.01
+  Uf::Webadmin::Phonebook::C::Search:
+    file: lib/Uf/Webadmin/Phonebook/C/Search.pm
+  Uf::Webadmin::Phonebook::C::Static:
+    file: lib/Uf/Webadmin/Phonebook/C/Static.pm
+  Uf::Webadmin::Phonebook::Entry:
+    file: lib/Uf/Webadmin/Phonebook/Entry.pm
+  Uf::Webadmin::Phonebook::Filter:
+    file: lib/Uf/Webadmin/Phonebook/Filter.pm
+  Uf::Webadmin::Phonebook::M::Organization:
+    file: lib/Uf/Webadmin/Phonebook/M/Organization.pm
+  Uf::Webadmin::Phonebook::M::Person:
+    file: lib/Uf/Webadmin/Phonebook/M/Person.pm
+  Uf::Webadmin::Phonebook::Utilities:
+    file: lib/Uf/Webadmin/Phonebook/Utilities.pm
+  Uf::Webadmin::Phonebook::V::TT:
+    file: lib/Uf/Webadmin/Phonebook/V/TT.pm
+generated_by: Module::Build version 0.25
