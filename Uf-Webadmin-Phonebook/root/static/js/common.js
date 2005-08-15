@@ -5,7 +5,7 @@
  */
 
 /*
- * Add a function to the <code>window.onload</code> event.
+ * Add a function to the window.onload</code> event.
  * Based on http://simon.incutio.com/archive/2004/05/26/addLoadEvent
  */
 function addLoadEvent(f) {
@@ -215,5 +215,26 @@ var Form = {
 		msg += " field" + (missingFields.length == 1 ? "" : "s") + ".";
 
 		return msg;
+	}
+};
+
+var Field = {
+	clear: function() {
+		for (var i = 0; i < arguments.length; i++) {
+			$(arguments[i]).value = '';
+		}
+	},
+
+	focus: function(element) {
+		$(element).focus();
+	},
+	
+	select: function(element) {
+		$(element).select();
+	},
+	 
+	activate: function(element) {
+		$(element).focus();
+		$(element).select();
 	}
 };

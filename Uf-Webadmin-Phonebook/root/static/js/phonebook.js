@@ -5,14 +5,16 @@ function initBehavior() {
 
 	query.onkeyup = function(evt) {
 		typed = true;
-		autocomplete(evt ? evt : window.event, this, {
+/*
+		Field.autocomplete(evt, this, {
 			"@": "ufl.edu"
 		});
+*/
 	}
 
 	query.onclick = function(evt) {
 		if (! typed) {
-			this.value = '';
+			Field.clear(this);
 		}
 	}
 
