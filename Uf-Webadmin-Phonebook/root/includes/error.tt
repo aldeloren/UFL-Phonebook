@@ -1,4 +1,0 @@
-[% IF error %]
-    <p class="error">[% error | trim | html_entity %]</p>
-
-[% END %]

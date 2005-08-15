@@ -17,12 +17,12 @@ root/department.tt
 root/favicon.ico
 root/home.tt
 root/includes/css.tt
-root/includes/error.tt
 root/includes/favicon.tt
 root/includes/footer.tt
 root/includes/header.tt
 root/includes/js.tt
 root/includes/links.tt
+root/includes/message.tt
 root/includes/search.tt
 root/person.tt
 root/results.tt

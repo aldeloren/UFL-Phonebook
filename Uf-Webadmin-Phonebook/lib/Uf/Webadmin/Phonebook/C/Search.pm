@@ -62,7 +62,7 @@ sub search : Private {
         $c->stash->{template} = 'results.tt';
     };
     if ($@) {
-        $c->stash->{error} = $@;
+        $c->stash->{message} = $@;
         $c->forward('/default');
     }
 }
