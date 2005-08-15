@@ -18,5 +18,5 @@ function initBehavior() {
 		}
 	}
 
-	query.select();
+	Field.activate(query);
 }
