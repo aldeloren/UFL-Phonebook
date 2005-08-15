@@ -59,6 +59,18 @@ sub attributes {
     return keys %{ $self };
 }
 
+=head1 TODO
+
+=over 4
+
+=item *
+
+It might make more sense if this package were in the
+C<Uf::Webadmin::Phonebook::M> namespace, but I see that more for
+L<Catalyst> model pieces.
+
+=back
+
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
