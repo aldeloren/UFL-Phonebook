@@ -1,4 +1,4 @@
-use Test::More tests => 6;
+use Test::More tests => 7;
 use_ok('Uf::Webadmin::Phonebook::Filter');
 
 # Values used in multiple tests
@@ -6,46 +6,45 @@ my $sn = 'TEST';
 my $cn = "$sn,TEST";
 
 # Filters used in multiple tests
-my $simple = "(cn=$cn)";
-my $affiliation = "(!(|(eduPersonPrimaryAffiliation=-*-)(eduPersonPrimaryAffiliation=affiliate)))";
+my $simple      = "(cn=$cn)";
+my $affiliation = "(&(eduPersonPrimaryAffiliation!=-*-)(eduPersonPrimaryAffiliation!=affiliate))";
 
+# Storage for generated filter string
+my $generated = '';
 
-# One filter, no operator necessary
-my $filter1 = Uf::Webadmin::Phonebook::Filter->new('|', {
+# Filter objects used in multiple tests
+ok(my $filter    = Uf::Webadmin::Phonebook::Filter->new(), 'New filter, default logic');
+ok(my $andFilter = Uf::Webadmin::Phonebook::Filter->new(logic => 'and'), 'New filter, specific logic');
+
+$generated = $filter->where({
     cn => $cn,
 });
-print $filter1->as_string, "\n";
-ok($filter1->as_string eq $simple);
+print "$generated\n";
+ok($generated eq $simple, 'Simple filter');
 
-# Two filters, default operator
-my $filter2 = Uf::Webadmin::Phonebook::Filter->new('|', {
+$generated = $filter->where({
     sn => $sn,
     cn => $cn,
 });
-print $filter2->as_string, "\n";
-ok($filter2->as_string eq "(|(sn=$sn)(cn=$cn))" or $filter2->as_string eq "(|(cn=$cn)(sn=$sn))");
+print "$generated\n";
+ok($generated eq "(|(sn=$sn)(cn=$cn))" or $generated eq "(|(cn=$cn)(sn=$sn))", 'Two filters, default operator');
 
-# Two filters, specific operator
-my $filter3 = Uf::Webadmin::Phonebook::Filter->new('&', {
+$generated = $andFilter->where({
     sn => $sn,
     cn => $cn,
 });
-print $filter3->as_string, "\n";
-ok($filter3->as_string eq "(&(sn=$sn)(cn=$cn))" or $filter3->as_string eq "(&(cn=$cn)(sn=$sn))");
+print "$generated\n";
+ok($generated eq "(&(sn=$sn)(cn=$cn))" or $generated eq "(&(cn=$cn)(sn=$sn))", 'Two filters, specific operator');
 
-# Affiliation filter
-my $filter4 = Uf::Webadmin::Phonebook::Filter->new('!', 
-    Uf::Webadmin::Phonebook::Filter->new('|', {
-        eduPersonPrimaryAffiliation => [ '-*-', 'affiliate' ],
-    }),
-);
-print $filter4->as_string, "\n";
-ok($filter4->as_string eq $affiliation);
+$generated = $filter->where({
+    eduPersonPrimaryAffiliation => [ {'!=', '-*-'}, {'!=', 'affiliate'} ],
+});
+print "$generated\n";
+ok($generated eq $affiliation, 'Affiliation filter');
 
-# Combine two filters
-my $filter5 = Uf::Webadmin::Phonebook::Filter->new('&',
-    $filter1,
-    $filter4,
-);
-print $filter5->as_string, "\n";
-ok($filter5->as_string eq "(&$simple$affiliation)");
+$generated = $andFilter->where({
+    cn => $cn,
+    eduPersonPrimaryAffiliation => [ {'!=', '-*-'}, {'!=', 'affiliate'} ],
+});
+print "$generated\n";
+ok($generated eq '(&' . $simple . $affiliation . ')' or '(&' . $affiliation . $simple . ')', 'Combine simple and affiliation filters');
