@@ -5,7 +5,7 @@
  */
 
 /*
- * Add a function to the window.onload</code> event.
+ * Add a function to the window.onload event.
  * Based on http://simon.incutio.com/archive/2004/05/26/addLoadEvent
  */
 function addLoadEvent(f) {
