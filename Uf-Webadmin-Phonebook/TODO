@@ -1,0 +1,15 @@
+* Add default filter on affiliation
+* Search title and phone fields
+* Soundex/name suggestions
+* Push LDAP configuration down to components from application
+* Add tests for Utilities
+
+* Person details page (http://www.cornell.edu/search/?tab=people&netid=ecb29&q=ecb)
+* Person full entry page
+* Organization details page
+* Organization full entry page
+
+* Add JavaScript autocomplete (e.g. @ -> @ufl.edu)
+
+* Update footer markup
+* Cleanup CSS
