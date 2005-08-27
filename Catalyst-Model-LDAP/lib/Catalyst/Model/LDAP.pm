@@ -34,10 +34,10 @@ Catalyst::Model::LDAP - LDAP model class for Catalyst
   1;
 
   # As object method
-  $c->comp('MyApp::Model::Person')->search('sn=Test');
+  $c->comp('MyApp::Model::Person')->search('(sn=Test)');
 
   # As class method
-  MyApp::Model::Person->search('sn=Test');
+  MyApp::Model::Person->search('(sn=Test)');
 
 =head1 DESCRIPTION
 
@@ -65,7 +65,7 @@ sub new {
 Search the directory using a given filter. See L<Net::LDAP> for format
 of arguments.
 
-Returns the L<Net::LDAP:Search> object from the C<Net::LDAP::search>
+Returns the L<Net::LDAP::Search> object from the C<Net::LDAP::search>
 method.
 
 =cut
