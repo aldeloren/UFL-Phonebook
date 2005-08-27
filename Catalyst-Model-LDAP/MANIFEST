@@ -1,0 +1,11 @@
+Changes
+lib/Catalyst/Helper/Model/LDAP.pm
+lib/Catalyst/Model/LDAP.pm
+Makefile.PL
+MANIFEST
+META.yml
+README
+t/01use.t
+t/02pod.t
+t/03podcoverage.t
+t/04search.t
