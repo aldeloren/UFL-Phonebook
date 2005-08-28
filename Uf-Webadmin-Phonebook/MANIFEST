@@ -23,6 +23,7 @@ root/includes/js.tt
 root/includes/links.tt
 root/includes/message.tt
 root/includes/search.tt
+root/noResults.tt
 root/person.tt
 root/results.tt
 root/static/css/basic.css

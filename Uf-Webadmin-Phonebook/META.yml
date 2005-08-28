@@ -8,14 +8,14 @@ abstract: Catalyst based application
 license: perl
 requires:
   Catalyst: 5.10
+  Catalyst::Model::LDAP: 0
+  Catalyst::View::TT: 0
 provides:
   Uf::Webadmin::Phonebook:
     file: lib/Uf/Webadmin/Phonebook.pm
     version: 0.01
   Uf::Webadmin::Phonebook::C::Search:
     file: lib/Uf/Webadmin/Phonebook/C/Search.pm
-  Uf::Webadmin::Phonebook::C::Static:
-    file: lib/Uf/Webadmin/Phonebook/C/Static.pm
   Uf::Webadmin::Phonebook::Entry:
     file: lib/Uf/Webadmin/Phonebook/Entry.pm
   Uf::Webadmin::Phonebook::Filter:
