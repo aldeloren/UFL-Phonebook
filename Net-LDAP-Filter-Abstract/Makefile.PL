@@ -4,8 +4,8 @@ WriteMakefile(
     NAME      => 'Net::LDAP::Filter::Abstract',
     AUTHOR    => 'Daniel Westermann-Clark',
     PREREQ_PM => {
-        Tree::Simple => 0,
         Scalar::Util => 0,
+        Tree::Simple => 0,
     },
     VERSION_FROM => 'lib/Net/LDAP/Filter/Abstract.pm',
 );
