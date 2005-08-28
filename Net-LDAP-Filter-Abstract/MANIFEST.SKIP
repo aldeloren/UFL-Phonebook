@@ -1,0 +1,25 @@
+# Version control files and directories
+\bRCS\b
+\bCVS\b
+,v$
+\B\.svn\b
+
+# MakeMaker-generated files and directories
+\bMakefile$
+\bblib
+\bMakeMaker-\d
+\bpm_to_blib$
+\bblibdirs$
+^MANIFEST\.
+
+# Module::Build-generated files and directories
+\bBuild$
+\b_build
+
+# Backup and temporary files
+~$
+\.tmp$
+\.old$
+\.bak$
+\#$
+\b\.#
