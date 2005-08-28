@@ -7,8 +7,6 @@ use Net::LDAP;
 
 our $VERSION = '0.01';
 
-__PACKAGE__->mk_accessors('client');
-
 =head1 NAME
 
 Catalyst::Model::LDAP - LDAP model class for Catalyst
