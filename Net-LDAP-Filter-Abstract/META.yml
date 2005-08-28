@@ -5,7 +5,8 @@ version:      0.01
 version_from: lib/Net/LDAP/Filter/Abstract.pm
 installdirs:  site
 requires:
-    Net::LDAP:                     0
+    Scalar::Util:                  0
+    Tree::Simple:                  0
 
 distribution_type: module
 generated_by: ExtUtils::MakeMaker version 6.17
