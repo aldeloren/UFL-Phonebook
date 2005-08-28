@@ -1,0 +1,13 @@
+[% INCLUDE includes/header.tt title = c.req.params.query %]
+[% INCLUDE includes/search.tt %]
+[% INCLUDE includes/links.tt %]
+[% INCLUDE includes/message.tt %]
+
+    <p>Your search - <strong>[% c.req.params.query | html_entity %]</strong> - did not match any members of the University of Florida community.</p>
+    <p>Suggestions:</p>
+    <ul>
+      <li>Make sure all terms are spelled correctly.</li>
+      <li>Try searching on a part of the person's name; for example, just the last name.</li>
+    </ul>
+
+[% INCLUDE includes/footer.tt %]

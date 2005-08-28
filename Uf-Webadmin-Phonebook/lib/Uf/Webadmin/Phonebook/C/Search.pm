@@ -58,8 +58,13 @@ sub search : Private {
         }
 
         my @results = sort { $a->{cn} cmp $b->{cn} } map { Uf::Webadmin::Phonebook::Entry->new($_) } $mesg->entries;
-        $c->stash->{results}  = \@results;
-        $c->stash->{template} = 'results.tt';
+        if (@results) {
+            $c->stash->{results}  = \@results;
+            $c->stash->{template} = 'results.tt';
+        }
+        else {
+            $c->stash->{template} = 'noResults.tt';
+        }
     };
     if ($@) {
         $c->stash->{message} = $@;
