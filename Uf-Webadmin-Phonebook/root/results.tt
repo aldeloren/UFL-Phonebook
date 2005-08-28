@@ -17,11 +17,11 @@
 
   [% FOREACH result = results %]
         <tr>
-          <td><a href="/people/[% result.uflEduUniversityId | encode_ufid | html_entity %]">[% result.displayName | html_entity %]</a></td>
-          <td>[% (result.title ? result.title : result.eduPersonPrimaryAffiliation) | html_entity %]</td>
-          <td>[% IF result.departmentNumber %]<a href="/departments/[% result.departmentNumber | html_entity %]">[% END %][% IF result.o %][% result.o | html_entity %][% ELSE %]&nbsp;[% END %][% IF result.departmentNumber %]</a>[% END %]</td>
-          <td>[% IF result.telephoneNumber %][% result.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</td>
-          <td>[% IF result.mail %]<a href="mailto:[% result.mail | spam_armor %]">[% result.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
+          <td><a href="/people/[% result.get_value('uflEduUniversityId') | encode_ufid | html_entity %]">[% result.get_value('displayName') | html_entity %]</a></td>
+          <td>[% (result.get_value('title') ? result.get_value('title') : result.get_value('eduPersonPrimaryAffiliation')) | html_entity %]</td>
+          <td>[% IF result.get_value('departmentNumber') %]<a href="/departments/[% result.get_value('departmentNumber') | html_entity %]">[% END %][% IF result.get_value('o') %][% result.get_value('o') | html_entity %][% ELSE %]&nbsp;[% END %][% IF result.get_value('departmentNumber') %]</a>[% END %]</td>
+          <td>[% IF result.get_value('telephoneNumber') %][% result.get_value('telephoneNumber') | html_entity %][% ELSE %]&nbsp;[% END %]</td>
+          <td>[% IF result.get_value('mail') %]<a href="mailto:[% result.get_value('mail') | spam_armor %]">[% result.get_value('mail') | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
         </tr>
 
   [% END %]

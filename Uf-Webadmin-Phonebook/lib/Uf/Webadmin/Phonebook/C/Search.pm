@@ -2,8 +2,6 @@ package Uf::Webadmin::Phonebook::C::Search;
 
 use strict;
 use base 'Catalyst::Base';
-use Uf::Webadmin::Phonebook::Entry;
-use Uf::Webadmin::Phonebook::Filter;
 use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
@@ -57,8 +55,9 @@ sub search : Private {
             die $mesg->error;
         }
 
-        my @results = sort { $a->{cn} cmp $b->{cn} } map { Uf::Webadmin::Phonebook::Entry->new($_) } $mesg->entries;
-        if (@results) {
+        if ($mesg->entries) {
+            my @results = sort { $a->{cn} cmp $b->{cn} } $mesg->entries;
+
             $c->stash->{results}  = \@results;
             $c->stash->{template} = 'results.tt';
         }
