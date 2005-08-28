@@ -2,7 +2,6 @@ Build.PL
 Changes
 lib/Uf/Webadmin/Phonebook.pm
 lib/Uf/Webadmin/Phonebook/C/Search.pm
-lib/Uf/Webadmin/Phonebook/C/Static.pm
 lib/Uf/Webadmin/Phonebook/Entry.pm
 lib/Uf/Webadmin/Phonebook/Filter.pm
 lib/Uf/Webadmin/Phonebook/M/Organization.pm
@@ -54,7 +53,7 @@ t/04entry.t
 t/05filter.t
 t/06utilities.t
 t/C/Search.t
-t/C/Static.t
 t/M/Organization.t
 t/M/Person.t
 t/V/TT.t
+TODO

@@ -9,7 +9,7 @@ __PACKAGE__->config(
     name      => 'Phonebook',
 );
 
-my @plugins = qw/Static/;
+my @plugins = qw/Static::Simple/;
 push(@plugins, '-Debug') if $ENV{USER};
 
 __PACKAGE__->setup(@plugins);
