@@ -3,7 +3,7 @@ use Net::LDAP::Filter::Abstract;
 use Test::More tests => 4;
 
 my $filter = Net::LDAP::Filter::Abstract->new('&');
-$filter->addChild('objectClass', '=', 'person');
+$filter->addChild(qw/objectClass = person/);
 ok($filter->as_string eq '(objectClass=person)');
 
 $filter->addChild(Net::LDAP::Filter::Abstract->new('!')->addChild(qw/telephoneNumber = */));

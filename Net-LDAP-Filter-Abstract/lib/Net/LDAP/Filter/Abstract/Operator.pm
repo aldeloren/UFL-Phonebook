@@ -1,6 +1,7 @@
 package Net::LDAP::Filter::Abstract::Operator;
 
 use strict;
+use base 'Net::LDAP::Filter::Abstract';
 
 =head1 NAME
 
@@ -11,18 +12,16 @@ Net::LDAP::Filter::Abstract::Operator - An LDAP operator
 
 =head1 DESCRIPTION
 
-
-
 =head1 METHODS
 
 =head2 new
 
-
-
 =cut
 
 sub new {
-    my $self = shift;
+    my $class = shift;
+
+    my $self = (ref($class) || $class)->SUPER::new($_[0]);
 
     return $self;
 }
