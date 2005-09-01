@@ -1,5 +1,4 @@
 use strict;
-use Data::Dumper;
 use Net::LDAP::Filter::Abstract;
 use Test::More tests => 8;
 
