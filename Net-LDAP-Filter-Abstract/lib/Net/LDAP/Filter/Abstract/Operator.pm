@@ -1,7 +1,9 @@
 package Net::LDAP::Filter::Abstract::Operator;
 
 use strict;
-use base 'Net::LDAP::Filter::Abstract';
+use base 'Tree::Simple';
+
+our $DEFAULT_OPERATOR = '&';
 
 =head1 NAME
 
@@ -9,8 +11,16 @@ Net::LDAP::Filter::Abstract::Operator - An LDAP operator
 
 =head1 SYNOPSIS
 
+See L<Net::LDAP::Filter::Abstract>.
 
 =head1 DESCRIPTION
+
+An LDAP operator, which might look like the ampersand (C<&>) in:
+
+  (&(...)(...))
+
+This class is not intended to be used directly. See
+L<Net::LDAP::Filter::Abstract>.
 
 =head1 METHODS
 
@@ -19,13 +29,14 @@ Net::LDAP::Filter::Abstract::Operator - An LDAP operator
 =cut
 
 sub new {
-    my $class = shift;
+    my ($class, $operator, $parent) = shift;
 
-    my $self = (ref($class) || $class)->SUPER::new($_[0]);
+    $operator ||= $DEFAULT_OPERATOR;
+
+    my $self = (ref($class) || $class)->SUPER::new($operator);
 
     return $self;
 }
-
 
 =head1 SEE ALSO
 

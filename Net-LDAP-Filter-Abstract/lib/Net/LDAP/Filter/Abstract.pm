@@ -1,11 +1,12 @@
 package Net::LDAP::Filter::Abstract;
 
 use strict;
-use Scalar::Util qw(blessed);
-use base 'Tree::Simple';
+use Tree::Simple;
+use Net::LDAP::Filter::Abstract::Operator;
+use Net::LDAP::Filter::Abstract::Predicate;
+use Data::Dumper;
 
 our $VERSION = '0.01';
-our $DEFAULT_OPERATOR = '&';
 
 =head1 NAME
 
@@ -14,8 +15,8 @@ Net::LDAP::Filter::Abstract - Generate LDAP filters using a simple API
 =head1 SYNOPSIS
 
   my $filter = Net::LDAP::Filter::Abstract->new('&');
-  $filter->addChild(qw/objectClass = person/);
-  $filter->addChild(qw/uid = dwc/);
+  $filter->add(qw/objectClass = person/);
+  $filter->add(qw/uid = dwc/);
   print $filter->as_string;
 
 =head1 DESCRIPTION
@@ -39,10 +40,11 @@ L<OPERATORS> below). If none is specified, the default (C<&>) is used.
 sub new {
     my $class = shift;
 
-    my $operator = $_[0] || $DEFAULT_OPERATOR;
-    my $root = Net::LDAP::Filter::Abstract::Operator->new($operator);
-
-    my $self = (ref($class) || $class)->SUPER::new($root);
+    my $root = Net::LDAP::Filter::Abstract::Operator->new($_[0]);
+    my $self = {
+        root => $root,
+    };
+    bless $self, ref($class) || $class;
 
     return $self;
 }
@@ -51,12 +53,12 @@ sub new {
 
 =cut
 
-sub addChild {
+sub add {
     my $self = shift;
 
     my $node = $self->_node(@_);
     if ($node) {
-        $self->SUPER::addChild($node);
+        $self->{root}->addChild($node);
     }
 }
 
@@ -78,7 +80,7 @@ sub _node {
     my $node = undef;
 
     if (scalar @_ == 1) {     # Operator or node
-        if (blessed $_[0] and $_[0]->isa(__PACKAGE__)) {
+        if (blessed $_[0] eq __PACKAGE__) {
             $node = $_[0];
         }
         else {
