@@ -29,7 +29,7 @@ L<Net::LDAP::Filter::Abstract>.
 =cut
 
 sub new {
-    my ($class, $operator, $parent) = shift;
+    my ($class, $operator, $parent) = @_;
 
     $operator ||= $DEFAULT_OPERATOR;
 
@@ -37,6 +37,40 @@ sub new {
 
     return $self;
 }
+
+=head2 as_string
+
+=cut
+
+sub as_string {
+    my $self = shift;
+
+    my $string = '';
+    $self->traverse(sub {
+        my ($node) = @_;
+        $string .= $node->getNodeValue;
+    });
+
+    return $string;
+}
+
+=head1 OPERATORS
+
+=over 4
+
+=item *
+
+C<&> - logical and
+
+=item *
+
+C<|> - logical or
+
+=item *
+
+C<!> - logical not
+
+=back
 
 =head1 SEE ALSO
 

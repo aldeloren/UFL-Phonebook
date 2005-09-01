@@ -40,6 +40,22 @@ sub new {
     return $self;
 }
 
+=head2 as_string
+
+=cut
+
+sub as_string {
+    my $self = shift;
+
+    my $string = '';
+    $self->traverse(sub {
+        my ($node) = @_;
+        $string .= $node->getNodeValue;
+    });
+
+    return $string;
+}
+
 =head1 SEE ALSO
 
 L<Net::LDAP::Filter::Abstract>

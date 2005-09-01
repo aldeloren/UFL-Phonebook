@@ -1,10 +1,11 @@
 package Net::LDAP::Filter::Abstract;
 
 use strict;
+use Data::Dumper;
+use Scalar::Util;
 use Tree::Simple;
 use Net::LDAP::Filter::Abstract::Operator;
 use Net::LDAP::Filter::Abstract::Predicate;
-use Data::Dumper;
 
 our $VERSION = '0.01';
 
@@ -17,7 +18,7 @@ Net::LDAP::Filter::Abstract - Generate LDAP filters using a simple API
   my $filter = Net::LDAP::Filter::Abstract->new('&');
   $filter->add(qw/objectClass = person/);
   $filter->add(qw/uid = dwc/);
-  print $filter->as_string;
+  print $filter->as_string();
 
 =head1 DESCRIPTION
 
@@ -49,7 +50,9 @@ sub new {
     return $self;
 }
 
-=head2 addChild
+=head2 add
+
+Add an operator or predicate to this LDAP filter.
 
 =cut
 
@@ -71,7 +74,9 @@ Generate the LDAP filter string from the current tree.
 sub as_string {
     my $self = shift;
 
-    # TODO
+    my $string = $self->{root}->as_string;
+
+    return "($string)";
 }
 
 sub _node {
@@ -80,7 +85,7 @@ sub _node {
     my $node = undef;
 
     if (scalar @_ == 1) {     # Operator or node
-        if (blessed $_[0] eq __PACKAGE__) {
+        if ($_[0]->isa('Tree::Simple')) {
             $node = $_[0];
         }
         else {
@@ -96,24 +101,6 @@ sub _node {
 
     return $node;
 }
-
-=head1 OPERATORS
-
-=over 4
-
-=item *
-
-C<&> - logical and
-
-=item *
-
-C<|> - logical or
-
-=item *
-
-C<!> - logical not
-
-=back
 
 =head1 SEE ALSO
 
