@@ -15,4 +15,5 @@
 </div>
 <div id="mainContainer"> 
   <div id="content">
+
 [% INCLUDE includes/errors.tt %]
