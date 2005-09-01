@@ -6,7 +6,7 @@ use Catalyst;
 our $VERSION = '0.01';
 
 __PACKAGE__->config(
-    name      => 'Phonebook',
+    name => 'Phonebook',
 );
 
 my @plugins = qw/Static::Simple/;
