@@ -20,6 +20,8 @@ Catalyst controller component for finding people.
 
 =head2 default
 
+Display the search form.
+
 =cut
 
 sub default : Private {
@@ -29,6 +31,8 @@ sub default : Private {
 }
 
 =head2 search
+
+Search the directory for people.
 
 =cut
 
@@ -63,7 +67,7 @@ sub search : Local {
     }
 }
 
-=head2 details
+=head2 show
 
 Display a single person.
 
@@ -83,6 +87,8 @@ sub show : Regex('people/([A-Za-z0-9]{8,9})') {
 }
 
 =head2 _parseQuery
+
+Parse the user's query into an LDAP filter.
 
 =cut
 
@@ -113,11 +119,12 @@ sub _parseQuery {
         $filter->add('mail', '=', $tokens[1] . '@*');
     }
 
-    my $filter = Net::LDAP::Filter::Abstract->new('&')->add($filter);
+    $filter = Net::LDAP::Filter::Abstract->new('&')->add($filter);
 
-    my $restriction = Net::LDAP::Filter::Abstract->new('!');
-    $restriction->add(qw/eduPersonPrimaryAffiliation = affiliate/);
-    $restriction->add(qw/eduPersonPrimaryAffiliation = -*-/);
+    my $restriction;
+    $restriction = Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/);
+    $filter->add($restriction);
+    $restriction = Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/);
     $filter->add($restriction);
 
     return $filter;
