@@ -1,0 +1,61 @@
+NAME
+    Net::LDAP::Filter::Abstract - Generate LDAP filters using a simple API
+
+SYNOPSIS
+      my $filter = Net::LDAP::Filter::Abstract->new('&');
+      $filter->add(qw/objectClass = person/);
+      $filter->add(qw/uid = dwc/);
+      print $filter->as_string;
+
+DESCRIPTION
+    This module provides an API for generating LDAP filter strings. It is
+    intended to simplify the process of generating complex filters by
+    avoiding messy string manipulation.
+
+    LDAP filters are typically represented as trees. Thus, this module
+    provides tree manipulation routines written with LDAP filters in mind.
+
+METHODS
+  new
+    Create a new LDAP filter. Optionally, provide an operator (see OPERATORS
+    below). If none is specified, the default ("&") is used.
+
+      my $filter = Net::LDAP::Filter::Abstract->new;
+
+  add
+    Add an operator or predicate to this LDAP filter.
+
+      # Create an operator
+      my $filter2 = Net::LDAP::Filter::Abstract->new('!');
+
+      # Add a predicate
+      $filter2->add(qw/uid = dwc/);
+
+      # Add the full predicate to the tree
+      $filter->add($filter2);
+
+  as_string
+    Generate the LDAP filter string from the current tree.
+
+      print $filter->as_string;
+
+  _node
+    Private method to generate a node in the filter's tree.
+
+OPERATORS
+    *   "&" - logical and
+
+    *   "|" - logical or
+
+    *   "!" - logical not
+
+SEE ALSO
+    Net::LDAP::Filter
+
+AUTHOR
+    Daniel Westermann-Clark <dwc@ufl.edu>
+
+LICENSE
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
