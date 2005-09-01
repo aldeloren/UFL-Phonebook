@@ -15,7 +15,7 @@
 ^_build/
 
 # Devel::Cover-generated files and directories
-^cover_db/
+\bcover_db\b
 
 # Backup and temporary files
 ~$

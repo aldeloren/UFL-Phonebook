@@ -2,6 +2,7 @@ package Uf::Webadmin::Phonebook::C::People;
 
 use strict;
 use base 'Catalyst::Base';
+use Net::LDAP::Filter::Abstract;
 
 =head1 NAME
 
@@ -23,7 +24,8 @@ Catalyst controller component for finding people.
 
 sub default : Private {
     my ($self, $c) = @_;
-    $c->res->output('Congratulations, Uf::Webadmin::Phonebook::C::People is on Catalyst!');
+
+    $c->forward('/default');
 }
 
 =head2 search
@@ -33,48 +35,21 @@ sub default : Private {
 sub search : Local {
     my ($self, $c) = @_;
 
-    my $query = $c->req->params->{query};
-
-    # Strip invalid characters
-    $query =~ s/[^a-z0-9 .\-_\'\@]//gi;
-
-    my @tokens = split(/\s+/, lc($query));
-
-    my $filter;
-    if ($query =~ m/(.*)\@/) {     # Email address
-        my $uid   = $1;
-        my $email = shift @tokens;
-
-        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
-            uid  => $uid,
-            mail => [ $email, $uid . '@*' ],
-        });
-    }
-    elsif (scalar @tokens == 1) {  # One token: last name or username
-        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
-            cn   => $tokens[0] . ',*',
-            uid  => $tokens[0],
-            mail => $tokens[0] . '@*',
-        });
-    }
-    else {                         # Two or more tokens: first and last name
-        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
-            cn   => $tokens[1] . ',' . $tokens[0] . '*',
-            mail => $tokens[1] . '@*',
-        });
-    }
-
     eval {
-        $c->log->debug('Query: ' . $c->req->params->{query});
-        $c->log->debug('Filter: ' . $filter->as_string);
+        my $query = $c->request->param('query');
+        my $filter = $self->_parseQuery($query);
+        my $filterString = $filter->as_string;
 
-        my $mesg = $c->comp('Person')->search($filter->as_string);
+        $c->log->debug('Query: ' . $query);
+        $c->log->debug('Filter: ' . $filterString);
+
+        my $mesg = $c->component('Person')->search($filterString);
         if ($mesg->code) {
             die $mesg->error;
         }
 
         if ($mesg->entries) {
-            my @results = sort { $a->{cn} cmp $b->{cn} } $mesg->entries;
+            my @results = sort { $a->get_value('cn') cmp $b->get_value('cn') } $mesg->entries;
 
             $c->stash->{results}  = \@results;
             $c->stash->{template} = 'people/results.tt';
@@ -90,20 +65,64 @@ sub search : Local {
 
 =head2 details
 
-Display details for a person.
+Display a single person.
 
 =cut
 
-sub details : Local {
+# TODO: Trailing slash - 301 redirect
+sub show : Regex('people/([A-Za-z0-9]{8,9})') {
     my ($self, $c) = @_;
 
-    if (my $ufid = $c->req->arguments->[0]) {
-        $c->res->output("UFID: [$ufid]");
+    if (my $ufid = $c->request->snippets->[0]) {
+        $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($ufid);
+        $c->response->output("UFID = [$ufid]");
     }
     else {
         $c->forward('default');
     }
 }
+
+=head2 _parseQuery
+
+=cut
+
+sub _parseQuery {
+    my ($self, $query) = @_;
+
+    # Strip invalid characters
+    $query =~ s/[^a-z0-9 .\-_\'\@]//gi;
+
+    my @tokens = split(/\s+/, lc($query));
+
+    my $filter = Net::LDAP::Filter::Abstract->new('|');
+    if ($query =~ m/(.*)\@/) {     # Email address
+        my $uid   = $1;
+        my $email = shift @tokens;
+
+        $filter->add('uid', '=', $uid);
+        $filter->add('mail', '=', $email);
+        $filter->add('mail', '=', $uid . '@*');
+    }
+    elsif (scalar @tokens == 1) {  # One token: last name or username
+        $filter->add('cn', '=', $tokens[0] . ',*');
+        $filter->add('uid', '=', $tokens[0]);
+        $filter->add('mail', '=', $tokens[0] . '@*');
+    }
+    else {                         # Two or more tokens: first and last name
+        $filter->add('cn', '=', $tokens[1] . ',' . $tokens[0] . '*');
+        $filter->add('mail', '=', $tokens[1] . '@*');
+    }
+
+    my $filter = Net::LDAP::Filter::Abstract->new('&')->add($filter);
+
+    my $restriction = Net::LDAP::Filter::Abstract->new('!');
+    $restriction->add(qw/eduPersonPrimaryAffiliation = affiliate/);
+    $restriction->add(qw/eduPersonPrimaryAffiliation = -*-/);
+    $filter->add($restriction);
+
+    return $filter;
+}
+
 
 =head1 AUTHOR
 

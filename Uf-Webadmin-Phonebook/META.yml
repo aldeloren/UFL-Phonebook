@@ -10,16 +10,15 @@ requires:
   Catalyst: 5.10
   Catalyst::Model::LDAP: 0
   Catalyst::View::TT: 0
+  Net::LDAP::Filter::Abstract: 0
 provides:
   Uf::Webadmin::Phonebook:
     file: lib/Uf/Webadmin/Phonebook.pm
     version: 0.01
-  Uf::Webadmin::Phonebook::C::Search:
-    file: lib/Uf/Webadmin/Phonebook/C/Search.pm
-  Uf::Webadmin::Phonebook::Entry:
-    file: lib/Uf/Webadmin/Phonebook/Entry.pm
-  Uf::Webadmin::Phonebook::Filter:
-    file: lib/Uf/Webadmin/Phonebook/Filter.pm
+  Uf::Webadmin::Phonebook::C::People:
+    file: lib/Uf/Webadmin/Phonebook/C/People.pm
+  Uf::Webadmin::Phonebook::C::Units:
+    file: lib/Uf/Webadmin/Phonebook/C/Units.pm
   Uf::Webadmin::Phonebook::M::Organization:
     file: lib/Uf/Webadmin/Phonebook/M/Organization.pm
   Uf::Webadmin::Phonebook::M::Person:
