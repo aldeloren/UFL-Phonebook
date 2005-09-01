@@ -1,7 +1,10 @@
-[% IF c.error %]
-<ul id="errors">
-  [% FOREACH error IN c.error %]
-  <li>[% error | trim | html_entity %]</li>
+[% IF errors %]
+    <ul id="errors">
+  [% FOREACH error IN errors %]
+
+      <li>[% error | trim | html_entity %]</li>
   [% END %]
-</ul>
+
+    </ul>
+
 [% END %]

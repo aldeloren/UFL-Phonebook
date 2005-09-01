@@ -56,6 +56,13 @@ Forward to the application's view.
 sub end : Private {
     my ($self, $c) = @_;
 
+    # Display errors in the template if we have one; otherwise, let
+    # Catalyst handle it
+    if (scalar @{ $c->error } and $c->stash->{template}) {
+        $c->stash->{errors} = $c->error;
+        $c->{error} = [];
+    }
+
     # Only forward if we have a template, which allows the Static
     # plugin to serve files
     $c->forward(__PACKAGE__ . '::V::TT') if ($c->stash->{template});
