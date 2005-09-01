@@ -24,7 +24,13 @@
 
     <h3>Major Features</h3>
     <ul>
-      <li></li>
+      <li>Easy to find people:
+        <ul>
+          <li>No mention of wildcards. Where possible, substring searches are performed by default.</li>
+          <li>Results displayed in a clean layout, with most commonly used details right there.</li>
+        </ul>
+      </li>
+      <li>When no results are found, suggestions on how to proceed are provided.</li>
     </ul>
 
     <h3>Design Goals</h3>
@@ -34,23 +40,22 @@
     </blockquote>
     <p>We will always try to eliminate choices that the user must make. No jargon relating to the implementation of the Directory will be part of the user experience.</p>
 
-    <h3>Major Components</h3>
-    <p></p>
-
     <h3>About the Rollout</h3>
     <p>Our primary goal is to have a mostly functional version of the Phonebook in two weeks. That means that the initial version will be suboptimal in many ways and will not contain every feature. Throughout this specification, the notation (v2) will be used to indicate features which will not be a part of the initial rollout but added later.</p>
 
     <h3>Software Architecture</h3>
     <p>The Web application will be written in Perl using the <a href="http://catalyst.perl.org/">Catalyst</a> framework.</p>
-    <p>Web pages will be written using the <a href="http://search.cpan.org/dist/Template-Toolkit/">Template Toolkit</a>. CSS will be used for formatting and positioning, following the standards put in place by Web Administration. If time permits, strings will be isolated for easy localization (for e.g. a Spanish version of the site).</p>
+    <p>Web pages will be written using the <a href="http://search.cpan.org/dist/Template-Toolkit/">Template Toolkit</a>. CSS will be used for formatting and positioning, following the standards put in place by Web Administration.</p>
+    <p>To interface with the Directory, <a href="http://search.cpan.org/dist/perl-ldap/">Net::LDAP</a> will be used.</p>
 
     <h3>The User Experience</h3>
     <p></p>
 
     <h3>Future Features</h3>
     <ul>
+      <li>(hopefully v1) &quot;Internal phonebook&quot;, requiring GatorLink authentication and returning results using the user's credentials.</li>
       <li>(v2) Google Suggest-style completions for phonebook queries. When the user types a few characters, display ten or so results from the Directory that might match.</li>
-      <li>(v2) &quot;Internal phonebook&quot;, requiring GatorLink authentication and returning results using the user's credentials.</li>
+      <li>(v2) Strings will be isolated for easy localization (for e.g. a Spanish version of the site).</li>
     </ul>
 
     <h3>Planned Pages</h3>
@@ -79,7 +84,7 @@
     <hr>
 <!-- Created: Thu Sep  1 14:07:18 EDT 2005 -->
 <!-- hhmts start -->
-Last modified: Thu Sep  1 15:32:05 EDT 2005
+Last modified: Thu Sep  1 15:59:59 EDT 2005
 <!-- hhmts end -->
   </body>
 </html>
