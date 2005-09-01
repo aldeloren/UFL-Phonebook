@@ -29,6 +29,12 @@ L<Net::LDAP::Filter::Abstract>.
 
 =head2 new
 
+Create a new LDAP operator node.
+
+  my $andOperator = Net::LDAP::Filter::Abstract::Operator->new
+  my $orOperator  = Net::LDAP::Filter::Abstract::Operator->new('|');
+  my $notOperator = Net::LDAP::Filter::Abstract::Operator->new('!');
+
 =cut
 
 sub new {
@@ -42,6 +48,23 @@ sub new {
 }
 
 =head2 as_string
+
+Generate the LDAP filter string, starting with this operator and
+then walking the tree recursively.
+
+The operator is only needed if:
+
+=over 4
+
+=item 1.
+
+there are two or more child predicates; or
+
+=item 2.
+
+this operator is unary (e.g. C<!>).
+
+=back
 
 =cut
 
@@ -65,24 +88,6 @@ sub as_string {
 
     return $string;
 }
-
-=head1 OPERATORS
-
-=over 4
-
-=item *
-
-C<&> - logical and
-
-=item *
-
-C<|> - logical or
-
-=item *
-
-C<!> - logical not
-
-=back
 
 =head1 SEE ALSO
 

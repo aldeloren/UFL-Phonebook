@@ -26,6 +26,8 @@ L<Net::LDAP::Filter::Abstract>.
 
 Create a new LDAP predicate node.
 
+  my $predicate = Net::LDAP::Filter::Abstract::Predicate->new(qw/sn = Test/);
+
 =cut
 
 sub new {
@@ -41,6 +43,9 @@ sub new {
 }
 
 =head2 as_string
+
+Generate the LDAP filter string for this predicate. Predicates can't
+have child nodes, so this is simple.
 
 =cut
 

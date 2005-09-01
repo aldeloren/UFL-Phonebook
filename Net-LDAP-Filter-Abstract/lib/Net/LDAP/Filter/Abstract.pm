@@ -16,7 +16,7 @@ Net::LDAP::Filter::Abstract - Generate LDAP filters using a simple API
   my $filter = Net::LDAP::Filter::Abstract->new('&');
   $filter->add(qw/objectClass = person/);
   $filter->add(qw/uid = dwc/);
-  print $filter->as_string();
+  print $filter->as_string;
 
 =head1 DESCRIPTION
 
@@ -33,6 +33,8 @@ provides tree manipulation routines written with LDAP filters in mind.
 
 Create a new LDAP filter. Optionally, provide an operator (see
 L<OPERATORS> below). If none is specified, the default (C<&>) is used.
+
+  my $filter = Net::LDAP::Filter::Abstract->new;
 
 =cut
 
@@ -52,6 +54,15 @@ sub new {
 
 Add an operator or predicate to this LDAP filter.
 
+  # Create an operator
+  my $filter2 = Net::LDAP::Filter::Abstract->new('!');
+
+  # Add a predicate
+  $filter2->add(qw/uid = dwc/);
+
+  # Add the full predicate to the tree
+  $filter->add($filter2);
+
 =cut
 
 sub add {
@@ -69,6 +80,8 @@ sub add {
 =head2 as_string
 
 Generate the LDAP filter string from the current tree.
+
+  print $filter->as_string;
 
 =cut
 
@@ -108,6 +121,24 @@ sub _node {
 
     return $node;
 }
+
+=head1 OPERATORS
+
+=over 4
+
+=item *
+
+C<&> - logical and
+
+=item *
+
+C<|> - logical or
+
+=item *
+
+C<!> - logical not
+
+=back
 
 =head1 SEE ALSO
 
