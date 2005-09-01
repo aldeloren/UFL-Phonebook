@@ -1,4 +1,0 @@
-[% IF message %]
-    <p class="message">[% message | trim | html_entity %]</p>
-
-[% END %]

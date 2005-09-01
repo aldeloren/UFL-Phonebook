@@ -1,7 +1,7 @@
 [% INCLUDE includes/header.tt title = c.req.params.query %]
-[% INCLUDE includes/search.tt %]
+[% INCLUDE people/includes/search.tt %]
 [% INCLUDE includes/links.tt %]
-[% INCLUDE includes/message.tt %]
+[% INCLUDE includes/errors.tt %]
 
     <p>Your search - <strong>[% c.req.params.query | html_entity %]</strong> - did not match any members of the University of Florida community.</p>
     <p>Suggestions:</p>

@@ -12,7 +12,7 @@ Uf::Webadmin::Phonebook::Utilities - Utility functions
 
 =head1 SYNOPSIS
 
-See L<Uf::Webadmin::Phonebook>
+See L<Uf::Webadmin::Phonebook>.
 
 =head1 DESCRIPTION
 
@@ -68,48 +68,6 @@ sub decodeUfid {
     my $ufid = sprintf "%8.8d", oct($encoded) ^ $MASK;
 
     return $ufid;
-}
-
-=head2 parseQuery
-
-Given a search query, return the correspoding LDAP search filter as a
-L<Uf::Webadmin::Phonebook::Filter>.
-
-=cut
-
-sub parseQuery {
-    my ($query) = @_;
-
-    # Strip invalid characters
-    $query =~ s/[^a-z0-9 .\-_\'\@]//gi;
-
-    my @tokens = split(/\s+/, lc($query));
-
-    my $filter;
-    if ($query =~ m/(.*)\@/) {     # Email address
-        my $uid   = $1;
-        my $email = shift @tokens;
-
-        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
-            uid  => $uid,
-            mail => [ $email, $uid . '@*' ],
-        });
-    }
-    elsif (scalar @tokens == 1) {  # One token: last name or username
-        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
-            cn   => $tokens[0] . ',*',
-            uid  => $tokens[0],
-            mail => $tokens[0] . '@*',
-        });
-    }
-    else {                         # Two or more tokens: first and last name
-        $filter = Uf::Webadmin::Phonebook::Filter->new('|', {
-            cn   => $tokens[1] . ',' . $tokens[0] . '*',
-            mail => $tokens[1] . '@*',
-        });
-    }
-
-    return $filter;
 }
 
 =head1 AUTHOR

@@ -1,6 +1,6 @@
     <div class="searchcontainer">
       <h3>Search the [% c.config.name | html_entity %]</h3>
-      <form method="get" action="/search">
+      <form method="get" action="/people/search">
         <div class="description">
           <input type="text" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : 'Search UF People' | html_entity %]" class="search" />
           <input type="submit" value="Search" class="searchbutton" />

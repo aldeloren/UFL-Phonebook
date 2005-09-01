@@ -44,41 +44,7 @@ Display the home page.
 sub default : Private {
     my ($self, $c) = @_;
 
-    $c->stash->{template} = 'home.tt';
-}
-
-=head2 people
-
-Display details for a person.
-
-=cut
-
-sub people : Path('people') {
-    my ($self, $c) = @_;
-
-    if (my $ufid = $c->req->arguments->[0]) {
-        $c->res->output("UFID: [$ufid]");
-    }
-    else {
-        $c->forward('default');
-    }
-}
-
-=head2 departments
-
-Display details for a department.
-
-=cut
-
-sub departments : Path('departments') {
-    my ($self, $c) = @_;
-
-    if (my $ufid = $c->req->arguments->[0]) {
-        $c->res->output("UFID: [$ufid]");
-    }
-    else {
-        $c->forward('default');
-    }
+    $c->stash->{template} = 'index.tt';
 }
 
 =head2 end

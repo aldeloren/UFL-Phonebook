@@ -10,7 +10,7 @@ Uf::Webadmin::Phonebook::V::TT - Template Toolkit view component
 
 =head1 SYNOPSIS
 
-See L<Uf::Webadmin::Phonebook>
+See L<Uf::Webadmin::Phonebook>.
 
 =head1 DESCRIPTION
 

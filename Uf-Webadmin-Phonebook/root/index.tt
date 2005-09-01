@@ -1,5 +1,4 @@
 [% INCLUDE includes/header.tt %]
-[% INCLUDE includes/search.tt %]
+[% INCLUDE people/includes/search.tt %]
 [% INCLUDE includes/links.tt %]
-[% INCLUDE includes/message.tt %]
 [% INCLUDE includes/footer.tt %]

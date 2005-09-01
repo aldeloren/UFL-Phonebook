@@ -1,7 +1,7 @@
 [% INCLUDE includes/header.tt title = c.req.params.query %]
-[% INCLUDE includes/search.tt %]
+[% INCLUDE people/includes/search.tt %]
 [% INCLUDE includes/links.tt %]
-[% INCLUDE includes/message.tt %]
+[% INCLUDE includes/errors.tt %]
 
     <table>
       <thead>
@@ -15,7 +15,7 @@
       </thead>
       <tbody>
 
-  [% FOREACH result = results %]
+  [% FOREACH result IN results %]
         <tr>
           <td><a href="/people/[% result.get_value('uflEduUniversityId') | encode_ufid | html_entity %]">[% result.get_value('displayName') | html_entity %]</a></td>
           <td>[% (result.get_value('title') ? result.get_value('title') : result.get_value('eduPersonPrimaryAffiliation')) | html_entity %]</td>
