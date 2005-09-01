@@ -1,7 +1,6 @@
 package Uf::Webadmin::Phonebook::Utilities;
 
 use strict;
-use Uf::Webadmin::Phonebook::Filter;
 
 # Used to encode and decode UFIDs
 my $MASK = 56347812;
