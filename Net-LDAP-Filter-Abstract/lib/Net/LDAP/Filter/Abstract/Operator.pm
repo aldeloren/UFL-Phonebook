@@ -85,6 +85,9 @@ sub as_string {
     elsif (scalar @children == 1) {
         $string .= $children[0]->as_string;
     }
+    else {
+        warn "Invalid filter tree";
+    }
 
     return $string;
 }

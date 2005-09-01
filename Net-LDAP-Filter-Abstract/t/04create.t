@@ -2,7 +2,7 @@ use strict;
 use Net::LDAP::Filter::Abstract;
 use Test::More tests => 8;
 
-my $filter = Net::LDAP::Filter::Abstract->new('&');
+my $filter = Net::LDAP::Filter::Abstract->new;
 ok($filter);
 $filter->add(qw/objectClass = person/);
 ok($filter->as_string eq '(objectClass=person)');

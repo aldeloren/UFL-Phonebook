@@ -5,16 +5,17 @@
 \B\.svn\b
 
 # MakeMaker-generated files and directories
-\bMakefile$
-\bblib
-\bMakeMaker-\d
-\bpm_to_blib$
-\bblibdirs$
 ^MANIFEST\.
+^Makefile$
+^blib/
+^MakeMaker-\d
 
 # Module::Build-generated files and directories
-\bBuild$
-\b_build
+^Build$
+^_build/
+
+# Devel::Cover-generated files and directories
+^cover_db/
 
 # Backup and temporary files
 ~$

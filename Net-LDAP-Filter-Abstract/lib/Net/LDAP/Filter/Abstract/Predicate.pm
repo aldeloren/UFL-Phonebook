@@ -34,7 +34,7 @@ sub new {
     my $class = shift;
 
     if (scalar @_ != 3) {
-        warn "Possibly invalid predicate (" . join(', ', @_) . ")";
+        warn 'Possibly invalid predicate: ' . join ', ', @_;
     }
     my $predicate = join('', @_);
     my $self = (ref($class) || $class)->SUPER::new($predicate);

@@ -3,6 +3,7 @@ package Net::LDAP::Filter::Abstract;
 use strict;
 use Net::LDAP::Filter::Abstract::Operator;
 use Net::LDAP::Filter::Abstract::Predicate;
+use Scalar::Util qw(blessed);
 use Tree::Simple;
 
 our $VERSION = '0.01';
@@ -72,6 +73,9 @@ sub add {
     if ($node) {
         $self->{root}->addChild($node);
     }
+    else {
+        warn "Error adding node: " . join ', ', @_;
+    }
 
     # Allow chaining of methods
     return $self;
@@ -104,15 +108,12 @@ sub _node {
 
     my $node = undef;
 
-    if (scalar @_ == 1) {     # Operator or node
-        if ($_[0]->isa(__PACKAGE__)) {
-            $node = $_[0]->{root};
-        }
-        else {
-            $node = Net::LDAP::Filter::Abstract::Operator->new($_[0]);
-        }
+    if (scalar @_ == 1 and blessed $_[0] and $_[0]->isa(__PACKAGE__)) {
+        # Operator node
+        $node = $_[0]->{root};
     }
-    elsif (scalar @_ == 3) {  # Predicate
+    elsif (scalar @_ == 3) {
+        # Predicate
         $node = Net::LDAP::Filter::Abstract::Predicate->new(@_);
     }
     else {
