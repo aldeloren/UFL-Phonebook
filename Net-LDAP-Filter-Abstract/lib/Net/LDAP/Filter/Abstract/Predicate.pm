@@ -47,11 +47,7 @@ sub new {
 sub as_string {
     my $self = shift;
 
-    my $string = '';
-    $self->traverse(sub {
-        my ($node) = @_;
-        $string .= $node->getNodeValue;
-    });
+    my $string = '(' . $self->getNodeValue. ')';
 
     return $string;
 }

@@ -1,9 +1,14 @@
 package Net::LDAP::Filter::Abstract::Operator;
 
 use strict;
+use Data::Dumper;
+use Scalar::Util;
 use base 'Tree::Simple';
 
 our $DEFAULT_OPERATOR = '&';
+our @UNARY_OPERATORS = qw(
+    !
+);
 
 =head1 NAME
 
@@ -46,10 +51,19 @@ sub as_string {
     my $self = shift;
 
     my $string = '';
-    $self->traverse(sub {
-        my ($node) = @_;
-        $string .= $node->getNodeValue;
-    });
+
+    my @children = $self->getAllChildren;
+    if (scalar @children > 1 or grep { $self->getNodeValue eq $_ } @UNARY_OPERATORS) {
+        $string .= '(';
+        $string .= $self->getNodeValue;
+        foreach my $child (@children) {
+            $string .= $child->as_string;
+        }
+        $string .= ')';
+    }
+    elsif (scalar @children == 1) {
+        $string .= $children[0]->as_string;
+    }
 
     return $string;
 }

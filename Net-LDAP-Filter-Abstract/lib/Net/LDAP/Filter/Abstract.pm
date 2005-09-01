@@ -76,7 +76,7 @@ sub as_string {
 
     my $string = $self->{root}->as_string;
 
-    return "($string)";
+    return $string;
 }
 
 sub _node {
