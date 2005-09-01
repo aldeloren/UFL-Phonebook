@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>University of Florida Phonebook - Functional Specification</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
 
   <body>
@@ -27,10 +28,11 @@
       <li>Easy to find people:
         <ul>
           <li>No mention of wildcards. Where possible, substring searches are performed by default.</li>
-          <li>Results displayed in a clean layout, with most commonly used details right there.</li>
+          <li>Results displayed in a clean layout, with most commonly used details immediately available.</li>
         </ul>
       </li>
       <li>When no results are found, suggestions on how to proceed are provided.</li>
+      <li>Easy to find departments and other units on campus.</li>
     </ul>
 
     <h3>Design Goals</h3>
@@ -55,36 +57,117 @@
     <ul>
       <li>(hopefully v1) &quot;Internal phonebook&quot;, requiring GatorLink authentication and returning results using the user's credentials.</li>
       <li>(v2) Google Suggest-style completions for phonebook queries. When the user types a few characters, display ten or so results from the Directory that might match.</li>
-      <li>(v2) Strings will be isolated for easy localization (for e.g. a Spanish version of the site).</li>
+      <li>(v2) Isolate strings for easy localization (for e.g. a Spanish version of the site).</li>
+      <li>(v2) An advanced search page, allowing users to give values for specific Directory fields.</li>
+      <li>(v2) vCard download.</li>
     </ul>
 
     <h3>Planned Pages</h3>
 
     <h4>The Home Page</h4>
-    <p></p>
+    <p>The home page is the same as the people search page.</p>
 
     <h4>The People Search Page</h4>
-    <p></p>
+    <p>The people search page displays a simple form and very brief instructions.</p>
+    <blockquote>
+      <p>University of Florida Phonebook</p>
+      <p>________________________________________ Search</p>
+      <p>Enter a name, nickname, phone number, email address, or GatorLink ID to find people.</p>
+      <p>Note: Information obtained from this phonebook may not be used to provide addresses for mailings to students, employees or parents of students. This phonebook is provided for information of the University and those who have specific interest in reaching individual students or establishing their identity as students of the University of Florida. Any solicitation of business, information, contributions or other response from individuals listed in this publication by mail, telephone or other means is forbidden.</p>
+    </blockquote>
+    <p>If the searching algorithms work well enough, we should not need to provide any more information than that.</p>
 
     <h4>The People Results Page</h4>
-    <p></p>
+    <p>The people results page repeats the search form, with the user's query filled out.</p>
+    <blockquote>
+      <p>University of Florida Phonebook</p>
+      <p>_User's Query___________________________ Search</p>
+    </blockquote>
+    <p>If results matching the user's query were found, display them as a list:</p>
+    <blockquote>
+      <p>Your search for [User's Query] returned the following N people:</p>
+      <ul>
+        <li>[Name], [Unit], [Email], [Phone]</li>
+        <li>[Name], [Unit], [Email], [Phone]</li>
+        <li>&hellip;</li>
+      </ul>
+    </blockquote>
+    <p>If more than, say, 100 results are returned, we will display the first 100:</p>
+    <blockquote>
+      <p>Your search for [User's Query] returned more than 100 results. The first 100 are displayed below.</p>
+    </blockquote>
+    <p>If no results were found, display some suggestions:</p>
+    <blockquote>
+      <p>Your search - [User's Query] - did not match any members of the University of Florida community.</p>
+      <p>Suggestions:</p>
+      <ul>
+        <li>Make sure all terms are spelled correctly.</li>
+        <li>Try searching on a part of the person's name; for example, just the last name.</li>
+      </ul>
+    </blockquote>
+    <p>Ideally, we will be able to provide more helpful suggestions using soundex or similar algorithms for classifying names.</p>
 
-    <h4>The People Details Page</h4>
-    <p></p>
+    <h4>The Person Details Page</h4>
+    <blockquote>
+      <p>[Name]</p>
+      <p>[General Information]</p>
+      <p>[Phone Numbers]</p>
+      <p>[Addresses]</p>
+      <p>[Other Information]</p>
+    </blockquote>
 
     <h4>The Unit Search Page</h4>
-    <p></p>
+    <p>The people search page displays a simple form and very brief instructions.</p>
+    <blockquote>
+      <p>University of Florida Phonebook</p>
+      <p>________________________________________ Search</p>
+      <p>Enter a keyword or name to find departments and units.</p>
+      <p>Note: Information obtained from this phonebook may not be used to provide addresses for mailings to students, employees or parents of students. This phonebook is provided for information of the University and those who have specific interest in reaching individual students or establishing their identity as students of the University of Florida. Any solicitation of business, information, contributions or other response from individuals listed in this publication by mail, telephone or other means is forbidden.</p>
+    </blockquote>
 
     <h4>The Unit Results Page</h4>
-    <p></p>
+    <p>The unit results page repeats the search form, with the user's query filled out.</p>
+    <blockquote>
+      <p>University of Florida Phonebook</p>
+      <p>_User's Query___________________________ Search</p>
+    </blockquote>
+    <p>If results matching the user's query were found, display them as a list:</p>
+    <blockquote>
+      <p>Your search for [User's Query] returned the following N units:</p>
+      <ul>
+        <li>[Name], [Email], [Phone]</li>
+        <li>[Name], [Email], [Phone]</li>
+        <li>&hellip;</li>
+      </ul>
+    </blockquote>
+    <p>If more than, say, 100 results are returned, we will display the first 100:</p>
+    <blockquote>
+      <p>Your search for [User's Query] returned more than 100 results. The first 100 are displayed below.</p>
+    </blockquote>
+    <p>If no results were found, display some suggestions:</p>
+    <blockquote>
+      <p>Your search - [User's Query] - did not match any members of the University of Florida community.</p>
+      <p>Suggestions:</p>
+      <ul>
+        <li>Make sure all terms are spelled correctly.</li>
+        <li>Try searching on a part of the person's name; for example, just the last name.</li>
+      </ul>
+    </blockquote>
+    <p>We might also provide links to the <a href="http://www.ufl.edu/websites/">Web site listing</a>.</p>
 
     <h4>The Unit Details Page</h4>
-    <p></p>
+    <blockquote>
+      <p>[Name]</p>
+      <p>[General Information]</p>
+      <p>[Phone Numbers]</p>
+      <p>[Addresses]</p>
+      <p>[Other Information]</p>
+    </blockquote>
 
     <hr>
 <!-- Created: Thu Sep  1 14:07:18 EDT 2005 -->
 <!-- hhmts start -->
-Last modified: Thu Sep  1 15:59:59 EDT 2005
+Last modified: Thu Sep  1 16:57:03 EDT 2005
 <!-- hhmts end -->
   </body>
 </html>
