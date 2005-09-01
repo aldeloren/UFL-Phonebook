@@ -18,11 +18,8 @@ ok($filter->as_string eq '(&(objectClass=person)(!(telephoneNumber=*)))');
 my $filter3 = Net::LDAP::Filter::Abstract->new('|');
 ok($filter3);
 $filter3->add(qw/cn = *a*b*/);
-print $filter3->as_string, "\n";
 $filter3->add(qw/cn = *b*a*/);
-print $filter3->as_string, "\n";
 ok($filter3->as_string eq '(|(cn=*a*b*)(cn=*b*a*))');
 
 $filter->add($filter3);
-print $filter->as_string, "\n";
 ok($filter->as_string eq '(&(objectClass=person)(!(telephoneNumber=*))(|(cn=*a*b*)(cn=*b*a*)))');

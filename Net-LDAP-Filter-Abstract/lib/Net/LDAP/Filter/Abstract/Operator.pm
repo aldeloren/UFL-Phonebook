@@ -1,8 +1,6 @@
 package Net::LDAP::Filter::Abstract::Operator;
 
 use strict;
-use Data::Dumper;
-use Scalar::Util;
 use base 'Tree::Simple';
 
 our $DEFAULT_OPERATOR = '&';

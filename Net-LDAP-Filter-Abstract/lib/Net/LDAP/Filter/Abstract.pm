@@ -1,11 +1,9 @@
 package Net::LDAP::Filter::Abstract;
 
 use strict;
-use Data::Dumper;
-use Scalar::Util;
-use Tree::Simple;
 use Net::LDAP::Filter::Abstract::Operator;
 use Net::LDAP::Filter::Abstract::Predicate;
+use Tree::Simple;
 
 our $VERSION = '0.01';
 
@@ -63,6 +61,9 @@ sub add {
     if ($node) {
         $self->{root}->addChild($node);
     }
+
+    # Allow chaining of methods
+    return $self;
 }
 
 =head2 as_string
@@ -79,14 +80,20 @@ sub as_string {
     return $string;
 }
 
+=head2 _node
+
+Private method to generate a node in the filter's tree.
+
+=cut
+
 sub _node {
     my $self = shift;
 
     my $node = undef;
 
     if (scalar @_ == 1) {     # Operator or node
-        if ($_[0]->isa('Tree::Simple')) {
-            $node = $_[0];
+        if ($_[0]->isa(__PACKAGE__)) {
+            $node = $_[0]->{root};
         }
         else {
             $node = Net::LDAP::Filter::Abstract::Operator->new($_[0]);
