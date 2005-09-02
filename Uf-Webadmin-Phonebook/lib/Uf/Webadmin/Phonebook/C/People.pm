@@ -88,42 +88,69 @@ sub show : Regex('people/([A-Za-z0-9]{8,9})') {
 
 =head2 _parseQuery
 
-Parse the user's query into an LDAP filter.
+Parse a query into an LDAP filter.
 
 =cut
 
 sub _parseQuery {
     my ($self, $query) = @_;
 
-    # Strip invalid characters
-    $query =~ s/[^a-z0-9 .\-_\'\@]//gi;
-
-    my @tokens = split(/\s+/, lc($query));
+    my @tokens = $self->_tokenizeQuery($query);
 
     my $filter = Net::LDAP::Filter::Abstract->new('|');
-    if ($query =~ m/(.*)\@/) {     # Email address
+    if ($query =~ /(.*)\@/) {     # Email address
         my $uid   = $1;
-        my $email = shift @tokens;
+        my $email = $tokens[0];
 
-        $filter->add('uid', '=', $uid);
+        $filter->add('uid',  '=', $uid);
         $filter->add('mail', '=', $email);
-        $filter->add('mail', '=', $uid . '@*');
-    }
-    elsif ($query =~ m/\d{3}.?/) {
+        $filter->add('mail', '=', qq[$uid@*]);
     }
     elsif (scalar @tokens == 1) {  # One token: last name or username
-        $filter->add('cn', '=', $tokens[0] . ',*');
-        $filter->add('uid', '=', $tokens[0]);
-        $filter->add('mail', '=', $tokens[0] . '@*');
+        my $name = $tokens[0];
+
+        $filter->add('cn',   '=', qq[$name,*]);
+        $filter->add('uid',  '=', $name);
+        $filter->add('mail', '=', qq[$name@*]);
     }
     else {                         # Two or more tokens: first and last name
-        $filter->add('cn', '=', $tokens[1] . ',' . $tokens[0] . '*');
-        $filter->add('mail', '=', $tokens[1] . '@*');
+        my $first = $tokens[0];
+        my $last  = $tokens[1];
+        ($first, $last) = ($last, $first) if $query =~ /,/;
+
+        $filter->add('cn',   '=', qq[$last,$first]);
+        $filter->add('mail', '=', qq[$last@*]);
+        $filter->add('mail', '=', qq[$first$last@*]);
+        $filter->add('mail', '=', qq[$first-$last@*]);
     }
 
     return Net::LDAP::Filter::Abstract->new('&')
         ->add($filter)
         ->add($self->_getRestriction);
+}
+
+=head2 _tokenizeQuery
+
+Split a query into tokens, which can then be used to form LDAP
+filters.
+
+=cut
+
+sub _tokenizeQuery {
+    my ($self, $query) = @_;
+
+    # Strip invalid characters
+    $query =~ s/[^a-z0-9 .,\-_\'\@]//gi;
+
+    my @tokens;
+    if ($query =~ /,/) {
+        @tokens = split /,\s*/, lc($query);
+    }
+    else {
+        @tokens = split /\s+/, lc($query);
+    }
+
+    return @tokens;
 }
 
 =head2 _getRestriction
@@ -134,6 +161,7 @@ members of the community.
 =cut
 
 sub _getRestriction {
+    my ($self) = @_;
 
     my $filter = Net::LDAP::Filter::Abstract->new('&');
 
