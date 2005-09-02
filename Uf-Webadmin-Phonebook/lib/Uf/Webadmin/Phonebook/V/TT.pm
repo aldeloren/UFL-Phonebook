@@ -4,6 +4,17 @@ use strict;
 use base 'Catalyst::View::TT';
 use Uf::Webadmin::Phonebook::Utilities;
 
+__PACKAGE__->config(
+    PRE_CHOMP  => 1,
+    POST_CHOMP => 1,
+    CONTEXT    => undef,
+    FILTERS    => {
+        spam_armor => \&Uf::Webadmin::Phonebook::Utilities::spamArmor,
+        encode_ufid => \&Uf::Webadmin::Phonebook::Utilities::encodeUfid,
+        decode_ufid => \&Uf::Webadmin::Phonebook::Utilities::decodeUfid,
+    },
+);
+
 =head1 NAME
 
 Uf::Webadmin::Phonebook::V::TT - Template Toolkit view component
@@ -15,32 +26,6 @@ See L<Uf::Webadmin::Phonebook>.
 =head1 DESCRIPTION
 
 The Template Toolkit view component used by L<Uf::Webadmin::Phonebook>.
-
-=head1 METHODS
-
-=head2 new
-
-Configure the Template Toolkit instance used by this application.
-
-=cut
-
-sub new {
-    my $self = shift;
-
-    # Cleanup whitespace
-    $self->config->{PRE_CHOMP}  = 1;
-    $self->config->{POST_CHOMP} = 1;
-
-    # Disable Template::Timer
-    $self->config->{CONTEXT} = undef;
-
-    # Additional filters
-    $self->config->{FILTERS}->{spam_armor}  = \&Uf::Webadmin::Phonebook::Utilities::spamArmor;
-    $self->config->{FILTERS}->{encode_ufid} = \&Uf::Webadmin::Phonebook::Utilities::encodeUfid;
-    $self->config->{FILTERS}->{decode_ufid} = \&Uf::Webadmin::Phonebook::Utilities::decodeUfid;
-
-    return $self->SUPER::new(@_);
-}
 
 =head1 AUTHOR
 
