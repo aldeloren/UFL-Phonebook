@@ -9,7 +9,7 @@ __PACKAGE__->config(
     POST_CHOMP => 1,
     CONTEXT    => undef,
     FILTERS    => {
-        spam_armor => \&Uf::Webadmin::Phonebook::Utilities::spamArmor,
+        spam_armor  => \&Uf::Webadmin::Phonebook::Utilities::spamArmor,
         encode_ufid => \&Uf::Webadmin::Phonebook::Utilities::encodeUfid,
         decode_ufid => \&Uf::Webadmin::Phonebook::Utilities::decodeUfid,
     },
