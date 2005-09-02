@@ -1,0 +1,7 @@
+--- #YAML:1.0
+# Do not use tabs for indentation or label/value separation!
+name: Phonebook
+
+ldap:
+  host: ldap.ufl.edu
+  base: dc=ufl,dc=edu

@@ -9,6 +9,7 @@ my $build = Catalyst::Build->new(
         'Catalyst::Model::LDAP'       => '0',
         'Catalyst::View::TT'          => '0',
         'Net::LDAP::Filter::Abstract' => '0',
+        'YAML'                        => '0',
     },
     script_files       => [ glob('script/*') ],
     test_files         => [ glob('t/*.t'), glob('t/*/*.t') ],

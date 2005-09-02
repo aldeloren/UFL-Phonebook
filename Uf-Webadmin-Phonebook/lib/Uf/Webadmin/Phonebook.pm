@@ -2,11 +2,13 @@ package Uf::Webadmin::Phonebook;
 
 use strict;
 use Catalyst;
+use File::Spec;
+use YAML;
 
 our $VERSION = '0.01';
 
 __PACKAGE__->config(
-    name => 'Phonebook',
+    YAML::LoadFile(File::Spec->join(__PACKAGE__->config->{home}, 'config.yml'))
 );
 
 my @plugins = qw/Static::Simple/;

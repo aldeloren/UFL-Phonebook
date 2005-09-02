@@ -4,8 +4,8 @@ use strict;
 use base 'Catalyst::Model::LDAP';
 
 __PACKAGE__->config(
-    host     => 'ldap.ufl.edu',
-    base     => 'ou=People,dc=ufl,dc=edu',
+    host     => Uf::Webadmin::Phonebook->config->{ldap}->{host},
+    base     => 'ou=People,' . Uf::Webadmin::Phonebook->config->{ldap}->{base},
     dn       => '',
     password => '',
     options  => {},
