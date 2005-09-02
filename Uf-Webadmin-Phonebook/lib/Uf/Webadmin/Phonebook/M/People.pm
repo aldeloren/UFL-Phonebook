@@ -1,11 +1,11 @@
-package Uf::Webadmin::Phonebook::M::Organization;
+package Uf::Webadmin::Phonebook::M::People;
 
 use strict;
 use base 'Catalyst::Model::LDAP';
 
 __PACKAGE__->config(
     host     => 'ldap.ufl.edu',
-    base     => 'ou=Organizations,dc=ufl,dc=edu',
+    base     => 'ou=People,dc=ufl,dc=edu',
     dn       => '',
     password => '',
     options  => {},
@@ -13,16 +13,16 @@ __PACKAGE__->config(
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::M::Organization - LDAP Catalyst model component
+Uf::Webadmin::Phonebook::M::People - LDAP Catalyst model component
 
 =head1 SYNOPSIS
 
-See L<Uf::Webadmin::Phonebook>
+See L<Uf::Webadmin::Phonebook>.
 
 =head1 DESCRIPTION
 
 Catalyst model component for the University of Florida LDAP server.
-This component uses a base of C<ou=Organizations,dc=ufl,dc=edu>.
+This component uses a base of C<ou=People,dc=ufl,dc=edu>.
 
 =head1 AUTHOR
 

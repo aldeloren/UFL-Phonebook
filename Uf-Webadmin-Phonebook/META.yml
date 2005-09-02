@@ -19,10 +19,10 @@ provides:
     file: lib/Uf/Webadmin/Phonebook/C/People.pm
   Uf::Webadmin::Phonebook::C::Units:
     file: lib/Uf/Webadmin/Phonebook/C/Units.pm
-  Uf::Webadmin::Phonebook::M::Organization:
-    file: lib/Uf/Webadmin/Phonebook/M/Organization.pm
-  Uf::Webadmin::Phonebook::M::Person:
-    file: lib/Uf/Webadmin/Phonebook/M/Person.pm
+  Uf::Webadmin::Phonebook::M::Organizations:
+    file: lib/Uf/Webadmin/Phonebook/M/Organizations.pm
+  Uf::Webadmin::Phonebook::M::People:
+    file: lib/Uf/Webadmin/Phonebook/M/People.pm
   Uf::Webadmin::Phonebook::Utilities:
     file: lib/Uf/Webadmin/Phonebook/Utilities.pm
   Uf::Webadmin::Phonebook::V::TT:

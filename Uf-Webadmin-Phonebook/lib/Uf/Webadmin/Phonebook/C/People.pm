@@ -47,7 +47,7 @@ sub search : Local {
         $c->log->debug("Query: $query");
         $c->log->debug("Filter: $filterString");
 
-        my $mesg = $c->component('Person')->search($filterString);
+        my $mesg = $c->component('M::People')->search($filterString);
         if ($mesg->code) {
             die $mesg->error;
         }

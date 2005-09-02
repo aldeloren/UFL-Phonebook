@@ -6,8 +6,8 @@ doc/style.css
 lib/Uf/Webadmin/Phonebook.pm
 lib/Uf/Webadmin/Phonebook/C/People.pm
 lib/Uf/Webadmin/Phonebook/C/Units.pm
-lib/Uf/Webadmin/Phonebook/M/Organization.pm
-lib/Uf/Webadmin/Phonebook/M/Person.pm
+lib/Uf/Webadmin/Phonebook/M/Organizations.pm
+lib/Uf/Webadmin/Phonebook/M/People.pm
 lib/Uf/Webadmin/Phonebook/Utilities.pm
 lib/Uf/Webadmin/Phonebook/V/TT.pm
 Makefile.PL
@@ -53,7 +53,7 @@ t/03podcoverage.t
 t/04utilities.t
 t/C/People.t
 t/C/Units.t
-t/M/Organization.t
-t/M/Person.t
+t/M/Organizations.t
+t/M/People.t
 t/V/TT.t
 TODO
