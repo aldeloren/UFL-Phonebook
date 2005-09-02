@@ -44,8 +44,8 @@ sub search : Local {
         my $filter = $self->_parseQuery($query);
         my $filterString = $filter->as_string;
 
-        $c->log->debug('Query: ' . $query);
-        $c->log->debug('Filter: ' . $filterString);
+        $c->log->debug("Query: $query");
+        $c->log->debug("Filter: $filterString");
 
         my $mesg = $c->component('Person')->search($filterString);
         if ($mesg->code) {
@@ -79,7 +79,7 @@ sub show : Regex('people/([A-Za-z0-9]{8,9})') {
 
     if (my $ufid = $c->request->snippets->[0]) {
         $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($ufid);
-        $c->response->output("UFID = [$ufid]");
+        $c->log->debug("UFID: $ufid");
     }
     else {
         $c->forward('default');
