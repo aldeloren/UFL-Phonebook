@@ -73,17 +73,34 @@ Display a single person.
 
 =cut
 
-# TODO: Trailing slash - 301 redirect
-sub show : Regex('people/([A-Za-z0-9]{8,9})') {
+sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     my ($self, $c) = @_;
 
-    if (my $ufid = $c->request->snippets->[0]) {
-        $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($ufid);
-        $c->log->debug("UFID: $ufid");
+    # Force a trailing slash
+    if ($c->request->path !~ /\/$/) {
+        $c->response->redirect('/' . $c->request->path . '/', 301);
     }
-    else {
-        $c->forward('default');
+
+    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->request->snippets->[0]);
+    $c->log->debug("UFID: $ufid");
+}
+
+=head2 details
+
+Display details for a single person.
+
+=cut
+
+sub details : Regex('people/([A-Za-z0-9]{8,9})/details/?$') {
+    my ($self, $c) = @_;
+
+    # Force a trailing slash
+    if ($c->request->path !~ /\/$/) {
+        $c->response->redirect('/' . $c->request->path . '/', 301);
     }
+
+    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->request->snippets->[0]);
+    $c->log->debug("UFID: $ufid");
 }
 
 =head2 _parseQuery
