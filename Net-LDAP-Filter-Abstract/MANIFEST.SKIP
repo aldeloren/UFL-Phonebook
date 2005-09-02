@@ -6,16 +6,17 @@
 
 # MakeMaker-generated files and directories
 ^MANIFEST\.
-^Makefile$
-^blib/
 ^MakeMaker-\d
+^Makefile$
+\bblib\b
+\bpm_to_blib\b
 
 # Module::Build-generated files and directories
 ^Build$
-^_build/
+\b_build\b
 
 # Devel::Cover-generated files and directories
-^cover_db/
+\bcover_db\b
 
 # Backup and temporary files
 ~$
