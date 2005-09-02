@@ -2,7 +2,7 @@ Changes
 lib/Catalyst/Helper/Model/LDAP.pm
 lib/Catalyst/Model/LDAP.pm
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 META.yml
 README
 t/01use.t

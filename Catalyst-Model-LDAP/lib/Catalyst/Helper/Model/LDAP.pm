@@ -8,7 +8,7 @@ Catalyst::Helper::Model::LDAP - Helper for LDAP models
 
 =head1 SYNOPSIS
 
-  script/myapp_create.pl model Person LDAP ldap.ufl.edu ou=People,dc=ufl,dc=edu
+  script/myapp_create.pl model People LDAP ldap.ufl.edu ou=People,dc=ufl,dc=edu
 
 =head1 DESCRIPTION
 
@@ -90,7 +90,7 @@ __PACKAGE__->config(
 
 =head1 SYNOPSIS
 
-See L<[% app %]>
+See L<[% app %]>.
 
 =head1 DESCRIPTION
 

@@ -14,10 +14,10 @@ Catalyst::Model::LDAP - LDAP model class for Catalyst
 =head1 SYNOPSIS
 
   # Use the Catalyst helper
-  script/myapp_create.pl model Person LDAP ldap.ufl.edu ou=People,dc=ufl,dc=edu
+  script/myapp_create.pl model People LDAP ldap.ufl.edu ou=People,dc=ufl,dc=edu
 
-  # lib/MyApp/Model/Person.pm
-  package MyApp::Model::Person;
+  # lib/MyApp/Model/People.pm
+  package MyApp::Model::People;
 
   use base 'Catalyst::Model::LDAP';
 
@@ -32,10 +32,10 @@ Catalyst::Model::LDAP - LDAP model class for Catalyst
   1;
 
   # As object method
-  $c->comp('MyApp::Model::Person')->search('(sn=Test)');
+  $c->comp('MyApp::Model::People')->search('(sn=Test)');
 
   # As class method
-  MyApp::Model::Person->search('(sn=Test)');
+  MyApp::Model::People->search('(sn=Test)');
 
 =head1 DESCRIPTION
 
@@ -46,7 +46,7 @@ than a simple wrapper for C<Net::LDAP>.
 
 =head2 new
 
-Initializes an LDAP connection.
+Create a new Catalyst LDAP model component.
 
 =cut
 

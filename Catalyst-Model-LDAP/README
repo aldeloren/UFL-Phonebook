@@ -3,10 +3,10 @@ NAME
 
 SYNOPSIS
       # Use the Catalyst helper
-      script/myapp_create.pl model Person LDAP ldap.ufl.edu ou=People,dc=ufl,dc=edu
+      script/myapp_create.pl model People LDAP ldap.ufl.edu ou=People,dc=ufl,dc=edu
 
-      # lib/MyApp/Model/Person.pm
-      package MyApp::Model::Person;
+      # lib/MyApp/Model/People.pm
+      package MyApp::Model::People;
 
       use base 'Catalyst::Model::LDAP';
 
@@ -21,10 +21,10 @@ SYNOPSIS
       1;
 
       # As object method
-      $c->comp('MyApp::Model::Person')->search('(sn=Test)');
+      $c->comp('MyApp::Model::People')->search('(sn=Test)');
 
       # As class method
-      MyApp::Model::Person->search('(sn=Test)');
+      MyApp::Model::People->search('(sn=Test)');
 
 DESCRIPTION
     This is the "Net::LDAP" model class for Catalyst. It is nothing more
@@ -32,7 +32,7 @@ DESCRIPTION
 
 METHODS
   new
-    Initializes an LDAP connection.
+    Create a new Catalyst LDAP model component.
 
   search
     Search the directory using a given filter. See Net::LDAP for format of
