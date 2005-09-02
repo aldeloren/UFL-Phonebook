@@ -109,6 +109,8 @@ sub _parseQuery {
         $filter->add('mail', '=', $email);
         $filter->add('mail', '=', $uid . '@*');
     }
+    elsif ($query =~ m/\d{3}.?/) {
+    }
     elsif (scalar @tokens == 1) {  # One token: last name or username
         $filter->add('cn', '=', $tokens[0] . ',*');
         $filter->add('uid', '=', $tokens[0]);
@@ -119,7 +121,21 @@ sub _parseQuery {
         $filter->add('mail', '=', $tokens[1] . '@*');
     }
 
-    $filter = Net::LDAP::Filter::Abstract->new('&')->add($filter);
+    return Net::LDAP::Filter::Abstract->new('&')
+        ->add($filter)
+        ->add($self->_getRestriction);
+}
+
+=head2 _getRestriction
+
+Build the default filter for restricting people searches to current
+members of the community.
+
+=cut
+
+sub _getRestriction {
+
+    my $filter = Net::LDAP::Filter::Abstract->new('&');
 
     my $restriction;
     $restriction = Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/);
@@ -129,7 +145,6 @@ sub _parseQuery {
 
     return $filter;
 }
-
 
 =head1 AUTHOR
 
