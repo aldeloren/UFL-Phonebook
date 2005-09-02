@@ -65,8 +65,6 @@ sub end : Private {
         $c->{error} = [];
     }
 
-    # Only forward if we have a template, which allows the Static
-    # plugin to serve files
     $c->forward(__PACKAGE__ . '::V::TT') if ($c->stash->{template});
 }
 
