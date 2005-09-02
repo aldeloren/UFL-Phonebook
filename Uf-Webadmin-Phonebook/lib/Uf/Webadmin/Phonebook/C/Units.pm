@@ -13,7 +13,8 @@ See L<Uf::Webadmin::Phonebook>.
 
 =head1 DESCRIPTION
 
-Catalyst controller component for finding units.
+Catalyst controller component for finding units (departments or other
+campus organizations).
 
 =head1 METHODS
 
@@ -22,11 +23,14 @@ Catalyst controller component for finding units.
 =cut
 
 sub default : Private {
-    my ( $self, $c ) = @_;
-    $c->res->output('Congratulations, Uf::Webadmin::Phonebook::C::Units is on Catalyst!');
+    my ($self, $c) = @_;
+
+    $c->forward('/default');
 }
 
 =head2 search
+
+Search the directory for units.
 
 =cut
 
@@ -34,17 +38,18 @@ sub search : Local {
     my ($self, $c) = @_;
 }
 
-=head2 details
+=head2 show
 
-Display details for a department.
+Display a single unit.
 
 =cut
 
-sub details : Local {
+# TODO: Trailing slash - 301 redirect
+sub show : Regex('units/([A-Za-z0-9]{8})') {
     my ($self, $c) = @_;
 
-    if (my $ufid = $c->req->arguments->[0]) {
-        $c->res->output("UFID: [$ufid]");
+    if (my $ufid = $c->request->snippets->[0]) {
+        $c->log->debug("UFID: $ufid");
     }
     else {
         $c->forward('default');
