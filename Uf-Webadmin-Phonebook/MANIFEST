@@ -1,11 +1,13 @@
 Build.PL
 Changes
+config.yml
 doc/schedule.html
 doc/specification.html
 doc/style.css
 lib/Uf/Webadmin/Phonebook.pm
 lib/Uf/Webadmin/Phonebook/C/People.pm
 lib/Uf/Webadmin/Phonebook/C/Units.pm
+lib/Uf/Webadmin/Phonebook/Entry.pm
 lib/Uf/Webadmin/Phonebook/M/Organizations.pm
 lib/Uf/Webadmin/Phonebook/M/People.pm
 lib/Uf/Webadmin/Phonebook/Utilities.pm
@@ -26,6 +28,7 @@ root/index.tt
 root/people/includes/search.tt
 root/people/noResults.tt
 root/people/results.tt
+root/robots.txt
 root/static/css/basic.css
 root/static/css/main.css
 root/static/css/print.css
