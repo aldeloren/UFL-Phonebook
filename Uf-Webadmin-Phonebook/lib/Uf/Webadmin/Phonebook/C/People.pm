@@ -47,13 +47,9 @@ sub search : Local {
         $c->log->debug("Query: $query");
         $c->log->debug("Filter: $filterString");
 
-        my $mesg = $c->component('M::People')->search($filterString);
-        if ($mesg->code) {
-            die $mesg->error;
-        }
-
-        if ($mesg->entries) {
-            my @results = sort { $a->get_value('cn') cmp $b->get_value('cn') } $mesg->entries;
+        my $entries = $c->component('M::People')->search($filterString);
+        if ($entries) {
+            my @results = sort { $a->get_value('cn') cmp $b->get_value('cn') } @{ $entries };
 
             $c->stash->{results}  = \@results;
             $c->stash->{template} = 'people/results.tt';
