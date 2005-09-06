@@ -127,6 +127,7 @@ sub _parseQuery {
         my $name = $tokens[0];
 
         $filter->add('cn',   '=', qq[$name,*]);
+        $filter->add('sn',   '=', qq[$name*]);
         $filter->add('uid',  '=', $name);
         $filter->add('mail', '=', qq[$name@*]);
     }
@@ -136,6 +137,7 @@ sub _parseQuery {
         ($first, $last) = ($last, $first) if $query =~ /,/;
 
         $filter->add('cn',   '=', qq[$last,$first]);
+        $filter->add('sn',   '=', qq[$last*]);
         $filter->add('mail', '=', qq[$last@*]);
         $filter->add('mail', '=', qq[$first$last@*]);
         $filter->add('mail', '=', qq[$first-$last@*]);
