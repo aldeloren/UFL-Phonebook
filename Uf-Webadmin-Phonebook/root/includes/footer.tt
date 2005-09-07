@@ -1,11 +1,25 @@
   </div><!-- end content -->
   <div id="footer">
-    <p>
-      <a href="http://www.ufl.edu/"><img src="/static/images/smallWordmark.gif" alt="University of Florida" width="151" height="37" border="0" align="right" /></a>
-      <a href="http://calendar.ufl.edu/">Calendar</a> | <a href="http://phonebook.ufl.edu/">Directory</a> | <a href="https://my.ufl.edu/ps/signon.html">MyUFL</a> | <a href="http://www.isis.ufl.edu/">ISIS</a> | <a href="http://www.ufl.edu/websites/">Web Site Listing</a> | <a href="http://campusmap.ufl.edu/">Campus Map</a> | <a href="http://webmail.ufl.edu/">WebMail</a> | <a href="http://www.questions.ufl.edu/">Ask UF</a>
-    </p>
-    <p>&copy; <a href="http://www.ufl.edu/">University of Florida</a>, Gainesville, FL 32611; (352) 392-3261.</p>
-    <p><a href="http://www.ufl.edu/">UF Home</a> &nbsp;|&nbsp; <a href="http://www.webadmin.ufl.edu/policies/internet_privacy/">Privacy Policy</a> &nbsp;|&nbsp; <a href="http://www.ufl.edu/disability/">Disability Services</a> &nbsp;|&nbsp; <a href="http://search.ufl.edu/">Search</a></p>
+    <h3>Frequently Used Sites</h3>
+    <ul>
+      <li><a href="http://news.ufl.edu/">News</a></li>
+      <li><a href="http://calendar.ufl.edu/">Calendar</a></li>
+      <li><a href="http://phonebook.ufl.edu/">Directory</a></li>
+      <li><a href="https://my.ufl.edu/ps/signon.html">MyUFL</a></li>
+      <li><a href="http://www.isis.ufl.edu/">ISIS</a></li>
+      <li><a href="http://www.ufl.edu/websites/">Web Site Listing</a></li>
+      <li><a href="http://campusmap.ufl.edu/">Campus Map</a></li>
+      <li><a href="http://webmail.ufl.edu/">WebMail</a></li>
+      <li><a href="http://www.questions.ufl.edu/">Ask UF</a></li>
+    </ul>
+    <p>&copy; <a href="http://www.ufl.edu/" id="footerHome" title="University of Florida">University of Florida<span></span></a>, Gainesville, FL 32611; (352) 392-3261.</p>
+    <h3>General Site Information</h3>
+    <ul>
+      <li><a href="">About This Site</a></li>
+      <li><a href="http://www.ufl.edu/disability/">Disability Services</a></li>
+      <li><a href="http://www.webadmin.ufl.edu/policies/internet_privacy/">Privacy Policy</a></li>
+      <li><a href="http://search.ufl.edu/">Search</a></li>
+    </ul>
   </div><!-- end footer -->
 </div><!-- end mainContainer -->
 </body>
