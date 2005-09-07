@@ -44,16 +44,11 @@ Display a single unit.
 
 =cut
 
-# TODO: Trailing slash - 301 redirect
-sub show : Regex('units/([A-Za-z0-9]{8})') {
+sub show : Regex('units/([A-Za-z0-9]{8})/?') {
     my ($self, $c) = @_;
 
-    if (my $ufid = $c->request->snippets->[0]) {
-        $c->log->debug("UFID: $ufid");
-    }
-    else {
-        $c->forward('default');
-    }
+    my $ufid = $c->req->snippets->[0];
+    $c->log->debug("UFID: $ufid");
 }
 
 =head1 AUTHOR

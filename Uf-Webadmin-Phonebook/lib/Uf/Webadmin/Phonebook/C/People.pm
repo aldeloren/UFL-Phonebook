@@ -41,14 +41,14 @@ sub search : Local {
     my ($self, $c) = @_;
 
     eval {
-        my $query = $c->request->param('query');
+        my $query = $c->req->param('query');
         my $filter = $self->_parseQuery($query);
         my $filterString = $filter->as_string;
 
         $c->log->debug("Query: $query");
         $c->log->debug("Filter: $filterString");
 
-        my $entries = $c->component('M::People')->search($filterString);
+        my $entries = $c->comp('M::People')->search($filterString);
         if ($entries) {
             my @results = sort { $a->{cn} cmp $b->{cn} } map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $entries };
 
@@ -73,7 +73,7 @@ Display a single person.
 sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     my ($self, $c) = @_;
 
-    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->request->snippets->[0]);
+    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
     $c->log->debug("UFID: $ufid");
 
     $c->stash->{template} = 'people/show.tt';
@@ -88,7 +88,7 @@ Display the full entry for a specific person.
 sub full : Regex('people/([A-Za-z0-9]{8,9})/full/?$') {
     my ($self, $c) = @_;
 
-    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->request->snippets->[0]);
+    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
     $c->log->debug("UFID: $ufid");
 
     $c->stash->{template} = 'people/full.tt';
