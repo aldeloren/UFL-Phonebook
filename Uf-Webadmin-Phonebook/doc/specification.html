@@ -70,8 +70,7 @@
     <p>The people search page displays a simple form and very brief instructions.</p>
     <blockquote>
       <p>________________________________________ Search</p>
-      <p>Enter a name, nickname, phone number, email address, or GatorLink ID to find people.</p>
-      <p>Note: Information obtained from this phonebook may not be used to provide addresses for mailings to students, employees or parents of students. This phonebook is provided for information of the University and those who have specific interest in reaching individual students or establishing their identity as students of the University of Florida. Any solicitation of business, information, contributions or other response from individuals listed in this publication by mail, telephone or other means is forbidden.</p>
+      <p>Enter a name, phone number, email address, or GatorLink ID to find people.</p>
     </blockquote>
     <p>If the searching algorithms work well enough, we should not need to provide any more information than that.</p>
 
@@ -83,11 +82,36 @@
     <p>If results matching the user's query were found, display them as a list:</p>
     <blockquote>
       <p>Your search for [User's Query] returned the following N people:</p>
-      <ul>
-        <li>[Name], [Unit], [Email], [Phone]</li>
-        <li>[Name], [Unit], [Email], [Phone]</li>
-        <li>&hellip;</li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Phone</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>[Name]</td>
+            <td>[Title], [Unit]</td>
+            <td>[Phone]</td>
+            <td>[Email]</td>
+          </tr>
+          <tr>
+            <td>[Name]</td>
+            <td>[Title], [Unit]</td>
+            <td>[Phone]</td>
+            <td>[Email]</td>
+          </tr>
+          <tr>
+            <td>&hellip;</td>
+            <td>&hellip;</td>
+            <td>&hellip;</td>
+            <td>&hellip;</td>
+          </tr>
+        </tbody>
+      </table>
     </blockquote>
     <p>If more than, say, 100 results are returned, we will display the first 100:</p>
     <blockquote>
@@ -105,12 +129,53 @@
     <p>Ideally, we will be able to provide more helpful suggestions using soundex or similar algorithms for classifying names.</p>
 
     <h4>The Person Details Page</h4>
+    <p>Where available, we will display the following information. Given the current state of the Directory information, much of these details may not available for a given person.</p>
     <blockquote>
-      <p>[Name]</p>
-      <p>[General Information]</p>
-      <p>[Phone Numbers]</p>
-      <p>[Addresses]</p>
-      <p>[Other Information]</p>
+      <h3>[Name]</h3>
+      <h4>General Information</h4>
+      <dl>
+        <dt>Affiliation</dt>
+        <dd>[Affiliation]</dd>
+        <dt>Email</dt>
+        <dd>[Email]</dd>
+        <dt>Web site</dt>
+        <dd>[URL]</dd>
+      </dl>
+      <h4>Phone Numbers</h4>
+      <dl>
+        <dt>Campus</dt>
+        <dd>[Campus phone]</dd>
+        <dt>Home</dt>
+        <dd>[Home phone]</dd>
+        <dt>Mobile</dt>
+        <dd>[Mobile phone]</dd>
+      </dl>
+      <h4>Addresses</h4>
+      <dl>
+        <dt>Campus</dt>
+        <dd>[Campus address]</dd>
+        <dt>Home</dt>
+        <dd>[Home address]</dd>
+      </dl>
+    </blockquote>
+    <p>Then, depending on the primary affiliation, we can display a block titled e.g. <strong>Student Information</strong> or <strong>Employee Information</strong>.</p>
+    <blockquote>
+      <h4>Student Information</h4>
+      <dl>
+        <dt>College</dt>
+        <dd>[College]</dd>
+        <dt>Title</dt>
+        <dd>[Title]</dd>
+      </dl>
+    </blockquote>
+    <blockquote>
+      <h4>Employee Information</h4>
+      <dl>
+        <dt>Department</dt>
+        <dd>[Department]</dd>
+        <dt>Title</dt>
+        <dd>[Title]</dd>
+      </dl>
     </blockquote>
 
     <h4>The Unit Search Page</h4>
@@ -118,7 +183,6 @@
     <blockquote>
       <p>________________________________________ Search</p>
       <p>Enter a keyword or name to find departments and units.</p>
-      <p>Note: Information obtained from this phonebook may not be used to provide addresses for mailings to students, employees or parents of students. This phonebook is provided for information of the University and those who have specific interest in reaching individual students or establishing their identity as students of the University of Florida. Any solicitation of business, information, contributions or other response from individuals listed in this publication by mail, telephone or other means is forbidden.</p>
     </blockquote>
 
     <h4>The Unit Results Page</h4>
@@ -129,11 +193,32 @@
     <p>If results matching the user's query were found, display them as a list:</p>
     <blockquote>
       <p>Your search for [User's Query] returned the following N units:</p>
-      <ul>
-        <li>[Name], [Email], [Phone]</li>
-        <li>[Name], [Email], [Phone]</li>
-        <li>&hellip;</li>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>[Name]</td>
+            <td>[Phone]</td>
+            <td>[Email]</td>
+          </tr>
+          <tr>
+            <td>[Name]</td>
+            <td>[Phone]</td>
+            <td>[Email]</td>
+          </tr>
+          <tr>
+            <td>&hellip;</td>
+            <td>&hellip;</td>
+            <td>&hellip;</td>
+          </tr>
+        </tbody>
+      </table>
     </blockquote>
     <p>If more than, say, 100 results are returned, we will display the first 100:</p>
     <blockquote>
@@ -141,28 +226,29 @@
     </blockquote>
     <p>If no results were found, display some suggestions:</p>
     <blockquote>
-      <p>Your search - [User's Query] - did not match any members of the University of Florida community.</p>
+      <p>Your search - [User's Query] - did not match units at the University of Florida.</p>
       <p>Suggestions:</p>
       <ul>
         <li>Make sure all terms are spelled correctly.</li>
-        <li>Try searching on a part of the person's name; for example, just the last name.</li>
+        <li>Try searching on a part of the unit's name.</li>
+        <li>Browse the <a href="http://www.ufl.edu/websites/">Web site listing</a>.</li>
       </ul>
     </blockquote>
-    <p>We might also provide links to the <a href="http://www.ufl.edu/websites/">Web site listing</a>.</p>
 
     <h4>The Unit Details Page</h4>
+    <p>The unit details page will most likely be very sparse, because the Directory data is very lacking in organizational data. TODO: This needs to be planned in more detail.</p>
     <blockquote>
-      <p>[Name]</p>
-      <p>[General Information]</p>
-      <p>[Phone Numbers]</p>
-      <p>[Addresses]</p>
-      <p>[Other Information]</p>
+      <h3>[Name]</h3>
+      <h4>General Information</h4>
+      <h4>Phone Numbers</h4>
+      <h4>Addresses</h4>
+      <h4>Other Information</h4>
     </blockquote>
 
     <hr>
 <!-- Created: Thu Sep  1 14:07:18 EDT 2005 -->
 <!-- hhmts start -->
-Last modified: Thu Sep  1 17:10:30 EDT 2005
+Last modified: Wed Sep  7 19:46:02 EDT 2005
 <!-- hhmts end -->
   </body>
 </html>
