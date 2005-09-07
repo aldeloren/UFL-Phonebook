@@ -79,19 +79,19 @@ sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     $c->stash->{template} = 'people/show.tt';
 }
 
-=head2 details
+=head2 full
 
-Display details for a single person.
+Display the full entry for a specific person.
 
 =cut
 
-sub details : Regex('people/([A-Za-z0-9]{8,9})/details/?$') {
+sub full : Regex('people/([A-Za-z0-9]{8,9})/full/?$') {
     my ($self, $c) = @_;
 
     my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->request->snippets->[0]);
     $c->log->debug("UFID: $ufid");
 
-    $c->stash->{template} = 'people/details.tt';
+    $c->stash->{template} = 'people/full.tt';
 }
 
 =head2 _parseQuery
