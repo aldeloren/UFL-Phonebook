@@ -50,6 +50,7 @@ sub auto : Private {
 
     if ($c->req->action =~ /\/\?\$$/ and $c->req->path !~ /\/$/) {
         $c->res->redirect('/' . $c->req->path . '/', 301);
+        return 0;
     }
 
     return 1;
