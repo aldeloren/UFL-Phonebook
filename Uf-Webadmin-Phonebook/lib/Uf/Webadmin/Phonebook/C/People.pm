@@ -73,13 +73,10 @@ Display a single person.
 sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     my ($self, $c) = @_;
 
-    # Force a trailing slash
-    if ($c->request->path !~ /\/$/) {
-        $c->response->redirect('/' . $c->request->path . '/', 301);
-    }
-
     my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->request->snippets->[0]);
     $c->log->debug("UFID: $ufid");
+
+    $c->stash->{template} = 'people/show.tt';
 }
 
 =head2 details
@@ -91,13 +88,10 @@ Display details for a single person.
 sub details : Regex('people/([A-Za-z0-9]{8,9})/details/?$') {
     my ($self, $c) = @_;
 
-    # Force a trailing slash
-    if ($c->request->path !~ /\/$/) {
-        $c->response->redirect('/' . $c->request->path . '/', 301);
-    }
-
     my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->request->snippets->[0]);
     $c->log->debug("UFID: $ufid");
+
+    $c->stash->{template} = 'people/details.tt';
 }
 
 =head2 _parseQuery
@@ -180,12 +174,8 @@ sub _getRestriction {
     my ($self) = @_;
 
     my $filter = Net::LDAP::Filter::Abstract->new('&');
-
-    my $restriction;
-    $restriction = Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/);
-    $filter->add($restriction);
-    $restriction = Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/);
-    $filter->add($restriction);
+    $filter->add(Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/));
+    $filter->add(Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/));
 
     return $filter;
 }
