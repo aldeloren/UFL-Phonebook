@@ -3,6 +3,7 @@ package Uf::Webadmin::Phonebook::C::People;
 use strict;
 use base 'Catalyst::Base';
 use Net::LDAP::Filter::Abstract;
+use Uf::Webadmin::Phonebook::Entry;
 
 =head1 NAME
 
@@ -49,7 +50,7 @@ sub search : Local {
 
         my $entries = $c->component('M::People')->search($filterString);
         if ($entries) {
-            my @results = sort { $a->get_value('cn') cmp $b->get_value('cn') } @{ $entries };
+            my @results = sort { $a->{cn} cmp $b->{cn} } map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $entries };
 
             $c->stash->{results}  = \@results;
             $c->stash->{template} = 'people/results.tt';
