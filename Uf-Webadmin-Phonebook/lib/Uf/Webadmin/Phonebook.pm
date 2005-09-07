@@ -37,6 +37,24 @@ It is written using the L<Catalyst> framework.
 
 =head1 METHODS
 
+=head2 auto
+
+For C<Regex> actions with an optional trailing slash, force the
+trailing slash like most Web servers. This maintains the illusion that
+the resource is a directory.
+
+=cut
+
+sub auto : Private {
+    my ($self, $c) = @_;
+
+    if ($c->req->action =~ /\/\?\$$/ and $c->req->path !~ /\/$/) {
+        $c->res->redirect('/' . $c->req->path . '/', 301);
+    }
+
+    return 1;
+}
+
 =head2 default
 
 Display the home page.
