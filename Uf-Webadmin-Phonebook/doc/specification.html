@@ -52,6 +52,11 @@
     <p>Web pages will be written using the <a href="http://search.cpan.org/dist/Template-Toolkit/">Template Toolkit</a>. CSS will be used for formatting and positioning, following the standards put in place by Web Administration.</p>
     <p>To interface with the Directory, <a href="http://search.cpan.org/dist/perl-ldap/">Net::LDAP</a> will be used.</p>
 
+    <h4>Directory Interface</h4>
+    <p>To interface with the Directory, we will use <a href="http://open-systems.ufl.edu/">Open System</a>'s <a href="http://open-systems.ufl.edu/services/LDAP/index.html">LDAP service</a>. This server is accessible via hostname <code>ldap.ufl.edu</code>.</p>
+    <p>To get an idea of the data used by this project, please view the <a href="http://open-systems.ufl.edu/services/LDAP/schema.html">LDAP schema</a>.</p>
+    <p>For searching people, a search base of <code>ou=People,dc=ufl,dc=edu</code>. For searching units, we will use a search base of <code>ou=Organizations,dc=ufl,dc=edu</code>.</p>
+
     <h3>Future Features</h3>
     <ul>
       <li>(hopefully v1) &quot;Internal phonebook&quot;, requiring GatorLink authentication and returning results using the user's credentials.</li>
@@ -248,7 +253,7 @@
     <hr>
 <!-- Created: Thu Sep  1 14:07:18 EDT 2005 -->
 <!-- hhmts start -->
-Last modified: Wed Sep  7 19:46:02 EDT 2005
+Last modified: Wed Sep  7 19:53:27 EDT 2005
 <!-- hhmts end -->
   </body>
 </html>
