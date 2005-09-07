@@ -1,6 +1,6 @@
-<script language="JavaScript" src="/static/js/common.js"></script>
-<script language="JavaScript" src="/static/js/autocomplete.js"></script>
-<script language="JavaScript" src="/static/js/phonebook.js"></script>
-<script language="JavaScript">
+<script type="text/javascript" src="/static/js/common.js"></script>
+<script type="text/javascript" src="/static/js/autocomplete.js"></script>
+<script type="text/javascript" src="/static/js/phonebook.js"></script>
+<script type="text/javascript">
   addLoadEvent(initBehavior);
 </script>
