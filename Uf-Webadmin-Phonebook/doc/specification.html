@@ -10,7 +10,7 @@
     <h2>Functional Specification</h2>
 
     <h3>About this Specification</h3>
-    <p>(This specification is based on the <a href="http://www.joelonsoftware.com/articles/AardvarkSpec.html">Project Aardvark specification</a> from Joel Spolsky.)</p>
+    <p>(This specification is based loosely on the <a href="http://www.joelonsoftware.com/articles/AardvarkSpec.html">Project Aardvark specification</a> from Joel Spolsky.)</p>
     <p>This specification is simply a starting point for the design of the University of Florida (UF) Phonebook, not a final blueprint. As the project progresses, we'll discover a lot of things that won't work exactly as planned. We'll invent new features, change things, etc. We'll try to keep the spec up to date as things change.</p>
 
     <h3>Overview</h3>
@@ -59,12 +59,210 @@
     <h3>Software Architecture</h3>
     <p>The Web application will be written in Perl using the <a href="http://catalyst.perl.org/">Catalyst</a> framework. Catalyst provides easy deployment regardless of server evironment, though mod_perl is preferable for speed.</p>
     <p>Web pages will be written using the <a href="http://search.cpan.org/dist/Template-Toolkit/">Template Toolkit</a>. CSS will be used for formatting and positioning, following the standards put in place by Web Administration.</p>
-    <p>To interface with the Directory, <a href="http://search.cpan.org/dist/perl-ldap/">Net::LDAP</a> will be used.</p>
 
     <h4>Directory Interface</h4>
     <p>To interface with the Directory, we will use <a href="http://open-systems.ufl.edu/">Open System</a>'s <a href="http://open-systems.ufl.edu/services/LDAP/index.html">LDAP service</a>. This server is accessible via hostname <code>ldap.ufl.edu</code>.</p>
-    <p>To get an idea of the data used by this project, please view the <a href="http://open-systems.ufl.edu/services/LDAP/schema.html">LDAP schema</a>.</p>
-    <p>For searching people, a search base of <code>ou=People,dc=ufl,dc=edu</code>. For searching units, we will use a search base of <code>ou=Organizations,dc=ufl,dc=edu</code>.</p>
+
+    <h3>Searching the Directory</h3>
+
+    <h4>Searching for People</h4>
+    <p>Search base: <code>ou=People,dc=ufl,dc=edu</code></p>
+    <p>People inherit attributes from a number of <code>objectClass</code>es:</p>
+    <ol type="1">
+      <li>
+        <code>person</code> (defined in OpenLDAP's <code>core.schema</code>)
+        <blockquote>
+          <pre>objectclass ( 2.5.6.6 NAME 'person'
+        DESC 'RFC2256: a person'
+        SUP top STRUCTURAL
+        MUST ( sn $ cn )
+        MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )</pre>
+        </blockquote>
+      </li>
+      <li>
+        <code>organizationalPerson</code> (defined in OpenLDAP's <code>core.schema</code>)
+        <blockquote>
+          <pre>objectclass ( 2.5.6.7 NAME 'organizationalPerson'
+        DESC 'RFC2256: an organizational person'
+        SUP person STRUCTURAL
+        MAY ( title $ x121Address $ registeredAddress $ destinationIndicator $
+                preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $
+                telephoneNumber $ internationaliSDNNumber $
+                facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $
+                postalAddress $ physicalDeliveryOfficeName $ ou $ st $ l ) )</pre>
+        </blockquote>
+      </li>
+      <li>
+        <code>inetOrgPerson</code> (defined in OpenLDAP's <code>core.schema</code>)
+        <blockquote>
+          <pre>objectclass     ( 2.16.840.1.113730.3.2.2
+    NAME 'inetOrgPerson'
+        DESC 'RFC2798: Internet Organizational Person'
+    SUP organizationalPerson
+    STRUCTURAL
+        MAY (
+                audio $ businessCategory $ carLicense $ departmentNumber $
+                displayName $ employeeNumber $ employeeType $ givenName $
+                homePhone $ homePostalAddress $ initials $ jpegPhoto $
+                labeledURI $ mail $ manager $ mobile $ o $ pager $
+                photo $ roomNumber $ secretary $ uid $ userCertificate $
+                x500uniqueIdentifier $ preferredLanguage $
+                userSMIMECertificate $ userPKCS12 )
+        )</pre>
+        </blockquote>
+      </li>
+      <li>
+        <code>eduPerson</code> (defined in the <a href="http://www.educause.edu/eduperson/">eduPerson schema</a>)
+        <blockquote>
+          <pre>( 1.3.6.1.4.1.5923.1.1.2
+        NAME 'eduPerson'
+        AUXILIARY
+        MAY ( eduPersonAffiliation $ eduPersonNickname $
+                    eduPersonOrgDN $ eduPersonOrgUnitDN $
+                    eduPersonPrimaryAffiliation $ eduPersonPrincipalName $
+                    eduPersonEntitlement $ eduPersonPrimaryOrgUnitDN $
+                    eduPersonScopedAffiliation
+)</pre>
+        </blockquote>
+      </li>
+      <li>
+        <code>uflEduPerson</code> (defined by Open Systems)
+        <blockquote>
+          <pre>objectclass     ( 1.3.6.1.4.1.993.3.2.1
+        NAME 'uflEduPerson'
+        DESC 'Defines entries that generically represent people.'
+        SUP 'eduPerson'  STRUCTURAL
+        MUST (universityId  )
+        MAY (
+              uuid $
+              uflEduGender $
+              uflEduBirthDate $
+              homePageURL $
+              officeBuilding $
+              officeLocation $
+              other $
+              photoURL $
+              privacy $
+              uflEduAllPhones $
+                uflEduAllEmailAddresses $
+                uflEduAllNames $
+                uflEduAllPostalAddresses
+                ) )</pre>
+        </blockquote>
+      </li>
+    </ol>
+    <p>However, a person in LDAP typically looks something like the following:</p>
+    <blockquote>
+      <pre># 81036590, People, ufl.edu
+dn: uflEduUniversityId=81036590,ou=People,dc=ufl,dc=edu
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: eduPerson
+objectClass: uflEduPerson
+objectClass: posixAccount
+ou: People
+displayName: ROCKWELL,ALEXANDER H
+cn: ROCKWELL,ALEXANDER H
+sn: ROCKWELL
+uid: alexhr
+uidNumber: 81036590
+gidNumber: 99999
+homeDirectory: /h/alexhr
+loginShell: /usr/local/bin/glshell
+gecos: ROCKWELL,ALEXANDER H
+uflEduPrivacy: NO
+givenName: ALEXANDER
+eduPersonPrimaryAffiliation: employee
+eduPersonOrgDN: uflEduUniversityId=OD447T27,ou=Organizations,dc=ufl,dc=edu
+departmentNumber: OD447T27
+o: IT-CNS-SA DATABASE
+title: STUDENT ASST
+uflEduUniversityId: 81036590
+preferredLanguage: --UNKNOWN--
+homePhone: +1 352 3329567
+telephoneNumber: +1 352 8461906
+uflEduOfficeLocation: PO BOX 117700$GAINESVILLE, FL, US$ 32611
+mail: alexhr@ufl.edu
+uflEduAllPhones: UF Business Telephone Number +1 352 8461906
+uflEduAllPhones: Local Home Telephone Number +1 352 3329567
+uflEduAllPhones: Permanent Home Telephone Number +1 352 3329567
+uflEduAllPostalAddresses: UF Business Physical Location Address$PO BOX 117700$
+ GAINESVILLE, FL, US$ 32611
+uflEduAllPostalAddresses: Local Home Mailing Address$313 SW 86TH TER$GAINESVIL
+ LE, FL, US$ 326071460
+uflEduAllPostalAddresses: Permanent Home Mailing Address$313 SW 86TH TER$GAINE
+ SVILLE, FL, US$ 326071460
+uflEduAllEmailAddresses: "ROCKWELL,ALEXANDER H(UF Business Email Address)" <al
+ exhr@ufl.edu>
+uflEduAllNames: UF Business Name:Rockwell,Alexander H
+uflEduAllNames: UF Business Name Uppercase:ROCKWELL,ALEXANDER H
+uflEduAllNames: Given Name (First):ALEXANDER
+uflEduAllNames: Directory Name:Rockwell, Alex
+uflEduAllNames: Display Name:ROCKWELL,ALEXANDER H
+uflEduAllNames: Middle Name:H
+uflEduAllNames: Salutation:MR.
+uflEduAllNames: Surname (Last):ROCKWELL</pre>
+    </blockquote>
+
+    <h4>Searching for Units</h4>
+    <p>Search base: <code>ou=Organizations,dc=ufl,dc=edu</code></p>
+    <p>Units inherit attributes from two <code>objectClass</code>es:</p>
+    <ol type="1">
+      <li>
+        <code>organization</code> (defined in OpenLDAP's <code>core.schema</code>)
+        <blockquote>
+          <pre>objectclass ( 2.5.6.4 NAME 'organization'
+        DESC 'RFC2256: an organization'
+        SUP top STRUCTURAL
+        MUST o
+        MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $
+                x121Address $ registeredAddress $ destinationIndicator $
+                preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $
+                telephoneNumber $ internationaliSDNNumber $
+                facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $
+                postalAddress $ physicalDeliveryOfficeName $ st $ l $ description ) )</pre>
+        </blockquote>
+      </li>
+      <li>
+        <code>uflEduOrganization</code> (defined by Open Systems)
+        <blockquote>
+          <pre>objectclass     ( 1.3.6.1.4.1.993.3.2.5
+        NAME 'uflEduOrganization'
+        DESC 'A group of people..'
+        SUP 'organization'  STRUCTURAL
+        MUST ( universityId )
+        MAY (
+                ou $
+                uuid $
+                displayName $
+                mail $
+                labeledURI $
+                uflEduAllPhones $
+                uflEduAllEmailAddresses $
+                uflEduAllNames $
+                uflEduAllPostalAddresses
+                ) )</pre>
+        </blockquote>
+      </li>
+    </ol>
+    <p>However, a unit in LDAP typically looks something like the following:</p>
+    <blockquote>
+      <pre># UETHHG63, Organizations, ufl.edu
+dn: uflEduUniversityId=UETHHG63,ou=Organizations,dc=ufl,dc=edu
+objectClass: top
+objectClass: organization
+objectClass: uflEduOrganization
+ou: Organizations
+o: PV-OAA APPLICATION DEVELOP
+uflEduUniversityId: UETHHG63</pre>
+    </blockquote>
+    <p>The only fields of use for searching are <code>o</code> and <code>uflEduUniversityId</code>. For completeness, we should search the following fields:</p>
+    <ul>
+      <li><code>displayName</code></li>
+      <li><code>telephoneNumber</code></li>
+    </ul>
 
     <h3>Navigation</h3>
     <p>There are two primary functions of the proposed Phonebook:</p>
@@ -262,7 +460,7 @@
     <hr>
 <!-- Created: Thu Sep  1 14:07:18 EDT 2005 -->
 <!-- hhmts start -->
-Last modified: Thu Sep  8 15:57:23 EDT 2005
+Last modified: Thu Sep  8 18:27:20 EDT 2005
 <!-- hhmts end -->
   </body>
 </html>
