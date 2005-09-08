@@ -1,12 +1,11 @@
 * Search title and phone fields
 * Soundex/name suggestions
-* Add tests for Utilities
+* Add tests all over the place
 
+* Results page
+  * Special case maxmimum number of results returned.  Catalyst::Model::LDAP doesn't currently return the Net::LDAP::Search object, only the entries - how to get the "maximum nu\mber of results returned" message?
+  * One person returned.  This should ideally be handled in the controller - forwarding to the show action.
 * Person details page (http://www.cornell.edu/search/?tab=people&netid=ecb29&q=ecb)
 * Person full entry page
-* Organization details page
-* Organization full entry page
-
-* Add JavaScript autocomplete (e.g. @ -> @ufl.edu)
-
-* Cleanup CSS
+* Unit details page
+* Unit full entry page
