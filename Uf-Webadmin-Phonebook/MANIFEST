@@ -6,6 +6,7 @@ doc/style.css
 lib/Uf/Webadmin/Phonebook.pm
 lib/Uf/Webadmin/Phonebook/C/People.pm
 lib/Uf/Webadmin/Phonebook/C/Units.pm
+lib/Uf/Webadmin/Phonebook/Constants.pm
 lib/Uf/Webadmin/Phonebook/Entry.pm
 lib/Uf/Webadmin/Phonebook/M/Organizations.pm
 lib/Uf/Webadmin/Phonebook/M/People.pm
@@ -25,9 +26,11 @@ root/includes/header.tt
 root/includes/js.tt
 root/includes/links.tt
 root/index.tt
+root/people/full.tt
 root/people/includes/search.tt
 root/people/noResults.tt
 root/people/results.tt
+root/people/show.tt
 root/robots.txt
 root/static/css/basic.css
 root/static/css/main.css
