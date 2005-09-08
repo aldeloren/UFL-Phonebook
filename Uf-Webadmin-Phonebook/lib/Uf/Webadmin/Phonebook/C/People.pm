@@ -43,6 +43,7 @@ sub search : Local {
 
     eval {
         my $query = $c->req->param('query');
+        my $sort  = $c->req->param('sort') || 'cn';
 
         my $filter = $self->_parseQuery($query);
         my $string = $filter->as_string;
@@ -53,7 +54,7 @@ sub search : Local {
         my $entries = $c->comp('M::People')->search($string);
         if (scalar @{ $entries }) {
             my @results =
-                sort { $a->{cn} cmp $b->{cn} }
+                sort { $a->{$sort} cmp $b->{$sort} }
                 map { Uf::Webadmin::Phonebook::Entry->new($_) }
                 @{ $entries };
 
