@@ -1,6 +1,7 @@
 [% INCLUDE includes/header.tt title = c.req.params.query %]
 [% INCLUDE people/includes/search.tt %]
 
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
     <table>
       <thead>
         <tr>
