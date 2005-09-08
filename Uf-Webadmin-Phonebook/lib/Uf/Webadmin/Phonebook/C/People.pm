@@ -51,9 +51,14 @@ sub search : Local {
         my $entries = $c->comp('M::People')->search($filterString);
         if ($entries) {
             my @results = sort { $a->{cn} cmp $b->{cn} } map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $entries };
-
-            $c->stash->{results}  = \@results;
-            $c->stash->{template} = 'people/results.tt';
+            if (scalar @results == 1) {
+                my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->{uflEduUniversityId});
+                $c->res->redirect("/people/$ufid/");
+            }
+            else {
+                $c->stash->{results}  = \@results;
+                $c->stash->{template} = 'people/results.tt';
+            }
         }
         else {
             $c->stash->{template} = 'people/noResults.tt';
@@ -128,7 +133,6 @@ sub _parseQuery {
         ($first, $last) = ($last, $first) if $query =~ /,/;
 
         $filter->add('cn',   '=', qq[$last,$first]);
-        $filter->add('sn',   '=', qq[$last*]);
         $filter->add('mail', '=', qq[$last@*]);
         $filter->add('mail', '=', qq[$first$last@*]);
         $filter->add('mail', '=', qq[$first-$last@*]);
