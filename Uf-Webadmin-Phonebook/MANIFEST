@@ -1,6 +1,5 @@
 Build.PL
 Changes
-config.yml
 doc/schedule.html
 doc/specification.html
 doc/style.css
@@ -15,6 +14,7 @@ lib/Uf/Webadmin/Phonebook/V/TT.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+phonebook.yml
 README
 root/favicon.ico
 root/includes/css.tt

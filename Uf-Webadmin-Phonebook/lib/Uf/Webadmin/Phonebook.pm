@@ -8,7 +8,7 @@ use YAML;
 our $VERSION = '0.01';
 
 __PACKAGE__->config(
-    YAML::LoadFile(File::Spec->join(__PACKAGE__->config->{home}, 'config.yml'))
+    YAML::LoadFile(File::Spec->join(__PACKAGE__->config->{home}, 'phonebook.yml'))
 );
 
 my @plugins = qw/Static::Simple/;
