@@ -3,6 +3,7 @@ package Uf::Webadmin::Phonebook::C::People;
 use strict;
 use base 'Catalyst::Base';
 use Net::LDAP::Filter::Abstract;
+use Uf::Webadmin::Phonebook::Constants;
 use Uf::Webadmin::Phonebook::Entry;
 
 =head1 NAME
@@ -42,26 +43,31 @@ sub search : Local {
 
     eval {
         my $query = $c->req->param('query');
+
         my $filter = $self->_parseQuery($query);
-        my $filterString = $filter->as_string;
+        my $string = $filter->as_string;
 
         $c->log->debug("Query: $query");
-        $c->log->debug("Filter: $filterString");
+        $c->log->debug("Filter: $string");
 
-        my $entries = $c->comp('M::People')->search($filterString);
-        if ($entries) {
-            my @results = sort { $a->{cn} cmp $b->{cn} } map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $entries };
+        my $entries = $c->comp('M::People')->search($string);
+        if (scalar @{ $entries }) {
+            my @results =
+                sort { $a->{cn} cmp $b->{cn} }
+                map { Uf::Webadmin::Phonebook::Entry->new($_) }
+                @{ $entries };
+
             if (scalar @results == 1) {
                 my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->{uflEduUniversityId});
-                $c->res->redirect("/people/$ufid/");
+                $c->res->redirect("$ufid/");
             }
             else {
                 $c->stash->{results}  = \@results;
-                $c->stash->{template} = 'people/results.tt';
+                $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_RESULTS;
             }
         }
         else {
-            $c->stash->{template} = 'people/noResults.tt';
+            $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
         }
     };
     if ($@) {
@@ -81,7 +87,7 @@ sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
     $c->log->debug("UFID: $ufid");
 
-    $c->stash->{template} = 'people/show.tt';
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_SHOW;
 }
 
 =head2 full
@@ -96,7 +102,7 @@ sub full : Regex('people/([A-Za-z0-9]{8,9})/full/?$') {
     my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
     $c->log->debug("UFID: $ufid");
 
-    $c->stash->{template} = 'people/full.tt';
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL;
 }
 
 =head2 _parseQuery
