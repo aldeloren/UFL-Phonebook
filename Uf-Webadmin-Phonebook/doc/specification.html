@@ -47,6 +47,15 @@
     <h3>About the Rollout</h3>
     <p>Our primary goal is to have a mostly functional version of the Phonebook in two weeks. That means that the initial version will be suboptimal in many ways and will not contain every feature. Throughout this specification, the notation (v2) will be used to indicate features which will not be a part of the initial rollout but added later.</p>
 
+    <h3>Future Features</h3>
+    <ul>
+      <li>(v2) &quot;Internal phonebook&quot;, requiring GatorLink authentication and returning results using the user's credentials.</li>
+      <li>(v2) Google Suggest-style completions for phonebook queries. When the user types a few characters, display ten or so results from the Directory that might match.</li>
+      <li>(v2) Isolate strings for easy localization (for e.g. a Spanish version of the site). The utility of this feature is debatable, however, considering most Directory information is in English.</li>
+      <li>(v2) An advanced search page, allowing users to give values for specific Directory fields.</li>
+      <li>(v2) vCard download.</li>
+    </ul>
+
     <h3>Software Architecture</h3>
     <p>The Web application will be written in Perl using the <a href="http://catalyst.perl.org/">Catalyst</a> framework. Catalyst provides easy deployment regardless of server evironment, though mod_perl is preferable for speed.</p>
     <p>Web pages will be written using the <a href="http://search.cpan.org/dist/Template-Toolkit/">Template Toolkit</a>. CSS will be used for formatting and positioning, following the standards put in place by Web Administration.</p>
@@ -56,15 +65,6 @@
     <p>To interface with the Directory, we will use <a href="http://open-systems.ufl.edu/">Open System</a>'s <a href="http://open-systems.ufl.edu/services/LDAP/index.html">LDAP service</a>. This server is accessible via hostname <code>ldap.ufl.edu</code>.</p>
     <p>To get an idea of the data used by this project, please view the <a href="http://open-systems.ufl.edu/services/LDAP/schema.html">LDAP schema</a>.</p>
     <p>For searching people, a search base of <code>ou=People,dc=ufl,dc=edu</code>. For searching units, we will use a search base of <code>ou=Organizations,dc=ufl,dc=edu</code>.</p>
-
-    <h3>Future Features</h3>
-    <ul>
-      <li>(v2) &quot;Internal phonebook&quot;, requiring GatorLink authentication and returning results using the user's credentials.</li>
-      <li>(v2) Google Suggest-style completions for phonebook queries. When the user types a few characters, display ten or so results from the Directory that might match.</li>
-      <li>(v2) Isolate strings for easy localization (for e.g. a Spanish version of the site). The utility of this feature is debatable, however, considering most Directory information is in English.</li>
-      <li>(v2) An advanced search page, allowing users to give values for specific Directory fields.</li>
-      <li>(v2) vCard download.</li>
-    </ul>
 
     <h3>Navigation</h3>
     <p>There are two primary functions of the proposed Phonebook:</p>
@@ -262,7 +262,7 @@
     <hr>
 <!-- Created: Thu Sep  1 14:07:18 EDT 2005 -->
 <!-- hhmts start -->
-Last modified: Thu Sep  8 15:53:29 EDT 2005
+Last modified: Thu Sep  8 15:57:23 EDT 2005
 <!-- hhmts end -->
   </body>
 </html>
