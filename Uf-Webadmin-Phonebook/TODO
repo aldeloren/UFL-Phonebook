@@ -1,4 +1,3 @@
-* Search title and phone fields
 * Soundex/name suggestions
 * Add tests all over the place
 * Handle edge cases for searching
