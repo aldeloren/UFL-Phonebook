@@ -3,6 +3,7 @@ package Uf::Webadmin::Phonebook;
 use strict;
 use Catalyst;
 use File::Spec;
+use Uf::Webadmin::Phonebook::Constants;
 use YAML;
 
 our $VERSION = '0.01';
@@ -65,7 +66,7 @@ Display the home page.
 sub default : Private {
     my ($self, $c) = @_;
 
-    $c->stash->{template} = 'index.tt';
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_HOME;
 }
 
 =head2 end
