@@ -4,4 +4,6 @@ name: Phonebook
 
 ldap:
   host: ldap.ufl.edu
-  base: dc=ufl,dc=edu
+  options:
+    sizelimit: 100
+    timelimit: 10

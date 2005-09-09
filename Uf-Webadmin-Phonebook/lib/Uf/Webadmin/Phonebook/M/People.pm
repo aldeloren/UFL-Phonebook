@@ -4,11 +4,8 @@ use strict;
 use base 'Catalyst::Model::LDAP';
 
 __PACKAGE__->config(
-    host     => Uf::Webadmin::Phonebook->config->{ldap}->{host},
-    base     => 'ou=People,' . Uf::Webadmin::Phonebook->config->{ldap}->{base},
-    dn       => '',
-    password => '',
-    options  => {},
+    %{ Uf::Webadmin::Phonebook->config->{ldap} },
+    base => 'ou=People,dc=ufl,dc=edu',
 );
 
 =head1 NAME
