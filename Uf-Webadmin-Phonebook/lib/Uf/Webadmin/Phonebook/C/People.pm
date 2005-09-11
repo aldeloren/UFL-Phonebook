@@ -85,25 +85,46 @@ Display a single person.
 sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     my ($self, $c) = @_;
 
-    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
-    $c->log->debug("UFID: $ufid");
-
     $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_SHOW;
+    $c->forward('single');
 }
 
-=head2 full
+=head2 details
 
-Display the full entry for a specific person.
+Display details for a single person.
 
 =cut
 
-sub full : Regex('people/([A-Za-z0-9]{8,9})/full/?$') {
+sub details : Regex('people/([A-Za-z0-9]{8,9})/details/?$') {
+    my ($self, $c) = @_;
+
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL;
+    $c->forward('single');
+}
+
+=head2 single
+
+=cut
+
+sub single : Private {
     my ($self, $c) = @_;
 
     my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
     $c->log->debug("UFID: $ufid");
 
-    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL;
+    eval {
+        my $entries = $c->comp('M::People')->search("uflEduUniversityId=$ufid");
+        if (scalar @{ $entries }) {
+            # "Fallthrough" to template set by parent action
+            $c->stash->{person} = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
+        }
+        else {
+            $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
+        }
+    };
+    if ($@) {
+        $c->error($@);
+    }
 }
 
 =head2 _parseQuery

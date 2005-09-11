@@ -1,4 +1,55 @@
 [% INCLUDE includes/header.tt %]
 [% INCLUDE people/includes/search.tt %]
+
+    <h3>[% person.displayName | html_entity %]</h3>
+
+    <h4>General Information</h4>
+    <dl>
+      <dt>Email</dt>
+      <dd>[% IF person.mail %]<a href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
+
+      <dt>Web Site</dt>
+      <dd>[% IF person.homePageURL %]<a href="[% person.homePageURL | html_entity %]">[% person.homePageURL | html_entity %]</a>[% ELSE %]&nbsp;[% END %]</dd>
+    </dl>
+
+    <h4>Phone Numbers</h4>
+    <dl>
+      <dt>Campus</dt>
+      <dd></dd>
+
+      <dt>Home</dt>
+      <dd></dd>
+
+      <dt>Mobile</dt>
+      <dd></dd>
+    </dl>
+
+    <h4>Addresses</h4>
+    <dl>
+      <dt>Campus</dt>
+      <dd></dd>
+
+      <dt>Home</dt>
+      <dd></dd>
+    </dl>
+
+    <h4>[% person.eduPersonPrimaryAffiliation | ucfirst %] Information</h4>
+    <dl>
+[% IF person.eduPersonPrimaryAffiliation == 'student' %]
+      <dt>College</dt>
+      <dd></dd>
+[% ELSE %]
+      <dt>Unit</dt>
+      <dd>[% IF person.departmentNumber %]<a href="/units/[% person.departmentNumber | html_entity %]/">[% END %]
+        [% IF person.o %][% person.o | html_entity %][% ELSE %]&nbsp;[% END %]
+      [% IF person.departmentNumber %]</a>[% END %]</dd>
+
+      <dt>Title</dt>
+      <dd>[% IF person.title %][% person.title | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+
+[% END %]
+    </dl>
+
+
 [% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]
