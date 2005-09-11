@@ -50,10 +50,11 @@
     <h3>Future Features</h3>
     <ul>
       <li>(v2) &quot;Internal phonebook&quot;, requiring GatorLink authentication and returning results using the user's credentials.</li>
+      <li>(v2) Spelling suggestions.</li>
       <li>(v2) Google Suggest-style completions for phonebook queries. When the user types a few characters, display ten or so results from the Directory that might match.</li>
-      <li>(v2) Isolate strings for easy localization (for e.g. a Spanish version of the site). The utility of this feature is debatable, however, considering most Directory information is in English.</li>
-      <li>(v2) An advanced search page, allowing users to give values for specific Directory fields.</li>
       <li>(v2) vCard download.</li>
+      <li>(v2) An advanced search page, allowing users to give values for specific Directory fields.</li>
+      <li>(v2) Isolate strings for easy localization (for e.g. a Spanish version of the site). The utility of this feature is debatable, however, considering most Directory information is in English.</li>
     </ul>
 
     <h3>Software Architecture</h3>
@@ -201,6 +202,15 @@ uflEduAllNames: Middle Name:H
 uflEduAllNames: Salutation:MR.
 uflEduAllNames: Surname (Last):ROCKWELL</pre>
     </blockquote>
+    <p>Likely inputs:</p>
+    <ol type="1">
+      <li>[Last name] - search <code>sn</code>, <code>cn</code>, and <code>mail</code> fields</li>
+      <li>[First name] [Last name] - search <code>cn</code> field</li>
+      <li>[Email] - search <code>mail</code> field</li>
+      <li>[Partial email] - search <code>mail</code> field</li>
+      <li>[Phone] - search <code>homePhone</code> and <code>telephoneNumber</code> fields</li>
+      <li>[Title] - search <code>title</code> field</li>
+    </ol>
 
     <h4>Searching for Units</h4>
     <p>Search base: <code>ou=Organizations,dc=ufl,dc=edu</code></p>
@@ -254,7 +264,12 @@ ou: Organizations
 o: PV-OAA APPLICATION DEVELOP
 uflEduUniversityId: UETHHG63</pre>
     </blockquote>
-    <p>The only fields of use for searching are <code>o</code> and <code>uflEduUniversityId</code>.</p>
+    <p>Likely inputs:</p>
+    <ul>
+      <li>[Name] - search <code>o</code> and <code>displayName</code> fields</li>
+      <li>[Phone] - search <code>telephoneNumber</code> field</li>
+      <li>[Address] - search <code>street</code> field initially; may need to use Post Office normalization rules to make more useful (v2)</li>
+    </ul>
 
     <h3>Navigation</h3>
     <p>There are two primary functions of the proposed Phonebook:</p>
@@ -452,7 +467,7 @@ uflEduUniversityId: UETHHG63</pre>
     <hr>
 <!-- Created: Thu Sep  1 14:07:18 EDT 2005 -->
 <!-- hhmts start -->
-Last modified: Thu Sep  8 18:51:10 EDT 2005
+Last modified: Sat Sep 10 21:13:00 EDT 2005
 <!-- hhmts end -->
   </body>
 </html>
