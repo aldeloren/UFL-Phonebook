@@ -89,13 +89,13 @@ sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     $c->forward('single');
 }
 
-=head2 details
+=head2 full
 
 Display details for a single person.
 
 =cut
 
-sub details : Regex('people/([A-Za-z0-9]{8,9})/details/?$') {
+sub full : Regex('people/([A-Za-z0-9]{8,9})/full/?$') {
     my ($self, $c) = @_;
 
     $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL;
