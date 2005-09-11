@@ -35,6 +35,7 @@
 
     <h4>[% person.eduPersonPrimaryAffiliation | ucfirst %] Information</h4>
     <dl>
+
 [% IF person.eduPersonPrimaryAffiliation == 'student' %]
       <dt>College</dt>
       <dd></dd>
@@ -46,8 +47,8 @@
 
       <dt>Title</dt>
       <dd>[% IF person.title %][% person.title | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
-
 [% END %]
+
     </dl>
 
 
