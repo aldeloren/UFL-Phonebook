@@ -1,4 +1,3 @@
-* Soundex/name suggestions
 * Add tests all over the place
 * Handle edge cases for searching
   * Sizelimit/timelimit LDAP queries - pass message back to user
