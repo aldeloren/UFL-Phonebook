@@ -43,6 +43,7 @@ phonebook.
 
 =cut
 
+# TODO: Refactor
 sub encodeUfid {
     my ($ufid) = @_;
 
@@ -59,6 +60,7 @@ Decode the UFID by doing the reverse of C<encodeUfid>.
 
 =cut
 
+# TODO: Refactor
 sub decodeUfid {
     my ($encoded) = @_;
 
