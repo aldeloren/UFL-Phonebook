@@ -23,6 +23,7 @@ the phonebook.
 =cut
 
 our $TEMPLATE_HOME = 'index.tt';
+our $TEMPLATE_ERRORS = 'errors.tt';
 our $TEMPLATE_RESULTS = 'results.tt';
 our $TEMPLATE_NO_RESULTS = 'noResults.tt';
 our $TEMPLATE_SHOW = 'show.tt';
