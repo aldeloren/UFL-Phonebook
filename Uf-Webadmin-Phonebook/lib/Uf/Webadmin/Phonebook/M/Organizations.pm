@@ -2,6 +2,7 @@ package Uf::Webadmin::Phonebook::M::Organizations;
 
 use strict;
 use base 'Catalyst::Model::LDAP';
+use Uf::Webadmin::Phonebook;
 
 __PACKAGE__->config(
     %{ Uf::Webadmin::Phonebook->config->{ldap} },

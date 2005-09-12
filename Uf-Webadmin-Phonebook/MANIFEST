@@ -56,7 +56,8 @@ script/uf_webadmin_phonebook_test.pl
 t/01app.t
 t/02pod.t
 t/03podcoverage.t
-t/04utilities.t
+t/04entry.t
+t/05utilities.t
 t/C/People.t
 t/C/Units.t
 t/M/Organizations.t
