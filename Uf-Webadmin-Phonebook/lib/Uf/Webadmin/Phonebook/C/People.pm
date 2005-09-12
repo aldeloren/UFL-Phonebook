@@ -142,7 +142,8 @@ sub _parseQuery {
     my @tokens = $self->_tokenizeQuery($query);
 
     my $filter = Net::LDAP::Filter::Abstract->new('|');
-    if ($query =~ /(.*)\@/) {     # Email address
+    if ($query =~ /(.*)\@/) {
+        # Email address
         my $uid   = $1;
         my $email = $tokens[0];
 
@@ -150,23 +151,38 @@ sub _parseQuery {
         $filter->add('mail', '=', $email);
         $filter->add('mail', '=', qq[$uid@*]);
     }
-    elsif (scalar @tokens == 1) {  # One token: last name or username
+    elsif ($query =~ /(\d{3})?.?(\d{2}?\d).?(\d{4})/) {
+        # Phone number
+        my $areaCode = $1;
+        my $exchange = $2;
+        my $lastFour = $3;
+
+        my $phone = join '', map { $_ ? "$_ " : '' } ($areaCode, $exchange, $lastFour);
+
+        $filter->add(qw/homePhone = $phone/);
+        $filter->add(qw/telephoneNumber = $phone/);
+    }
+    elsif (scalar @tokens == 1) {
+        # One token: last name or username
         my $name = $tokens[0];
 
-        $filter->add('cn',   '=', qq[$name,*]);
-        $filter->add('sn',   '=', qq[$name*]);
-        $filter->add('uid',  '=', $name);
-        $filter->add('mail', '=', qq[$name@*]);
+        $filter->add('cn',    '=', qq[$name,*]);
+        $filter->add('sn',    '=', qq[$name*]);
+        $filter->add('uid',   '=', $name);
+        $filter->add('mail',  '=', qq[$name@*]);
+#        $filter->add('title', '=', $name);
     }
-    else {                         # Two or more tokens: first and last name
+    else {
+        # Two or more tokens: first and last name
         my $first = $tokens[0];
         my $last  = $tokens[1];
         ($first, $last) = ($last, $first) if $query =~ /,/;
 
-        $filter->add('cn',   '=', qq[$last,$first]);
-        $filter->add('mail', '=', qq[$last@*]);
-        $filter->add('mail', '=', qq[$first$last@*]);
-        $filter->add('mail', '=', qq[$first-$last@*]);
+        $filter->add('cn',    '=', qq[$last,$first]);
+        $filter->add('mail',  '=', qq[$last@*]);
+        $filter->add('mail',  '=', qq[$first$last@*]);
+        $filter->add('mail',  '=', qq[$first-$last@*]);
+#        $filter->add('title', '=', $query);
     }
 
     return Net::LDAP::Filter::Abstract->new('&')
