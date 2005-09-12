@@ -2,13 +2,14 @@ package Uf::Webadmin::Phonebook::Entry;
 
 use strict;
 use base 'Class::Accessor';
-use Data::Dumper;
 
 our $ADDRESS_MAPPINGS = {
-    'UF Business Physical Location Address' => 'campusAddress',
-    'UF Business Mailing Address'           => 'mailingAddress',
-    'Local Home Mailing Address'            => 'homeAddress',
-    'Permanent Home Mailing Address'        => 'permanentAddress',
+    uflEduAllPostalAddresses => {
+        'UF Business Physical Location Address' => 'campusAddress',
+        'UF Business Mailing Address'           => 'mailingAddress',
+        'Local Home Mailing Address'            => 'homeAddress',
+        'Permanent Home Mailing Address'        => 'permanentAddress',
+    },
 };
 
 =head1 NAME
@@ -47,6 +48,10 @@ sub new {
     foreach my $attribute ($entry->attributes) {
         my @values = $entry->get_value($attribute);
         $self->_store($attribute, @values);
+
+        if (my $mappings = $ADDRESS_MAPPINGS->{$attribute}) {
+            $self->_storeAddresses(\@values, $mappings);
+        }
     }
 
     return $self;
@@ -71,6 +76,36 @@ sub _store {
     $self->mk_ro_accessors($attribute);
 }
 
+=head2 _storeAddresses
+
+Map the specified values onto attributes of this class. For example,
+C<UF Business Physical Location Address> could be mapped to a
+C<campusAddress> value on this entry.
+
+=cut
+
+# TODO: Refactor
+sub _storeAddresses {
+    my ($self, $values, $mappings) = @_;
+
+    foreach my $value (@{ $values }) {
+        my @parts = split /\$/, $value;
+        my $name  = shift @parts;
+
+        if (my $field = $mappings->{$name}) {
+            for (@parts) {
+                s/^\s+//;
+                s/\s+$//;
+            }
+
+            my $address = join "\n", @parts;
+            $address =~ s/(\d{5})(\d{4})/$1-$2/;
+
+            $self->_store($field, $address);
+        }
+    }
+}
+
 =head2 get
 
 Override the C<get> method from L<Class::Accessor> to provide scalar
@@ -79,6 +114,7 @@ provide a list or an arrayref, depending on context.
 
 =cut
 
+# TODO: Cleanup
 sub get {
     my $self = shift;
 

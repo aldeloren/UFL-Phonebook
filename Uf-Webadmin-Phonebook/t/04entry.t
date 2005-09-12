@@ -17,9 +17,7 @@ ok(scalar($entry->attributes) > 0, 'has attributes');
 ok($entry->uid eq $uid, 'uid matches');
 ok(scalar($entry->uflEduAllPhones) > 0, 'has at least one phone number');
 
-ok($entry->campusAddress eq <<'...');
-CREC - LAKE ALFRED
+ok($entry->campusAddress eq "CREC - LAKE ALFRED
 700 EXPERIMENT STATION RD
 LAKE ALFRED, FL, US
-338502243
-...
+33850-2243");
