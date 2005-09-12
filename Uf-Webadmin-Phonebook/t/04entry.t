@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Uf::Webadmin::Phonebook::M::People;
 use Data::Dumper;
 
@@ -11,5 +11,7 @@ my $results = Uf::Webadmin::Phonebook::M::People->search("(uid=$uid)");
 ok(scalar @{ $results } > 0, 'got results');
 
 my @entries = map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $results };
-ok(scalar($entries[0]->attributes) > 0, 'has attributes');
-ok($entries[0]->{uid} eq $uid, 'uid matches');
+my $entry = $entries[0];
+ok(scalar($entry->attributes) > 0, 'has attributes');
+ok($entry->uid eq $uid, 'uid matches');
+ok(scalar($entry->uflEduAllPhones) > 0, 'has at least one phone number');

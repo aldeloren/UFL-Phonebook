@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook::Entry;
 
 use strict;
+use base 'Class::Accessor';
 
 =head1 NAME
 
@@ -31,20 +32,41 @@ Given a L<Net::LDAP::Entry>, create our view of that entry.
 sub new {
     my ($class, $entry) = @_;
 
-    return unless $entry and $entry->attributes;
+    return unless $entry;
 
     my $self = bless({}, (ref $class or $class));
 
     foreach my $attribute ($entry->attributes) {
-        my $value = $entry->get_value($attribute);
-
-        $self->{attribute} = undef;
-        if ($value and $value ne '--UNKNOWN--') {
-            $self->{$attribute} = $value;
+        foreach my $value ($entry->get_value($attribute)) {
+            if ($value and $value ne '--UNKNOWN--') {
+                push @{ $self->{$attribute} }, $value;
+            }
         }
+
+        $self->mk_ro_accessors($attribute);
     }
 
     return $self;
+}
+
+=head2 get
+
+Override the C<get> method from L<Class::Accessor> to provide scalar
+values by default. If the LDAP entry contained multiple values,
+provide a list or an arrayref, depending on context.
+
+=cut
+
+sub get {
+    my $self = shift;
+
+    my @values = @{ $self->SUPER::get(@_) };
+    if (scalar @values == 1) {
+        return $values[0];
+    }
+    else {
+        return wantarray ? @values : \@values;
+    }
 }
 
 =head2 attributes

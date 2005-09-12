@@ -8,6 +8,7 @@ my $build = Catalyst::Build->new(
         'Catalyst'                    => '5.33',
         'Catalyst::Model::LDAP'       => '0',
         'Catalyst::View::TT'          => '0',
+        'Class::Accessor'             => '0',
         'Net::LDAP::Filter::Abstract' => '0',
         'YAML'                        => '0',
     },
