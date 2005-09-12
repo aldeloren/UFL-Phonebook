@@ -54,12 +54,12 @@ sub search : Local {
         my $entries = $c->comp('M::People')->search($string);
         if (scalar @{ $entries }) {
             my @results =
-                sort { $a->{$sort} cmp $b->{$sort} }
+                sort { $a->$sort cmp $b->$sort }
                 map { Uf::Webadmin::Phonebook::Entry->new($_) }
                 @{ $entries };
 
             if (scalar @results == 1) {
-                my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->{uflEduUniversityId});
+                my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
                 $c->res->redirect("$ufid/");
             }
             else {

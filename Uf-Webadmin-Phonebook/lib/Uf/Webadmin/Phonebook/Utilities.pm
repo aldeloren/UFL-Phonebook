@@ -71,6 +71,20 @@ sub decodeUfid {
     return $ufid;
 }
 
+=head2 parseAddress
+
+Parse the specified LDAP-formatted address.
+
+=cut
+
+sub parseAddress {
+    my ($address) = @_;
+
+    my @parts = split /\$/, $address;
+
+    return join "\n", @parts;
+}
+
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>

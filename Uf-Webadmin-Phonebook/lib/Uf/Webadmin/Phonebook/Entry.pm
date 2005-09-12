@@ -2,6 +2,14 @@ package Uf::Webadmin::Phonebook::Entry;
 
 use strict;
 use base 'Class::Accessor';
+use Data::Dumper;
+
+our $ADDRESS_MAPPINGS = {
+    'UF Business Physical Location Address' => 'campusAddress',
+    'UF Business Mailing Address'           => 'mailingAddress',
+    'Local Home Mailing Address'            => 'homeAddress',
+    'Permanent Home Mailing Address'        => 'permanentAddress',
+};
 
 =head1 NAME
 
@@ -14,7 +22,7 @@ Uf::Webadmin::Phonebook::Entry - A phonebook entry
   my @entries = map {
       Uf::Webadmin::Phonebook::Entry->new($_)
   } $mesg->entries;
-  print $entries[0]->{eduPersonPrimaryAffiliation};
+  print $entries[0]->eduPersonPrimaryAffiliation;
 
 =head1 DESCRIPTION
 
@@ -37,16 +45,30 @@ sub new {
     my $self = bless({}, (ref $class or $class));
 
     foreach my $attribute ($entry->attributes) {
-        foreach my $value ($entry->get_value($attribute)) {
-            if ($value and $value ne '--UNKNOWN--') {
-                push @{ $self->{$attribute} }, $value;
-            }
-        }
-
-        $self->mk_ro_accessors($attribute);
+        my @values = $entry->get_value($attribute);
+        $self->_store($attribute, @values);
     }
 
     return $self;
+}
+
+=head2 _store
+
+Store an attribute and its values. Basic validation is done to avoid
+blank and "unknown" values.
+
+=cut
+
+sub _store {
+    my ($self, $attribute, @values) = @_;
+
+    foreach my $value (@values) {
+        if ($value and $value ne '--UNKNOWN--') {
+            push @{ $self->{$attribute} }, $value;
+        }
+    }
+
+    $self->mk_ro_accessors($attribute);
 }
 
 =head2 get
@@ -60,13 +82,17 @@ provide a list or an arrayref, depending on context.
 sub get {
     my $self = shift;
 
-    my @values = @{ $self->SUPER::get(@_) };
-    if (scalar @values == 1) {
-        return $values[0];
+    if (my $values = $self->SUPER::get(@_)) {
+        my @values = @{ $values };
+        if (scalar @values == 1) {
+            return $values[0];
+        }
+        else {
+            return wantarray ? @values : \@values;
+        }
     }
-    else {
-        return wantarray ? @values : \@values;
-    }
+
+    return undef;
 }
 
 =head2 attributes
