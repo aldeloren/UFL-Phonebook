@@ -27,10 +27,13 @@
     <h4>Addresses</h4>
     <dl>
       <dt>Campus</dt>
-      <dd>[% IF person.uflEduOfficeLocation %][% person.uflEduOfficeLocation | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+      <dd>[% IF person.campusAddress %][% person.campusAddress | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
 
       <dt>Home</dt>
-      <dd>[% IF person.homeAddress %][% person.homeAddress | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+      <dd>[% IF person.homeAddress %][% person.homeAddress | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+
+      <dt>Mailing</dt>
+      <dd>[% IF person.mailingAddress %][% person.mailingAddress | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
     </dl>
 
 [% IF person.eduPersonPrimaryAffiliation != 'student' %]
