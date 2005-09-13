@@ -1,0 +1,5 @@
+    <ul id="tabs">
+      <li><a href="[% c.config.search.web | html_entity %]">Web</a>
+      <li><a href="/people/">People</a>
+      <li><a href="/units/">Units</a>
+    </ul>

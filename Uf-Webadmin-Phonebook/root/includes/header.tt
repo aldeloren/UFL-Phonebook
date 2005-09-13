@@ -16,4 +16,5 @@
 <div id="mainContainer"> 
   <div id="content">
 
+[% INCLUDE includes/tabs.tt %]
 [% INCLUDE includes/errors.tt %]
