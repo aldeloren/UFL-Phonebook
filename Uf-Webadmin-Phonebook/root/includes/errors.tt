@@ -1,4 +1,6 @@
 [% IF errors %]
+
+    <h3>Errors</h3>
     <ul id="errors">
   [% FOREACH error IN errors %]
 
@@ -6,5 +8,6 @@
   [% END %]
 
     </ul>
+
 
 [% END %]
