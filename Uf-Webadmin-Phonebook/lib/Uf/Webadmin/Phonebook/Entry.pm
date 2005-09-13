@@ -80,21 +80,15 @@ provide a list or an arrayref, depending on context.
 
 =cut
 
-# TODO: Cleanup
 sub get {
     my $self = shift;
 
-    if (my $values = $self->SUPER::get(@_)) {
-        my @values = @{ $values };
-        if (scalar @values == 1) {
-            return $values[0];
-        }
-        else {
-            return wantarray ? @values : \@values;
-        }
-    }
+    my $values = $self->SUPER::get(@_);
+    return unless $values;
 
-    return undef;
+    my @values = @{ $values };
+    return scalar @values == 1 ? $values[0] :
+        wantarray ? @values : \@values;
 }
 
 =head2 attributes
@@ -121,21 +115,22 @@ sub getPostalAddress {
 
     my $postalAddress = undef;
 
-    my @values = $self->uflEduAllPostalAddresses;
-    foreach my $value (@values) {
-        my @parts = split /\$/, $value;
-        my $ldapName  = shift @parts;
+    if (my @values = $self->uflEduAllPostalAddresses) {
+        foreach my $value (@values) {
+            my @parts = split /\$/, $value;
+            my $ldapName = shift @parts;
 
-        if ($POSTAL_ADDRESS_MAPPINGS->{$name} eq $ldapName) {
-            for (@parts) {
-                s/^\s+//;
-                s/\s+$//;
+            if ($POSTAL_ADDRESS_MAPPINGS->{$name} eq $ldapName) {
+                for (@parts) {
+                    s/^\s+//;
+                    s/\s+$//;
+                }
+
+                $postalAddress = join "\n", @parts;
+                $postalAddress =~ s/(\d{5})(\d{4})/$1-$2/;
+
+                last;
             }
-
-            $postalAddress = join "\n", @parts;
-            $postalAddress =~ s/(\d{5})(\d{4})/$1-$2/;
-
-            last;
         }
     }
 
