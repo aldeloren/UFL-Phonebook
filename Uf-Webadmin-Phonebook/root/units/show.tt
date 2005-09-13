@@ -1,0 +1,7 @@
+[% INCLUDE includes/header.tt %]
+[% INCLUDE units/includes/search.tt %]
+
+    <h3>[% unit.o | html_entity %]</h3>
+
+[% INCLUDE includes/links.tt %]
+[% INCLUDE includes/footer.tt %]

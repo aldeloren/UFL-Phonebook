@@ -1,0 +1,22 @@
+[% INCLUDE includes/header.tt %]
+[% INCLUDE units/includes/search.tt %]
+
+    <dl>
+[% FOREACH attribute IN unit.attributes.sort %]
+
+      <dt>[% attribute | html_entity %]</dt>
+      <dd>
+        <ul>
+  [% FOREACH value IN unit.$attribute %]
+
+          <li>[% value | html_entity %]</li>
+  [% END %]
+
+        </ul>
+      </dd>
+
+[% END %]
+    </dl>
+
+[% INCLUDE includes/links.tt %]
+[% INCLUDE includes/footer.tt %]
