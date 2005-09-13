@@ -152,17 +152,17 @@ sub _parseQuery {
         $filter->add('mail', '=', $email);
         $filter->add('mail', '=', qq[$uid@*]);
     }
-    elsif ($query =~ /(\d{3})?.?(\d{2}?\d).?(\d{4})/) {
-        # Phone number
-        my $areaCode = $1;
-        my $exchange = $2;
-        my $lastFour = $3;
-
-        my $phone = join '', map { $_ ? "$_ " : '' } ($areaCode, $exchange, $lastFour);
-
-        $filter->add(qw/homePhone = $phone/);
-        $filter->add(qw/telephoneNumber = $phone/);
-    }
+#    elsif ($query =~ /(\d{3})?(\d{2}?\d)(\d{4})/) {
+#        # Phone number
+#        my $areaCode = $1 || '352';
+#        my $exchange = $2;
+#        my $lastFour = $3;
+#
+#        my $phone = "+1 $areaCode $exchange$lastFour";
+#
+#        $filter->add('homePhone',       '=', $phone);
+#        $filter->add('telephoneNumber', '=', $phone);
+#    }
     elsif (scalar @tokens == 1) {
         # One token: last name or username
         my $name = $tokens[0];
@@ -171,7 +171,6 @@ sub _parseQuery {
         $filter->add('sn',    '=', qq[$name*]);
         $filter->add('uid',   '=', $name);
         $filter->add('mail',  '=', qq[$name@*]);
-#        $filter->add('title', '=', $name);
     }
     else {
         # Two or more tokens: first and last name
@@ -183,7 +182,6 @@ sub _parseQuery {
         $filter->add('mail',  '=', qq[$last@*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
         $filter->add('mail',  '=', qq[$first-$last@*]);
-#        $filter->add('title', '=', $query);
     }
 
     return Net::LDAP::Filter::Abstract->new('&')
