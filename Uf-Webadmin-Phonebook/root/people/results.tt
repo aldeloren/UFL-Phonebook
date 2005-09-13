@@ -1,7 +1,14 @@
 [% INCLUDE includes/header.tt title = c.req.params.query %]
 [% INCLUDE people/includes/search.tt %]
 
+[% IF sizelimit_exceeded %]
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned too many people. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+[% ELSIF timelimit_exceeded %]
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+[% ELSE %]
     <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
+[% END %]
+
     <table>
       <thead>
         <tr>

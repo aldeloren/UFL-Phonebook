@@ -3,6 +3,7 @@ package Uf::Webadmin::Phonebook::C::People;
 use strict;
 use warnings;
 use base 'Catalyst::Base';
+use Net::LDAP::Constant;
 use Net::LDAP::Filter::Abstract;
 use Uf::Webadmin::Phonebook::Constants;
 use Uf::Webadmin::Phonebook::Entry;
@@ -39,41 +40,48 @@ Search the directory for people.
 
 =cut
 
+# TODO: Cleanup
 sub search : Local {
     my ($self, $c) = @_;
 
+    my $query = $c->req->param('query');
+    my $sort  = $c->req->param('sort') || 'cn';
+
+    my $filter = $self->_parseQuery($query);
+    my $string = $filter->as_string;
+
+    $c->log->debug("Query: $query");
+    $c->log->debug("Filter: $string");
+
+    my $entries;
     eval {
-        my $query = $c->req->param('query');
-        my $sort  = $c->req->param('sort') || 'cn';
+        $entries = $c->comp('M::People')->search($string);
 
-        my $filter = $self->_parseQuery($query);
-        my $string = $filter->as_string;
-
-        $c->log->debug("Query: $query");
-        $c->log->debug("Filter: $string");
-
-        my $entries = $c->comp('M::People')->search($string);
-        if (scalar @{ $entries }) {
-            my @results =
-                sort { $a->$sort cmp $b->$sort }
-                map { Uf::Webadmin::Phonebook::Entry->new($_) }
-                @{ $entries };
-
-            if (scalar @results == 1) {
-                my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
-                $c->res->redirect("$ufid/");
-            }
-            else {
-                $c->stash->{results}  = \@results;
-                $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_RESULTS;
-            }
-        }
-        else {
-            $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
-        }
+        my $code = $c->comp('M::People')->code;
+        $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+        $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
     };
     if ($@) {
         $c->error($@);
+    }
+
+    if ($entries and scalar @{ $entries }) {
+        my @results =
+            sort { $a->$sort cmp $b->$sort }
+            map { Uf::Webadmin::Phonebook::Entry->new($_) }
+            @{ $entries };
+
+        if (scalar @results == 1) {
+            my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
+            $c->res->redirect("$ufid/");
+        }
+        else {
+            $c->stash->{results}  = \@results;
+            $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_RESULTS;
+        }
+    }
+    else {
+        $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
     }
 }
 
@@ -153,7 +161,7 @@ sub _parseQuery {
         $filter->add('mail', '=', qq[$uid@*]);
     }
 #    elsif ($query =~ /(\d{3})?(\d{2}?\d)(\d{4})/) {
-#        # Phone number
+#        # TODO: Phone number
 #        my $areaCode = $1;
 #        my $exchange = $2;
 #        my $lastFour = $3;
@@ -167,10 +175,12 @@ sub _parseQuery {
         # One token: last name or username
         my $name = $tokens[0];
 
-        $filter->add('cn',   '=', qq[$name,*]);
-        $filter->add('sn',   '=', qq[$name*]);
-        $filter->add('uid',  '=', $name);
-        $filter->add('mail', '=', qq[$name@*]);
+        $filter->add('cn',    '=', qq[$name,*]);
+        $filter->add('sn',    '=', qq[$name*]);
+        $filter->add('uid',   '=', $name);
+        $filter->add('mail',  '=', qq[$name@*]);
+        # TODO: Searching title is very slow
+#        $filter->add('title', '=', qq[$name*]);
     }
     else {
         # Two or more tokens: first and last name
@@ -178,10 +188,12 @@ sub _parseQuery {
         my $last  = $tokens[1];
         ($first, $last) = ($last, $first) if $query =~ /,/;
 
-        $filter->add('cn',   '=', qq[$last,$first]);
-        $filter->add('mail', '=', qq[$last@*]);
-        $filter->add('mail', '=', qq[$first$last@*]);
-        $filter->add('mail', '=', qq[$first-$last@*]);
+        $filter->add('cn',    '=', qq[$last,$first*]);
+        $filter->add('mail',  '=', qq[$last@*]);
+        $filter->add('mail',  '=', qq[$first$last@*]);
+        $filter->add('mail',  '=', qq[$first-$last@*]);
+        # TODO: Searching title is very slow
+#        $filter->add('title', '=', qq[$query*]);
     }
 
     return Net::LDAP::Filter::Abstract->new('&')
@@ -196,6 +208,7 @@ filters.
 
 =cut
 
+# TODO: Refactor
 sub _tokenizeQuery {
     my ($self, $query) = @_;
 
