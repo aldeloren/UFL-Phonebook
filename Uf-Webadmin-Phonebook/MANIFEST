@@ -25,7 +25,6 @@ root/includes/footer.tt
 root/includes/header.tt
 root/includes/js.tt
 root/includes/links.tt
-root/index.tt
 root/people/full.tt
 root/people/includes/search.tt
 root/people/noResults.tt
