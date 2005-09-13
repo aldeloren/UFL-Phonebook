@@ -72,7 +72,7 @@ sub default : Private {
 
 =head2 end
 
-Forward to the application's view.
+Forward to the view.
 
 =cut
 
