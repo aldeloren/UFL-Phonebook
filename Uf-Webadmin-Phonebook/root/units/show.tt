@@ -1,7 +1,35 @@
 [% INCLUDE includes/header.tt %]
 [% INCLUDE units/includes/search.tt %]
 
-    <h3>[% unit.o | html_entity %]</h3>
+    <h3>[% (unit.displayName ? unit.displayName : unit.o) | html_entity %]</h3>
+
+    <h4>General Information</h4>
+    <dl>
+      <dt>Email</dt>
+      <dd>[% IF unit.mail %]<a href="mailto:[% unit.mail | spam_armor %]">[% unit.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
+    </dl>
+
+    <h4>Phone Numbers</h4>
+    <dl>
+      <dt>Campus</dt>
+      <dd>[% IF unit.telephoneNumber %][% unit.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+    </dl>
+
+    <h4>Addresses</h4>
+    <dl>
+      <dt>Campus</dt>
+      <dd>[% campusAddress = unit.getPostalAddress('campus') %]
+        [% IF campusAddress %][% campusAddress | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+
+      <dt>Mailing</dt>
+      <dd>[% mailingAddress = unit.getPostalAddress('mailing') %]
+        [% IF mailingAddress %][% mailingAddress | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+    </dl>
+
+    <ul>
+      <li><a href="full/">Display full <acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a></li>
+    </ul>
+
 
 [% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]

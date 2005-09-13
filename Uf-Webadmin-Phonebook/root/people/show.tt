@@ -59,5 +59,6 @@
       <li><a href="full/">Display full <acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a></li>
     </ul>
 
+
 [% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]
