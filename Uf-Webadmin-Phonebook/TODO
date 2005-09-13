@@ -3,11 +3,6 @@
   * Sizelimit/timelimit LDAP queries - pass message back to user
 * Improve responses to errors (http://search.cpan.org/dist/Catalyst/lib/Catalyst/Manual/Cookbook.pod#Delivering_a_Custom_Error_Page)
 
-* Person details page (http://www.cornell.edu/search/?tab=people&netid=ecb29&q=ecb)
-* Person full entry page
-* Unit details page
-* Unit full entry page
-
 * Keep query variable on all pages?
 
 * CSS
