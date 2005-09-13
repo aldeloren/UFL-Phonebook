@@ -167,10 +167,10 @@ sub _parseQuery {
         # One token: last name or username
         my $name = $tokens[0];
 
-        $filter->add('cn',    '=', qq[$name,*]);
-        $filter->add('sn',    '=', qq[$name*]);
-        $filter->add('uid',   '=', $name);
-        $filter->add('mail',  '=', qq[$name@*]);
+        $filter->add('cn',   '=', qq[$name,*]);
+        $filter->add('sn',   '=', qq[$name*]);
+        $filter->add('uid',  '=', $name);
+        $filter->add('mail', '=', qq[$name@*]);
     }
     else {
         # Two or more tokens: first and last name
@@ -178,10 +178,10 @@ sub _parseQuery {
         my $last  = $tokens[1];
         ($first, $last) = ($last, $first) if $query =~ /,/;
 
-        $filter->add('cn',    '=', qq[$last,$first]);
-        $filter->add('mail',  '=', qq[$last@*]);
-        $filter->add('mail',  '=', qq[$first$last@*]);
-        $filter->add('mail',  '=', qq[$first-$last@*]);
+        $filter->add('cn',   '=', qq[$last,$first]);
+        $filter->add('mail', '=', qq[$last@*]);
+        $filter->add('mail', '=', qq[$first$last@*]);
+        $filter->add('mail', '=', qq[$first-$last@*]);
     }
 
     return Net::LDAP::Filter::Abstract->new('&')
