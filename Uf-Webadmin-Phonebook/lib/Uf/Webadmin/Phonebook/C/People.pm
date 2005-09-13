@@ -57,7 +57,6 @@ sub search : Local {
     eval {
         $entries = $c->comp('M::People')->search($string);
 
-        $c->log->debug("sizelimit: " . LDAP_SIZELIMIT_EXCEEDED);
         my $code = $c->comp('M::People')->code;
         $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
         $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
