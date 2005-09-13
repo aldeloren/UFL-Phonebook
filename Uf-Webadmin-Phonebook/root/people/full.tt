@@ -8,9 +8,11 @@
       <dt>[% attribute | html_entity %]</dt>
       <dd>
         <ul>
-  [% FOREACH value IN  person.$attribute %]
+  [% FOREACH value IN person.$attribute %]
+
           <li>[% value | html_entity %]</li>
   [% END %]
+
         </ul>
       </dd>
 

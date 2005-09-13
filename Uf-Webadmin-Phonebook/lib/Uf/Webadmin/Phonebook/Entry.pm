@@ -1,15 +1,15 @@
 package Uf::Webadmin::Phonebook::Entry;
 
 use strict;
+use warnings;
 use base 'Class::Accessor';
 
+# Method name => uflEduAllPostalAddresses name
 our $ADDRESS_MAPPINGS = {
-    uflEduAllPostalAddresses => {
-        'UF Business Physical Location Address' => 'campusAddress',
-        'UF Business Mailing Address'           => 'mailingAddress',
-        'Local Home Mailing Address'            => 'homeAddress',
-        'Permanent Home Mailing Address'        => 'permanentAddress',
-    },
+    'campus'    => 'UF Business Physical Location Address',
+    'mailing'   => 'UF Business Mailing Address',
+    'home'      => 'Local Home Mailing Address',
+    'permanent' => 'Permanent Home Mailing Address',
 };
 
 =head1 NAME
@@ -48,10 +48,6 @@ sub new {
     foreach my $attribute ($entry->attributes) {
         my @values = $entry->get_value($attribute);
         $self->_store($attribute, @values);
-
-        if (my $mappings = $ADDRESS_MAPPINGS->{$attribute}) {
-            $self->_storeAddresses(\@values, $mappings);
-        }
     }
 
     return $self;
@@ -74,36 +70,6 @@ sub _store {
     }
 
     $self->mk_ro_accessors($attribute);
-}
-
-=head2 _storeAddresses
-
-Map the specified values onto attributes of this class. For example,
-C<UF Business Physical Location Address> could be mapped to a
-C<campusAddress> value on this entry.
-
-=cut
-
-# TODO: Refactor
-sub _storeAddresses {
-    my ($self, $values, $mappings) = @_;
-
-    foreach my $value (@{ $values }) {
-        my @parts = split /\$/, $value;
-        my $name  = shift @parts;
-
-        if (my $field = $mappings->{$name}) {
-            for (@parts) {
-                s/^\s+//;
-                s/\s+$//;
-            }
-
-            my $address = join "\n", @parts;
-            $address =~ s/(\d{5})(\d{4})/$1-$2/;
-
-            $self->_store($field, $address);
-        }
-    }
 }
 
 =head2 get
@@ -141,6 +107,39 @@ sub attributes {
     my $self = shift;
 
     return keys %{ $self };
+}
+
+=head2 getPostalAddress
+
+Get the specified address from the C<uflEduAllPostalAddresses> field.
+The address is parsed slightly to make it more human readable.
+
+=cut
+
+sub getPostalAddress {
+    my ($self, $name) = @_;
+
+    my $postalAddress = undef;
+
+    my @values = $self->uflEduAllPostalAddresses;
+    foreach my $value (@values) {
+        my @parts = split /\$/, $value;
+        my $ldapName  = shift @parts;
+
+        if ($ADDRESS_MAPPINGS->{$name} eq $ldapName) {
+            for (@parts) {
+                s/^\s+//;
+                s/\s+$//;
+            }
+
+            $postalAddress = join "\n", @parts;
+            $postalAddress =~ s/(\d{5})(\d{4})/$1-$2/;
+
+            last;
+        }
+    }
+
+    return $postalAddress;
 }
 
 =head1 TODO
