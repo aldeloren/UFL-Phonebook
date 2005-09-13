@@ -1,7 +1,6 @@
 * Add tests all over the place
 * Handle edge cases for searching
   * Sizelimit/timelimit LDAP queries - pass message back to user
-* Improve responses to errors (http://search.cpan.org/dist/Catalyst/lib/Catalyst/Manual/Cookbook.pod#Delivering_a_Custom_Error_Page)
 
 * Keep query variable on all pages?
 
