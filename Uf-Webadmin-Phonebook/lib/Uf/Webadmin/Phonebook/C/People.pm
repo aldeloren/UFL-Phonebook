@@ -154,7 +154,7 @@ sub _parseQuery {
     }
 #    elsif ($query =~ /(\d{3})?(\d{2}?\d)(\d{4})/) {
 #        # Phone number
-#        my $areaCode = $1 || '352';
+#        my $areaCode = $1;
 #        my $exchange = $2;
 #        my $lastFour = $3;
 #
