@@ -1,7 +1,8 @@
 * Add tests all over the place
-* Handle edge cases for searching
-  * Sizelimit/timelimit LDAP queries - pass message back to user
+* Add unit search
+* Refactor (see TODO notes in source)
 
+* Tab navigation
 * Keep query variable on all pages?
 
 * CSS
