@@ -5,7 +5,7 @@ use warnings;
 use base 'Class::Accessor';
 
 # Method name => uflEduAllPostalAddresses name
-our $ADDRESS_MAPPINGS = {
+our $POSTAL_ADDRESS_MAPPINGS = {
     'campus'    => 'UF Business Physical Location Address',
     'mailing'   => 'UF Business Mailing Address',
     'home'      => 'Local Home Mailing Address',
@@ -126,7 +126,7 @@ sub getPostalAddress {
         my @parts = split /\$/, $value;
         my $ldapName  = shift @parts;
 
-        if ($ADDRESS_MAPPINGS->{$name} eq $ldapName) {
+        if ($POSTAL_ADDRESS_MAPPINGS->{$name} eq $ldapName) {
             for (@parts) {
                 s/^\s+//;
                 s/\s+$//;
