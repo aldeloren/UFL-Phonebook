@@ -40,7 +40,6 @@ Search the directory for people.
 
 =cut
 
-# TODO: Cleanup
 sub search : Local {
     my ($self, $c) = @_;
 
@@ -51,37 +50,37 @@ sub search : Local {
     my $string = $filter->as_string;
 
     $c->log->debug("Query: $query");
+    $c->log->debug("Sort: $sort");
     $c->log->debug("Filter: $string");
 
-    my $entries;
     eval {
-        $entries = $c->comp('M::People')->search($string);
+        my $entries = $c->comp('M::People')->search($string);
 
-        my $code = $c->comp('M::People')->code;
-        $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-        $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+        if ($entries and scalar @{ $entries }) {
+            my @results =
+                sort { $a->$sort cmp $b->$sort }
+                map { Uf::Webadmin::Phonebook::Entry->new($_) }
+                @{ $entries };
+
+            if (scalar @results == 1) {
+                my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
+                $c->res->redirect("$ufid/");
+            }
+            else {
+                my $code = $c->comp('M::People')->code;
+                $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+                $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+
+                $c->stash->{results}  = \@results;
+                $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_RESULTS;
+            }
+        }
+        else {
+            $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
+        }
     };
     if ($@) {
         $c->error($@);
-    }
-
-    if ($entries and scalar @{ $entries }) {
-        my @results =
-            sort { $a->$sort cmp $b->$sort }
-            map { Uf::Webadmin::Phonebook::Entry->new($_) }
-            @{ $entries };
-
-        if (scalar @results == 1) {
-            my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
-            $c->res->redirect("$ufid/");
-        }
-        else {
-            $c->stash->{results}  = \@results;
-            $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_RESULTS;
-        }
-    }
-    else {
-        $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
     }
 }
 
@@ -179,7 +178,7 @@ sub _parseQuery {
         $filter->add('sn',    '=', qq[$name*]);
         $filter->add('uid',   '=', $name);
         $filter->add('mail',  '=', qq[$name@*]);
-        # TODO: Searching title is very slow
+        # TODO: Searching title seems slow
 #        $filter->add('title', '=', qq[$name*]);
     }
     else {
@@ -192,7 +191,7 @@ sub _parseQuery {
         $filter->add('mail',  '=', qq[$last@*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
         $filter->add('mail',  '=', qq[$first-$last@*]);
-        # TODO: Searching title is very slow
+        # TODO: Searching title seems slow
 #        $filter->add('title', '=', qq[$query*]);
     }
 

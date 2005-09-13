@@ -79,10 +79,11 @@ Forward to the view.
 sub end : Private {
     my ($self, $c) = @_;
 
-    # Display errors in the template if we have one; otherwise, let
-    # Catalyst handle it
-    if (scalar @{ $c->error } and $c->stash->{template}) {
-        $c->stash->{errors} = $c->error;
+    # Display errors in the template if we have one; otherwise, use a
+    # sensible default
+    if (scalar @{ $c->error }) {
+        $c->stash->{errors}     = $c->error;
+        $c->stash->{template} ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_ERRORS;
         $c->{error} = [];
     }
 

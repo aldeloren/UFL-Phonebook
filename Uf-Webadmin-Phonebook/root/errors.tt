@@ -1,0 +1,2 @@
+[% INCLUDE includes/header.tt title = 'Error' %]
+[% INCLUDE includes/footer.tt %]
