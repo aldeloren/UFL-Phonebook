@@ -30,7 +30,7 @@ Display the search form.
 sub default : Private {
     my ($self, $c) = @_;
 
-    $c->forward('/default');
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_HOME;
 }
 
 =head2 search
