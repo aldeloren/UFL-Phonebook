@@ -1,4 +1,21 @@
 [% INCLUDE includes/header.tt %]
 [% INCLUDE people/includes/search.tt %]
+
+    <dl>
+[% FOREACH attribute IN person.attributes.sort %]
+  [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
+
+      <dt>[% attribute | html_entity %]</dt>
+      <dd>
+        <ul>
+  [% FOREACH value IN  person.$attribute %]
+          <li>[% value | html_entity %]</li>
+  [% END %]
+        </ul>
+      </dd>
+
+[% END %]
+    </dl>
+
 [% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]
