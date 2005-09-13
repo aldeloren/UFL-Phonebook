@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook::M::People;
 
 use strict;
+use warnings;
 use base 'Catalyst::Model::LDAP';
 use Uf::Webadmin::Phonebook;
 

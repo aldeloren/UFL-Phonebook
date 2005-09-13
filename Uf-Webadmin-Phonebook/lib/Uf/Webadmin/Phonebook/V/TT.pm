@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook::V::TT;
 
 use strict;
+use warnings;
 use base 'Catalyst::View::TT';
 use Uf::Webadmin::Phonebook::Utilities;
 

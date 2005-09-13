@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook::Utilities;
 
 use strict;
+use warnings;
 
 # Used to encode and decode UFIDs
 my $MASK = 56347812;

@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook::C::People;
 
 use strict;
+use warnings;
 use base 'Catalyst::Base';
 use Net::LDAP::Filter::Abstract;
 use Uf::Webadmin::Phonebook::Constants;

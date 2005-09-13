@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook::Constants;
 
 use strict;
+use warnings;
 use File::Spec;
 
 =head1 NAME

@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook;
 
 use strict;
+use warnings;
 use Catalyst;
 use File::Spec;
 use Uf::Webadmin::Phonebook::Constants;

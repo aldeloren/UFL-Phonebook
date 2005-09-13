@@ -1,6 +1,7 @@
 package Uf::Webadmin::Phonebook::C::Units;
 
 use strict;
+use warnings;
 use base 'Catalyst::Base';
 
 =head1 NAME
