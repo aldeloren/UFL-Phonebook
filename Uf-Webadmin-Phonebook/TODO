@@ -1,6 +1,9 @@
 * Add tests all over the place
 * Add unit search
-* Refactor (see TODO notes in source)
+* Refactor
+  * See TODO notes in source
+  * C::People and C::Units very similar -> move common stuff to a base
+    controller?
 
 * Keep query variable on all pages?
 
