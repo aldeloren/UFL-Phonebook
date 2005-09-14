@@ -1,0 +1,4 @@
+[% INCLUDE includes/header.tt %]
+[% INCLUDE units/includes/search.tt %]
+[% INCLUDE includes/links.tt %]
+[% INCLUDE includes/footer.tt %]
