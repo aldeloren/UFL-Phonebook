@@ -1,5 +1,12 @@
+[% MACRO search_url(base, uri, param, query) IF query %]
+  [% USE url("$base$uri") %]
+  [% url($param = query) %]
+[% ELSE %]
+  [% USE url(base) %]
+  [% url %]
+[% END %]
     <ul id="tabs">
-      <li><a href="[% c.config.search.web | html_entity %]">Web</a>
-      <li><a href="[% base %]people/">People</a>
-      <li><a href="[% base %]units/">Units</a>
+      <li><a href="[% search_url('http://search.ufl.edu/', 'web', 'query', c.req.params.query) %]">Web</a>
+      <li><a href="[% search_url("${base}people/", 'search', 'query', c.req.params.query) %]">People</a>
+      <li><a href="[% search_url("${base}units/", 'search', 'query', c.req.params.query) %]">Units</a>
     </ul>
