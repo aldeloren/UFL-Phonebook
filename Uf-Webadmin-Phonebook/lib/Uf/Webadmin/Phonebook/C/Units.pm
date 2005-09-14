@@ -156,6 +156,17 @@ sub _parseQuery {
 
         $filter->add('mail', '=', $mail);
     }
+#    elsif ($query =~ /(\d{3})?.?((:?\d{2})?\d).?(\d{4})/) {
+#        # Phone number
+#        my $areaCode = $1;
+#        my $exchange = $2;
+#        my $lastFour = $3;
+#
+#        my $phoneNumber = Uf::Webadmin::Phonebook::Utilities::getPhoneNumber($areaCode, $exchange, $lastFour);
+#
+#        $filter->add('telephoneNumber',          '=', qq[$phoneNumber*]);
+#        $filter->add('facsimileTelephoneNumber', '=', qq[$phoneNumber*]);
+#    }
     else {
         # Unit name
         $filter->add('o', '=', qq[*$query*]);

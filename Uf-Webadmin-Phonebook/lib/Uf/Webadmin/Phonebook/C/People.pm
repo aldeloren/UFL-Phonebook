@@ -162,16 +162,16 @@ sub _parseQuery {
         $filter->add('mail', '=', $mail);
         $filter->add('mail', '=', qq[$uid@*]);
     }
-#    elsif ($query =~ /(\d{3})?(\d{2}?\d)(\d{4})/) {
-#        # TODO: Phone number
+#    elsif ($query =~ /(\d{3})?.?((:?\d{2})?\d).?(\d{4})/) {
+#        # Phone number
 #        my $areaCode = $1;
 #        my $exchange = $2;
 #        my $lastFour = $3;
 #
-#        my $phone = "+1 $areaCode $exchange$lastFour";
+#        my $phoneNumber = Uf::Webadmin::Phonebook::Utilities::getPhoneNumber($areaCode, $exchange, $lastFour);
 #
-#        $filter->add('homePhone',       '=', $phone);
-#        $filter->add('telephoneNumber', '=', $phone);
+#        $filter->add('homePhone',       '=', qq[$phoneNumber*]);
+#        $filter->add('telephoneNumber', '=', qq[$phoneNumber*]);
 #    }
     elsif (scalar @tokens == 1) {
         # One token: last name or username
