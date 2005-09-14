@@ -55,6 +55,7 @@ sub search : Local {
 
     eval {
         my $entries = $c->comp('M::People')->search($string);
+        my $code    = $c->comp('M::People')->code;
 
         if ($entries and scalar @{ $entries }) {
             my @results =
@@ -67,7 +68,6 @@ sub search : Local {
                 $c->res->redirect("$ufid/");
             }
             else {
-                my $code = $c->comp('M::People')->code;
                 $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
                 $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
 
