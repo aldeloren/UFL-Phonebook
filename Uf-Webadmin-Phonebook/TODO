@@ -4,6 +4,7 @@
   * C::People and C::Units very similar -> move common stuff to a base
     controller?
 
+* Link from unit to people in that unit
 * Keep query variable on all pages?
 
 * CSS
