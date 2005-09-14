@@ -1,5 +1,4 @@
 * Add tests all over the place
-* Add unit search
 * Refactor
   * See TODO notes in source
   * C::People and C::Units very similar -> move common stuff to a base
