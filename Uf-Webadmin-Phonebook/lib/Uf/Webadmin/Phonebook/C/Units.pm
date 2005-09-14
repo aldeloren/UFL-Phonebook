@@ -49,7 +49,8 @@ Display a single unit.
 sub show : Regex('units/([A-Za-z0-9]{8,9})/?$') {
     my ($self, $c) = @_;
 
-    $c->forward('single');
+    my $ufid = $c->req->snippets->[0];
+    $c->forward('single', [ $ufid ]);
 }
 
 =head2 full
@@ -61,7 +62,8 @@ Display details for a single unit.
 sub full : Regex('units/([A-Za-z0-9]{8,9})/full/?$') {
     my ($self, $c) = @_;
 
-    $c->forward('single', [ $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_FULL ]);
+    my $ufid = $c->req->snippets->[0];
+    $c->forward('single', [ $ufid, $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_FULL ]);
 }
 
 =head2 single
@@ -72,12 +74,12 @@ which to display the unit.
 =cut
 
 sub single : Private {
-    my ($self, $c, $template) = @_;
+    my ($self, $c, $ufid, $template) = @_;
 
-    $template ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_SHOW;
+    $c->forward('default') unless $ufid;
 
-    my $ufid = $c->req->snippets->[0];
     $c->log->debug("UFID: $ufid");
+    $template ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_SHOW;
 
     eval {
         my $entries = $c->comp('M::Organizations')->search("uflEduUniversityId=$ufid");

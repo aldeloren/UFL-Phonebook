@@ -93,7 +93,8 @@ Display a single person.
 sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
     my ($self, $c) = @_;
 
-    $c->forward('single');
+    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
+    $c->forward('single', [ $ufid ]);
 }
 
 =head2 full
@@ -105,7 +106,8 @@ Display details for a single person.
 sub full : Regex('people/([A-Za-z0-9]{8,9})/full/?$') {
     my ($self, $c) = @_;
 
-    $c->forward('single', [ $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL ]);
+    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
+    $c->forward('single', [ $ufid, $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL ]);
 }
 
 =head2 single
@@ -116,12 +118,12 @@ which to display the person.
 =cut
 
 sub single : Private {
-    my ($self, $c, $template) = @_;
+    my ($self, $c, $ufid, $template) = @_;
+
+    $c->forward('default') unless $ufid;
+    $c->log->debug("UFID: $ufid");
 
     $template ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_SHOW;
-
-    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
-    $c->log->debug("UFID: $ufid");
 
     eval {
         my $entries = $c->comp('M::People')->search("uflEduUniversityId=$ufid");
