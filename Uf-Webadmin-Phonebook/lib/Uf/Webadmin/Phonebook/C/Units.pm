@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use base 'Catalyst::Base';
 use Uf::Webadmin::Phonebook::Constants;
+use Uf::Webadmin::Phonebook::Entry;
+use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
 
@@ -38,6 +40,46 @@ Search the directory for units.
 
 sub search : Local {
     my ($self, $c) = @_;
+
+    my $query = $c->req->param('query');
+    my $sort  = $c->req->param('sort') || 'o';
+
+    my $filter = $self->_parseQuery($query);
+    my $string = $filter->as_string;
+
+    $c->log->debug("Query: $query");
+    $c->log->debug("Sort: $sort");
+    $c->log->debug("Filter: $string");
+
+    eval {
+        my $entries = $c->comp('M::Organizations')->search($string);
+        my $code    = $c->comp('M::Organizations')->code;
+
+        if ($entries and scalar @{ $entries }) {
+            my @results =
+                sort { $a->$sort cmp $b->$sort }
+                map { Uf::Webadmin::Phonebook::Entry->new($_) }
+                @{ $entries };
+
+            if (scalar @results == 1) {
+                my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
+                $c->res->redirect("$ufid/");
+            }
+            else {
+                $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+                $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+
+                $c->stash->{results}  = \@results;
+                $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_RESULTS;
+            }
+        }
+        else {
+            $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_NO_RESULTS;
+        }
+    };
+    if ($@) {
+        $c->error($@);
+    }
 }
 
 =head2 show
@@ -93,6 +135,30 @@ sub single : Private {
     };
     if ($@) {
         $c->error($@);
+    }
+}
+
+=head2 _parseQuery
+
+Parse a query into an LDAP filter.
+
+=cut
+
+sub _parseQuery {
+    my ($self, $query) = @_;
+
+    my @tokens = Uf::Webadmin::Phonebook::Utilities::tokenizeQuery($query);
+
+    my $filter = Net::LDAP::Filter::Abstract->new('|');
+    if ($query =~ /(.*)\@/) {
+        # Email address
+        my $mail = $tokens[0];
+
+        $filter->add('mail', '=', $mail);
+    }
+    else {
+        # Unit name
+        $filter->add('o', '=', qq[*$query*]);
     }
 }
 

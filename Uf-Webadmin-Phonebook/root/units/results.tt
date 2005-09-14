@@ -1,0 +1,34 @@
+[% INCLUDE includes/header.tt title = c.req.params.query %]
+[% INCLUDE units/includes/search.tt %]
+
+[% IF sizelimit_exceeded %]
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned too many units. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+[% ELSIF timelimit_exceeded %]
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+[% ELSE %]
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned the following [% results.size == 1 ? 'unit' : results.size _ ' units' %]:</p>
+[% END %]
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+
+[% FOREACH result IN results %]
+        <tr>
+          <td><a href="/units/[% result.uflEduUniversityId | html_entity %]/">[% result.displayName ? result.displayName : result.o | html_entity %]</a></td>
+          <td>[% IF result.telephoneNumber %][% result.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</td>
+          <td>[% IF result.mail %]<a href="mailto:[% result.mail | spam_armor %]">[% result.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
+        </tr>
+
+[% END %]
+      </tbody>
+    </table>
+
+[% INCLUDE includes/links.tt %]
+[% INCLUDE includes/footer.tt %]

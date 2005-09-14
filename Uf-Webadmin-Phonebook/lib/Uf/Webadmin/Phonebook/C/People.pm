@@ -7,6 +7,7 @@ use Net::LDAP::Constant;
 use Net::LDAP::Filter::Abstract;
 use Uf::Webadmin::Phonebook::Constants;
 use Uf::Webadmin::Phonebook::Entry;
+use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
 
@@ -149,16 +150,16 @@ Parse a query into an LDAP filter.
 sub _parseQuery {
     my ($self, $query) = @_;
 
-    my @tokens = $self->_tokenizeQuery($query);
+    my @tokens = Uf::Webadmin::Phonebook::Utilities::tokenizeQuery($query);
 
     my $filter = Net::LDAP::Filter::Abstract->new('|');
     if ($query =~ /(.*)\@/) {
         # Email address
-        my $uid   = $1;
-        my $email = $tokens[0];
+        my $uid  = $1;
+        my $mail = $tokens[0];
 
         $filter->add('uid',  '=', $uid);
-        $filter->add('mail', '=', $email);
+        $filter->add('mail', '=', $mail);
         $filter->add('mail', '=', qq[$uid@*]);
     }
 #    elsif ($query =~ /(\d{3})?(\d{2}?\d)(\d{4})/) {
@@ -200,31 +201,6 @@ sub _parseQuery {
     return Net::LDAP::Filter::Abstract->new('&')
         ->add($filter)
         ->add($self->_getRestriction);
-}
-
-=head2 _tokenizeQuery
-
-Split a query into tokens, which can then be used to form LDAP
-filters.
-
-=cut
-
-# TODO: Refactor
-sub _tokenizeQuery {
-    my ($self, $query) = @_;
-
-    # Strip invalid characters
-    $query =~ s/[^a-z0-9 .,\-_\'\@]//gi;
-
-    my @tokens;
-    if ($query =~ /,/) {
-        @tokens = split /,\s*/, lc($query);
-    }
-    else {
-        @tokens = split /\s+/, lc($query);
-    }
-
-    return @tokens;
 }
 
 =head2 _getRestriction

@@ -72,6 +72,31 @@ sub decodeUfid {
     return $ufid;
 }
 
+=head2 tokenizeQuery
+
+Split a query into tokens, which can then be used to form LDAP
+filters.
+
+=cut
+
+# TODO: Refactor
+sub tokenizeQuery {
+    my ($query) = @_;
+
+    # Strip invalid characters
+    $query =~ s/[^a-z0-9 .,\-_\'\@]//gi;
+
+    my @tokens;
+    if ($query =~ /,/) {
+        @tokens = split /,\s*/, lc($query);
+    }
+    else {
+        @tokens = split /\s+/, lc($query);
+    }
+
+    return @tokens;
+}
+
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
