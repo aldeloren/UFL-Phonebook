@@ -44,7 +44,7 @@ phonebook.
 
 =cut
 
-# TODO: Refactor
+# TODO: Cleanup
 sub encodeUfid {
     my ($ufid) = @_;
 
@@ -61,7 +61,7 @@ Decode the UFID by doing the reverse of C<encodeUfid>.
 
 =cut
 
-# TODO: Refactor
+# TODO: Cleanup
 sub decodeUfid {
     my ($encoded) = @_;
 
@@ -79,7 +79,7 @@ filters.
 
 =cut
 
-# TODO: Refactor
+# TODO: Cleanup
 sub tokenizeQuery {
     my ($query) = @_;
 
