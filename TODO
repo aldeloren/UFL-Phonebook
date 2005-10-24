@@ -1,4 +1,5 @@
 * Add tests all over the place
+  - Check 04entry.t for correct use of Uf::Webadmin::Phonebook::M::People
 * Refactor
   * See TODO notes in source
   * C::People and C::Units very similar -> move common stuff to a base

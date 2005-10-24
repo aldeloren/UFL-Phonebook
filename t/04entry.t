@@ -6,7 +6,8 @@ use_ok('Uf::Webadmin::Phonebook::Entry');
 
 my $uid = 'gkt';
 
-my $results = Uf::Webadmin::Phonebook::M::People->search("(uid=$uid)");
+my $people  = Uf::Webadmin::Phonebook::M::People->new;
+my $results = $people->search("(uid=$uid)");
 ok(scalar @{ $results } > 0, 'got results');
 
 my @entries = map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $results };
