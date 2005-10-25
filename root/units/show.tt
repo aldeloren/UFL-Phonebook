@@ -3,7 +3,7 @@
 
 
 [% IF single_result %]
-    <p>Your search - <strong>[% c.req.params.query | html_entity %]</strong> - returned only one unit, displayed below.</p>
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one unit, displayed below.</p>
 [% END %]
 
 
