@@ -1,7 +1,7 @@
 [% INCLUDE includes/header.tt title = c.req.params.query %]
 [% INCLUDE units/includes/search.tt %]
 
-    <p>Your search - <strong>[% c.req.params.query | html_entity %]</strong> - did not match any units at the University of Florida.</p>
+    <p>Your search[% IF c.req.params.query %] - <strong>[% c.req.params.query | html_entity %]</strong> -[% END %] did not match any units at the University of Florida.</p>
     <p>Suggestions:</p>
     <ul>
       <li>Make sure all terms are spelled correctly.</li>
