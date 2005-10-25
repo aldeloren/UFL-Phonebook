@@ -25,14 +25,20 @@ Catalyst controller component for finding people.
 
 =head2 default
 
-Display the search form.
+If a UFID is specified, display the specified person. Otherwise,
+display the people home page.
 
 =cut
 
 sub default : Private {
-    my ($self, $c) = @_;
+    # TODO: Remove $junk parameter - possibly fixed in Catalyst trunk?
+    my ($self, $c, $junk, $ufid, $full) = @_;
 
     $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_HOME;
+
+    if ($ufid) {
+        $c->forward('single', [ $ufid, $full ]);
+    }
 }
 
 =head2 search
@@ -85,52 +91,27 @@ sub search : Local {
     }
 }
 
-=head2 show
+=head2 single
 
 Display a single person.
 
 =cut
 
-sub show : Regex('people/([A-Za-z0-9]{8,9})/?$') {
-    my ($self, $c) = @_;
-
-    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
-    $c->forward('single', [ $ufid ]);
-}
-
-=head2 full
-
-Display details for a single person.
-
-=cut
-
-sub full : Regex('people/([A-Za-z0-9]{8,9})/full/?$') {
-    my ($self, $c) = @_;
-
-    my $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($c->req->snippets->[0]);
-    $c->forward('single', [ $ufid, $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL ]);
-}
-
-=head2 single
-
-Display a single person. Optionally, you can specify a template with
-which to display the person.
-
-=cut
-
 sub single : Private {
-    my ($self, $c, $ufid, $template) = @_;
+    my ($self, $c, $ufid, $full) = @_;
 
-    $c->forward('default') unless $ufid;
+    $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($ufid);
     $c->log->debug("UFID: $ufid");
-
-    $template ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_SHOW;
 
     eval {
         my $entries = $c->comp('M::People')->search("uflEduUniversityId=$ufid");
         if (scalar @{ $entries }) {
             $c->stash->{person}   = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
-            $c->stash->{template} = $template;
+            $c->stash->{template} = (
+                $full
+                ? $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL
+                : $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_SHOW
+            );
         }
         else {
             $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;

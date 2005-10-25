@@ -24,12 +24,20 @@ campus organizations).
 
 =head2 default
 
+If a UFID is specified, display the specified unit. Otherwise, display
+the units home page.
+
 =cut
 
 sub default : Private {
-    my ($self, $c) = @_;
+    # TODO: Remove $junk parameter - possibly fixed in Catalyst trunk?
+    my ($self, $c, $junk, $ufid, $full) = @_;
 
     $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_HOME;
+
+    if ($ufid) {
+        $c->forward('single', [ $ufid, $full ]);
+    }
 }
 
 =head2 search
@@ -63,7 +71,8 @@ sub search : Local {
 
             if (scalar @results == 1) {
                 my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
-                $c->res->redirect("$ufid/");
+                $c->stash->{single_result} = 1;
+                $c->forward('single', [ $ufid ]);
             }
             else {
                 $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
@@ -82,32 +91,6 @@ sub search : Local {
     }
 }
 
-=head2 show
-
-Display a single unit.
-
-=cut
-
-sub show : Regex('units/([A-Za-z0-9]{8,9})/?$') {
-    my ($self, $c) = @_;
-
-    my $ufid = $c->req->snippets->[0];
-    $c->forward('single', [ $ufid ]);
-}
-
-=head2 full
-
-Display details for a single unit.
-
-=cut
-
-sub full : Regex('units/([A-Za-z0-9]{8,9})/full/?$') {
-    my ($self, $c) = @_;
-
-    my $ufid = $c->req->snippets->[0];
-    $c->forward('single', [ $ufid, $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_FULL ]);
-}
-
 =head2 single
 
 Display a single unit. Optionally, you can specify a template with
@@ -116,18 +99,19 @@ which to display the unit.
 =cut
 
 sub single : Private {
-    my ($self, $c, $ufid, $template) = @_;
-
-    $c->forward('default') unless $ufid;
+    my ($self, $c, $ufid, $full) = @_;
 
     $c->log->debug("UFID: $ufid");
-    $template ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_SHOW;
 
     eval {
         my $entries = $c->comp('M::Organizations')->search("uflEduUniversityId=$ufid");
         if (scalar @{ $entries }) {
             $c->stash->{unit}     = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
-            $c->stash->{template} = $template;
+            $c->stash->{template} = (
+                $full
+                ? $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_FULL
+                : $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_SHOW
+            );
         }
         else {
             $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_NO_RESULTS;
