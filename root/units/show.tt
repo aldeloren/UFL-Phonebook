@@ -1,6 +1,12 @@
 [% INCLUDE includes/header.tt %]
 [% INCLUDE units/includes/search.tt %]
 
+
+[% IF single_result %]
+    <p>Your search - <strong>[% c.req.params.query | html_entity %]</strong> - returned only one unit, displayed below.</p>
+[% END %]
+
+
     <h3>[% (unit.displayName ? unit.displayName : unit.o) | html_entity %]</h3>
 
     <h4>General Information</h4>

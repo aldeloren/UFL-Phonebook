@@ -1,6 +1,12 @@
 [% INCLUDE includes/header.tt %]
 [% INCLUDE people/includes/search.tt %]
 
+
+[% IF single_result %]
+    <p>Your search - <strong>[% c.req.params.query | html_entity %]</strong> - returned only one member of the UF community, displayed below.</p>
+[% END %]
+
+
     <h3>[% person.displayName | html_entity %]</h3>
 
     <h4>General Information</h4>

@@ -72,7 +72,8 @@ sub search : Local {
 
             if (scalar @results == 1) {
                 my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
-                $c->res->redirect("$ufid/");
+                $c->stash->{single_result} = 1;
+                $c->forward('single', [ $ufid ]);
             }
             else {
                 $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
