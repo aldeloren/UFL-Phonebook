@@ -143,6 +143,7 @@ sub _parseQuery {
         $filter->add('mail', '=', $mail);
     }
 #    elsif ($query =~ /(\d{3})?.?((:?\d{2})?\d).?(\d{4})/) {
+        # TODO: Searching phone numbers seems slow
 #        # Phone number
 #        my $areaCode = $1;
 #        my $exchange = $2;
