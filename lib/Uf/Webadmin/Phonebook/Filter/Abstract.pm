@@ -6,8 +6,6 @@ use Uf::Webadmin::Phonebook::Filter::Abstract::Predicate;
 use Scalar::Util qw(blessed);
 use Tree::Simple;
 
-our $VERSION = '0.01';
-
 =head1 NAME
 
 Uf::Webadmin::Phonebook::Filter::Abstract - Generate LDAP filters using a simple API

@@ -3,6 +3,7 @@ name: Uf-Webadmin-Phonebook
 version: 0.01
 author:
   - University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
+  - L<http://www.webadmin.ufl.edu/>
 abstract: Catalyst based application
 license: perl
 requires:
@@ -10,7 +11,7 @@ requires:
   Catalyst::Model::LDAP: 0
   Catalyst::View::TT: 0
   Class::Accessor: 0
-  Net::LDAP::Filter::Abstract: 0
+  Tree::Simple: 0
   YAML: 0
 provides:
   Uf::Webadmin::Phonebook:
@@ -24,6 +25,12 @@ provides:
     file: lib/Uf/Webadmin/Phonebook/Constants.pm
   Uf::Webadmin::Phonebook::Entry:
     file: lib/Uf/Webadmin/Phonebook/Entry.pm
+  Uf::Webadmin::Phonebook::Filter::Abstract:
+    file: lib/Uf/Webadmin/Phonebook/Filter/Abstract.pm
+  Uf::Webadmin::Phonebook::Filter::Abstract::Operator:
+    file: lib/Uf/Webadmin/Phonebook/Filter/Abstract/Operator.pm
+  Uf::Webadmin::Phonebook::Filter::Abstract::Predicate:
+    file: lib/Uf/Webadmin/Phonebook/Filter/Abstract/Predicate.pm
   Uf::Webadmin::Phonebook::M::Organizations:
     file: lib/Uf/Webadmin/Phonebook/M/Organizations.pm
   Uf::Webadmin::Phonebook::M::People:
@@ -32,4 +39,4 @@ provides:
     file: lib/Uf/Webadmin/Phonebook/Utilities.pm
   Uf::Webadmin::Phonebook::V::TT:
     file: lib/Uf/Webadmin/Phonebook/V/TT.pm
-generated_by: Module::Build version 0.2611
+generated_by: Module::Build version 0.25
