@@ -5,7 +5,7 @@
 <title>[% IF title %][% title | trim | html_entity %] - [% END %]University of Florida [% name %]</title>
 
 [% INCLUDE includes/favicon.tt %]
-[%# INCLUDE includes/css.tt %]
+[% INCLUDE includes/css.tt %]
 [% INCLUDE includes/js.tt %]
 </head>
 <body>

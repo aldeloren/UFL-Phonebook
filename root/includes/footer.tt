@@ -1,4 +1,6 @@
+ 
   </div><!-- end content -->
+</div><!-- end mainContainer -->
   <div id="footer">
     <h3>Frequently Used Sites</h3>
     <ul>
@@ -21,6 +23,5 @@
       <li><a href="http://search.ufl.edu/">Search</a></li>
     </ul>
   </div><!-- end footer -->
-</div><!-- end mainContainer -->
 </body>
 </html>
