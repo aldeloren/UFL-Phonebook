@@ -5,10 +5,8 @@ use warnings;
 use base 'Catalyst::View::TT';
 use Uf::Webadmin::Phonebook::Utilities;
 
+# TODO: Write actual filters?
 __PACKAGE__->config(
-    PRE_CHOMP  => 1,
-    POST_CHOMP => 1,
-    CONTEXT    => undef,
     FILTERS    => {
         spam_armor  => \&Uf::Webadmin::Phonebook::Utilities::spamArmor,
         encode_ufid => \&Uf::Webadmin::Phonebook::Utilities::encodeUfid,

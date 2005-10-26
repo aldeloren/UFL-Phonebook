@@ -17,6 +17,7 @@ MANIFEST			This list of files
 META.yml
 phonebook.yml
 README
+root/errors.tt
 root/favicon.ico
 root/includes/css.tt
 root/includes/errors.tt
@@ -51,6 +52,9 @@ root/static/js/cookies.js
 root/static/js/phonebook.js
 root/units/full.tt
 root/units/includes/search.tt
+root/units/index.tt
+root/units/noResults.tt
+root/units/results.tt
 root/units/show.tt
 script/uf_webadmin_phonebook_cgi.pl
 script/uf_webadmin_phonebook_create.pl

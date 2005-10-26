@@ -3,12 +3,6 @@ package Uf::Webadmin::Phonebook::M::Organizations;
 use strict;
 use warnings;
 use base 'Catalyst::Model::LDAP';
-use Uf::Webadmin::Phonebook;
-
-__PACKAGE__->config(
-    %{ Uf::Webadmin::Phonebook->config->{ldap} },
-    base => 'ou=Organizations,dc=ufl,dc=edu',
-);
 
 =head1 NAME
 
@@ -20,8 +14,7 @@ See L<Uf::Webadmin::Phonebook>.
 
 =head1 DESCRIPTION
 
-Catalyst model component for the University of Florida LDAP server.
-This component uses a base of C<ou=Organizations,dc=ufl,dc=edu>.
+Catalyst model component for the University of Florida Phonebook.
 
 =head1 AUTHOR
 

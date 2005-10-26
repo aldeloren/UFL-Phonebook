@@ -1,9 +1,22 @@
 --- #YAML:1.0
 # Do not use tabs for indentation or label/value separation!
 name: Phonebook
-
 ldap:
-  host: ldap.ufl.edu
-  options:
+  host: &host ldap.ufl.edu
+  options: &options
     sizelimit: 100
     timelimit: 10
+
+M::Organizations:
+  host:    *host
+  base:    ou=Organizations,dc=ufl,dc=edu
+  options: *options
+
+M::People:
+  host:    *host
+  base:    ou=People,dc=ufl,dc=edu
+  options: *options
+
+V::TT:
+  PRE_CHOMP:  1
+  POST_CHOMP: 1
