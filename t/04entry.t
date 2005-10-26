@@ -1,12 +1,12 @@
 use strict;
 use Test::More tests => 6;
-use Uf::Webadmin::Phonebook::M::People;
+use Uf::Webadmin::Phonebook;
 
 use_ok('Uf::Webadmin::Phonebook::Entry');
 
 my $uid = 'gkt';
 
-my $people  = Uf::Webadmin::Phonebook::M::People->new;
+my $people  = Uf::Webadmin::Phonebook->comp('M::People');
 my $results = $people->search("(uid=$uid)");
 ok(scalar @{ $results } > 0, 'got results');
 
