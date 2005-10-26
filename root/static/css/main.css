@@ -58,6 +58,8 @@ font-size:1.4em;
 table { font-size: 1.2em}
 thead { font-size: 1.6em}
 td { padding: 2px 15px 2px 0}
+.odd {background:#ccc}
+
 ul {list-style-type:none}
 
 h1#logo {
@@ -170,6 +172,10 @@ margin-left:20px;
 
 #note {
 clear:both;
+}
+
+.results a {
+text-decoration:underline
 }
 
 .results dl {
