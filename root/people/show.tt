@@ -62,7 +62,7 @@
 
     <ul>
       <li><a href="http://directory.ufl.edu/edit">Update your directory information</a></li>
-      <li><a href="full/">Display full <acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a></li>
+      <li><a href="/people/[% person.uflEduUniversityId | encode_ufid | html_entity %]/full/">Display full <acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a></li>
     </ul>
 
 
