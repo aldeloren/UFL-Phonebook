@@ -1,13 +1,14 @@
 use strict;
+use warnings;
 use Test::More tests => 6;
 use Uf::Webadmin::Phonebook;
 
 use_ok('Uf::Webadmin::Phonebook::Entry');
 
-my $uid = 'gkt';
+my $UID = 'gkt';
 
 my $people  = Uf::Webadmin::Phonebook->comp('M::People');
-my $results = $people->search("(uid=$uid)");
+my $results = $people->search("(uid=$UID)");
 ok(scalar @{ $results } > 0, 'got results');
 
 my @entries = map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $results };
@@ -15,7 +16,7 @@ my @entries = map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $results };
 my $entry = $entries[0];
 
 ok(scalar($entry->attributes) > 0, 'has attributes');
-ok($entry->uid eq $uid, 'uid');
+ok($entry->uid eq $UID, 'uid');
 ok(scalar($entry->uflEduAllPhones) > 0, 'has a phone number');
 
 ok($entry->getPostalAddress('campus') eq "CREC - LAKE ALFRED

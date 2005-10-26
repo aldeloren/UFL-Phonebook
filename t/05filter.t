@@ -1,5 +1,7 @@
 use strict;
+use warnings;
 use Test::More tests => 9;
+
 use_ok('Uf::Webadmin::Phonebook::Filter::Abstract');
 
 my $filter = Uf::Webadmin::Phonebook::Filter::Abstract->new;
