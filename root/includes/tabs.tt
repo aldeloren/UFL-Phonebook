@@ -8,8 +8,6 @@
     <ul id="tabs">
       <li><a href="[% search_url('http://search.ufl.edu/', 'web', 'query', c.req.params.query) %]">Web</a></li>
       <li id="active">People</li>
-      
-<!--<a href="[% search_url("${base}people/", 'search', 'query', c.req.params.query) %]">People</a>
--->
+      <!--<a href="[% search_url("${base}people/", 'search', 'query', c.req.params.query) %]">People</a>-->
       <li><a href="[% search_url("${base}units/", 'search', 'query', c.req.params.query) %]">Units</a></li>
     </ul>

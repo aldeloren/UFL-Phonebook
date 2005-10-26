@@ -1,18 +1,18 @@
-<div id="phonebook_help">
-<h3>Search Tips</h3>
-<dl>
-<dt>Enter A Last Name</dt>
-<dd>turner</dd>
-<dt>Enter lastname and first initial</dt>
-<dd>T. Green<br />B. Brown</dd>
-<dt>Enter fullname</dt>
-<dd>john q. public<br />Greg Jones</dd>
-<dt>Enter an e-mail address</dt>
-<dd>gogators@ufl.edu</dd>
-<dt>Use a &#042; to expand with wildcard characters</dt>
-<dd>johns&#042;</dd>
-</dl>
-</div>
+    <div id="phonebook_help">
+      <h3>Search Tips</h3>
+      <dl>
+        <dt>Enter A Last Name</dt>
+        <dd>turner</dd>
+        <dt>Enter lastname and first initial</dt>
+        <dd>T. Green<br />B. Brown</dd>
+        <dt>Enter fullname</dt>
+        <dd>john q. public<br />Greg Jones</dd>
+        <dt>Enter an e-mail address</dt>
+        <dd>gogators@ufl.edu</dd>
+        <dt>Use a &#042; to expand with wildcard characters</dt>
+        <dd>johns&#042;</dd>
+      </dl>
+    </div>
     <div class="directories">
       <h3>UF Directories</h3>
       <ul>
