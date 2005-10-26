@@ -1,8 +1,7 @@
 [% INCLUDE includes/header.tt title = c.req.params.query %]
 [% INCLUDE people/includes/search.tt %]
 
-    <p>Your search[% IF c.req.params.query %] <strong>[% c.req.params.query | html_entity %]</strong>[% END %] did not match any members of the University of Florida community.</p>
-    
+    <p>Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html_entity %]</strong>[% END %] did not match any members of the University of Florida community.</p>
 
 [% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]
