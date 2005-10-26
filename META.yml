@@ -11,6 +11,7 @@ requires:
   Catalyst::Model::LDAP: 0
   Catalyst::View::TT: 0
   Class::Accessor: 0
+  Scalar::Util: 0
   Tree::Simple: 0
   YAML: 0
 provides:
