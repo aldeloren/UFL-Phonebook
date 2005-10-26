@@ -3,8 +3,10 @@ package Uf::Webadmin::Phonebook::C::Units;
 use strict;
 use warnings;
 use base 'Catalyst::Base';
+use Net::LDAP::Constant;
 use Uf::Webadmin::Phonebook::Constants;
 use Uf::Webadmin::Phonebook::Entry;
+use Uf::Webadmin::Phonebook::Filter::Abstract;
 use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
@@ -133,7 +135,7 @@ sub _parseQuery {
 
     my @tokens = Uf::Webadmin::Phonebook::Utilities::tokenizeQuery($query);
 
-    my $filter = Net::LDAP::Filter::Abstract->new('|');
+    my $filter = Uf::Webadmin::Phonebook::Filter::Abstract->new('|');
     if ($query =~ /(.*)\@/) {
         # Email address
         my $mail = $tokens[0];

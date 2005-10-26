@@ -4,9 +4,9 @@ use strict;
 use warnings;
 use base 'Catalyst::Base';
 use Net::LDAP::Constant;
-use Net::LDAP::Filter::Abstract;
 use Uf::Webadmin::Phonebook::Constants;
 use Uf::Webadmin::Phonebook::Entry;
+use Uf::Webadmin::Phonebook::Filter::Abstract;
 use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
@@ -134,7 +134,7 @@ sub _parseQuery {
 
     my @tokens = Uf::Webadmin::Phonebook::Utilities::tokenizeQuery($query);
 
-    my $filter = Net::LDAP::Filter::Abstract->new('|');
+    my $filter = Uf::Webadmin::Phonebook::Filter::Abstract->new('|');
     if ($query =~ /(.*)\@/) {
         # Email address
         my $uid  = $1;
@@ -180,7 +180,7 @@ sub _parseQuery {
 #        $filter->add('title', '=', qq[$query*]);
     }
 
-    return Net::LDAP::Filter::Abstract->new('&')
+    return Uf::Webadmin::Phonebook::Filter::Abstract->new('&')
         ->add($filter)
         ->add($self->_getRestriction);
 }
@@ -195,9 +195,9 @@ members of the community.
 sub _getRestriction {
     my ($self) = @_;
 
-    my $filter = Net::LDAP::Filter::Abstract->new('&');
-    $filter->add(Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/));
-    $filter->add(Net::LDAP::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/));
+    my $filter = Uf::Webadmin::Phonebook::Filter::Abstract->new('&');
+    $filter->add(Uf::Webadmin::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/));
+    $filter->add(Uf::Webadmin::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/));
 
     return $filter;
 }
