@@ -40,13 +40,17 @@ root/robots.txt
 root/static/css/basic.css
 root/static/css/main.css
 root/static/css/print.css
+root/static/images/active.gif
 root/static/images/background.jpg
+root/static/images/bg.jpg
+root/static/images/bg_dir_heading.gif
 root/static/images/bg_heading.gif
 root/static/images/icon.jpg
 root/static/images/navDropShadow.jpg
 root/static/images/pointer.gif
 root/static/images/smallWordmark.gif
 root/static/images/unitHeader.gif
+root/static/images/unitHeaderSearch.gif
 root/static/images/universityOfFlorida.gif
 root/static/images/whiteCornerNik.gif
 root/static/js/autocomplete.js
