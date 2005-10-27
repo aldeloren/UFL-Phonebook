@@ -103,38 +103,38 @@ sub attributes {
     return keys %{ $self };
 }
 
-=head2 getPostalAddress
+=head2 get_postal_address
 
 Get the specified address from the C<uflEduAllPostalAddresses> field.
 The address is parsed slightly to make it more human readable.
 
 =cut
 
-sub getPostalAddress {
+sub get_postal_address {
     my ($self, $name) = @_;
 
-    my $postalAddress = undef;
+    my $postal_address = undef;
 
     if (my @values = $self->uflEduAllPostalAddresses) {
         foreach my $value (@values) {
             my @parts = split /\$/, $value;
-            my $ldapName = shift @parts;
+            my $ldap_name = shift @parts;
 
-            if ($POSTAL_ADDRESS_MAPPINGS->{$name} eq $ldapName) {
+            if ($POSTAL_ADDRESS_MAPPINGS->{$name} eq $ldap_name) {
                 for (@parts) {
                     s/^\s+//;
                     s/\s+$//;
                 }
 
-                $postalAddress = join "\n", @parts;
-                $postalAddress =~ s/(\d{5})(\d{4})/$1-$2/;
+                $postal_address = join "\n", @parts;
+                $postal_address =~ s/(\d{5})(\d{4})/$1-$2/;
 
                 last;
             }
         }
     }
 
-    return $postalAddress;
+    return $postal_address;
 }
 
 =head1 TODO

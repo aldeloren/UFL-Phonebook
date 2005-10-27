@@ -19,7 +19,7 @@ ok(scalar($entry->attributes) > 0, 'has attributes');
 ok($entry->uid eq $UID, 'uid');
 ok(scalar($entry->uflEduAllPhones) > 0, 'has a phone number');
 
-ok($entry->getPostalAddress('campus') eq "CREC - LAKE ALFRED
+ok($entry->get_postal_address('campus') eq "CREC - LAKE ALFRED
 700 EXPERIMENT STATION RD
 LAKE ALFRED, FL, US
 33850-2243", 'campus address');
