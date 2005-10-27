@@ -34,10 +34,11 @@ sub default : Private {
     # TODO: Remove $junk parameter - possibly fixed in Catalyst trunk?
     my ($self, $c, $junk, $ufid, $full) = @_;
 
-    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_HOME;
-
     if ($ufid) {
         $c->forward('single', [ $ufid, $full ]);
+    }
+    else {
+        $c->res->redirect('/');
     }
 }
 

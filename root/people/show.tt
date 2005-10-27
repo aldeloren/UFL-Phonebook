@@ -1,4 +1,4 @@
-[% INCLUDE includes/header.tt stylesheets = ['/static/css/sec.css'] %]
+[% INCLUDE people/includes/header.tt stylesheets = [ '/static/css/sec.css' ] %]
 [% INCLUDE people/includes/search.tt %]
 
     <div class="vcard results">
@@ -85,4 +85,4 @@
       <p>Display the full <a href="/people/[% person.uflEduUniversityId | encode_ufid | html_entity %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
     </div>
 
-[% INCLUDE includes/footer.tt %]
+[% INCLUDE people/includes/footer.tt %]

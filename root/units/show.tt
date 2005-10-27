@@ -1,4 +1,4 @@
-[% INCLUDE includes/header.tt %]
+[% INCLUDE units/includes/header.tt %]
 [% INCLUDE units/includes/search.tt %]
 
 [% IF single_result %]
@@ -36,4 +36,4 @@
       <li><a href="/units/[% unit.uflEduUniversityId | html_entity %]/full/">Display full <acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a></li>
     </ul>
 
-[% INCLUDE includes/footer.tt %]
+[% INCLUDE units/includes/footer.tt %]

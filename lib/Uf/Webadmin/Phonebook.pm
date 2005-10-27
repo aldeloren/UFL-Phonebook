@@ -48,7 +48,7 @@ Display the home page.
 sub default : Private {
     my ($self, $c) = @_;
 
-    $c->forward('/people/default');
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_HOME;
 }
 
 =head2 end

@@ -1,4 +1,4 @@
-[% INCLUDE includes/header.tt %]
+[% INCLUDE units/includes/header.tt %]
 [% INCLUDE units/includes/search.tt %]
 
     <dl>
@@ -18,4 +18,4 @@
 [% END %]
     </dl>
 
-[% INCLUDE includes/footer.tt %]
+[% INCLUDE units/includes/footer.tt %]

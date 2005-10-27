@@ -1,4 +1,4 @@
-[% INCLUDE includes/header.tt %]
+[% INCLUDE people/includes/header.tt %]
 [% INCLUDE people/includes/search.tt %]
 
     <dl>
@@ -19,4 +19,4 @@
 [% END %]
     </dl>
 
-[% INCLUDE includes/footer.tt %]
+[% INCLUDE people/includes/footer.tt %]

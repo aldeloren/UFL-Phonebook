@@ -1,4 +1,4 @@
-[% INCLUDE includes/header.tt title = c.req.params.query %]
+[% INCLUDE units/includes/header.tt title = c.req.params.query %]
 [% INCLUDE units/includes/search.tt %]
 
 [% IF sizelimit_exceeded %]
@@ -32,4 +32,4 @@
       </tbody>
     </table>
 
-[% INCLUDE includes/footer.tt %]
+[% INCLUDE units/includes/footer.tt %]

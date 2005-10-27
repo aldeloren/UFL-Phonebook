@@ -1,6 +1,0 @@
-[% INCLUDE includes/header.tt stylesheets = ['/static/css/main.css'] %]
-<div id="priSearch">
-[% INCLUDE people/includes/search.tt %]
-[% INCLUDE people/includes/tips.tt %]
-</div>
-[% INCLUDE includes/footer.tt %]
