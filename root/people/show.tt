@@ -1,4 +1,4 @@
-[% INCLUDE includes/header.tt %]
+[% INCLUDE includes/header.tt stylesheets = ['/static/css/sec.css'] %]
 [% INCLUDE people/includes/search.tt %]
 
     <div class="vcard results">
@@ -34,15 +34,33 @@
       <dl class="adr">
         <dt class="type">Campus</dt>
         <dd>[% campus_address = person.uflEduAllPostalAddresses.campus %]
-          [% IF campus_address %][% campus_address.as_string | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+          [% IF campus_address %]
+          <span class="street-address">[% campus_address.street | html_entity %]</span>
+          <span class="locality">[% campus_address.locality | html_entity %]</span>
+          <span class="region">[% campus_address.region | html_entity %]</span>
+          <abbr title="dom">[% campus_address.dominion | html_entity %]</abbr>
+          <span class="postal-code">[% campus_address.postal_code | html_entity %]</span>
+          [% ELSE %]&nbsp;[% END %]</dd>
 
         <dt class="type">Home</dt>
         <dd>[% home_address = person.uflEduAllPostalAddresses.home %]
-          [% IF home_address %][% home_address.as_string | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+          <span class="street-address">[% home_address.street | html_entity %]</span>
+          <span class="locality">[% home_address.locality | html_entity %]</span>
+          <span class="region">[% home_address.region | html_entity %]</span>
+          <abbr title="dom">[% home_address.dominion | html_entity %]</abbr>
+          <span class="postal-code">[% home_address.postal_code | html_entity %]</span>
+          
+          [% ELSE %]&nbsp;[% END %]</dd>
 
-        <dt class="type">Mailing</dt>
+        <dt class="type" title="postal parcel">Mailing</dt>
         <dd>[% mailing_address = person.uflEduAllPostalAddresses.mailing %]
-          [% IF mailing_address %][% mailing_address.as_string | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+          <span class="street-address">[% mailing_address.street | html_entity %]</span>
+          <span class="locality">[% mailing_address.locality | html_entity %]</span>
+          <span class="region">[% mailing_address.region | html_entity %]</span>
+          <abbr title="dom">[% mailing_address.dominion | html_entity %]</abbr>
+          <span class="postal-code">[% mailing_address.postal_code | html_entity %]</span>          
+          
+          [% ELSE %]&nbsp;[% END %]</dd>
       </dl>
 
 [% IF person.eduPersonPrimaryAffiliation != 'student' %]
