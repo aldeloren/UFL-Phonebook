@@ -38,76 +38,82 @@ Given a L<Net::LDAP::Entry>, create our view of that entry.
 sub new {
     my ($class, $entry) = @_;
 
-    return unless $entry;
-
     my $self = bless({}, (ref $class or $class));
+    $self->_parse($entry);
+
+    return $self;
+}
+
+=head2 _parse
+
+Parse the entry's attributes and corresponding values. Basic
+validation is done to avoid blank and "unknown" values.
+
+=cut
+
+sub _parse {
+    my ($self, $entry) = @_;
 
     foreach my $attribute ($entry->attributes) {
+        $self->attribute($attribute);
         my @values = $entry->get_value($attribute);
 
         if (exists $RELATIONSHIPS->{$attribute}) {
             my $class = $RELATIONSHIPS->{$attribute};
             $class->require or die $@;
 
-            $self->_store($attribute, $class->new(@values));
+            $self->$attribute($class->new(@values));
         }
         else {
-            $self->_store($attribute, @values);
+            my @valid = grep { $_ and $_ ne '--UNKNOWN--' } @values;
+            $self->$attribute(@valid);
         }
     }
 
     return $self;
 }
 
-=head2 _store
+=head2 set
 
-Store an attribute and its values. Basic validation is done to avoid
-blank and "unknown" values.
+Override the C<set> method from L<Class::Accessor> to push values
+instead of replacing them.
 
 =cut
 
-sub _store {
-    my ($self, $attribute, @values) = @_;
+sub set {
+    my ($self, $key) = splice(@_, 0, 2);
 
-    foreach my $value (@values) {
-        if ($value and $value ne '--UNKNOWN--') {
-            push @{ $self->{$attribute} }, $value;
-        }
+    my $values = $self->get($key);
+
+    my @new;
+    push @new, @{ $values } if ref $values eq 'ARRAY';
+    push @new, @_;
+
+    $self->SUPER::set($key, @new);
+}
+
+=head2 attribute
+
+Return a list of attributes defined on this entry.
+
+  my @attributes = $entry->attribute
+
+Add one or more new attributes to the list and create an accessor for
+each.
+
+  $entry->attribute('o');
+
+=cut
+
+sub attribute {
+    my ($self, @attributes) = @_;
+
+    if (@attributes) {
+        push @{ $self->{_attributes} }, @attributes;
+        $self->mk_accessors(@attributes);
     }
 
-    $self->mk_ro_accessors($attribute);
-    push @{ $self->{_attributes} }, $attribute;
-}
-
-=head2 attributes
-
-Return a list of attribute names for this phonebook entry.
-
-=cut
-
-sub attributes {
-    my $self = shift;
-
-    return @{ $self->{_attributes} };
-}
-
-=head2 get
-
-Override the C<get> method from L<Class::Accessor> to provide scalar
-values by default. If the LDAP entry contained multiple values,
-provide a list or an arrayref, depending on context.
-
-=cut
-
-sub get {
-    my $self = shift;
-
-    my $values = $self->SUPER::get(@_);
-    return unless $values;
-
-    my @values = @{ $values };
-    return scalar @values == 1 ? $values[0] :
-        wantarray ? @values : \@values;
+    return $self->{_attributes};
 }
 
 =head1 AUTHOR

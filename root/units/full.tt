@@ -2,18 +2,10 @@
 [% INCLUDE units/includes/search.tt %]
 
     <dl>
-[% FOREACH attribute IN unit.attributes.sort %]
+[% FOREACH attribute IN unit.attribute.sort %]
 
       <dt>[% attribute | html_entity %]</dt>
-      <dd>
-        <ul>
-  [% FOREACH value IN unit.$attribute %]
-
-          <li>[% value | html_entity %]</li>
-  [% END %]
-
-        </ul>
-      </dd>
+      <dd>[% unit.$attribute.join("\n") | html_entity | html_line_break %]</dd>
 
 [% END %]
     </dl>

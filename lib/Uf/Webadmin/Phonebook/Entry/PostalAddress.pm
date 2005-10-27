@@ -3,6 +3,8 @@ package Uf::Webadmin::Phonebook::Entry::PostalAddress;
 use strict;
 use warnings;
 use base 'Class::Accessor';
+use overload
+    '""' => \&as_string;
 
 __PACKAGE__->mk_accessors(qw/title street locality region dominion postal_code/);
 
@@ -12,17 +14,24 @@ Uf::Webadmin::Phonebook::Entry::PostalAddress - A postal address
 
 =head1 SYNOPSIS
 
-
+  my $address = Uf::Webadmin::Phonebook::Entry::PostalAddress->new(
+      <<'...'
+  );
+  PO BOX 112065
+  GAINESVILLE, FL, US
+  326112065
+  ...
 
 =head1 DESCRIPTION
 
-
+This class stores a postal address, and provides convenient accessors
+for each part of the address.
 
 =head1 METHODS
 
 =head2 new
 
-
+Create a new postal address.
 
 =cut
 
@@ -36,6 +45,24 @@ sub new {
 }
 
 =head2 _parse
+
+Parse the specified postal address. It is parsed in reverse:
+
+=over 4
+
+=item * postal code (zip code)
+
+=item * locality (city)
+
+=item * region (state)
+
+=item * dominion (country)
+
+=item * street
+
+=item * title (any remaining lines)
+
+=back
 
 =cut
 
@@ -61,6 +88,8 @@ sub _parse {
 }
 
 =head2 as_string
+
+Return this address as a string.
 
 =cut
 

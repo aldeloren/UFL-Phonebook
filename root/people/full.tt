@@ -3,17 +3,11 @@
     <div id="ldap">
     <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
     <dl>
-[% FOREACH attribute IN person.attributes.sort %]
+[% FOREACH attribute IN person.attribute.sort %]
   [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
 
       <dt>[% attribute | html_entity %]</dt>
-   
-  [% FOREACH value IN person.$attribute %]
-
-          <dd>[% value | html_entity %]</dd>
-  [% END %]
-
-
+      <dd>[% person.$attribute.join("\n") | html_entity | html_line_break %]</dd>
 [% END %]
     </dl>
 </div>

@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 11;
+use Test::More tests => 12;
 use Uf::Webadmin::Phonebook;
 
 use_ok('Uf::Webadmin::Phonebook::Entry');
@@ -22,7 +22,7 @@ my @entries = map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $results };
 
 my $entry = $entries[0];
 
-ok(scalar($entry->attributes) > 0, 'has attributes');
+ok(scalar(@{ $entry->attribute } > 0), 'has attributes');
 ok($entry->uid eq $UID, 'uid');
 ok(scalar($entry->uflEduAllPhones) > 0, 'has a phone number');
 
