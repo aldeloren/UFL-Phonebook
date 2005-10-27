@@ -11,9 +11,9 @@
 <body>
 <div id="header"> 
   <h1 class="replace" id="logo"><a href="[% base %]">[% name | html_entity %]<span></span></a></h1>
-  <p>People</p>
+  [% INCLUDE people/includes/search_sec.tt %]
 </div>
-<div id="mainContainer"> 
+  
   <div id="content">
 
 [% INCLUDE includes/errors.tt %]

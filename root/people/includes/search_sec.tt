@@ -1,0 +1,10 @@
+<form method="get" action="/people/search" id="search" name="search">
+ <label for="source"><select id="source" name="source" onchange="document.getElementById('searchbox').focus()">
+    <option value="web">UF Web with Google</option>
+    <option value="phonebook" selected="selected">UF Phonebook</option>
+ </select></label>
+ <label for="query">
+ <input type="text" alt="Search" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : 'Search UF People' | html_entity %]" onfocus="select()" />
+ </label>
+  <input name="image" id="image" type="image" src="/static/images/searchEnter.gif" alt="Go" />
+</form>

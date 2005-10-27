@@ -1,5 +1,5 @@
 [% INCLUDE people/includes/header.tt stylesheets = [ '/static/css/sec.css' ] %]
-[% INCLUDE people/includes/search.tt %]
+
 
     <div class="vcard results">
 [% IF single_result %]

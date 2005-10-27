@@ -1,22 +1,20 @@
-[% INCLUDE people/includes/header.tt %]
-[% INCLUDE people/includes/search.tt %]
+[% INCLUDE people/includes/header.tt stylesheets = [ '/static/css/sec.css' ] %]
 
+    <div id="ldap">
+    <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
     <dl>
 [% FOREACH attribute IN person.attributes.sort %]
   [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
 
       <dt>[% attribute | html_entity %]</dt>
-      <dd>
-        <ul>
+   
   [% FOREACH value IN person.$attribute %]
 
-          <li>[% value | html_entity %]</li>
+          <dd>[% value | html_entity %]</dd>
   [% END %]
 
-        </ul>
-      </dd>
 
 [% END %]
     </dl>
-
+</div>
 [% INCLUDE people/includes/footer.tt %]
