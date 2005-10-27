@@ -1,3 +1,4 @@
+<div id="directories">
     <div class="directories">
       <h3>UF Directories</h3>
       <ul>
@@ -19,5 +20,5 @@
         <li><a href="http://www.mit.edu/people/cdemello/univ.html">International Universities</a></li>
       </ul>
     </div>
-    
+ </div> 
     <p id="note"><strong>Note:</strong> Any solicitation of business, information, contributions or other response from individuals listed in this website by mail, telephone, or other means is forbidden.</p>

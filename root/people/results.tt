@@ -1,4 +1,4 @@
-[% INCLUDE includes/header.tt title = c.req.params.query %]
+[% INCLUDE includes/header.tt stylesheets = [ '/static/css/sec.css'] title = c.req.params.query %]
 [% INCLUDE people/includes/search.tt %]
 
 [% IF sizelimit_exceeded %]
