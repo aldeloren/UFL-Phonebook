@@ -20,14 +20,14 @@ Utility functions for the University of Florida phonebook.
 
 =head1 METHODS
 
-=head2 spamArmor
+=head2 spam_armor
 
 Given an email address, protect against spam harvesting by encoding
 each character.
 
 =cut
 
-sub spamArmor {
+sub spam_armor {
     my ($email) = @_;
 
     my $armor = $email;
@@ -36,7 +36,7 @@ sub spamArmor {
     return $armor;
 }
 
-=head2 encodeUfid
+=head2 encode_ufid
 
 Encode the UFID by using an XOR mask, converting to octal, and
 translating to letters. This is the same algorithm used in the old
@@ -45,7 +45,7 @@ phonebook.
 =cut
 
 # TODO: Cleanup
-sub encodeUfid {
+sub encode_ufid {
     my ($ufid) = @_;
 
     $ufid =~ /^\d{8}$/ or return $ufid;
@@ -55,14 +55,14 @@ sub encodeUfid {
     return $encoded;
 }
 
-=head2 decodeUfid
+=head2 decode_ufid
 
-Decode the UFID by doing the reverse of C<encodeUfid>.
+Decode the UFID by doing the reverse of C<encode_ufid>.
 
 =cut
 
 # TODO: Cleanup
-sub decodeUfid {
+sub decode_ufid {
     my ($encoded) = @_;
 
     $encoded =~ /^[A-Z]+$/ or return $encoded;
@@ -72,7 +72,7 @@ sub decodeUfid {
     return $ufid;
 }
 
-=head2 tokenizeQuery
+=head2 tokenize_query
 
 Split a query into tokens, which can then be used to form LDAP
 filters.
@@ -80,7 +80,7 @@ filters.
 =cut
 
 # TODO: Cleanup
-sub tokenizeQuery {
+sub tokenize_query {
     my ($query) = @_;
 
     # Strip invalid characters

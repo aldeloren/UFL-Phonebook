@@ -8,9 +8,9 @@ use Uf::Webadmin::Phonebook::Utilities;
 # TODO: Write actual filters?
 __PACKAGE__->config(
     FILTERS    => {
-        spam_armor  => \&Uf::Webadmin::Phonebook::Utilities::spamArmor,
-        encode_ufid => \&Uf::Webadmin::Phonebook::Utilities::encodeUfid,
-        decode_ufid => \&Uf::Webadmin::Phonebook::Utilities::decodeUfid,
+        spam_armor  => \&Uf::Webadmin::Phonebook::Utilities::spam_armor,
+        encode_ufid => \&Uf::Webadmin::Phonebook::Utilities::encode_ufid,
+        decode_ufid => \&Uf::Webadmin::Phonebook::Utilities::decode_ufid,
     },
 );
 

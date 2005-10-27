@@ -53,7 +53,7 @@ sub search : Local {
     my $query = $c->req->param('query');
     my $sort  = $c->req->param('sort') || 'cn';
 
-    my $filter = $self->_parseQuery($query);
+    my $filter = $self->_parse_query($query);
     my $string = $filter->as_string;
 
     $c->log->debug("Query: $query");
@@ -71,7 +71,7 @@ sub search : Local {
                 @{ $entries };
 
             if (scalar @results == 1) {
-                my $ufid = Uf::Webadmin::Phonebook::Utilities::encodeUfid($results[0]->uflEduUniversityId);
+                my $ufid = Uf::Webadmin::Phonebook::Utilities::encode_ufid($results[0]->uflEduUniversityId);
                 $c->stash->{single_result} = 1;
                 $c->forward('single', [ $ufid ]);
             }
@@ -101,7 +101,7 @@ Display a single person.
 sub single : Private {
     my ($self, $c, $ufid, $full) = @_;
 
-    $ufid = Uf::Webadmin::Phonebook::Utilities::decodeUfid($ufid);
+    $ufid = Uf::Webadmin::Phonebook::Utilities::decode_ufid($ufid);
     $c->log->debug("UFID: $ufid");
 
     eval {
@@ -123,16 +123,16 @@ sub single : Private {
     }
 }
 
-=head2 _parseQuery
+=head2 _parse_query
 
 Parse a query into an LDAP filter.
 
 =cut
 
-sub _parseQuery {
+sub _parse_query {
     my ($self, $query) = @_;
 
-    my @tokens = Uf::Webadmin::Phonebook::Utilities::tokenizeQuery($query);
+    my @tokens = Uf::Webadmin::Phonebook::Utilities::tokenize_query($query);
 
     my $filter = Uf::Webadmin::Phonebook::Filter::Abstract->new('|');
     if ($query =~ /(.*)\@/) {
@@ -147,14 +147,14 @@ sub _parseQuery {
 #    elsif ($query =~ /(\d{3})?.?((:?\d{2})?\d).?(\d{4})/) {
 #        # TODO: Searching phone numbers seems slow
 #        # Phone number
-#        my $areaCode = $1;
+#        my $area_code = $1;
 #        my $exchange = $2;
-#        my $lastFour = $3;
+#        my $last_four = $3;
 #
-#        my $phoneNumber = Uf::Webadmin::Phonebook::Utilities::getPhoneNumber($areaCode, $exchange, $lastFour);
+#        my $phone_number = Uf::Webadmin::Phonebook::Utilities::getPhoneNumber($area_code, $exchange, $last_four);
 #
-#        $filter->add('homePhone',       '=', qq[$phoneNumber*]);
-#        $filter->add('telephoneNumber', '=', qq[$phoneNumber*]);
+#        $filter->add('homePhone',       '=', qq[$phone_number*]);
+#        $filter->add('telephoneNumber', '=', qq[$phone_number*]);
 #    }
     elsif (scalar @tokens == 1) {
         # One token: last name or username
@@ -183,17 +183,17 @@ sub _parseQuery {
 
     return Uf::Webadmin::Phonebook::Filter::Abstract->new('&')
         ->add($filter)
-        ->add($self->_getRestriction);
+        ->add($self->_get_restriction);
 }
 
-=head2 _getRestriction
+=head2 _get_restriction
 
 Build the default filter for restricting people searches to current
 members of the community.
 
 =cut
 
-sub _getRestriction {
+sub _get_restriction {
     my ($self) = @_;
 
     my $filter = Uf::Webadmin::Phonebook::Filter::Abstract->new('&');
