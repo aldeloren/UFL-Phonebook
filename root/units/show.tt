@@ -1,11 +1,11 @@
 [% INCLUDE includes/header.tt %]
 [% INCLUDE units/includes/search.tt %]
 
-
 [% IF single_result %]
-    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one unit, displayed below.</p>
-[% END %]
 
+    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one unit, displayed below.</p>
+
+[% END %]
 
     <h3>[% (unit.displayName ? unit.displayName : unit.o) | html_entity %]</h3>
 
@@ -36,6 +36,4 @@
       <li><a href="/units/[% unit.uflEduUniversityId | html_entity %]/full/">Display full <acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a></li>
     </ul>
 
-
-[% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]

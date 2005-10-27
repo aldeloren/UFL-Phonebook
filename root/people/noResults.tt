@@ -3,5 +3,5 @@
 
     <p>Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html_entity %]</strong>[% END %] did not match any members of the University of Florida community.</p>
 
-[% INCLUDE includes/links.tt %]
+[% INCLUDE people/includes/tips.tt %]
 [% INCLUDE includes/footer.tt %]

@@ -1,16 +1,3 @@
-    <div id="phonebook_help">
-      <h3>Search Tips</h3>
-      <dl>
-        <dt>Enter a last name</dt>
-        <dd>turner</dd>
-        <dt>Enter last name and first initial</dt>
-        <dd>T. Green<br />B. Brown</dd>
-        <dt>Enter a full name</dt>
-        <dd>john q. public<br />Greg Jones</dd>
-        <dt>Enter an email address</dt>
-        <dd>gogators@ufl.edu</dd>
-      </dl>
-    </div>
     <div class="directories">
       <h3>UF Directories</h3>
       <ul>
@@ -33,4 +20,4 @@
       </ul>
     </div>
     
-    <p id="note"><strong>Note:</strong> Any solicitation of business, information, contributions or other response from individuals listed in this website by mail, telephone or other means is forbidden.</p>
+    <p id="note"><strong>Note:</strong> Any solicitation of business, information, contributions or other response from individuals listed in this website by mail, telephone, or other means is forbidden.</p>
