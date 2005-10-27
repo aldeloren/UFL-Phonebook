@@ -1,39 +1,60 @@
-[% INCLUDE units/includes/header.tt %]
-[% INCLUDE units/includes/search.tt %]
+[% INCLUDE includes/header.tt
+   title       = (unit.displayName ? unit.displayName : unit.o)
+   stylesheets = [ "${base}static/css/sec.css" ]
+   heading     = 'units/includes/search.tt'
+%]
+
 
 [% IF single_result %]
 
-    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one unit, displayed below.</p>
+    <div id="results_info">
+      <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one unit, displayed below.</p>
+    </div>
 
 [% END %]
 
-    <h3>[% (unit.displayName ? unit.displayName : unit.o) | html_entity %]</h3>
+    <div class="vcard results">
+      <h3><span class="fn">[% (unit.displayName ? unit.displayName : unit.o) | html_entity %]</span></h3>
 
-    <h4>General Information</h4>
-    <dl>
-      <dt>Email</dt>
-      <dd>[% IF unit.mail %]<a href="mailto:[% unit.mail | spam_armor %]">[% unit.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
-    </dl>
+      <h4>General Information</h4>
+      <dl class="gen">
+        <dt>Email</dt>
+        <dd>[% IF unit.mail %]<a href="mailto:[% unit.mail | spam_armor %]">[% unit.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
+      </dl>
 
-    <h4>Phone Numbers</h4>
-    <dl>
-      <dt>Campus</dt>
-      <dd>[% IF unit.telephoneNumber %][% unit.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
-    </dl>
+      <h4>Phone Numbers</h4>
+      <dl class="test">
+        <dt class="type">Campus</dt>
+        <dd class="value">[% IF unit.telephoneNumber %][% unit.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+      </dl>
 
-    <h4>Addresses</h4>
-    <dl>
-      <dt>Campus</dt>
-      <dd>[% campus_address = unit.uflEduAllPostalAddresses.campus %]
-        [% IF campus_address %][% campus_address.as_string | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+      <h4>Addresses</h4>
+      <dl class="adr">
+[% SET postal_addresses = [ 'campus' ] %]
+[% FOREACH name IN postal_addresses %]
+  [% postal_address = unit.uflEduAllPostalAddresses.$name %]
 
-      <dt>Mailing</dt>
-      <dd>[% mailing_address = unit.uflEduAllPostalAddresses.mailing %]
-        [% IF mailing_address %][% mailing_address.as_string | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
-    </dl>
+        <dt class="type">[% name | ucfirst %]</dt>
+        <dd>
 
-    <ul>
-      <li><a href="/units/[% unit.uflEduUniversityId | html_entity %]/full/">Display full <acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a></li>
-    </ul>
+  [% IF postal_address %]
+          <span class="street-address">[% postal_address.street | html_entity %]</span>
+          <span class="locality">[% postal_address.locality | html_entity %]</span>
+          <span class="region">[% postal_address.region | html_entity %]</span>
+          <abbr title="dom">[% postal_address.dominion | html_entity %]</abbr>
+          <span class="postal-code">[% postal_address.postal_code | html_entity %]</span>
+  [% ELSE %]
+          &nbsp;
+  [% END %]
 
-[% INCLUDE units/includes/footer.tt %]
+        </dd>
+
+[% END %]
+      </dl>
+
+    </div>
+    <div id="adminlinks">
+      <p>Display the full <a href="/units/[% unit.uflEduUniversityId | html_entity %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+    </div>
+
+[% INCLUDE includes/footer.tt %]

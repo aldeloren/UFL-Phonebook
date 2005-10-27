@@ -1,13 +1,19 @@
-[% INCLUDE units/includes/header.tt %]
-[% INCLUDE units/includes/search.tt %]
+[% INCLUDE includes/header.tt
+   title       = unit.o _ "'s Full LDAP Entry"
+   stylesheets = [ "${base}static/css/sec.css" ]
+   heading     = 'units/includes/search.tt'
+%]
 
-    <dl>
+    <div id="ldap">
+      <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
+      <dl>
 [% FOREACH attribute IN unit.attribute.sort %]
 
       <dt>[% attribute | html_entity %]</dt>
       <dd>[% unit.$attribute.join("\n") | html_entity | html_line_break %]</dd>
 
 [% END %]
-    </dl>
+      </dl>
+    </div>
 
-[% INCLUDE units/includes/footer.tt %]
+[% INCLUDE includes/footer.tt %]

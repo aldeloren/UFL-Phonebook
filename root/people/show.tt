@@ -1,19 +1,23 @@
-[% INCLUDE people/includes/header.tt stylesheets = [ '/static/css/sec.css' ] %]
+[% INCLUDE includes/header.tt
+   title       = person.displayName
+   stylesheets = [ "${base}static/css/sec.css" ]
+   heading     = 'people/includes/search.tt'
+%]
 
-
-    <div class="vcard results">
 [% IF single_result %]
 
-      <p id="results_confirmation">Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one member of the UF community, displayed below.</p>
+    <div id="results_info">
+      <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one member of the UF community, displayed below.</p>
+    </div>
 [% END %]
 
+    <div class="vcard results">
       <h3><span class="fn">[% person.displayName | html_entity %]</span></h3>
 
       <h4>General Information</h4>
       <dl class="gen">
         <dt>Email</dt>
         <dd>[% IF person.mail %]<a class="email" href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
-
         <dt>Web Site</dt>
         <dd class="url">[% IF person.homePageURL %]<a href="[% person.homePageURL | html_entity %]">[% person.homePageURL | html_entity %]</a>[% ELSE %]&nbsp;[% END %]</dd>
       </dl>
@@ -32,35 +36,26 @@
 
       <h4>Addresses</h4>
       <dl class="adr">
-        <dt class="type">Campus</dt>
-        <dd>[% campus_address = person.uflEduAllPostalAddresses.campus %]
-          [% IF campus_address %]
-          <span class="street-address">[% campus_address.street | html_entity %]</span>
-          <span class="locality">[% campus_address.locality | html_entity %]</span>
-          <span class="region">[% campus_address.region | html_entity %]</span>
-          <abbr title="dom">[% campus_address.dominion | html_entity %]</abbr>
-          <span class="postal-code">[% campus_address.postal_code | html_entity %]</span>
-          [% ELSE %]&nbsp;[% END %]</dd>
+[% SET postal_addresses = [ 'campus', 'home', 'mailing' ] %]
+[% FOREACH name IN postal_addresses %]
+  [% postal_address = person.uflEduAllPostalAddresses.$name %]
 
-        <dt class="type">Home</dt>
-        <dd>[% home_address = person.uflEduAllPostalAddresses.home %]
-          [% IF home_address %]
-          <span class="street-address">[% home_address.street | html_entity %]</span>
-          <span class="locality">[% home_address.locality | html_entity %]</span>
-          <span class="region">[% home_address.region | html_entity %]</span>
-          <abbr title="dom">[% home_address.dominion | html_entity %]</abbr>
-          <span class="postal-code">[% home_address.postal_code | html_entity %]</span>
-          [% ELSE %]&nbsp;[% END %]</dd>
+        <dt class="type">[% name | ucfirst %]</dt>
+        <dd>
 
-        <dt class="type" title="postal parcel">Mailing</dt>
-        <dd>[% mailing_address = person.uflEduAllPostalAddresses.mailing %]
-          [% IF mailing_address %]
-          <span class="street-address">[% mailing_address.street | html_entity %]</span>
-          <span class="locality">[% mailing_address.locality | html_entity %]</span>
-          <span class="region">[% mailing_address.region | html_entity %]</span>
-          <abbr title="dom">[% mailing_address.dominion | html_entity %]</abbr>
-          <span class="postal-code">[% mailing_address.postal_code | html_entity %]</span>          
-          [% ELSE %]&nbsp;[% END %]</dd>
+  [% IF postal_address %]
+          <span class="street-address">[% postal_address.street | html_entity %]</span>
+          <span class="locality">[% postal_address.locality | html_entity %]</span>
+          <span class="region">[% postal_address.region | html_entity %]</span>
+          <abbr title="dom">[% postal_address.dominion | html_entity %]</abbr>
+          <span class="postal-code">[% postal_address.postal_code | html_entity %]</span>
+  [% ELSE %]
+          &nbsp;
+  [% END %]
+
+        </dd>
+
+[% END %]
       </dl>
 
 [% IF person.eduPersonPrimaryAffiliation != 'student' %]
@@ -75,7 +70,6 @@
         <dt>Title</dt>
         <dd class="title">[% IF person.title %][% person.title | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
       </dl>
-
 [% END %]
 
     </div>
@@ -85,4 +79,4 @@
       <p>Display the full <a href="/people/[% person.uflEduUniversityId | encode_ufid | html_entity %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
     </div>
 
-[% INCLUDE people/includes/footer.tt %]
+[% INCLUDE includes/footer.tt %]

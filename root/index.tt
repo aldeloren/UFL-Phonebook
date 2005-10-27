@@ -1,7 +1,14 @@
-[% INCLUDE includes/header.tt stylesheets = [ '/static/css/main.css' ] %]
+[% INCLUDE includes/header.tt
+   stylesheets = [ "${base}static/css/main.css" ]
+%]
 
     <div id="priSearch">
-[% INCLUDE people/includes/search.tt %]
+      <form method="get" action="[% base %]people/search">
+        <input type="text" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : 'Search UF People' | html_entity %]" />
+        <input type="submit" id="search" value="Search" />
+        <p>Enter a name, email address, or GatorLink ID to find people.</p>
+      </form>
+
 [% INCLUDE people/includes/tips.tt %]
     </div>
 

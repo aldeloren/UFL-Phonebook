@@ -31,13 +31,9 @@ root/includes/footer.tt
 root/includes/header.tt
 root/includes/js.tt
 root/includes/links.tt
-root/includes/tabs.tt
 root/index.tt
 root/people/full.tt
-root/people/includes/footer.tt
-root/people/includes/header.tt
 root/people/includes/search.tt
-root/people/includes/search_sec.tt
 root/people/includes/tips.tt
 root/people/noResults.tt
 root/people/results.tt
@@ -67,9 +63,8 @@ root/static/js/common.js
 root/static/js/cookies.js
 root/static/js/phonebook.js
 root/units/full.tt
-root/units/includes/footer.tt
-root/units/includes/header.tt
 root/units/includes/search.tt
+root/units/includes/tips.tt
 root/units/noResults.tt
 root/units/results.tt
 root/units/show.tt

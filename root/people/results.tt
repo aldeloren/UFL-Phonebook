@@ -1,14 +1,21 @@
-[% INCLUDE people/includes/header.tt stylesheets = [ '/static/css/sec.css'] title = c.req.params.query %]
+[% INCLUDE includes/header.tt
+   title       = c.req.params.query
+   stylesheets = [ "${base}static/css/sec.css" ]
+   heading     = 'people/includes/search.tt'
+%]
 
-<div id="results_info">
+    <div id="results_info">
+
 [% IF sizelimit_exceeded %]
-    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned too many people. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+      <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned too many people. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
 [% ELSIF timelimit_exceeded %]
-    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+      <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
 [% ELSE %]
-    <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
+      <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
 [% END %]
-</div>
+
+    </div>
+
     <table>
       <thead>
         <tr>
@@ -37,4 +44,5 @@
 [% END %]
       </tbody>
     </table>
-[% INCLUDE people/includes/footer.tt %]
+
+[% INCLUDE includes/footer.tt %]

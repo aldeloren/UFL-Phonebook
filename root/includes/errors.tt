@@ -1,4 +1,5 @@
 [% IF errors %]
+
     <h3>Errors</h3>
     <ul id="errors">
 
@@ -7,5 +8,4 @@
 
   [% END %]
     </ul>
-
 [% END %]
