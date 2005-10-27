@@ -3,13 +3,10 @@ package Uf::Webadmin::Phonebook::Entry;
 use strict;
 use warnings;
 use base 'Class::Accessor';
+use UNIVERSAL::require;
 
-# Method name => uflEduAllPostalAddresses name
-our $POSTAL_ADDRESS_MAPPINGS = {
-    'campus'    => 'UF Business Physical Location Address',
-    'mailing'   => 'UF Business Mailing Address',
-    'home'      => 'Local Home Mailing Address',
-    'permanent' => 'Permanent Home Mailing Address',
+our $RELATIONSHIPS = {
+    'uflEduAllPostalAddresses' => 'Uf::Webadmin::Phonebook::Entry::PostalAddressCollection',
 };
 
 =head1 NAME
@@ -47,7 +44,16 @@ sub new {
 
     foreach my $attribute ($entry->attributes) {
         my @values = $entry->get_value($attribute);
-        $self->_store($attribute, @values);
+
+        if (exists $RELATIONSHIPS->{$attribute}) {
+            my $class = $RELATIONSHIPS->{$attribute};
+            $class->require or die $@;
+
+            $self->_store($attribute, $class->new(@values));
+        }
+        else {
+            $self->_store($attribute, @values);
+        }
     }
 
     return $self;
@@ -70,6 +76,19 @@ sub _store {
     }
 
     $self->mk_ro_accessors($attribute);
+    push @{ $self->{_attributes} }, $attribute;
+}
+
+=head2 attributes
+
+Return a list of attribute names for this phonebook entry.
+
+=cut
+
+sub attributes {
+    my $self = shift;
+
+    return @{ $self->{_attributes} };
 }
 
 =head2 get
@@ -90,64 +109,6 @@ sub get {
     return scalar @values == 1 ? $values[0] :
         wantarray ? @values : \@values;
 }
-
-=head2 attributes
-
-Return a list of attribute names for this phonebook entry.
-
-=cut
-
-sub attributes {
-    my $self = shift;
-
-    return keys %{ $self };
-}
-
-=head2 get_postal_address
-
-Get the specified address from the C<uflEduAllPostalAddresses> field.
-The address is parsed slightly to make it more human readable.
-
-=cut
-
-sub get_postal_address {
-    my ($self, $name) = @_;
-
-    my $postal_address = undef;
-
-    if (my @values = $self->uflEduAllPostalAddresses) {
-        foreach my $value (@values) {
-            my @parts = split /\$/, $value;
-            my $ldap_name = shift @parts;
-
-            if ($POSTAL_ADDRESS_MAPPINGS->{$name} eq $ldap_name) {
-                for (@parts) {
-                    s/^\s+//;
-                    s/\s+$//;
-                }
-
-                $postal_address = join "\n", @parts;
-                $postal_address =~ s/(\d{5})(\d{4})/$1-$2/;
-
-                last;
-            }
-        }
-    }
-
-    return $postal_address;
-}
-
-=head1 TODO
-
-=over 4
-
-=item *
-
-It might make more sense if this package were in the
-C<Uf::Webadmin::Phonebook::M> namespace, but I see that more for
-L<Catalyst> model pieces.
-
-=back
 
 =head1 AUTHOR
 
