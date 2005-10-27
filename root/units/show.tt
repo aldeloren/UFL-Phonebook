@@ -24,12 +24,12 @@
     <h4>Addresses</h4>
     <dl>
       <dt>Campus</dt>
-      <dd>[% campus_address = unit.get_postal_address('campus') %]
-        [% IF campus_address %][% campus_address | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+      <dd>[% campus_address = unit.uflEduAllPostalAddresses.campus %]
+        [% IF campus_address %][% campus_address.as_string | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
 
       <dt>Mailing</dt>
-      <dd>[% mailing_address = unit.get_postal_address('mailing') %]
-        [% IF mailing_address %][% mailing_address | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+      <dd>[% mailing_address = unit.uflEduAllPostalAddresses.mailing %]
+        [% IF mailing_address %][% mailing_address.as_string | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
     </dl>
 
     <ul>
