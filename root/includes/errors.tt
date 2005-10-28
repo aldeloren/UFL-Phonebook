@@ -2,7 +2,9 @@
 
     <ul id="errors">
   [% FOREACH error IN errors %]
+
       <li><strong>Error:</strong> [% error | trim | html_entity %]</li>
   [% END %]
+
     </ul>
 [% END %]
