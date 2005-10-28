@@ -48,7 +48,6 @@ Display the home page.
 sub default : Private {
     my ($self, $c) = @_;
 
-    $c->error('this is what happens when there is an error. i think it should be prettier.');
     $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_HOME;
 }
 
