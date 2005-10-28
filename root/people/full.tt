@@ -11,7 +11,7 @@
   [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
 
         <dt>[% attribute | html_entity %]</dt>
-        <dd>[% person.$attribute.join("\n") | html_entity | html_line_break %]</dd>
+        <dd>[% IF person.$attribute %][% person.$attribute.join("\n") | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
 [% END %]
 
       </dl>

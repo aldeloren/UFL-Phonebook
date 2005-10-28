@@ -10,7 +10,7 @@
 [% FOREACH attribute IN unit.attribute.sort %]
 
       <dt>[% attribute | html_entity %]</dt>
-      <dd>[% unit.$attribute.join("\n") | html_entity | html_line_break %]</dd>
+      <dd>[% IF unit.$attribute %][% unit.$attribute.join("\n") | html_entity | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
 
 [% END %]
       </dl>
