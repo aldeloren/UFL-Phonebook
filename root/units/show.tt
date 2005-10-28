@@ -38,15 +38,11 @@
         <dd>
 
   [% IF postal_address %]
-          <span class="street-address">[% postal_address.street | html_entity %]</span>
-          <span class="locality">[% postal_address.locality | html_entity %]</span>
-          <span class="region">[% postal_address.region | html_entity %]</span>
-          <abbr title="dom">[% postal_address.dominion | html_entity %]</abbr>
-          <span class="postal-code">[% postal_address.postal_code | html_entity %]</span>
+    [% INCLUDE includes/address.tt address = postal_address %]
   [% ELSE %]
           &nbsp;
-  [% END %]
 
+  [% END %]
         </dd>
 
 [% END %]
@@ -54,7 +50,8 @@
 
     </div>
     <div id="adminlinks">
-      <p>Display the full <a href="/units/[% unit.uflEduUniversityId | html_entity %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+      <p>Link to <a href="[% base %]units/[% unit.uflEduUniversityId | html_entity %]/">this entry</a>.</p>
+      <p>Display the full <a href="[% base %]units/[% unit.uflEduUniversityId | html_entity %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
     </div>
 
 [% INCLUDE includes/footer.tt %]
