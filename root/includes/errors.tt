@@ -1,11 +1,8 @@
 [% IF errors %]
 
-    <h3>Errors</h3>
     <ul id="errors">
-
   [% FOREACH error IN errors %]
-      <li>[% error | trim | html_entity %]</li>
-
+      <li><strong>Error:</strong> [% error | trim | html_entity %]</li>
   [% END %]
     </ul>
 [% END %]

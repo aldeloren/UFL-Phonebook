@@ -19,7 +19,7 @@
         <dt>Email</dt>
         <dd>[% IF person.mail %]<a class="email" href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
         <dt>Web Site</dt>
-        <dd class="url">[% IF person.homePageURL %]<a href="[% person.homePageURL | html_entity %]">[% person.homePageURL | html_entity %]</a>[% ELSE %]&nbsp;[% END %]</dd>
+        <dd>[% IF person.homePageURL %]<a class="url" href="[% person.homePageURL | html_entity %]">[% person.homePageURL | html_entity %]</a>[% ELSE %]&nbsp;[% END %]</dd>
       </dl>
 
       <h4>Phone Numbers</h4>
@@ -47,7 +47,13 @@
           <span class="street-address">[% postal_address.street | html_entity %]</span>
           <span class="locality">[% postal_address.locality | html_entity %]</span>
           <span class="region">[% postal_address.region | html_entity %]</span>
-          <abbr title="dom">[% postal_address.dominion | html_entity %]</abbr>
+          <abbr class="country-name" title="
+          [% IF postal_address.dominion != 'US' %]
+          Country Name
+          [% ELSE % ]
+          United States
+          [% END % ]
+          ">[% postal_address.dominion | html_entity %]</abbr>
           <span class="postal-code">[% postal_address.postal_code | html_entity %]</span>
   [% ELSE %]
           &nbsp;

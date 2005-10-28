@@ -156,6 +156,15 @@ margin-left:20px;
 font-size: 1.1em;
 }
 
+#errors {
+width: 60em;
+background: #c4d6f7;
+border: 1px solid #333;
+border-width: 1px 0;
+padding: 5px;
+margin: 5px auto 25px;
+}
+
 #note {
 margin: 0 auto;
 width: 40em;
@@ -203,65 +212,4 @@ background:url(/static/images/smallWordmark.gif) 0 0 no-repeat;
 position:absolute;
 right:30px;
 top:10px;
-}
-
-/* google only */
-.google {
-font:1.2em/1.6em Arial, helvetica,sans-serif;
-}
-
-.google a {
-text-decoration:underline;
-}
-
-p span {
-font-size:.9em;
-line-height:1.2em;
-}
-
-.l {
-margin-bottom:2em;
-}
-
-.b {
-padding-bottom:1em;
-}
-
-.google p {
-margin-bottom:1.2em;
-}
-
-.t {
-color:#fff;
-background-color:#36c;
-padding:3px;
-}
-
-.googleform {
-background:url(/static/images/google.gif) right center no-repeat;
-}
-
-.n { ont-size: 1.4em}
-.n a {text-decoration:none}
-
-/* tabs only */
-#tabs {
-font-size:1em;
-margin:0 0 10px;
-}
-
-#tabs li {
-display:inline;
-margin-right:5px;
-}
-
-#tabs li a {
-border:1px solid #aaa;
-padding:5px;
-}
-
-#active {
-background:#333 url(/static/images/active.gif) bottom center no-repeat;
-color:#fff;
-padding:5px 5px 12px;
 }
