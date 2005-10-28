@@ -54,6 +54,7 @@ sub search : Local {
 
     my $query = $c->req->param('query');
     my $sort  = $c->req->param('sort') || 'o';
+    $c->detach('default') unless $query;
 
     my $filter = $self->_parse_query($query);
     my $string = $filter->as_string;
