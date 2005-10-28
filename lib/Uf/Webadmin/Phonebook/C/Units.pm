@@ -114,8 +114,6 @@ sub single : Private {
             $c->stash->{unit} = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
 
             if ($action and $self->can($action)) {
-                $action =~ s/[^a-z]//g;
-                $c->log->debug("Action: $action");
                 $c->forward($action, [ $ufid ]);
             }
             else {
