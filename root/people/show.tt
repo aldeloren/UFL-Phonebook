@@ -3,7 +3,6 @@
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'people/includes/search.tt'
 %]
-[% INCLUDE includes/macros.tt %]
 
 [% IF single_result %]
 
