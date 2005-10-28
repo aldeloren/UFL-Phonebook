@@ -24,6 +24,7 @@ phonebook.yml
 README
 root/errors.tt
 root/favicon.ico
+root/includes/address.tt
 root/includes/css.tt
 root/includes/errors.tt
 root/includes/favicon.tt

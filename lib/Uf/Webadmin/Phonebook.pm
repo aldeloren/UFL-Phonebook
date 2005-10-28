@@ -7,7 +7,7 @@ use File::Spec;
 use Uf::Webadmin::Phonebook::Constants;
 use YAML;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 __PACKAGE__->config(
     YAML::LoadFile(File::Spec->join(__PACKAGE__->config->{home}, 'phonebook.yml')),

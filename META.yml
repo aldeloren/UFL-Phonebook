@@ -1,6 +1,6 @@
 ---
 name: Uf-Webadmin-Phonebook
-version: 0.01
+version: 0.02
 author:
   - University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
   - L<http://www.webadmin.ufl.edu/>
@@ -17,7 +17,7 @@ requires:
 provides:
   Uf::Webadmin::Phonebook:
     file: lib/Uf/Webadmin/Phonebook.pm
-    version: 0.01
+    version: 0.02
   Uf::Webadmin::Phonebook::C::People:
     file: lib/Uf/Webadmin/Phonebook/C/People.pm
   Uf::Webadmin::Phonebook::C::Units:
@@ -26,6 +26,10 @@ provides:
     file: lib/Uf/Webadmin/Phonebook/Constants.pm
   Uf::Webadmin::Phonebook::Entry:
     file: lib/Uf/Webadmin/Phonebook/Entry.pm
+  Uf::Webadmin::Phonebook::Entry::PostalAddress:
+    file: lib/Uf/Webadmin/Phonebook/Entry/PostalAddress.pm
+  Uf::Webadmin::Phonebook::Entry::PostalAddressCollection:
+    file: lib/Uf/Webadmin/Phonebook/Entry/PostalAddressCollection.pm
   Uf::Webadmin::Phonebook::Filter::Abstract:
     file: lib/Uf/Webadmin/Phonebook/Filter/Abstract.pm
   Uf::Webadmin::Phonebook::Filter::Abstract::Operator:
