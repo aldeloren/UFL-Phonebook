@@ -32,10 +32,10 @@ display the people home page.
 
 sub default : Private {
     # TODO: Remove $junk parameter - possibly fixed in Catalyst trunk?
-    my ($self, $c, $junk, $ufid, $full) = @_;
+    my ($self, $c, $junk, $ufid, @args) = @_;
 
     if ($ufid) {
-        $c->forward('single', [ $ufid, $full ]);
+        $c->forward('single', [ $ufid, @args ]);
     }
     else {
         $c->res->redirect('/');
@@ -96,12 +96,14 @@ sub search : Local {
 
 =head2 single
 
-Display a single person.
+Display a single person. By specifying an argument after the UFID and
+providing a corresponding local action, you can override the display
+behavior of the person.
 
 =cut
 
 sub single : Private {
-    my ($self, $c, $ufid, $full) = @_;
+    my ($self, $c, $ufid, $action) = @_;
 
     $ufid = Uf::Webadmin::Phonebook::Utilities::decode_ufid($ufid);
     $c->log->debug("UFID: $ufid");
@@ -109,12 +111,16 @@ sub single : Private {
     eval {
         my $entries = $c->comp('M::People')->search("uflEduUniversityId=$ufid");
         if (scalar @{ $entries }) {
-            $c->stash->{person}   = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
-            $c->stash->{template} = (
-                $full
-                ? $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL
-                : $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_SHOW
-            );
+            $c->stash->{person} = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
+
+            if ($action and $self->can($action)) {
+                $action =~ s/[^a-z]//g;
+                $c->log->debug("Action: $action");
+                $c->forward($action, [ $ufid ]);
+            }
+            else {
+                $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_SHOW;
+            }
         }
         else {
             $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
@@ -123,6 +129,31 @@ sub single : Private {
     if ($@) {
         $c->error($@);
     }
+}
+
+=head2 full
+
+Display the full entry for a single person.
+
+=cut
+
+sub full : Private {
+    my ($self, $c, $ufid) = @_;
+
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_FULL;
+}
+
+=head2 vcard
+
+Display the vCard for a single person.
+
+=cut
+
+sub vcard : Private {
+    my ($self, $c, $ufid) = @_;
+
+#    $c->res->content_type('text/x-vcard');
+    $c->res->output("TODO: vCard for $ufid");
 }
 
 =head2 _parse_query

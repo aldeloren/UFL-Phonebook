@@ -97,25 +97,30 @@ sub search : Local {
 
 =head2 single
 
-Display a single unit. Optionally, you can specify a template with
-which to display the unit.
+Display a single unit. By specifying an argument after the UFID and
+providing a corresponding local action, you can override the display
+behavior of the unit.
 
 =cut
 
 sub single : Private {
-    my ($self, $c, $ufid, $full) = @_;
+    my ($self, $c, $ufid, $action) = @_;
 
     $c->log->debug("UFID: $ufid");
 
     eval {
         my $entries = $c->comp('M::Organizations')->search("uflEduUniversityId=$ufid");
         if (scalar @{ $entries }) {
-            $c->stash->{unit}     = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
-            $c->stash->{template} = (
-                $full
-                ? $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_FULL
-                : $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_SHOW
-            );
+            $c->stash->{unit} = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
+
+            if ($action and $self->can($action)) {
+                $action =~ s/[^a-z]//g;
+                $c->log->debug("Action: $action");
+                $c->forward($action, [ $ufid ]);
+            }
+            else {
+                $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_SHOW;
+            }
         }
         else {
             $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_NO_RESULTS;
@@ -124,6 +129,18 @@ sub single : Private {
     if ($@) {
         $c->error($@);
     }
+}
+
+=head2 full
+
+Display the full entry for a single unit.
+
+=cut
+
+sub full : Private {
+    my ($self, $c, $ufid) = @_;
+
+    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_UNITS_FULL;
 }
 
 =head2 _parse_query
