@@ -13,6 +13,7 @@ our $MAPPINGS = {
     'UF Business Mailing Address'           => 'mailing',
     'Local Home Mailing Address'            => 'home',
     'Permanent Home Mailing Address'        => 'permanent',
+    'Housing Address'                       => 'housing',
 };
 
 __PACKAGE__->mk_accessors(values %{ $MAPPINGS }, '_original');
@@ -62,8 +63,13 @@ sub new {
     $self->_original(@values);
 
     foreach my $value (@values) {
-        my ($name, $address) = $self->_parse($value);
-        $self->$name($address);
+        eval {
+            my ($name, $address) = $self->_parse($value);
+            $self->$name($address);
+        };
+        if (my $error = $@) {
+            warn $error;
+        }
     }
 
     return $self;
@@ -72,7 +78,8 @@ sub new {
 =head2 _parse
 
 Parse the specified address into a
-L<Uf::Webadmin::Phonebook::Entry::Address>.
+L<Uf::Webadmin::Phonebook::Entry::Address>. If the address cannot be
+parsed, an exception is thrown.
 
 =cut
 
@@ -80,15 +87,16 @@ sub _parse {
     my ($self, $value) = @_;
 
     my @parts = split /\$/, $value;
+
     my $ldap_name = shift @parts;
+    die "Unknown address type: [$value]" unless exists $MAPPINGS->{$ldap_name};
 
     for (@parts) {
         s/^\s+//;
         s/\s+$//;
     }
 
-    my $string = join "\n", @parts;
-
+    my $string  = join "\n", @parts;
     my $name    = $MAPPINGS->{$ldap_name};
     my $address = Uf::Webadmin::Phonebook::Entry::PostalAddress->new($string);
 
