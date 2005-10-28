@@ -11,5 +11,5 @@
 
 [% INCLUDE people/includes/tips.tt %]
     </div>
-
+[% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]
