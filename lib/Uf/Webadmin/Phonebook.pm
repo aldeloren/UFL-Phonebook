@@ -48,6 +48,7 @@ Display the home page.
 sub default : Private {
     my ($self, $c) = @_;
 
+    $c->error('this is what happens when there is an error. i think it should be prettier.');
     $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_HOME;
 }
 
@@ -63,12 +64,13 @@ sub end : Private {
     # Display errors in the template if we have one; otherwise, use a
     # sensible default
     if (scalar @{ $c->error }) {
+        $c->res->status(500);
         $c->stash->{errors}     = $c->error;
         $c->stash->{template} ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_ERRORS;
         $c->{error} = [];
     }
 
-    $c->forward(__PACKAGE__ . '::V::TT') if ($c->stash->{template});
+    $c->forward(__PACKAGE__ . '::V::TT') if $c->stash->{template};
 }
 
 =head1 AUTHOR

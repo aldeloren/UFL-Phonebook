@@ -1,2 +1,5 @@
-[% INCLUDE includes/header.tt title = 'Error' %]
+[% INCLUDE includes/header.tt
+   title = 'Error'
+   stylesheets = [ "${base}static/css/main.css" ]
+%]
 [% INCLUDE includes/footer.tt %]
