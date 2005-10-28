@@ -47,7 +47,6 @@
 
 [% END %]
       </dl>
-
     </div>
     <div id="adminlinks">
       <p>Link to <a href="[% base %]units/[% unit.uflEduUniversityId | html_entity %]/">this entry</a>.</p>

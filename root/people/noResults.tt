@@ -1,5 +1,5 @@
 [% INCLUDE includes/header.tt
-   title = c.req.params.query
+   title       = c.req.params.query
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'people/includes/search.tt'
 %]

@@ -16,4 +16,5 @@
     </div>
 
 [% INCLUDE units/includes/tips.tt %]
+[% INCLUDE includes/links.tt %]
 [% INCLUDE includes/footer.tt %]
