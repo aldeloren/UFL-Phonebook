@@ -78,27 +78,22 @@ sub new {
 =head2 _parse
 
 Parse the specified address into a
-L<Uf::Webadmin::Phonebook::Entry::Address>. If the address cannot be
-parsed, an exception is thrown.
+L<Uf::Webadmin::Phonebook::Entry::PostalAddress>. If the address
+cannot be parsed, an exception is thrown.
 
 =cut
 
 sub _parse {
     my ($self, $value) = @_;
 
-    my @parts = split /\$/, $value;
+    my @parts      = split /\$/, $value;
+    my $ldap_name  = shift @parts;
+    my $ldap_value = join '$', @parts;
 
-    my $ldap_name = shift @parts;
     die "Unknown address type: [$value]" unless exists $MAPPINGS->{$ldap_name};
 
-    for (@parts) {
-        s/^\s+//;
-        s/\s+$//;
-    }
-
-    my $string  = join "\n", @parts;
     my $name    = $MAPPINGS->{$ldap_name};
-    my $address = Uf::Webadmin::Phonebook::Entry::PostalAddress->new($string);
+    my $address = Uf::Webadmin::Phonebook::Entry::PostalAddress->new($ldap_value);
 
     return ($name, $address);
 }

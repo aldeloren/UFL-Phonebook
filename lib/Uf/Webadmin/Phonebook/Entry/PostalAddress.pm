@@ -6,7 +6,7 @@ use base 'Class::Accessor';
 use overload
     '""' => \&as_string;
 
-__PACKAGE__->mk_accessors(qw/title street locality region dominion postal_code/);
+__PACKAGE__->mk_accessors(qw/title street locality region dominion postal_code _original/);
 
 =head1 NAME
 
@@ -15,12 +15,8 @@ Uf::Webadmin::Phonebook::Entry::PostalAddress - A postal address
 =head1 SYNOPSIS
 
   my $address = Uf::Webadmin::Phonebook::Entry::PostalAddress->new(
-      <<'...'
+      'PO BOX 112065$GAINESVILLE, FL, US$ 326112065'
   );
-  PO BOX 112065
-  GAINESVILLE, FL, US
-  326112065
-  ...
 
 =head1 DESCRIPTION
 
@@ -39,6 +35,7 @@ sub new {
     my ($class, $value) = @_;
 
     my $self = bless({}, (ref $class or $class));
+    $self->_original($value);
     $self->_parse($value);
 
     return $self;
@@ -69,21 +66,25 @@ Parse the specified postal address. It is parsed in reverse:
 sub _parse {
     my ($self, $value) = @_;
 
-    my @lines = split /\n/, $value;
+    my @parts = split /\$/, $value;
+    for (@parts) {
+        s/^\s+//;
+        s/\s+$//;
+    }
 
-    my $postal_code = pop @lines;
+    my $postal_code = pop @parts;
     $postal_code =~ s/(\d{5})(\d{4})/$1-$2/;
     $self->postal_code($postal_code);
 
-    my ($locality, $region, $dominion) = split /,\s*/, pop @lines;
+    my ($locality, $region, $dominion) = split /,\s*/, pop @parts;
     $self->locality($locality);
     $self->region($region);
     $self->dominion($dominion);
 
-    $self->street(pop @lines);
+    $self->street(pop @parts);
 
     # Any remaining stuff we call a 'title'
-    my $title = join "\n", @lines;
+    my $title = join "\n", @parts;
     $self->title($title);
 }
 
@@ -96,15 +97,7 @@ Return this address as a string.
 sub as_string {
     my ($self) = @_;
 
-    my @parts = (
-        $self->title,
-        $self->street,
-        $self->locality . ', ' . $self->region . ', ' . $self->dominion,
-        $self->postal_code,
-    );
-    my $address = join "\n", @parts;
-
-    return $address;
+    return $self->_original;
 }
 
 =head1 AUTHOR

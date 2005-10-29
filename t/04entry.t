@@ -5,14 +5,15 @@ use Uf::Webadmin::Phonebook;
 
 use_ok('Uf::Webadmin::Phonebook::Entry');
 
-my $UID         = 'gkt';
-my $TITLE       = 'CREC - LAKE ALFRED';
-my $STREET      = '700 EXPERIMENT STATION RD';
-my $LOCALITY    = 'LAKE ALFRED';
-my $REGION      = 'FL';
-my $DOMINION    = 'US';
-my $POSTAL_CODE = '33850-2243';
-my $ADDRESS     = "$TITLE\n$STREET\n$LOCALITY, $REGION, $DOMINION\n$POSTAL_CODE";
+my $UID                = 'gkt';
+my $TITLE              = 'CREC - LAKE ALFRED';
+my $STREET             = '700 EXPERIMENT STATION RD';
+my $LOCALITY           = 'LAKE ALFRED';
+my $REGION             = 'FL';
+my $DOMINION           = 'US';
+my $POSTAL_CODE        = '338502243';
+my $PARSED_POSTAL_CODE = '33850-2243';
+my $ADDRESS            = join '$', $TITLE, $STREET, "$LOCALITY, $REGION, $DOMINION", " $POSTAL_CODE";
 
 my $people  = Uf::Webadmin::Phonebook->comp('M::People');
 my $results = $people->search("(uid=$UID)");
@@ -32,5 +33,5 @@ ok($campus_address->street eq $STREET, 'street');
 ok($campus_address->locality eq $LOCALITY, 'locality');
 ok($campus_address->region eq $REGION, 'region');
 ok($campus_address->dominion eq $DOMINION, 'dominion');
-ok($campus_address->postal_code eq $POSTAL_CODE, 'postal code');
+ok($campus_address->postal_code eq $PARSED_POSTAL_CODE, 'postal code');
 ok($campus_address->as_string eq $ADDRESS, 'campus address');

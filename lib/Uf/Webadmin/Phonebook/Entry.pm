@@ -6,7 +6,11 @@ use base 'Class::Accessor';
 use UNIVERSAL::require;
 
 our $RELATIONSHIPS = {
-    'uflEduAllPostalAddresses' => 'Uf::Webadmin::Phonebook::Entry::PostalAddressCollection',
+    postalAddress            => 'Uf::Webadmin::Phonebook::Entry::PostalAddress',
+    registeredAddress        => 'Uf::Webadmin::Phonebook::Entry::PostalAddress',
+    street                   => 'Uf::Webadmin::Phonebook::Entry::PostalAddress',
+    uflEduAllPostalAddresses => 'Uf::Webadmin::Phonebook::Entry::PostalAddressCollection',
+    uflEduOfficeLocation     => 'Uf::Webadmin::Phonebook::Entry::PostalAddress',
 };
 
 =head1 NAME
