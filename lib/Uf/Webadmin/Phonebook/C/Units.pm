@@ -64,13 +64,14 @@ sub search : Local {
     $c->log->debug("Filter: $string");
 
     eval {
-        my $entries = $c->comp('M::Organizations')->search($string);
-        my $code    = $c->comp('M::Organizations')->code;
+        my $organizations = $c->comp('M::Organizations');
+        my $entries       = $organizations->search($string);
+        my $code          = $organizations->code;
 
-        if ($entries and scalar @{ $entries }) {
+        if ($entries and scalar @$entries) {
             my @results =
                 sort { $a->$sort cmp $b->$sort }
-                map { Uf::Webadmin::Phonebook::Entry->new($_) }
+                map  { Uf::Webadmin::Phonebook::Entry->new($_) }
                 @{ $entries };
 
             if (scalar @results == 1) {
@@ -110,7 +111,7 @@ sub single : Private {
 
     eval {
         my $entries = $c->comp('M::Organizations')->search("uflEduUniversityId=$ufid");
-        if (scalar @{ $entries }) {
+        if ($entries and scalar @$entries) {
             $c->stash->{unit} = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
 
             if ($action and $self->can($action)) {
