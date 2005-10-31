@@ -277,12 +277,12 @@ padding-right:4px
 #footer ul,#footer p {
 clear:both;
 float:left;
-line-height:1.4em;
+line-height:1.5em;
 width:550px
 }
 
 #footerHome span {/*\*/
-background:url(/static/images/smallWordmark.gif) 0 0 no-repeat;
+background:url(/static/images/smallWordmark.gif) no-repeat;
 height:62px;
 position:absolute;
 right:30px;
