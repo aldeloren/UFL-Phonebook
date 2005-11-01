@@ -52,7 +52,7 @@
       <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html_entity %] Information</h4>
       <dl class="employment">
         <dt>Unit</dt>
-        <dd>[% IF person.departmentNumber %]<a class="role" href="[% base %]units/[% person.departmentNumber | html_entity %]/">[% END %]
+        <dd>[% IF person.departmentNumber %]<a class="org" href="[% base %]units/[% person.departmentNumber | html_entity %]/">[% END %]
           [% IF person.o %][% person.o | html_entity %][% ELSE %]&nbsp;[% END %]
         [% IF person.departmentNumber %]</a>[% END %]</dd>
         <dt>Title</dt>
