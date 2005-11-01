@@ -1,5 +1,5 @@
           <span class="street-address">[% address.street | html_entity %]</span>
           <span class="locality">[% address.locality | html_entity %]</span>
           <span class="region">[% address.region | html_entity %]</span>
-          <abbr class="country-name" title="[% IF address.dominion != 'US' %]Country Name[% ELSE %]United States[% END %]">[% address.dominion | html_entity %]</abbr>
+          <abbr class="country-name" title="[% address.dominion | code2country | html_entity %]">[% address.dominion | html_entity %]</abbr>
           <span class="postal-code">[% address.postal_code | html_entity %]</span>

@@ -9,6 +9,7 @@ my $build = Catalyst::Build->new(
         'Catalyst::Model::LDAP' => '0',
         'Catalyst::View::TT'    => '0',
         'Class::Accessor'       => '0',
+        'Locale::Country'       => '0',
         'Scalar::Util'          => '0',
         'Tree::Simple'          => '0',
         'YAML'                  => '0',

@@ -3,14 +3,15 @@ package Uf::Webadmin::Phonebook::V::TT;
 use strict;
 use warnings;
 use base 'Catalyst::View::TT';
+use Locale::Country ();
 use Uf::Webadmin::Phonebook::Utilities;
 
-# TODO: Write actual filters?
 __PACKAGE__->config(
-    FILTERS    => {
-        spam_armor  => \&Uf::Webadmin::Phonebook::Utilities::spam_armor,
-        encode_ufid => \&Uf::Webadmin::Phonebook::Utilities::encode_ufid,
-        decode_ufid => \&Uf::Webadmin::Phonebook::Utilities::decode_ufid,
+    FILTERS => {
+        code2country => \&Locale::Country::code2country,
+        spam_armor   => \&Uf::Webadmin::Phonebook::Utilities::spam_armor,
+        encode_ufid  => \&Uf::Webadmin::Phonebook::Utilities::encode_ufid,
+        decode_ufid  => \&Uf::Webadmin::Phonebook::Utilities::decode_ufid,
     },
 );
 
