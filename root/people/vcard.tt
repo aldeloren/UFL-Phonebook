@@ -1,0 +1,27 @@
+BEGIN:vCard
+VERSION:3.0
+FN:[% person.displayName %]
+
+N:[% person.sn %];[% person.givenName %]
+
+NICKNAME:[% person.uid %]
+
+TITLE:[% person.title %]
+
+ORG:[% person.o %]
+
+ADR;TYPE=HOME:;;[% person.uflEduAllPostalAddresses.home.street %];[% person.uflEduAllPostalAddresses.home.locality %];[% person.uflEduAllPostalAddresses.home.region %];[% person.uflEduAllPostalAddresses.home.postal_code %];[% person.uflEduAllPostalAddresses.home.dominion %]
+
+ADR;TYPE=WORK:;;[% person.uflEduAllPostalAddresses.campus.street %];[% person.uflEduAllPostalAddresses.campus.locality %];[% person.uflEduAllPostalAddresses.campus.region %];[% person.uflEduAllPostalAddresses.campus.postal_code %];[% person.uflEduAllPostalAddresses.campus.dominion %]
+
+TEL;TYPE=CELL:[% person.mobile %]
+
+TEL;TYPE=HOME:[% person.homePhone %]
+
+TEL;TYPE=WORK:[% person.telephoneNumber %]
+
+EMAIL;TYPE=INTERNET:[% person.mail %]
+
+URL:[% person.homePageURL %]
+
+END:vCard

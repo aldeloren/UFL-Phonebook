@@ -29,12 +29,14 @@ our $TEMPLATE_RESULTS    = 'results.tt';
 our $TEMPLATE_NO_RESULTS = 'noResults.tt';
 our $TEMPLATE_SHOW       = 'show.tt';
 our $TEMPLATE_FULL       = 'full.tt';
+our $TEMPLATE_VCARD      = 'vcard.tt';
 
 our $DIRECTORY_PEOPLE = 'people';
 our $TEMPLATE_PEOPLE_RESULTS    = File::Spec->join($DIRECTORY_PEOPLE, $TEMPLATE_RESULTS);
 our $TEMPLATE_PEOPLE_NO_RESULTS = File::Spec->join($DIRECTORY_PEOPLE, $TEMPLATE_NO_RESULTS);
 our $TEMPLATE_PEOPLE_SHOW       = File::Spec->join($DIRECTORY_PEOPLE, $TEMPLATE_SHOW);
 our $TEMPLATE_PEOPLE_FULL       = File::Spec->join($DIRECTORY_PEOPLE, $TEMPLATE_FULL);
+our $TEMPLATE_PEOPLE_VCARD      = File::Spec->join($DIRECTORY_PEOPLE, $TEMPLATE_VCARD);
 
 our $DIRECTORY_UNITS = 'units';
 our $TEMPLATE_UNITS_RESULTS    = File::Spec->join($DIRECTORY_UNITS, $TEMPLATE_RESULTS);
