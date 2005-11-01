@@ -60,7 +60,7 @@ sub new {
 
     my $self = bless({}, (ref $class or $class));
 
-    $self->_original(@values);
+    $self->_original([ @values ]);
 
     foreach my $value (@values) {
         eval {
