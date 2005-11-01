@@ -39,6 +39,7 @@ root/people/includes/tips.tt
 root/people/noResults.tt
 root/people/results.tt
 root/people/show.tt
+root/people/vcard.tt
 root/robots.txt
 root/static/css/basic.css
 root/static/css/main.css
