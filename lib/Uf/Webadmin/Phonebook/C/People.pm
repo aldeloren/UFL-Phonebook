@@ -152,10 +152,14 @@ sub vcard : Private {
     my ($self, $c, $ufid) = @_;
 
     my $filename = ($c->stash->{person}->uid || 'vcard') . '.vcf';
-    $c->log->debug("Filename: $filename");
 
-    $c->res->content_type('text/x-vcard');
-    $c->res->header('Content-Disposition', "attachment; filename=$filename");
+    if ($c->req->param('debug')) {
+        $c->res->content_type('text/plain');
+    }
+    else {
+        $c->res->content_type('text/x-vcard');
+        $c->res->header('Content-Disposition', "attachment; filename=$filename");
+    }
     $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_PEOPLE_VCARD;
 }
 
