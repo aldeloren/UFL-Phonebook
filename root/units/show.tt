@@ -2,17 +2,13 @@
    title       = (unit.displayName ? unit.displayName : unit.o)
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'units/includes/search.tt'
-%]
-
-
-[% IF single_result %]
-
+-%]
+[% IF single_result -%]
     <div id="results_info">
       <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one unit, displayed below.</p>
     </div>
 
-[% END %]
-
+[% END -%]
     <div class="vcard results">
       <h3><span class="fn">[% (unit.displayName ? unit.displayName : unit.o) | html_entity %]</span></h3>
 
@@ -33,18 +29,16 @@
 [% SET postal_addresses = [ 'campus' ] %]
 [% FOREACH name IN postal_addresses %]
   [% postal_address = unit.uflEduAllPostalAddresses.$name %]
-
         <dt class="type">[% name | ucfirst %]</dt>
         <dd>
-
   [% IF postal_address %]
+
     [% INCLUDE includes/address.tt address = postal_address %]
   [% ELSE %]
           &nbsp;
 
-  [% END %]
+  [% END -%]
         </dd>
-
 [% END %]
       </dl>
     </div>

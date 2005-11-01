@@ -3,9 +3,7 @@
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'people/includes/search.tt'
 %]
-
-[% IF single_result %]
-
+[% IF single_result -%]
     <div id="results_info">
       <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one member of the UF community, displayed below.</p>
     </div>
@@ -26,10 +24,8 @@
       <dl class="tel">
         <dt class="type">Campus</dt>
         <dd class="value">[% IF person.telephoneNumber %][% person.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
-
         <dt class="type">Home</dt>
         <dd class="value">[% IF person.homePhone %][% person.homePhone | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
-
         <dt class="type">Mobile</dt>
         <dd class="value">[% IF person.mobile %][% person.mobile | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
       </dl>
@@ -39,35 +35,30 @@
 [% SET postal_addresses = [ 'campus', 'home', 'mailing' ] %]
 [% FOREACH name IN postal_addresses %]
   [% postal_address = person.uflEduAllPostalAddresses.$name %]
-
         <dt class="type">[% name | ucfirst %]</dt>
         <dd>
-
   [% IF postal_address %]
+
     [% INCLUDE includes/address.tt address = postal_address %]
   [% ELSE %]
           &nbsp;
 
-  [% END %]
+  [% END -%]
         </dd>
-
 [% END %]
       </dl>
 
 [% IF person.eduPersonPrimaryAffiliation != 'student' %]
-
       <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html_entity %] Information</h4>
       <dl class="employment">
         <dt>Unit</dt>
         <dd>[% IF person.departmentNumber %]<a class="role" href="[% base %]units/[% person.departmentNumber | html_entity %]/">[% END %]
           [% IF person.o %][% person.o | html_entity %][% ELSE %]&nbsp;[% END %]
         [% IF person.departmentNumber %]</a>[% END %]</dd>
-
         <dt>Title</dt>
         <dd class="title">[% IF person.title %][% person.title | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
       </dl>
 [% END %]
-
     </div>
     <div id="adminlinks">
       <p>Link to <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html_entity %]/">this entry</a>.</p>

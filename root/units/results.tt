@@ -2,10 +2,8 @@
    title       = c.req.params.query
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'units/includes/search.tt'
-%]
-
+-%]
     <div id="results_info">
-
 [% IF sizelimit_exceeded %]
       <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned too many units. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
 [% ELSIF timelimit_exceeded %]
@@ -13,7 +11,6 @@
 [% ELSE %]
       <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned the following [% results.size == 1 ? 'unit' : results.size _ ' units' %]:</p>
 [% END %]
-
     </div>
     <table>
       <thead>
@@ -24,7 +21,6 @@
         </tr>
       </thead>
       <tbody>
-
 [% SET odd = 1 %]
 [% FOREACH result IN results %]
         <tr[% IF odd %] class="odd"[% END %]>
@@ -32,7 +28,6 @@
           <td>[% IF result.telephoneNumber %][% result.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</td>
           <td>[% IF result.mail %]<a href="mailto:[% result.mail | spam_armor %]">[% result.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
         </tr>
-
   [% SET odd = !odd %]
 [% END %]
       </tbody>
