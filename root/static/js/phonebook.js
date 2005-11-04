@@ -3,6 +3,7 @@ if (! Query) {
 		defaultValue: ''
 	};
 }
+
 Query.init = function() {
 	var query = $('query');
 	if (query) {
