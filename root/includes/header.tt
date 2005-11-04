@@ -12,11 +12,10 @@
 <div id="header"> 
   <h1 class="replace" id="logo"><a href="[% base %]">[% name | html_entity %]<span></span></a></h1>
 [% IF heading %]
-
-  [% INCLUDE $heading %]
+  [%+ INCLUDE $heading %]
 [% ELSE %]
   <h2 class="replace" id="unit"><a href="http://www.ufl.edu/">University of Florida<span></span></a></h2>
-[% END -%]
+[%+ END -%]
 </div>
 <div id="mainContainer"> 
   <div id="content">

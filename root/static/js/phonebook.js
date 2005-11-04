@@ -1,3 +1,6 @@
+/*
+ * Query should be defined inline (defaultValue from configuration)
+ */
 if (! Query) {
 	var Query = {
 		defaultValue: ''
