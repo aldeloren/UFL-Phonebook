@@ -1,22 +1,43 @@
-var typed = false;
-
-/*
-$("source").onchange = document.getElementById('searchbox').focus();
-*/
-
-function initBehavior() {
-	var query = $("query");
-
-	query.onkeyup = function(evt) {
-/*
-		Field.autocomplete(evt, this, {
-			"@": "ufl.edu"
-		});
-*/
-	}
-
-	query.onclick = function(evt) {
-	}
-
-	Field.activate(query);
+if (! Query) {
+	var Query = {
+		defaultValue: ''
+	};
 }
+Query.init = function() {
+	var query = $('query');
+	if (query) {
+		addEvent(query, 'onclick', Query.click);
+		addEvent(query, 'onblur', Query.blur);
+		Field.activate(query);
+	}
+}
+
+Query.click = function() {
+	var query = $('query');
+	if (query.value == this.defaultValue) {
+		query.value = '';
+	}
+}
+
+Query.blur = function() {
+	var query = $('query');
+	if (query.value == '') {
+		query.value = this.defaultValue;
+	}
+}
+
+var Source = {
+	init: function() {
+		var source = $('source');
+		if (source) {
+			addEvent(source, 'onchange', Source.change);
+		}
+	},
+	change: function() {
+		var query = $('query');
+		Field.activate(query);
+	}
+};
+
+addEvent(window, 'onload', Query.init);
+addEvent(window, 'onload', Source.init);
