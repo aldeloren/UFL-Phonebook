@@ -18,7 +18,7 @@ Query.init = function() {
 
 Query.click = function() {
 	var query = $('query');
-	if (query.value == this.defaultValue) {
+	if (query.value == Query.defaultValue) {
 		query.value = '';
 	}
 }
@@ -26,7 +26,7 @@ Query.click = function() {
 Query.blur = function() {
 	var query = $('query');
 	if (query.value == '') {
-		query.value = this.defaultValue;
+		query.value = Query.defaultValue;
 	}
 }
 
