@@ -4,7 +4,7 @@
 
     <div id="priSearch">
       <form method="get" action="[% base %]people/search">
-        <input type="text" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : 'Search UF People' | html_entity %]" />
+        <input type="text" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : c.config.search.default | html_entity %]" />
         <input type="submit" id="search" value="Search" />
         <p>Enter a name, email address, or GatorLink ID to find people.</p>
       </form>

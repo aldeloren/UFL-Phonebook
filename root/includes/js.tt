@@ -1,6 +1,43 @@
 <script type="text/javascript" src="[% base %]static/js/common.js"></script>
-<script type="text/javascript" src="[% base %]static/js/autocomplete.js"></script>
-<script type="text/javascript" src="[% base %]static/js/phonebook.js"></script>
 <script type="text/javascript">
-  addLoadEvent(initBehavior);
+	var Query = {
+		init: function() {
+			var query = $('query');
+			if (query) {
+				addEvent(query, 'onclick', Query.click);
+				addEvent(query, 'onblur', Query.blur);
+				Field.activate(query);
+			}
+		},
+		click: function() {
+			var query = $('query');
+			if (query && query.value == '[% c.config.search.default %]') {
+				query.value = '';
+			}
+		},
+		blur: function() {
+			var query = $('query');
+			if (query && query.value == '') {
+				query.value = '[% c.config.search.default %]';
+			}
+		}
+	};
+
+	var Source = {
+		init: function() {
+			var source = $('source');
+			if (source) {
+				addEvent(source, 'onchange', Source.change);
+			}
+		},
+		change: function() {
+			var query = $('query');
+			if (query) {
+				Field.activate(query);
+			}
+		}
+	};
+
+	addEvent(window, 'onload', Query.init);
+	addEvent(window, 'onload', Source.init);
 </script>

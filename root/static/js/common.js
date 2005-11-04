@@ -5,18 +5,18 @@
  */
 
 /*
- * Add a function to the window.onload event.
+ * Add a function to the specified object's event.
  * Based on http://simon.incutio.com/archive/2004/05/26/addLoadEvent
  */
-function addLoadEvent(f) {
-	var old = window.onload;
-	if (typeof window.onload != "function") {
-		window.onload = f;
+function addEvent(obj, evt, f) {
+	if (typeof obj[evt] != 'function') {
+		obj[evt] = f;
 	}
 	else {
-		window.onload = function() {
-			old();
-			f();
+		var old = obj[evt];
+		obj[evt] = function(e) {
+			old(e);
+			f(e);
 		}
 	}
 }

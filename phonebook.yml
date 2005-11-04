@@ -1,6 +1,10 @@
 --- #YAML:1.0
 # Do not use tabs for indentation or label/value separation!
 name: Phonebook
+
+search:
+  default: Search UF People
+
 ldap:
   host: &host ldap.ufl.edu
   options: &options
