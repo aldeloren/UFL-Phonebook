@@ -69,7 +69,7 @@ sub end : Private {
         $c->{error} = [];
     }
 
-    $c->forward(__PACKAGE__ . '::V::TT') if $c->stash->{template};
+    $c->forward(ref $c->comp('V::TT')) if $c->stash->{template};
 }
 
 =head1 AUTHOR
