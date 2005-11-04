@@ -3,12 +3,13 @@
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'units/includes/search.tt'
 -%]
+
 [% IF single_result -%]
     <div id="results_info">
       <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one unit, displayed below.</p>
     </div>
+[% END %]
 
-[% END -%]
     <div class="vcard results">
       <h3><span class="fn">[% (unit.displayName ? unit.displayName : unit.o) | html_entity %]</span></h3>
 

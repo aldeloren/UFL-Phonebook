@@ -2,7 +2,8 @@
    title       = person.displayName
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'people/includes/search.tt'
-%]
+-%]
+
 [% IF single_result -%]
     <div id="results_info">
       <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one member of the UF community, displayed below.</p>

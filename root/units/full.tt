@@ -3,6 +3,7 @@
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'units/includes/search.tt'
 -%]
+
     <div id="ldap">
       <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
       <dl>

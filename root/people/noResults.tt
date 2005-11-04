@@ -3,6 +3,7 @@
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'people/includes/search.tt'
 -%]
+
     <div id="results_info">
       <p>Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html_entity %]</strong>[% END %] did not match any members of the University of Florida community.</p>
     </div>

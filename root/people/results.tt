@@ -3,6 +3,7 @@
    stylesheets = [ "${base}static/css/sec.css" ]
    heading     = 'people/includes/search.tt'
 -%]
+
     <div id="results_info">
 [% IF sizelimit_exceeded %]
       <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned too many people. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
