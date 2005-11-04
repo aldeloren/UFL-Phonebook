@@ -11,13 +11,13 @@
 		},
 		click: function() {
 			var query = $('query');
-			if (query && query.value == '[% c.config.search.default %]') {
+			if (query.value == '[% c.config.search.default %]') {
 				query.value = '';
 			}
 		},
 		blur: function() {
 			var query = $('query');
-			if (query && query.value == '') {
+			if (query.value == '') {
 				query.value = '[% c.config.search.default %]';
 			}
 		}
@@ -32,9 +32,7 @@
 		},
 		change: function() {
 			var query = $('query');
-			if (query) {
-				Field.activate(query);
-			}
+			Field.activate(query);
 		}
 	};
 
