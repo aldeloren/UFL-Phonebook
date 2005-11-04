@@ -1,5 +1,5 @@
 /*
- * Query should be defined inline (defaultValue from configuration)
+ * Query is defined inline (defaultValue from app config)
  */
 if (! Query) {
 	var Query = {
