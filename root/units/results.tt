@@ -1,7 +1,7 @@
 [% INCLUDE includes/header.tt
    title       = c.req.params.query
    stylesheets = [ "${base}static/css/sec.css" ]
-   heading     = 'units/includes/search.tt'
+   heading     = 'people/includes/search.tt'
 -%]
 
     <div id="results_info">
