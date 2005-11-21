@@ -9,6 +9,7 @@ license: perl
 requires:
   Catalyst: 5.33
   Catalyst::Model::LDAP: 0
+  Catalyst::Plugin::Static::Simple: 0
   Catalyst::View::TT: 0
   Class::Accessor: 0
   Locale::Country: 0
