@@ -21,6 +21,11 @@ a.replace {
 display:block
 }
 
+acronym {
+border: 0;
+font-style: normal
+}
+
 form#search {
 display:inline;
 margin-right:30px;
