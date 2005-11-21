@@ -1,4 +1,4 @@
-package Uf::Webadmin::Phonebook::V::TT;
+package Uf::Webadmin::Phonebook::View::TT;
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ __PACKAGE__->config(
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::V::TT - Template Toolkit view component
+Uf::Webadmin::Phonebook::View::TT - Template Toolkit view component
 
 =head1 SYNOPSIS
 

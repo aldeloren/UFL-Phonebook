@@ -3,6 +3,7 @@ name: Uf-Webadmin-Phonebook
 version: 0.02
 author:
   - University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
+  - L<http://www.webadmin.ufl.edu/>
 abstract: Catalyst based application
 license: perl
 requires:
@@ -18,12 +19,12 @@ provides:
   Uf::Webadmin::Phonebook:
     file: lib/Uf/Webadmin/Phonebook.pm
     version: 0.02
-  Uf::Webadmin::Phonebook::C::People:
-    file: lib/Uf/Webadmin/Phonebook/C/People.pm
-  Uf::Webadmin::Phonebook::C::Units:
-    file: lib/Uf/Webadmin/Phonebook/C/Units.pm
   Uf::Webadmin::Phonebook::Constants:
     file: lib/Uf/Webadmin/Phonebook/Constants.pm
+  Uf::Webadmin::Phonebook::Controller::People:
+    file: lib/Uf/Webadmin/Phonebook/Controller/People.pm
+  Uf::Webadmin::Phonebook::Controller::Units:
+    file: lib/Uf/Webadmin/Phonebook/Controller/Units.pm
   Uf::Webadmin::Phonebook::Entry:
     file: lib/Uf/Webadmin/Phonebook/Entry.pm
   Uf::Webadmin::Phonebook::Entry::PostalAddress:
@@ -36,12 +37,12 @@ provides:
     file: lib/Uf/Webadmin/Phonebook/Filter/Abstract/Operator.pm
   Uf::Webadmin::Phonebook::Filter::Abstract::Predicate:
     file: lib/Uf/Webadmin/Phonebook/Filter/Abstract/Predicate.pm
-  Uf::Webadmin::Phonebook::M::Organizations:
-    file: lib/Uf/Webadmin/Phonebook/M/Organizations.pm
-  Uf::Webadmin::Phonebook::M::People:
-    file: lib/Uf/Webadmin/Phonebook/M/People.pm
+  Uf::Webadmin::Phonebook::Model::Organizations:
+    file: lib/Uf/Webadmin/Phonebook/Model/Organizations.pm
+  Uf::Webadmin::Phonebook::Model::People:
+    file: lib/Uf/Webadmin/Phonebook/Model/People.pm
   Uf::Webadmin::Phonebook::Utilities:
     file: lib/Uf/Webadmin/Phonebook/Utilities.pm
-  Uf::Webadmin::Phonebook::V::TT:
-    file: lib/Uf/Webadmin/Phonebook/V/TT.pm
-generated_by: Module::Build version 0.2611
+  Uf::Webadmin::Phonebook::View::TT:
+    file: lib/Uf/Webadmin/Phonebook/View/TT.pm
+generated_by: Module::Build version 0.25

@@ -14,15 +14,15 @@ ldap:
     sizelimit: 100
     timelimit: 10
 
-M::Organizations:
+Model::Organizations:
   host:    *host
   base:    ou=Organizations,dc=ufl,dc=edu
   options: *options
 
-M::People:
+Model::People:
   host:    *host
   base:    ou=People,dc=ufl,dc=edu
   options: *options
 
-V::TT:
+View::TT:
   PRE_CHOMP:  1

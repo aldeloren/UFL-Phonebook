@@ -1,4 +1,4 @@
-package Uf::Webadmin::Phonebook::C::Units;
+package Uf::Webadmin::Phonebook::Controller::Units;
 
 use strict;
 use warnings;
@@ -11,7 +11,7 @@ use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::C::Units - Catalyst component
+Uf::Webadmin::Phonebook::Controller::Units - Catalyst component
 
 =head1 SYNOPSIS
 
@@ -64,7 +64,7 @@ sub search : Local {
     $c->log->debug("Filter: $string");
 
     eval {
-        my $organizations = $c->comp('M::Organizations');
+        my $organizations = $c->comp('Model::Organizations');
         my $entries       = $organizations->search($string);
         my $code          = $organizations->code;
 
@@ -110,7 +110,7 @@ sub single : Private {
     $c->log->debug("UFID: $ufid");
 
     eval {
-        my $entries = $c->comp('M::Organizations')->search("uflEduUniversityId=$ufid");
+        my $entries = $c->comp('Model::Organizations')->search("uflEduUniversityId=$ufid");
         if ($entries and scalar @$entries) {
             $c->stash->{unit} = Uf::Webadmin::Phonebook::Entry->new($entries->[0]);
 

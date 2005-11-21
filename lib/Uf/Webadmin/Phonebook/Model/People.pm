@@ -1,4 +1,4 @@
-package Uf::Webadmin::Phonebook::M::People;
+package Uf::Webadmin::Phonebook::Model::People;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use base 'Catalyst::Model::LDAP';
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::M::People - LDAP Catalyst model component
+Uf::Webadmin::Phonebook::Model::People - LDAP Catalyst model component
 
 =head1 SYNOPSIS
 

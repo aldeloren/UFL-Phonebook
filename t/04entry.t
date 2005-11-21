@@ -15,7 +15,7 @@ my $POSTAL_CODE        = '338502243';
 my $PARSED_POSTAL_CODE = '33850-2243';
 my $ADDRESS            = join '$', $TITLE, $STREET, "$LOCALITY, $REGION, $DOMINION", " $POSTAL_CODE";
 
-my $people  = Uf::Webadmin::Phonebook->comp('M::People');
+my $people  = Uf::Webadmin::Phonebook->comp('Model::People');
 my $results = $people->search("(uid=$UID)");
 ok(scalar @{ $results } > 0, 'got results');
 
