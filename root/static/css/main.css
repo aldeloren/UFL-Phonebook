@@ -22,6 +22,10 @@ a.replace {
 display:block
 }
 
+form {
+padding-top: 20px;
+}
+
 form p {
 font-size:1.2em;
 margin:2px 0 50px 45px
