@@ -123,6 +123,10 @@ margin:25px 30px
 margin:30px
 }
 
+#ldap dd, #ldap dt {
+border-top: 1px solid #ddd;
+}
+
 #ldap dd {
 color:#222;
 margin-left:19em
