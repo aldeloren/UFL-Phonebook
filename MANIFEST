@@ -1,8 +1,5 @@
 Build.PL
 Changes
-doc/schedule.html
-doc/specification.html
-doc/style.css
 lib/Uf/Webadmin/Phonebook.pm
 lib/Uf/Webadmin/Phonebook/C/People.pm
 lib/Uf/Webadmin/Phonebook/C/Units.pm
