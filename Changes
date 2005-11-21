@@ -1,6 +1,6 @@
 This file documents the revision history for Perl extension Uf::Webadmin::Phonebook.
 
-0.02
+0.02  Mon Nov 21 18:24:31 2005
         - Improve address parsing and output
         - Add vCard output
         - Move away from short package names (C -> Controller, etc.)
