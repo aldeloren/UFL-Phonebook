@@ -2,6 +2,6 @@
 <link rel="stylesheet" type="text/css" media="print" href="[% base %]static/css/print.css" />
 <style type="text/css" media="screen">
 [% FOREACH stylesheet IN stylesheets %]
-  @import "[% stylesheet | trim | html_entity %]";
+  @import "[% stylesheet | trim | html %]";
 [% END %]
 </style>

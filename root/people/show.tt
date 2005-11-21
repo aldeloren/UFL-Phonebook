@@ -6,29 +6,29 @@
 
 [% IF single_result -%]
     <div id="results_info">
-      <p>Your search for <strong>[% c.req.params.query | html_entity %]</strong> returned only one member of the UF community, displayed below.</p>
+      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned only one member of the UF community, displayed below.</p>
     </div>
 [% END %]
 
     <div class="vcard results">
-      <h3><span class="fn">[% person.displayName | html_entity %]</span></h3>
+      <h3><span class="fn">[% person.displayName | html %]</span></h3>
 
       <h4>General Information</h4>
       <dl class="gen">
         <dt>Email</dt>
         <dd>[% IF person.mail %]<a class="email" href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
         <dt>Web Site</dt>
-        <dd>[% IF person.homePageURL %]<a class="url" href="[% person.homePageURL | html_entity %]">[% person.homePageURL | html_entity %]</a>[% ELSE %]&nbsp;[% END %]</dd>
+        <dd>[% IF person.homePageURL %]<a class="url" href="[% person.homePageURL | html %]">[% person.homePageURL | html %]</a>[% ELSE %]&nbsp;[% END %]</dd>
       </dl>
 
       <h4>Phone Numbers</h4>
       <dl class="tel">
         <dt class="type">Campus</dt>
-        <dd class="value">[% IF person.telephoneNumber %][% person.telephoneNumber | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+        <dd class="value">[% IF person.telephoneNumber %][% person.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</dd>
         <dt class="type">Home</dt>
-        <dd class="value">[% IF person.homePhone %][% person.homePhone | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+        <dd class="value">[% IF person.homePhone %][% person.homePhone | html %][% ELSE %]&nbsp;[% END %]</dd>
         <dt class="type">Mobile</dt>
-        <dd class="value">[% IF person.mobile %][% person.mobile | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+        <dd class="value">[% IF person.mobile %][% person.mobile | html %][% ELSE %]&nbsp;[% END %]</dd>
       </dl>
 
       <h4>Addresses</h4>
@@ -50,22 +50,22 @@
       </dl>
 
 [% IF person.eduPersonPrimaryAffiliation != 'student' %]
-      <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html_entity %] Information</h4>
+      <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
       <dl class="employment">
         <dt>Unit</dt>
-        <dd>[% IF person.departmentNumber %]<a class="org" href="[% base %]units/[% person.departmentNumber | html_entity %]/">[% END %]
-          [% IF person.o %][% person.o | html_entity %][% ELSE %]&nbsp;[% END %]
+        <dd>[% IF person.departmentNumber %]<a class="org" href="[% base %]units/[% person.departmentNumber | html %]/">[% END %]
+          [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]
         [% IF person.departmentNumber %]</a>[% END %]</dd>
         <dt>Title</dt>
-        <dd class="title">[% IF person.title %][% person.title | html_entity %][% ELSE %]&nbsp;[% END %]</dd>
+        <dd class="title">[% IF person.title %][% person.title | html %][% ELSE %]&nbsp;[% END %]</dd>
       </dl>
 [% END %]
     </div>
     <div id="adminlinks">
-      <p>Link to <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html_entity %]/">this entry</a>.</p>
-      <p>Download this contact information as a <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html_entity %]/vcard/">vCard</a>.</p>
+      <p>Link to <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html %]/">this entry</a>.</p>
+      <p>Download this contact information as a <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html %]/vcard/">vCard</a>.</p>
       <p>Is your directory information incomplete? <a href="http://directory.ufl.edu/edit">Update it now</a>.</p>
-      <p>Display the full <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html_entity %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+      <p>Display the full <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
     </div>
 
 [% INCLUDE includes/footer.tt %]
