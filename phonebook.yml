@@ -2,8 +2,11 @@
 # Do not use tabs for indentation or label/value separation!
 name: Phonebook
 
-search:
+people:
   default: Search UF People
+
+units:
+  default: Search UF Units
 
 ldap:
   host: &host ldap.ufl.edu
