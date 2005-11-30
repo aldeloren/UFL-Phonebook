@@ -17,21 +17,21 @@ my $ADDRESS            = join '$', $TITLE, $STREET, "$LOCALITY, $REGION, $DOMINI
 
 my $people  = Uf::Webadmin::Phonebook->comp('Model::People');
 my $results = $people->search("(uid=$UID)");
-ok(scalar @{ $results } > 0, 'got results');
+cmp_ok(scalar @{ $results }, '>', 0, 'got results');
 
 my @entries = map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $results };
 
 my $entry = $entries[0];
 
-ok(scalar(@{ $entry->attribute } > 0), 'has attributes');
-ok($entry->uid eq $UID, 'uid');
-ok(scalar($entry->uflEduAllPhones) > 0, 'has a phone number');
+cmp_ok(scalar @{ $entry->attribute }, '>', 0, 'has attributes');
+is($entry->uid, $UID, 'uid');
+cmp_ok(scalar $entry->uflEduAllPhones, '>', 0, 'has a phone number');
 
 my $campus_address = $entry->uflEduAllPostalAddresses->campus;
-ok($campus_address->title eq $TITLE, 'title');
-ok($campus_address->street eq $STREET, 'street');
-ok($campus_address->locality eq $LOCALITY, 'locality');
-ok($campus_address->region eq $REGION, 'region');
-ok($campus_address->dominion eq $DOMINION, 'dominion');
-ok($campus_address->postal_code eq $PARSED_POSTAL_CODE, 'postal code');
-ok($campus_address->as_string eq $ADDRESS, 'campus address');
+is($campus_address->title, $TITLE, 'title');
+is($campus_address->street, $STREET, 'street');
+is($campus_address->locality, $LOCALITY, 'locality');
+is($campus_address->region, $REGION, 'region');
+is($campus_address->dominion, $DOMINION, 'dominion');
+is($campus_address->postal_code, $PARSED_POSTAL_CODE, 'postal code');
+is($campus_address->as_string, $ADDRESS, 'campus address');
