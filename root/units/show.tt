@@ -28,9 +28,9 @@
       <h4>Addresses</h4>
       <dl class="adr">
 [% SET postal_addresses = [ 'campus' ] %]
-[% FOREACH name IN postal_addresses %]
-  [% postal_address = unit.uflEduAllPostalAddresses.$name %]
-        <dt class="type">[% name | ucfirst %]</dt>
+[% FOREACH postal_address_name IN postal_addresses %]
+  [% postal_address = unit.uflEduAllPostalAddresses.$postal_address_name %]
+        <dt class="type">[% postal_address_name | ucfirst %]</dt>
         <dd>
   [% IF postal_address %]
 
