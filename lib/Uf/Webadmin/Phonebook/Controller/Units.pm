@@ -11,7 +11,7 @@ use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::Controller::Units - Catalyst component
+Uf::Webadmin::Phonebook::Controller::Units - Units controller component
 
 =head1 SYNOPSIS
 
@@ -47,7 +47,7 @@ sub search : Local {
 
     my $query = $c->req->param('query');
     my $sort  = $c->req->param('sort') || 'o';
-    $c->detach('default') unless $query;
+    $c->detach('index') unless $query;
 
     my $filter = $self->_parse_query($query);
     my $string = $filter->as_string;

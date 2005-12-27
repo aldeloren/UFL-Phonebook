@@ -11,7 +11,7 @@ use Uf::Webadmin::Phonebook::Utilities;
 
 =head1 NAME
 
-Uf::Webadmin::Phonebook::Controller::People - Catalyst component
+Uf::Webadmin::Phonebook::Controller::People - People controller component
 
 =head1 SYNOPSIS
 
@@ -47,7 +47,7 @@ sub search : Local {
     my $query = $c->req->param('query');
     my $sort  = $c->req->param('sort') || 'cn';
     if (not $query or $query eq $c->config->{people}->{default}) {
-        $c->detach('default');
+        $c->detach('index');
     }
 
     my $filter = $self->_parse_query($query);
