@@ -38,16 +38,29 @@ It is written using the L<Catalyst> framework.
 
 =head1 METHODS
 
-=head2 default
+=head2 index
 
 Display the home page.
+
+=cut
+
+sub index : Private {
+    my ($self, $c) = @_;
+
+    $c->forward('/people/index');
+}
+
+=head2 default
+
+Handle any actions which did not match, i.e. 404 errors.
 
 =cut
 
 sub default : Private {
     my ($self, $c) = @_;
 
-    $c->stash->{template} = $Uf::Webadmin::Phonebook::Constants::TEMPLATE_HOME;
+    $c->res->status(404);
+    $c->stash->{template} = '404.tt';
 }
 
 =head2 end

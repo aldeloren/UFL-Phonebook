@@ -2,7 +2,7 @@ package Uf::Webadmin::Phonebook::Controller::People;
 
 use strict;
 use warnings;
-use base 'Catalyst::Base';
+use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
 use Uf::Webadmin::Phonebook::Constants;
 use Uf::Webadmin::Phonebook::Entry;
@@ -23,23 +23,16 @@ Catalyst controller component for finding people.
 
 =head1 METHODS
 
-=head2 default
+=head2 index
 
-If a UFID is specified, display the specified person. Otherwise,
-display the people home page.
+Display the people home page.
 
 =cut
 
-sub default : Private {
-    # TODO: Remove $junk parameter - possibly fixed in Catalyst trunk?
-    my ($self, $c, $junk, $ufid, @args) = @_;
+sub index : Private {
+    my ($self, $c) = @_;
 
-    if ($ufid) {
-        $c->forward('single', [ $ufid, @args ]);
-    }
-    else {
-        $c->res->redirect('/');
-    }
+    $c->stash->{template} = 'people/index.tt';
 }
 
 =head2 search
@@ -105,7 +98,7 @@ behavior of the person.
 
 =cut
 
-sub single : Private {
+sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
     $ufid = Uf::Webadmin::Phonebook::Utilities::decode_ufid($ufid);

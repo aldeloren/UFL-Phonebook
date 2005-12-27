@@ -1,0 +1,5 @@
+[% INCLUDE includes/header.tt
+   title       = 'Not Found'
+   stylesheets = [ "${base}static/css/main.css" ]
+%]
+[% INCLUDE includes/footer.tt %]

@@ -2,7 +2,7 @@ package Uf::Webadmin::Phonebook::Controller::Units;
 
 use strict;
 use warnings;
-use base 'Catalyst::Base';
+use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
 use Uf::Webadmin::Phonebook::Constants;
 use Uf::Webadmin::Phonebook::Entry;
@@ -24,23 +24,16 @@ campus organizations).
 
 =head1 METHODS
 
-=head2 default
+=head2 index
 
-If a UFID is specified, display the specified unit. Otherwise, display
-the units home page.
+Display the units home page.
 
 =cut
 
-sub default : Private {
-    # TODO: Remove $junk parameter - possibly fixed in Catalyst trunk?
-    my ($self, $c, $junk, $ufid, $full) = @_;
+sub index : Private {
+    my ($self, $c) = @_;
 
-    if ($ufid) {
-        $c->forward('single', [ $ufid, $full ]);
-    }
-    else {
-        $c->res->redirect('/');
-    }
+    $c->res->redirect($c->uri_for('/'));
 }
 
 =head2 search
@@ -104,7 +97,7 @@ behavior of the unit.
 
 =cut
 
-sub single : Private {
+sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
     $c->log->debug("UFID: $ufid");
