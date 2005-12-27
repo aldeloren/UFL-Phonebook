@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension Uf::Webadmin::Phonebook.
 
+0.03
+        - Upgrade to Catalyst 5.60
+
 0.02  Mon Nov 21 18:24:31 2005
         - Improve address parsing and output
         - Add vCard output

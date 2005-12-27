@@ -2,21 +2,20 @@ package Uf::Webadmin::Phonebook;
 
 use strict;
 use warnings;
-use Catalyst;
-use File::Spec;
 use Uf::Webadmin::Phonebook::Constants;
 use YAML;
 
-our $VERSION = '0.02';
-
-__PACKAGE__->config(
-    YAML::LoadFile(File::Spec->join(__PACKAGE__->config->{home}, 'phonebook.yml')),
+use Catalyst qw(
+    Static::Simple
 );
 
-my @plugins = qw/Static::Simple/;
-push(@plugins, '-Debug') if $ENV{USER};
+our $VERSION = '0.03';
 
-__PACKAGE__->setup(@plugins);
+__PACKAGE__->config(
+    YAML::LoadFile(__PACKAGE__->path_to('Phonebook.yml')),
+);
+
+__PACKAGE__->setup;
 
 =head1 NAME
 
@@ -60,16 +59,20 @@ Forward to the view.
 sub end : Private {
     my ($self, $c) = @_;
 
+    return 1 if $c->res->status =~ /^3\d\d$/;
+    return 1 if $c->res->body;
+
     # Display errors in the template if we have one; otherwise, use a
     # sensible default
-    if (scalar @{ $c->error }) {
+    if (@{ $c->error }) {
         $c->res->status(500);
+        $c->log->error($_) for @{ $c->error };
         $c->stash->{errors}     = $c->error;
         $c->stash->{template} ||= $Uf::Webadmin::Phonebook::Constants::TEMPLATE_ERRORS;
-        $c->{error} = [];
+        $c->error(0);
     }
 
-    $c->forward(ref $c->comp('View::TT')) if $c->stash->{template};
+    $c->forward($c->view('TT'));
 }
 
 =head1 AUTHOR
