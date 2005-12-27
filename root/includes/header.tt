@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>[% IF title %][% title | trim | html %] - [% END %]University of Florida [% name | html %]</title>
+<title>[% IF title %][% title | trim | html %] - [% END %]University of Florida [% c.config.name | html %]</title>
 
 [% INCLUDE includes/favicon.tt %]
 [% INCLUDE includes/css.tt %]
@@ -10,7 +10,7 @@
 </head>
 <body>
 <div id="header"> 
-  <h1 class="replace" id="logo"><a href="[% base %]">[% name | html %]<span></span></a></h1>
+  <h1 class="replace" id="logo"><a href="[% c.uri_for('/') | html %]">[% c.config.name | html %]<span></span></a></h1>
 [% IF heading %]
   [%+ INCLUDE $heading %]
 [% ELSE %]

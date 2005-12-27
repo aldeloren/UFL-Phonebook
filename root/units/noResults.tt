@@ -1,20 +1,21 @@
-[% INCLUDE includes/header.tt
+[% WRAPPER wrapper.tt
    title       = c.req.params.query
-   stylesheets = [ "${base}static/css/sec.css" ]
+   stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
--%]
+%]
 
     <div id="results_info">
       <p>
         Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html %]</strong>[% END %] did not match any units at the University of Florida.
         Try browsing the <a href="http://www.ufl.edu/websites/">Web site listing</a>
-[% USE query = String(c.req.params.query) %]
-[% IF query.search('^[A-Za-z]') %]
-  [% letter = query.truncate(1) %] for <a href="http://www.ufl.edu/websites/[% letter | lcfirst | html %].html">sites starting with the letter [% letter | ucfirst | html %]</a>
-[% END %].
+  [% USE query = String(c.req.params.query) %]
+  [% IF query.search('^[A-Za-z]') %]
+    [% letter = query.truncate(1) %] for <a href="http://www.ufl.edu/websites/[% letter | lcfirst | html %].html">sites starting with the letter [% letter | ucfirst | html %]</a>
+  [% END %].
       </p>
     </div>
 
-[% INCLUDE units/includes/tips.tt %]
-[% INCLUDE includes/links.tt %]
-[% INCLUDE includes/footer.tt %]
+  [% INCLUDE units/includes/tips.tt %]
+  [% INCLUDE includes/links.tt %]
+
+[% END %]

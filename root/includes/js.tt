@@ -1,7 +1,7 @@
-<script type="text/javascript" src="[% base %]static/js/common.js"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/js/common.js') | html %]"></script>
 <script type="text/javascript">
   var Query = {
     defaultValue: '[% c.config.people.default %]'
   };
 </script>
-<script type="text/javascript" src="[% base %]static/js/phonebook.js"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/js/phonebook.js') | html %]"></script>

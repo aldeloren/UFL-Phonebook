@@ -1,4 +1,4 @@
-  <form method="get" action="[% base %]people/search" id="search" name="search">
+  <form method="get" action="[% c.uri_for('/people/search') | html %]" id="search" name="search">
     <label for="source">
       <select name="source" id="source">
         <option value="web">UF Web with Google</option>
@@ -8,5 +8,5 @@
     <label for="query">
       <input type="text" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : c.config.people.default | html %]" />
     </label>
-    <input type="image" id="image" src="[% base %]static/images/searchEnter.gif" alt="Go" />
+    <input type="image" id="image" src="[% c.uri_for('/static/images/searchEnter.gif') | html %]" alt="Go" />
   </form>

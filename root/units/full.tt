@@ -1,17 +1,17 @@
-[% INCLUDE includes/header.tt
-   title       = unit.o _ "'s Full LDAP Entry"
-   stylesheets = [ "${base}static/css/sec.css" ]
+[% WRAPPER wrapper.tt
+   title       = "Full LDAP Entry for" _ unit.o
+   stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
--%]
+%]
 
     <div id="ldap">
       <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
       <dl>
-[% FOREACH attribute IN unit.attribute.sort %]
+  [% FOREACH attribute IN unit.attribute.sort %]
       <dt>[% attribute | html %]</dt>
       <dd>[% IF unit.$attribute %][% unit.$attribute.join("\n") | html | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
-[% END %]
+  [% END %]
       </dl>
     </div>
 
-[% INCLUDE includes/footer.tt %]
+[% END %]

@@ -1,17 +1,17 @@
-[% INCLUDE includes/header.tt
+[% WRAPPER wrapper.tt
    title       = c.req.params.query
-   stylesheets = [ "${base}static/css/sec.css" ]
+   stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
--%]
+%]
 
     <div id="results_info">
-[% IF sizelimit_exceeded %]
+  [% IF sizelimit_exceeded %]
       <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many people. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
-[% ELSIF timelimit_exceeded %]
+  [% ELSIF timelimit_exceeded %]
       <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
-[% ELSE %]
+  [% ELSE %]
       <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
-[% END %]
+  [% END %]
     </div>
     <table>
       <thead>
@@ -23,21 +23,21 @@
         </tr>
       </thead>
       <tbody>
-[% SET odd = 1 %]
-[% FOREACH result IN results %]
+  [% SET odd = 1 %]
+  [% FOREACH result IN results %]
         <tr[% IF odd %] class="odd"[% END %]>
-          <td><a href="[% base %]people/[% result.uflEduUniversityId | encode_ufid | html %]/">[% result.displayName | html %]</a></td>
+          <td><a href="[% c.uri_for('/people', result.uflEduUniversityId) | html %]">[% result.displayName | html %]</a></td>
           <td>
             [% (result.title ? result.title : result.eduPersonPrimaryAffiliation) | html %]
             [% IF result.eduPersonPrimaryAffiliation != 'student' %]
-              [% IF result.departmentNumber AND result.o %], <a href="[% base %]units/[% result.departmentNumber | html %]/">[% result.o | html %]</a>[% END %]
+              [% IF result.departmentNumber AND result.o %], <a href="[% c.uri_for('/units', result.departmentNumber, '/') | html %]">[% result.o | html %]</a>[% END %]
             [% END %]</td>
           <td>[% IF result.telephoneNumber %][% result.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
           <td>[% IF result.mail %]<a href="mailto:[% result.mail | spam_armor %]">[% result.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
         </tr>
-  [% SET odd = !odd %]
-[% END %]
+    [% SET odd = !odd %]
+  [% END %]
       </tbody>
     </table>
 
-[% INCLUDE includes/footer.tt %]
+[% END %]

@@ -1,14 +1,14 @@
-[% INCLUDE includes/header.tt
+[% WRAPPER wrapper.tt
    title       = person.displayName
-   stylesheets = [ "${base}static/css/sec.css" ]
+   stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
--%]
+%]
 
-[% IF single_result -%]
+  [% IF single_result %]
     <div id="results_info">
       <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned only one member of the UF community, displayed below.</p>
     </div>
-[% END %]
+  [% END -%]
 
     <div class="vcard results">
       <h3><span class="fn">[% person.displayName | html %]</span></h3>
@@ -33,39 +33,40 @@
 
       <h4>Addresses</h4>
       <dl class="adr">
-[% SET postal_addresses = [ 'campus', 'home', 'mailing' ] %]
-[% FOREACH postal_address_name IN postal_addresses %]
-  [% postal_address = person.uflEduAllPostalAddresses.$postal_address_name %]
+  [% SET postal_addresses = [ 'campus', 'home', 'mailing' ] %]
+  [% FOREACH postal_address_name IN postal_addresses %]
+    [% postal_address = person.uflEduAllPostalAddresses.$postal_address_name %]
         <dt class="type">[% postal_address_name | ucfirst %]</dt>
         <dd>
-  [% IF postal_address %]
+    [% IF postal_address %]
 
-    [% INCLUDE includes/address.tt address = postal_address %]
-  [% ELSE %]
+      [% INCLUDE includes/address.tt address = postal_address %]
+    [% ELSE %]
           &nbsp;
 
-  [% END -%]
+    [% END -%]
         </dd>
-[% END %]
+  [% END %]
       </dl>
 
-[% IF person.eduPersonPrimaryAffiliation != 'student' %]
+  [% IF person.eduPersonPrimaryAffiliation != 'student' %]
       <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
       <dl class="employment">
         <dt>Unit</dt>
-        <dd>[% IF person.departmentNumber %]<a class="org" href="[% base %]units/[% person.departmentNumber | html %]/">[% END %]
+        <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for('/units', person.departmentNumber) | html %]">[% END %]
           [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]
         [% IF person.departmentNumber %]</a>[% END %]</dd>
         <dt>Title</dt>
         <dd class="title">[% IF person.title %][% person.title | html %][% ELSE %]&nbsp;[% END %]</dd>
       </dl>
-[% END %]
-    </div>
-    <div id="adminlinks">
-      <p>Link to <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html %]/">this entry</a>.</p>
-      <p>Download this contact information as a <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html %]/vcard/">vCard</a>.</p>
-      <p>Is your directory information incomplete? <a href="http://directory.ufl.edu/edit">Update it now</a>.</p>
-      <p>Display the full <a href="[% base %]people/[% person.uflEduUniversityId | encode_ufid | html %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+  [% END %]
     </div>
 
-[% INCLUDE includes/footer.tt %]
+    <div id="adminlinks">
+      <p>Link to <a href="[% c.uri_for('/people', person.uflEduUniversityId) | html %]">this entry</a>.</p>
+      <p>Download this contact information as a <a href="[% c.uri_for('/people', person.uflEduUniversityId, 'vcard') | html %]">vCard</a>.</p>
+      <p>Is your directory information incomplete? <a href="http://directory.ufl.edu/edit">Update it now</a>.</p>
+      <p>Display the full <a href="[% c.uri_for('/people', person.uflEduUniversityId, 'full') | html %]"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+    </div>
+
+[% END %]

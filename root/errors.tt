@@ -1,5 +1,5 @@
-[% INCLUDE includes/header.tt
+[% WRAPPER wrapper.tt
    title       = 'Error'
-   stylesheets = [ "${base}static/css/main.css" ]
+   stylesheets = [ c.uri_for('/static/css/main.css') ]
 %]
-[% INCLUDE includes/footer.tt %]
+[% END %]

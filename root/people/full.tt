@@ -1,18 +1,18 @@
-[% INCLUDE includes/header.tt
+[% WRAPPER wrapper.tt
    title       = person.cn _ "'s Full LDAP Entry"
-   stylesheets = [ "${base}static/css/sec.css" ]
+   stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
--%]
+%]
 
     <div id="ldap">
       <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
       <dl>
-[% FOREACH attribute IN person.attribute.sort %]
-  [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
+  [% FOREACH attribute IN person.attribute.sort %]
+    [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
         <dt>[% attribute | html %]</dt>
         <dd>[% IF person.$attribute %][% person.$attribute.join("\n") | html | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
-[% END %]
+  [% END %]
       </dl>
     </div>
 
-[% INCLUDE includes/footer.tt %]
+[% END %]

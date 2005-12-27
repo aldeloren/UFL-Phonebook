@@ -1,14 +1,14 @@
-[% INCLUDE includes/header.tt
+[% WRAPPER wrapper.tt
    title       = (unit.displayName ? unit.displayName : unit.o)
-   stylesheets = [ "${base}static/css/sec.css" ]
+   stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
--%]
+%]
 
-[% IF single_result -%]
+  [% IF single_result %]
     <div id="results_info">
       <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned only one unit, displayed below.</p>
     </div>
-[% END %]
+  [% END -%]
 
     <div class="vcard results">
       <h3><span class="fn">[% (unit.displayName ? unit.displayName : unit.o) | html %]</span></h3>
@@ -27,25 +27,26 @@
 
       <h4>Addresses</h4>
       <dl class="adr">
-[% SET postal_addresses = [ 'campus' ] %]
-[% FOREACH postal_address_name IN postal_addresses %]
-  [% postal_address = unit.uflEduAllPostalAddresses.$postal_address_name %]
+  [% SET postal_addresses = [ 'campus' ] %]
+  [% FOREACH postal_address_name IN postal_addresses %]
+    [% postal_address = unit.uflEduAllPostalAddresses.$postal_address_name %]
         <dt class="type">[% postal_address_name | ucfirst %]</dt>
         <dd>
-  [% IF postal_address %]
+    [% IF postal_address %]
 
-    [% INCLUDE includes/address.tt address = postal_address %]
-  [% ELSE %]
+      [% INCLUDE includes/address.tt address = postal_address %]
+    [% ELSE %]
           &nbsp;
 
-  [% END -%]
+    [% END -%]
         </dd>
-[% END %]
+  [% END %]
       </dl>
     </div>
+
     <div id="adminlinks">
-      <p>Link to <a href="[% base %]units/[% unit.uflEduUniversityId | html %]/">this entry</a>.</p>
-      <p>Display the full <a href="[% base %]units/[% unit.uflEduUniversityId | html %]/full/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+      <p>Link to <a href="[% c.uri_for('/units', unit.uflEduUniversityId) | html %]">this entry</a>.</p>
+      <p>Display the full <a href="[% c.uri_for('/units', unit.uflEduUniversityId, 'full') | html %]"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
     </div>
 
-[% INCLUDE includes/footer.tt %]
+[% END %]

@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" media="screen" href="[% base %]static/css/basic.css" />
-<link rel="stylesheet" type="text/css" media="print" href="[% base %]static/css/print.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="[% c.uri_for('/static/css/basic.css') | html %]" />
+<link rel="stylesheet" type="text/css" media="print" href="[% c.uri_for('/static/css/print.css') | html %]" />
 <style type="text/css" media="screen">
 [% FOREACH stylesheet IN stylesheets %]
   @import "[% stylesheet | trim | html %]";

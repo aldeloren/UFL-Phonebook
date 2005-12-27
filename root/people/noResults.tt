@@ -1,13 +1,14 @@
-[% INCLUDE includes/header.tt
+[% WRAPPER wrapper.tt
    title       = c.req.params.query
-   stylesheets = [ "${base}static/css/sec.css" ]
+   stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
--%]
+%]
 
     <div id="results_info">
       <p>Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html %]</strong>[% END %] did not match any members of the University of Florida community.</p>
     </div>
 
-[% INCLUDE people/includes/tips.tt %]
-[% INCLUDE includes/links.tt %]
-[% INCLUDE includes/footer.tt %]
+  [% INCLUDE people/includes/tips.tt %]
+  [% INCLUDE includes/links.tt %]
+
+[% END %]
