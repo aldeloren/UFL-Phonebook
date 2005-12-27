@@ -1,9 +1,9 @@
 use strict;
 use warnings;
 use Test::More tests => 12;
-use Uf::Webadmin::Phonebook;
+use Phonebook;
 
-use_ok('Uf::Webadmin::Phonebook::Entry');
+use_ok('Phonebook::Entry');
 
 my $UID                = 'gkt';
 my $TITLE              = 'CREC - LAKE ALFRED';
@@ -15,11 +15,11 @@ my $POSTAL_CODE        = '338502243';
 my $PARSED_POSTAL_CODE = '33850-2243';
 my $ADDRESS            = join '$', $TITLE, $STREET, "$LOCALITY, $REGION, $DOMINION", " $POSTAL_CODE";
 
-my $people  = Uf::Webadmin::Phonebook->comp('Model::People');
+my $people  = Phonebook->model('People');
 my $results = $people->search("(uid=$UID)");
 cmp_ok(scalar @{ $results }, '>', 0, 'got results');
 
-my @entries = map { Uf::Webadmin::Phonebook::Entry->new($_) } @{ $results };
+my @entries = map { Phonebook::Entry->new($_) } @{ $results };
 
 my $entry = $entries[0];
 

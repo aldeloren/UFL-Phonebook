@@ -2,8 +2,8 @@ use inc::Module::Install;
 
 name('Phonebook');
 author('University of Florida Web Administration <webmaster@ufl.edu>');
-abstract_from('lib/Uf/Webadmin/Phonebook.pm');
-version_from('lib/Uf/Webadmin/Phonebook.pm');
+abstract_from('lib/Phonebook.pm');
+version_from('lib/Phonebook.pm');
 license('perl');
 
 requires('Catalyst' => '5.60');
