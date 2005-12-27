@@ -50,8 +50,8 @@ sub new {
 
 =head2 _parse
 
-Parse the entry's attributes and corresponding values. Basic
-validation is done to avoid blank and "unknown" values.
+Parse the attributes and corresponding values. Basic validation is
+done to avoid blank and "unknown" values.
 
 =cut
 
