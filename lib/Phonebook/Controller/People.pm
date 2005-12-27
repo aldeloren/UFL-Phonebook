@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
-use Phonebook::Constants;
 use Phonebook::Entry;
 use Phonebook::Filter::Abstract;
 use Phonebook::Utilities;
@@ -78,11 +77,11 @@ sub search : Local {
                 $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
 
                 $c->stash->{results}  = \@results;
-                $c->stash->{template} = $Phonebook::Constants::TEMPLATE_PEOPLE_RESULTS;
+                $c->stash->{template} = 'people/results.tt';
             }
         }
         else {
-            $c->stash->{template} = $Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
+            $c->stash->{template} = 'people/noResults.tt';
         }
     };
     if ($@) {
@@ -113,11 +112,11 @@ sub single : Path('') {
                 $c->forward($action, [ $ufid ]);
             }
             else {
-                $c->stash->{template} = $Phonebook::Constants::TEMPLATE_PEOPLE_SHOW;
+                $c->stash->{template} = 'people/show.tt';
             }
         }
         else {
-            $c->stash->{template} = $Phonebook::Constants::TEMPLATE_PEOPLE_NO_RESULTS;
+            $c->stash->{template} = 'people/noResults.tt';
         }
     };
     if ($@) {
@@ -134,7 +133,7 @@ Display the full entry for a single person.
 sub full : Private {
     my ($self, $c, $ufid) = @_;
 
-    $c->stash->{template} = $Phonebook::Constants::TEMPLATE_PEOPLE_FULL;
+    $c->stash->{template} = 'people/full.tt';
 }
 
 =head2 vcard
@@ -155,7 +154,8 @@ sub vcard : Private {
         $c->res->content_type('text/x-vcard');
         $c->res->header('Content-Disposition', "attachment; filename=$filename");
     }
-    $c->stash->{template} = $Phonebook::Constants::TEMPLATE_PEOPLE_VCARD;
+
+    $c->stash->{template} = 'people/vcard.tt';
 }
 
 =head2 _parse_query

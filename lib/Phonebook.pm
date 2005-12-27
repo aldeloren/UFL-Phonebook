@@ -2,7 +2,6 @@ package Phonebook;
 
 use strict;
 use warnings;
-use Phonebook::Constants;
 use YAML;
 
 use Catalyst qw(
@@ -81,7 +80,7 @@ sub end : Private {
         $c->res->status(500);
         $c->log->error($_) for @{ $c->error };
         $c->stash->{errors}     = $c->error;
-        $c->stash->{template} ||= $Phonebook::Constants::TEMPLATE_ERRORS;
+        $c->stash->{template} ||= 'errors.tt';
         $c->error(0);
     }
 

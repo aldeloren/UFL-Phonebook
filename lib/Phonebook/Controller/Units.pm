@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
-use Phonebook::Constants;
 use Phonebook::Entry;
 use Phonebook::Filter::Abstract;
 use Phonebook::Utilities;
@@ -77,11 +76,11 @@ sub search : Local {
                 $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
 
                 $c->stash->{results}  = \@results;
-                $c->stash->{template} = $Phonebook::Constants::TEMPLATE_UNITS_RESULTS;
+                $c->stash->{template} = 'units/results.tt';
             }
         }
         else {
-            $c->stash->{template} = $Phonebook::Constants::TEMPLATE_UNITS_NO_RESULTS;
+            $c->stash->{template} = 'units/noResults.tt';
         }
     };
     if ($@) {
@@ -111,11 +110,11 @@ sub single : Path('') {
                 $c->forward($action, [ $ufid ]);
             }
             else {
-                $c->stash->{template} = $Phonebook::Constants::TEMPLATE_UNITS_SHOW;
+                $c->stash->{template} = 'units/show.tt';
             }
         }
         else {
-            $c->stash->{template} = $Phonebook::Constants::TEMPLATE_UNITS_NO_RESULTS;
+            $c->stash->{template} = 'units/noResults.tt';
         }
     };
     if ($@) {
@@ -132,7 +131,7 @@ Display the full entry for a single unit.
 sub full : Private {
     my ($self, $c, $ufid) = @_;
 
-    $c->stash->{template} = $Phonebook::Constants::TEMPLATE_UNITS_FULL;
+    $c->stash->{template} = 'units/full.tt';
 }
 
 =head2 _parse_query
