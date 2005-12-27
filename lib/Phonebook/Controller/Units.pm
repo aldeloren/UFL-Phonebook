@@ -6,7 +6,7 @@ use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
 use Phonebook::Entry;
 use Phonebook::Filter::Abstract;
-use Phonebook::Utilities;
+use Phonebook::Util;
 
 =head1 NAME
 
@@ -67,7 +67,7 @@ sub search : Local {
                 @{ $entries };
 
             if (scalar @results == 1) {
-                my $ufid = Phonebook::Utilities::encode_ufid($results[0]->uflEduUniversityId);
+                my $ufid = Phonebook::Util::encode_ufid($results[0]->uflEduUniversityId);
                 $c->stash->{single_result} = 1;
                 $c->forward('single', [ $ufid ]);
             }
@@ -143,7 +143,7 @@ Parse a query into an LDAP filter.
 sub _parse_query {
     my ($self, $query) = @_;
 
-    my @tokens = Phonebook::Utilities::tokenize_query($query);
+    my @tokens = Phonebook::Util::tokenize_query($query);
 
     my $filter = Phonebook::Filter::Abstract->new('|');
     if ($query =~ /(.*)\@/) {
@@ -159,7 +159,7 @@ sub _parse_query {
 #        my $exchange = $2;
 #        my $last_four = $3;
 #
-#        my $phone_number = Phonebook::Utilities::getPhoneNumber($area_code, $exchange, $last_four);
+#        my $phone_number = Phonebook::Util::getPhoneNumber($area_code, $exchange, $last_four);
 #
 #        $filter->add('telephoneNumber',          '=', qq[$phone_number*]);
 #        $filter->add('facsimileTelephoneNumber', '=', qq[$phone_number*]);

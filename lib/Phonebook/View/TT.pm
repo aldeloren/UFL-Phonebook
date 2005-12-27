@@ -4,14 +4,14 @@ use strict;
 use warnings;
 use base 'Catalyst::View::TT';
 use Locale::Country ();
-use Phonebook::Utilities;
+use Phonebook::Util;
 
 __PACKAGE__->config(
     FILTERS => {
         code2country => \&Locale::Country::code2country,
-        spam_armor   => \&Phonebook::Utilities::spam_armor,
-        encode_ufid  => \&Phonebook::Utilities::encode_ufid,
-        decode_ufid  => \&Phonebook::Utilities::decode_ufid,
+        spam_armor   => \&Phonebook::Util::spam_armor,
+        encode_ufid  => \&Phonebook::Util::encode_ufid,
+        decode_ufid  => \&Phonebook::Util::decode_ufid,
     },
 );
 

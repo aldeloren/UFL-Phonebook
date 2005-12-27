@@ -1,4 +1,4 @@
-package Phonebook::Utilities;
+package Phonebook::Util;
 
 use strict;
 use warnings;
@@ -8,7 +8,7 @@ my $MASK = 56347812;
 
 =head1 NAME
 
-Phonebook::Utilities - Utility functions
+Phonebook::Util - Utility functions
 
 =head1 SYNOPSIS
 
