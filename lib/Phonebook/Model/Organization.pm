@@ -3,7 +3,6 @@ package Phonebook::Model::Organization;
 use strict;
 use warnings;
 use base 'Catalyst::Model::LDAP';
-use UNIVERSAL::require;
 
 =head1 NAME
 
@@ -16,26 +15,6 @@ See L<Phonebook>.
 =head1 DESCRIPTION
 
 Catalyst model component for the University of Florida Phonebook.
-
-=head1 METHODS
-
-=cut
-
-sub search {
-    my $self = shift;
-
-    my $entries = $self->SUPER::search(@_);
-
-    my $class = $self->config->{class};
-    return $entries unless $class and $class->require;
-
-    my @units;
-    if ($entries and @$entries) {
-        @units = map { $class->new($_) } @$entries;
-    }
-
-    return \@units;
-}
 
 =head1 AUTHOR
 

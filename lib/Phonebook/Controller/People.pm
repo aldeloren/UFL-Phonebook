@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
-use Phonebook::Entry;
 use Phonebook::Filter::Abstract;
+use Phonebook::Person;
 use Phonebook::Util;
 
 =head1 NAME
@@ -56,33 +56,28 @@ sub search : Local {
     $c->log->debug("Sort: $sort");
     $c->log->debug("Filter: $string");
 
-    eval {
-        my $model   = $c->model('Person');
-        my $entries = $model->search($string);
-        my $code    = $model->code;
+    my $mesg = $c->model('Person')->search($string);
+    if (my @entries = $mesg->entries) {
+        my @results =
+            sort { $a->$sort cmp $b->$sort }
+            map  { Phonebook::Person->new($_) }
+            @entries;
 
-        if ($entries and scalar @$entries) {
-            my @results = sort { $a->$sort cmp $b->$sort } @$entries;
-
-            if (scalar @results == 1) {
-                my $ufid = Phonebook::Util::encode_ufid($results[0]->uflEduUniversityId);
-                $c->stash->{single_result} = 1;
-                $c->forward('single', [ $ufid ]);
-            }
-            else {
-                $c->stash->{sizelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-                $c->stash->{timelimit_exceeded} = ($code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
-
-                $c->stash->{results}  = \@results;
-                $c->stash->{template} = 'people/results.tt';
-            }
+        if (scalar @results == 1) {
+            my $ufid = Phonebook::Util::encode_ufid($results[0]->uflEduUniversityId);
+            $c->stash->{single_result} = 1;
+            $c->forward('single', [ $ufid ]);
         }
         else {
-            $c->stash->{template} = 'people/noResults.tt';
+            $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+            $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+
+            $c->stash->{results}  = \@results;
+            $c->stash->{template} = 'people/results.tt';
         }
-    };
-    if ($@) {
-        $c->error($@);
+    }
+    else {
+        $c->stash->{template} = 'people/noResults.tt';
     }
 }
 
@@ -100,24 +95,19 @@ sub single : Path('') {
     $ufid = Phonebook::Util::decode_ufid($ufid);
     $c->log->debug("UFID: $ufid");
 
-    eval {
-        my $entries = $c->model('Person')->search("uflEduUniversityId=$ufid");
-        if ($entries and scalar @$entries) {
-            $c->stash->{person} = $entries->[0];
+    my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
+    if (my @entries = $mesg->entries) {
+        $c->stash->{person} = Phonebook::Person->new($entries[0]);
 
-            if ($action and $self->can($action)) {
-                $c->forward($action, [ $ufid ]);
-            }
-            else {
-                $c->stash->{template} = 'people/show.tt';
-            }
+        if ($action and $self->can($action)) {
+            $c->forward($action, [ $ufid ]);
         }
         else {
-            $c->stash->{template} = 'people/noResults.tt';
+            $c->stash->{template} = 'people/show.tt';
         }
-    };
-    if ($@) {
-        $c->error($@);
+    }
+    else {
+        $c->stash->{template} = 'people/noResults.tt';
     }
 }
 

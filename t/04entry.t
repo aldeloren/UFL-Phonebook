@@ -15,13 +15,11 @@ my $POSTAL_CODE        = '338502243';
 my $PARSED_POSTAL_CODE = '33850-2243';
 my $ADDRESS            = join '$', $TITLE, $STREET, "$LOCALITY, $REGION, $DOMINION", " $POSTAL_CODE";
 
-my $people  = Phonebook->model('People');
-my $results = $people->search("(uid=$UID)");
-cmp_ok(scalar @{ $results }, '>', 0, 'got results');
+my $mesg    = Phonebook->model('Person')->search("(uid=$UID)");
+my @entries = $mesg->entries;
+cmp_ok(scalar @entries, '>', 0, 'got results');
 
-my @entries = map { Phonebook::Entry->new($_) } @{ $results };
-
-my $entry = $entries[0];
+my $entry = Phonebook::Entry->new($entries[0]);
 
 cmp_ok(scalar @{ $entry->attribute }, '>', 0, 'has attributes');
 is($entry->uid, $UID, 'uid');

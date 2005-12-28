@@ -15,13 +15,11 @@ ldap:
     timelimit: 10
 
 Model::Organization:
-  class:   Phonebook::Unit
   host:    *host
   base:    ou=Organizations,dc=ufl,dc=edu
   options: *options
 
 Model::Person:
-  class:   Phonebook::Person
   host:    *host
   base:    ou=People,dc=ufl,dc=edu
   options: *options
