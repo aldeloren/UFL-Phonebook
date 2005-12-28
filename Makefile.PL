@@ -13,6 +13,8 @@ requires('Class::Accessor');
 requires('Locale::Country');
 requires('Scalar::Util');
 requires('Tree::Simple');
+requires('UNIVERSAL');
+requires('UNIVERSAL::require');
 requires('YAML');
 
 build_requires('Test::More');

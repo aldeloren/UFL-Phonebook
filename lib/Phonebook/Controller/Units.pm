@@ -56,18 +56,15 @@ sub search : Local {
     $c->log->debug("Filter: $string");
 
     eval {
-        my $organizations = $c->comp('Model::Organizations');
-        my $entries       = $organizations->search($string);
-        my $code          = $organizations->code;
+        my $model   = $c->model('Organization');
+        my $entries = $model->search($string);
+        my $code    = $model->code;
 
         if ($entries and scalar @$entries) {
-            my @results =
-                sort { $a->$sort cmp $b->$sort }
-                map  { Phonebook::Entry->new($_) }
-                @{ $entries };
+            my @results = sort { $a->$sort cmp $b->$sort } @$entries;
 
             if (scalar @results == 1) {
-                my $ufid = Phonebook::Util::encode_ufid($results[0]->uflEduUniversityId);
+                my $ufid = $results[0]->uflEduUniversityId;
                 $c->stash->{single_result} = 1;
                 $c->forward('single', [ $ufid ]);
             }
@@ -102,9 +99,9 @@ sub single : Path('') {
     $c->log->debug("UFID: $ufid");
 
     eval {
-        my $entries = $c->comp('Model::Organizations')->search("uflEduUniversityId=$ufid");
+        my $entries = $c->model('Organization')->search("uflEduUniversityId=$ufid");
         if ($entries and scalar @$entries) {
-            $c->stash->{unit} = Phonebook::Entry->new($entries->[0]);
+            $c->stash->{unit} = $entries->[0];
 
             if ($action and $self->can($action)) {
                 $c->forward($action, [ $ufid ]);

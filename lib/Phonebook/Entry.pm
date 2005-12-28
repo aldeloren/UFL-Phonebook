@@ -120,6 +120,12 @@ sub attribute {
     return $self->{_attributes};
 }
 
+sub get_url_args {
+    my ($self) = @_;
+
+    return $self->uflEduUniversityId;
+}
+
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>

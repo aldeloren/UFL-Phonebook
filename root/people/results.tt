@@ -26,7 +26,7 @@
   [% SET odd = 1 %]
   [% FOREACH result IN results %]
         <tr[% IF odd %] class="odd"[% END %]>
-          <td><a href="[% c.uri_for('/people', result.uflEduUniversityId) | html %]">[% result.displayName | html %]</a></td>
+          <td><a href="[% c.uri_for('/people', result) | html %]">[% result.displayName | html %]</a></td>
           <td>
             [% (result.title ? result.title : result.eduPersonPrimaryAffiliation) | html %]
             [% IF result.eduPersonPrimaryAffiliation != 'student' %]

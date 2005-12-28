@@ -2,6 +2,7 @@ package Phonebook;
 
 use strict;
 use warnings;
+use UNIVERSAL ();
 use YAML;
 
 use Catalyst qw(
@@ -85,6 +86,29 @@ sub end : Private {
     }
 
     $c->forward($c->view('TT'));
+}
+
+=head2 uri_for
+
+Overload C<uri_for> to accept objects that respond to C<get_url_args>.
+
+=cut
+
+sub uri_for {
+    my ($c, $path, @args) = @_;
+
+    my @parts;
+
+    foreach my $arg (@args) {
+        if (ref $arg and UNIVERSAL::can($arg, 'get_url_args')) {
+            push @parts, $arg->get_url_args;
+        }
+        else {
+            push @parts, $arg;
+        }
+    }
+
+    return $c->SUPER::uri_for($path, @parts);
 }
 
 =head1 AUTHOR
