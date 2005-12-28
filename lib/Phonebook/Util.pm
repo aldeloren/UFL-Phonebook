@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 # Used to encode and decode UFIDs
-my $MASK = 56347812;
+our $MASK = 56347812;
 
 =head1 NAME
 
