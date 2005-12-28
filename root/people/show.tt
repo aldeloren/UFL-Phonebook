@@ -53,7 +53,7 @@
       <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
       <dl class="employment">
         <dt>Unit</dt>
-        <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for('/units', person.departmentNumber) | html %]">[% END %]
+        <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for('/units', person.departmentNumber) | html %]/">[% END %]
           [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]
         [% IF person.departmentNumber %]</a>[% END %]</dd>
         <dt>Title</dt>
@@ -63,10 +63,10 @@
     </div>
 
     <div id="adminlinks">
-      <p>Link to <a href="[% c.uri_for('/people', person) | html %]">this entry</a>.</p>
-      <p>Download this contact information as a <a href="[% c.uri_for('/people', person, 'vcard') | html %]">vCard</a>.</p>
+      <p>Link to <a href="[% c.uri_for('/people', person) | html %]/">this entry</a>.</p>
+      <p>Download this contact information as a <a href="[% c.uri_for('/people', person, 'vcard') | html %]/">vCard</a>.</p>
       <p>Is your directory information incomplete? <a href="http://directory.ufl.edu/edit">Update it now</a>.</p>
-      <p>Display the full <a href="[% c.uri_for('/people', person, 'full') | html %]"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+      <p>Display the full <a href="[% c.uri_for('/people', person, 'full') | html %]/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
     </div>
 
 [% END %]
