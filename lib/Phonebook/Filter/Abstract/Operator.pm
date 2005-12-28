@@ -56,13 +56,9 @@ The operator is only needed if:
 
 =over 4
 
-=item 1.
+=item 1. there are two or more child predicates; or
 
-there are two or more child predicates; or
-
-=item 2.
-
-this operator is unary (e.g. C<!>).
+=item 2. this operator is unary (e.g. C<!>).
 
 =back
 

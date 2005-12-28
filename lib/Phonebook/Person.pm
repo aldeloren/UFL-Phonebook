@@ -7,14 +7,14 @@ use Phonebook::Util;
 
 =head1 NAME
 
-Phonebook::Unit - A unit phonebook entry
+Phonebook::Person - A person phonebook entry
 
 =head1 SYNOPSIS
 
   # Search using Net::LDAP
   my $mesg = $ldap->search($filter);
   my @entries = map {
-      Phonebook::Unit->new($_)
+      Phonebook::Person->new($_)
   } $mesg->entries;
   print $entries[0]->uid;
 

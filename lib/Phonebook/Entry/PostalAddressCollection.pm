@@ -78,8 +78,8 @@ sub new {
 =head2 _parse
 
 Parse the specified address into a
-L<Phonebook::Entry::PostalAddress>. If the address
-cannot be parsed, an exception is thrown.
+L<Phonebook::Entry::PostalAddress>. If the address cannot be parsed,
+an exception is thrown.
 
 =cut
 
