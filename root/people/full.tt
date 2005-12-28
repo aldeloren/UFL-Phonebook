@@ -10,7 +10,11 @@
   [% FOREACH attribute IN person.attribute.sort %]
     [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
         <dt>[% attribute | html %]</dt>
-        <dd>[% IF person.$attribute %][% person.$attribute.join("\n") | html | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+    [% SET filter = 'html' %]
+    [% IF attribute == 'mail' %]
+      [% SET filter = 'spam_armor' %]
+    [% END %]
+        <dd>[% IF person.$attribute %][% person.$attribute.join("\n") | $filter | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
   [% END %]
       </dl>
     </div>
