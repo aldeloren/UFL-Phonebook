@@ -7,7 +7,7 @@
     <div id="ldap">
       <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
       <dl>
-  [% FOREACH attribute IN person.attribute.sort %]
+  [% FOREACH attribute IN person.attributes.sort %]
     [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
         <dt>[% attribute | html %]</dt>
     [% SET filter = 'html' %]

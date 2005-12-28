@@ -21,7 +21,7 @@ cmp_ok(scalar @entries, '>', 0, 'got results');
 
 my $entry = Phonebook::Entry->new($entries[0]);
 
-cmp_ok(scalar @{ $entry->attribute }, '>', 0, 'has attributes');
+cmp_ok(scalar @{ $entry->attributes }, '>', 0, 'has attributes');
 is($entry->uid, $UID, 'uid');
 cmp_ok(scalar $entry->uflEduAllPhones, '>', 0, 'has a phone number');
 

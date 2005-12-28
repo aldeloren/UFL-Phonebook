@@ -59,7 +59,7 @@ sub _parse {
     my ($self, $entry) = @_;
 
     foreach my $attribute ($entry->attributes) {
-        $self->attribute($attribute);
+        $self->add_attribute($attribute);
         my @values = $entry->get_value($attribute);
 
         if (exists $RELATIONSHIPS->{$attribute}) {
@@ -96,11 +96,7 @@ sub set {
     $self->SUPER::set($key, @new);
 }
 
-=head2 attribute
-
-Return a list of attributes defined on this entry.
-
-  my @attributes = $entry->attribute
+=head2 add_attribute
 
 Add one or more new attributes to the list and create an accessor for
 each.
@@ -109,13 +105,23 @@ each.
 
 =cut
 
-sub attribute {
+sub add_attribute {
     my ($self, @attributes) = @_;
 
-    if (@attributes) {
-        push @{ $self->{_attributes} }, @attributes;
-        $self->mk_accessors(@attributes);
-    }
+    push @{ $self->{_attributes} }, @attributes;
+    $self->mk_accessors(@attributes);
+}
+
+=head2 attributes
+
+Return a list of attributes defined on this entry.
+
+  my @attributes = $entry->attributes
+
+=cut
+
+sub attributes {
+    my ($self) = @_;
 
     return $self->{_attributes};
 }
