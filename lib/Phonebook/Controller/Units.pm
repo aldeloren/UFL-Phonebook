@@ -94,8 +94,8 @@ sub single : Path('') {
     $c->log->debug("UFID: $ufid");
 
     my $mesg = $c->model('Organization')->search("uflEduUniversityId=$ufid");
-    if (my @entries = $mesg->entries) {
-        $c->stash->{unit} = Phonebook::Unit->new($entries[0]);
+    if (my $entry = $mesg->shift_entry) {
+        $c->stash->{unit} = Phonebook::Unit->new($entry);
 
         if ($action and $self->can($action)) {
             $c->forward($action, [ $ufid ]);
