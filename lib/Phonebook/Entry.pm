@@ -120,6 +120,12 @@ sub attribute {
     return $self->{_attributes};
 }
 
+=head2 get_url_args
+
+Return the list of URL path arguments needed to identify this entry.
+
+=cut
+
 sub get_url_args {
     my ($self) = @_;
 
