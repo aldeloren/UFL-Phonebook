@@ -2,4 +2,4 @@
 
 [% content %]
 
-[% INCLUDE includes/footer.tt %]
+[% INCLUDE includes/footer.tt -%]

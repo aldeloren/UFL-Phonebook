@@ -9,9 +9,8 @@
         <p>Enter a name, email address, or GatorLink ID to find people.</p>
       </form>
 
-  [% INCLUDE people/includes/tips.tt %]
+  [% INCLUDE people/includes/tips.tt -%]
     </div>
 
   [% INCLUDE includes/links.tt %]
-
 [% END %]

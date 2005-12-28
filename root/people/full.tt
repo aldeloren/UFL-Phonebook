@@ -19,4 +19,5 @@
       </dl>
     </div>
 
+  [% INCLUDE people/includes/links.tt %]
 [% END %]

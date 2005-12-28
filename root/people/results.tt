@@ -13,6 +13,7 @@
       <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
   [% END %]
     </div>
+
     <table>
       <thead>
         <tr>

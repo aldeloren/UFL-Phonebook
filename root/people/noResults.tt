@@ -10,5 +10,4 @@
 
   [% INCLUDE people/includes/tips.tt %]
   [% INCLUDE includes/links.tt %]
-
 [% END %]

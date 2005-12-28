@@ -1,7 +1,0 @@
-<link rel="stylesheet" type="text/css" media="screen" href="[% c.uri_for('/static/css/basic.css') | html %]" />
-<link rel="stylesheet" type="text/css" media="print" href="[% c.uri_for('/static/css/print.css') | html %]" />
-<style type="text/css" media="screen">
-[% FOREACH stylesheet IN stylesheets %]
-  @import "[% stylesheet | trim | html %]";
-[% END %]
-</style>
