@@ -1,5 +1,5 @@
 [% WRAPPER wrapper.tt
-   title       = "Full LDAP Entry for" _ unit.o
+   title       = 'Full LDAP Entry for ' _ unit.o
    stylesheets = [ c.uri_for('/static/css/sec.css') ]
    heading     = 'people/includes/search.tt'
 %]
