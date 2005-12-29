@@ -59,7 +59,24 @@ sub search : Local {
     $c->forward('results');
 }
 
+=head2 unit
+
+Search for people whose primary organizational affiliation matches the
+specified UFID.
+
+=cut
+
 sub unit : Local {
+    my ($self, $c, $ufid) = @_;
+
+    $c->detach('index') unless $ufid;
+
+    $c->log->debug("UFID: $ufid");
+
+    my $mesg = $c->model('Person')->search("departmentNumber=$ufid");
+    $c->stash->{mesg} = $mesg;
+
+    $c->forward('results');
 }
 
 =head2 results
