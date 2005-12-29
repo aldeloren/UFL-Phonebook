@@ -33,7 +33,7 @@
 
       <h4>Addresses</h4>
       <dl class="adr">
-  [% SET postal_addresses = [ 'campus', 'home', 'mailing' ] %]
+  [% SET postal_addresses = [ 'campus', 'home', 'permanent', 'mailing' ] %]
   [% FOREACH postal_address_name IN postal_addresses %]
     [% postal_address = person.uflEduAllPostalAddresses.$postal_address_name %]
         <dt class="type">[% postal_address_name | ucfirst %]</dt>
