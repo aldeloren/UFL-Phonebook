@@ -1,7 +1,6 @@
 [% WRAPPER wrapper.tt
-   title       = c.req.params.query
-   stylesheets = [ c.uri_for('/static/css/sec.css') ]
-   heading     = 'people/includes/search.tt'
+   title   = c.req.params.query
+   heading = 'people/includes/search.tt'
 %]
 
     <div id="results_info">

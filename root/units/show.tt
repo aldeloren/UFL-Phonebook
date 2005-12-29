@@ -1,7 +1,6 @@
 [% WRAPPER wrapper.tt
-   title       = (unit.displayName ? unit.displayName : unit.o)
-   stylesheets = [ c.uri_for('/static/css/sec.css') ]
-   heading     = 'people/includes/search.tt'
+   title   = (unit.displayName ? unit.displayName : unit.o)
+   heading = 'people/includes/search.tt'
 %]
 
   [% IF single_result %]
