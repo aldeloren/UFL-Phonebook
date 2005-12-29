@@ -14,6 +14,7 @@ our $MAPPINGS = {
     'Local Home Mailing Address'            => 'home',
     'Permanent Home Mailing Address'        => 'permanent',
     'Housing Address'                       => 'housing',
+    'Emergency Contact'                     => 'emergency',
 };
 
 __PACKAGE__->mk_accessors(values %{ $MAPPINGS }, '_original');
@@ -31,18 +32,7 @@ Phonebook::Entry::PostalAddressCollection - A collection of postal addresses
 
 =head1 DESCRIPTION
 
-This class stores a collection of postal addresses. It attempts to
-parse the following addresses:
-
-=over 4
-
-=item * campus
-
-=item * mailing
-
-=item * home
-
-=item * permanent
+This class stores a collection of postal addresses.
 
 =back
 
@@ -90,7 +80,8 @@ sub _parse {
     my $ldap_name  = shift @parts;
     my $ldap_value = join '$', @parts;
 
-    die "Unknown address type: [$value]" unless exists $MAPPINGS->{$ldap_name};
+    die "Unknown address type: [$value]"
+        unless exists $MAPPINGS->{$ldap_name};
 
     my $name    = $MAPPINGS->{$ldap_name};
     my $address = Phonebook::Entry::PostalAddress->new($ldap_value);
