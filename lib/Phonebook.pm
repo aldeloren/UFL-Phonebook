@@ -9,7 +9,7 @@ use Catalyst qw(
     Static::Simple
 );
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 __PACKAGE__->config(
     YAML::LoadFile(__PACKAGE__->path_to('Phonebook.yml')),
