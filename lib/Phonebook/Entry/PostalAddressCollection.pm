@@ -34,8 +34,6 @@ Phonebook::Entry::PostalAddressCollection - A collection of postal addresses
 
 This class stores a collection of postal addresses.
 
-=back
-
 =head1 METHODS
 
 =head2 new
