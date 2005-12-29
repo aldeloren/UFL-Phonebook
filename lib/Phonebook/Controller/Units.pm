@@ -45,7 +45,6 @@ sub search : Local {
     my ($self, $c) = @_;
 
     my $query = $c->req->param('query');
-    my $sort  = $c->req->param('sort') || 'o';
     $c->detach('index') if not $query
         or $query eq $c->config->{units}->{default};
 
@@ -53,44 +52,49 @@ sub search : Local {
     my $string = $filter->as_string;
 
     $c->log->debug("Query: $query");
-    $c->log->debug("Sort: $sort");
     $c->log->debug("Filter: $string");
 
     my $mesg = $c->model('Organization')->search($string);
-    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
-
-    my @units =
-        sort { $a->$sort cmp $b->$sort }
-        map  { Phonebook::Unit->new($_) }
-        $mesg->entries;
-    $c->stash->{units} = \@units;
+    $c->stash->{mesg} = $mesg;
 
     $c->forward('results');
 }
 
 =head2 results
 
-Display the units stored in the stash at key C<units>. If only one
-unit is in the stash, display it directly.
+Display the units from the LDAP response stored in the stash at key
+C<mesg>. If only one unit is found, display it directly.
 
 =cut
 
 sub results : Private {
     my ($self, $c) = @_;
 
-    if (exists $c->stash->{units} and my @units = @{ $c->stash->{units} }) {
+    if (exists $c->stash->{mesg} and my $mesg = $c->stash->{mesg}) {
+        $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+        $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+
+        my $sort  = $c->req->param('sort') || 'o';
+        my @units =
+            sort { $a->$sort cmp $b->$sort }
+            map  { Phonebook::Unit->new($_) }
+            $mesg->entries;
+
         if (scalar @units == 1) {
             my $ufid = $units[0]->uflEduUniversityId;
             $c->stash->{single_result} = 1;
             $c->forward('single', [ $ufid ]);
         }
-        else {
+        elsif (scalar @units > 0) {
+            $c->stash->{units}    = \@units;
             $c->stash->{template} = 'units/results.tt';
+        }
+        else {
+            $c->stash->{template} = 'units/noResults.tt';
         }
     }
     else {
-        $c->stash->{template} = 'units/noResults.tt';
+        $c->error('No LDAP response');
     }
 }
 

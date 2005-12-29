@@ -44,7 +44,6 @@ sub search : Local {
     my ($self, $c) = @_;
 
     my $query = $c->req->param('query');
-    my $sort  = $c->req->param('sort') || 'cn';
     $c->detach('index') if not $query
         or $query eq $c->config->{people}->{default};
 
@@ -52,44 +51,52 @@ sub search : Local {
     my $string = $filter->as_string;
 
     $c->log->debug("Query: $query");
-    $c->log->debug("Sort: $sort");
     $c->log->debug("Filter: $string");
 
     my $mesg = $c->model('Person')->search($string);
-    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
-
-    my @people =
-        sort { $a->$sort cmp $b->$sort }
-        map  { Phonebook::Person->new($_) }
-        $mesg->entries;
-    $c->stash->{people} = \@people;
+    $c->stash->{mesg} = $mesg;
 
     $c->forward('results');
 }
 
+sub unit : Local {
+}
+
 =head2 results
 
-Display the people stored in the stash at key C<people>. If only one
-person is in the stash, display it directly.
+Display the people from the LDAP response stored in the stash at key
+C<mesg>. If only one person is found, display him or her directly.
 
 =cut
 
 sub results : Private {
     my ($self, $c) = @_;
 
-    if (exists $c->stash->{people} and my @people = @{ $c->stash->{people} }) {
+    if (exists $c->stash->{mesg} and my $mesg = $c->stash->{mesg}) {
+        $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+        $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+
+        my $sort = $c->req->param('sort') || 'cn';
+        my @people =
+            sort { $a->$sort cmp $b->$sort }
+            map  { Phonebook::Person->new($_) }
+            $mesg->entries;
+
         if (scalar @people == 1) {
             my $ufid = Phonebook::Util::encode_ufid($people[0]->uflEduUniversityId);
             $c->stash->{single_result} = 1;
             $c->forward('single', [ $ufid ]);
         }
-        else {
+        elsif (scalar @people > 0) {
+            $c->stash->{people} = \@people;
             $c->stash->{template} = 'people/results.tt';
+        }
+        else {
+            $c->stash->{template} = 'people/noResults.tt';
         }
     }
     else {
-        $c->stash->{template} = 'people/noResults.tt';
+        $c->error('No LDAP response');
     }
 }
 
