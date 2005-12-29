@@ -6,11 +6,11 @@
 
     <div id="results_info">
   [% IF sizelimit_exceeded %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many people. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many people. The first [% people.size == 1 ? 'result is' : people.size _ ' results are' %] displayed below.</p>
   [% ELSIF timelimit_exceeded %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+      <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% people.size == 1 ? 'result is' : people.size _ ' results are' %] displayed below.</p>
   [% ELSE %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
+      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% people.size == 1 ? 'person' : people.size _ ' people' %]:</p>
   [% END %]
     </div>
 
@@ -25,16 +25,16 @@
       </thead>
       <tbody>
   [% SET odd = 1 %]
-  [% FOREACH result IN results %]
+  [% FOREACH person IN people %]
         <tr[% IF odd %] class="odd"[% END %]>
-          <td><a href="[% c.uri_for('/people', result) | html %]/">[% result.displayName | html %]</a></td>
+          <td><a href="[% c.uri_for('/people', person) | html %]/">[% person.displayName | html %]</a></td>
           <td>
-            [% (result.title ? result.title : result.eduPersonPrimaryAffiliation) | html %]
-            [% IF result.eduPersonPrimaryAffiliation != 'student' %]
-              [% IF result.departmentNumber AND result.o %], <a href="[% c.uri_for('/units', result.departmentNumber) | html %]/">[% result.o | html %]</a>[% END %]
+            [% (person.title ? person.title : person.eduPersonPrimaryAffiliation) | html %]
+            [% IF person.eduPersonPrimaryAffiliation != 'student' %]
+              [% IF person.departmentNumber AND person.o %], <a href="[% c.uri_for('/units', person.departmentNumber) | html %]/">[% person.o | html %]</a>[% END %]
             [% END %]</td>
-          <td>[% IF result.telephoneNumber %][% result.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
-          <td>[% IF result.mail %]<a href="mailto:[% result.mail | spam_armor %]">[% result.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
+          <td>[% IF person.telephoneNumber %][% person.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
+          <td>[% IF person.mail %]<a href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
         </tr>
     [% SET odd = !odd %]
   [% END %]

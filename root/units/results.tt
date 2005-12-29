@@ -6,11 +6,11 @@
 
     <div id="results_info">
   [% IF sizelimit_exceeded %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many units. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many units. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
   [% ELSIF timelimit_exceeded %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+      <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
   [% ELSE %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% results.size == 1 ? 'unit' : results.size _ ' units' %]:</p>
+      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% units.size == 1 ? 'unit' : units.size _ ' units' %]:</p>
   [% END %]
     </div>
     <table>
@@ -23,11 +23,11 @@
       </thead>
       <tbody>
   [% SET odd = 1 %]
-  [% FOREACH result IN results %]
+  [% FOREACH unit IN units %]
         <tr[% IF odd %] class="odd"[% END %]>
-          <td><a href="[% c.uri_for('/units', result.uflEduUniversityId) | html %]/">[% result.displayName ? result.displayName : result.o | html %]</a></td>
-          <td>[% IF result.telephoneNumber %][% result.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
-          <td>[% IF result.mail %]<a href="mailto:[% result.mail | spam_armor %]">[% result.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
+          <td><a href="[% c.uri_for('/units', unit.uflEduUniversityId) | html %]/">[% unit.displayName ? unit.displayName : unit.o | html %]</a></td>
+          <td>[% IF unit.telephoneNumber %][% unit.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
+          <td>[% IF unit.mail %]<a href="mailto:[% unit.mail | spam_armor %]">[% unit.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
         </tr>
     [% SET odd = !odd %]
   [% END %]

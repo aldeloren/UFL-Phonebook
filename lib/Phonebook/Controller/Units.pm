@@ -57,22 +57,35 @@ sub search : Local {
     $c->log->debug("Filter: $string");
 
     my $mesg = $c->model('Organization')->search($string);
-    if (my @entries = $mesg->entries) {
-        my @results =
-            sort { $a->$sort cmp $b->$sort }
-            map  { Phonebook::Unit->new($_) }
-            @entries;
+    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
 
-        if (scalar @results == 1) {
-            my $ufid = $results[0]->uflEduUniversityId;
+    my @units =
+        sort { $a->$sort cmp $b->$sort }
+        map  { Phonebook::Unit->new($_) }
+        $mesg->entries;
+    $c->stash->{units} = \@units;
+
+    $c->forward('results');
+}
+
+=head2 results
+
+Display the units stored in the stash at key C<units>. If only one
+unit is in the stash, display it directly.
+
+=cut
+
+sub results : Private {
+    my ($self, $c) = @_;
+
+    if (exists $c->stash->{units} and my @units = @{ $c->stash->{units} }) {
+        if (scalar @units == 1) {
+            my $ufid = $units[0]->uflEduUniversityId;
             $c->stash->{single_result} = 1;
             $c->forward('single', [ $ufid ]);
         }
         else {
-            $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-            $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
-
-            $c->stash->{results}  = \@results;
             $c->stash->{template} = 'units/results.tt';
         }
     }

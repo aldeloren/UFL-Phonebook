@@ -56,22 +56,35 @@ sub search : Local {
     $c->log->debug("Filter: $string");
 
     my $mesg = $c->model('Person')->search($string);
-    if (my @entries = $mesg->entries) {
-        my @results =
-            sort { $a->$sort cmp $b->$sort }
-            map  { Phonebook::Person->new($_) }
-            @entries;
+    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
 
-        if (scalar @results == 1) {
-            my $ufid = Phonebook::Util::encode_ufid($results[0]->uflEduUniversityId);
+    my @people =
+        sort { $a->$sort cmp $b->$sort }
+        map  { Phonebook::Person->new($_) }
+        $mesg->entries;
+    $c->stash->{people} = \@people;
+
+    $c->forward('results');
+}
+
+=head2 results
+
+Display the people stored in the stash at key C<people>. If only one
+person is in the stash, display it directly.
+
+=cut
+
+sub results : Private {
+    my ($self, $c) = @_;
+
+    if (exists $c->stash->{people} and my @people = @{ $c->stash->{people} }) {
+        if (scalar @people == 1) {
+            my $ufid = Phonebook::Util::encode_ufid($people[0]->uflEduUniversityId);
             $c->stash->{single_result} = 1;
             $c->forward('single', [ $ufid ]);
         }
         else {
-            $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-            $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
-
-            $c->stash->{results}  = \@results;
             $c->stash->{template} = 'people/results.tt';
         }
     }
