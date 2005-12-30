@@ -3,7 +3,7 @@ package Phonebook::Filter::Abstract;
 use strict;
 use Phonebook::Filter::Abstract::Operator;
 use Phonebook::Filter::Abstract::Predicate;
-use Scalar::Util qw(blessed);
+use Scalar::Util;
 use Tree::Simple;
 
 =head1 NAME
@@ -106,7 +106,7 @@ sub _node {
 
     my $node = undef;
 
-    if (scalar @_ == 1 and blessed $_[0] and $_[0]->isa(__PACKAGE__)) {
+    if (scalar @_ == 1 and Scalar::Util::blessed($_[0]) and $_[0]->isa(__PACKAGE__)) {
         # Operator node
         $node = $_[0]->{root};
     }
