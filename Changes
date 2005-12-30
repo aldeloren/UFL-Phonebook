@@ -2,6 +2,7 @@ This file documents the revision history for Perl extension Phonebook.
 
 0.05
         - Minor cleanup
+        - Improve handling of objects passed to uri_for
 
 0.04  Thu Dec 29 14:04:52 EST 2005
         - Default stylesheets to use sec.css

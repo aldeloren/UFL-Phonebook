@@ -2,14 +2,14 @@ package Phonebook;
 
 use strict;
 use warnings;
-use UNIVERSAL ();
+use Scalar::Util;
 use YAML;
 
 use Catalyst qw(
     Static::Simple
 );
 
-our $VERSION = '0.05';
+our $VERSION = '0.05_01';
 
 __PACKAGE__->config(
     YAML::LoadFile(__PACKAGE__->path_to('Phonebook.yml')),
@@ -100,7 +100,7 @@ sub uri_for {
     my @parts;
 
     foreach my $arg (@args) {
-        if (ref $arg and UNIVERSAL::can($arg, 'get_url_args')) {
+        if (Scalar::Util::blessed($arg) and $arg->can('get_url_args')) {
             push @parts, $arg->get_url_args;
         }
         else {

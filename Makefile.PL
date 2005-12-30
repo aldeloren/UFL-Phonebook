@@ -8,9 +8,10 @@ requires 'Catalyst::Model::LDAP' => '0.08';
 requires 'Catalyst::View::TT';
 requires 'Class::Accessor';
 requires 'Locale::Country';
+requires 'Net::LDAP::Constant';
 requires 'Scalar::Util';
 requires 'Tree::Simple';
-requires 'UNIVERSAL';
+requires 'UNIVERSAL::require';
 requires 'YAML';
 
 build_requires 'Test::More';
