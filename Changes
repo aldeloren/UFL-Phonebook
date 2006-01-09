@@ -1,6 +1,6 @@
 This file documents the revision history for Perl extension Phonebook.
 
-0.05
+0.05  Mon Jan  9 13:49:44 EST 2006
         - Minor cleanup
         - Improve handling of objects passed to uri_for
 
