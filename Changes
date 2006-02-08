@@ -1,6 +1,6 @@
 This file documents the revision history for Perl extension Phonebook.
 
-0.07
+0.07  Wed Feb  8 16:05:50 EST 2006
         - Add redirects for old Phonebook URLs
 
 0.06  Tue Feb  7 20:55:31 EST 2006
