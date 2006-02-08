@@ -57,7 +57,18 @@ Handle any actions which did not match, i.e. 404 errors.
 =cut
 
 sub default : Private {
-    my ($self, $c) = @_;
+    my ($self, $c, $path) = @_;
+
+    my $destination;
+    if ($path eq 'show.cgi') {
+        $destination = $c->uri_for('/people', $c->req->uri->query);
+    }
+    elsif ($path eq 'show-full.cgi') {
+        $destination = $c->uri_for('/people', $c->req->uri->query, 'full/');
+    }
+
+    return $c->res->redirect($destination, 301)
+        if $destination;
 
     $c->res->status(404);
     $c->stash->{template} = '404.tt';

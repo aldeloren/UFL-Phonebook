@@ -27,8 +27,9 @@ Search the specified source.
 sub search : Path('') {
     my ($self, $c) = @_;
 
-    my $query  = $c->req->param('query');
-    my $source = $c->req->param('source');
+    # Check for 'person' for old Phonebook search
+    my $query  = $c->req->param('query')  || $c->req->param('person');
+    my $source = $c->req->param('source') || '';
 
     my %sources = %{ $c->config->{sources} };
 
