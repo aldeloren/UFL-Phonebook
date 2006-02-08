@@ -39,3 +39,6 @@ Model::Person:
 View::TT:
   PRE_CHOMP: 1
   WRAPPER:   wrapper.tt
+
+View::vCard:
+  PRE_CHOMP: 1
