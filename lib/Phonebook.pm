@@ -61,7 +61,7 @@ sub default : Private {
 
     my $destination;
     if ($path eq 'show.cgi') {
-        $destination = $c->uri_for('/people', $c->req->uri->query);
+        $destination = $c->uri_for('/people', $c->req->uri->query) . '/';
     }
     elsif ($path eq 'show-full.cgi') {
         $destination = $c->uri_for('/people', $c->req->uri->query, 'full/');
