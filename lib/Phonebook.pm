@@ -9,21 +9,21 @@ use Catalyst qw(
     Static::Simple
 );
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 __PACKAGE__->config(
-    YAML::LoadFile(__PACKAGE__->path_to('Phonebook.yml')),
+    YAML::LoadFile(__PACKAGE__->path_to('phonebook.yml')),
 );
 
 __PACKAGE__->setup;
 
 =head1 NAME
 
-Phonebook - Catalyst based application
+Phonebook - University of Florida directory search
 
 =head1 SYNOPSIS
 
-  script/uf_webadmin_phonebook_server.pl
+    script/uf_webadmin_phonebook_server.pl
 
 =head1 DESCRIPTION
 
