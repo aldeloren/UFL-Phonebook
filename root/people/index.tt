@@ -1,16 +1,17 @@
-[% WRAPPER wrapper.tt
+[% SET
    stylesheets = [ c.uri_for('/static/css/main.css') ]
-%]
+-%]
 
-    <div id="priSearch">
-      <form method="get" action="[% c.uri_for('/people/search') | html %]">
-        <input type="text" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : c.config.people.default | html %]" />
-        <input type="submit" id="search" value="Search" />
-        <p>Enter a name, email address, or GatorLink ID to find people.</p>
-      </form>
+<div id="priSearch">
+  <form method="get" action="[% c.uri_for('/people/search') | html %]">
+    <input type="text" name="query" id="query" value="[% c.req.params.query ? c.req.params.query : c.config.people.default | html %]" />
+    <input type="submit" id="search" value="Search" />
+    <p>Enter a name, email address, or GatorLink ID to find people.</p>
+  </form>
 
+[% FILTER indent('  ') -%]
   [% INCLUDE people/includes/tips.tt -%]
-    </div>
+[% END -%]
+</div>
 
-  [% INCLUDE includes/links.tt %]
-[% END %]
+[% INCLUDE includes/links.tt -%]

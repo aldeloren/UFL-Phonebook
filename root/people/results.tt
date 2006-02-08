@@ -1,44 +1,41 @@
-[% SET query = (c.req.params.query ? c.req.params.query : people.first.o) %]
-[% WRAPPER wrapper.tt
+[% SET
+   query = (c.req.params.query ? c.req.params.query : people.first.o)
    title   = query
    heading = 'people/includes/search.tt'
-%]
+-%]
 
-    <div id="results_info">
-  [% IF sizelimit_exceeded %]
-      <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned too many people. The first [% people.size == 1 ? 'result is' : people.size _ ' results are' %] displayed below.</p>
-  [% ELSIF timelimit_exceeded %]
-      <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] was too generic. The first [% people.size == 1 ? 'result is' : people.size _ ' results are' %] displayed below.</p>
-  [% ELSE %]
-      <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned the following [% people.size == 1 ? 'person' : people.size _ ' people' %]:</p>
-  [% END %]
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Title</th>
-          <th>Phone</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-  [% SET odd = 1 %]
-  [% FOREACH person IN people %]
-        <tr[% IF odd %] class="odd"[% END %]>
-          <td><a href="[% c.uri_for('/people', person) | html %]/">[% person.displayName | html %]</a></td>
-          <td>
-            [% (person.title ? person.title : person.eduPersonPrimaryAffiliation) | html %]
-            [% IF person.eduPersonPrimaryAffiliation != 'student' %]
-              [% IF person.departmentNumber AND person.o %], <a href="[% c.uri_for('/units', person.departmentNumber) | html %]/">[% person.o | html %]</a>[% END %]
-            [% END %]</td>
-          <td>[% IF person.telephoneNumber %][% person.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
-          <td>[% IF person.mail %]<a href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
-        </tr>
-    [% SET odd = !odd %]
-  [% END %]
-      </tbody>
-    </table>
-
+<div id="results_info">
+[% IF sizelimit_exceeded %]
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned too many people. The first [% people.size == 1 ? 'result is' : people.size _ ' results are' %] displayed below.</p>
+[% ELSIF timelimit_exceeded %]
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] was too generic. The first [% people.size == 1 ? 'result is' : people.size _ ' results are' %] displayed below.</p>
+[% ELSE %]
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned the following [% people.size == 1 ? 'person' : people.size _ ' people' %]:</p>
 [% END %]
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Title</th>
+      <th>Phone</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+[% SET odd = 1 %]
+[% FOREACH person IN people %]
+    <tr[% IF odd %] class="odd"[% END %]>
+      <td><a href="[% c.uri_for('/people', person) | html %]/">[% person.displayName | html %]</a></td>
+      <td>[% (person.title ? person.title : person.eduPersonPrimaryAffiliation) | html %]
+        [% IF person.eduPersonPrimaryAffiliation != 'student' %]
+          [% IF person.departmentNumber AND person.o %], <a href="[% c.uri_for('/units', person.departmentNumber) | html %]/">[% person.o | html %]</a>[% END %]
+        [% END %]</td>
+      <td>[% IF person.telephoneNumber %][% person.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
+      <td>[% IF person.mail %]<a href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
+    </tr>
+  [% SET odd = !odd %]
+[% END %]
+  </tbody>
+</table>

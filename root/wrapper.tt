@@ -1,5 +1,7 @@
 [% INCLUDE includes/header.tt -%]
 
-[% content %]
+[% FILTER indent %]
+  [% content %]
+[% END -%]
 
 [% INCLUDE includes/footer.tt -%]

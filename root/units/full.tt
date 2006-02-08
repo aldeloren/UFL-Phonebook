@@ -1,17 +1,25 @@
-[% WRAPPER wrapper.tt
+[% SET
    title   = 'Full LDAP Entry for ' _ unit.o
    heading = 'people/includes/search.tt'
-%]
+-%]
 
-    <div id="ldap">
-      <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
-      <dl>
-  [% FOREACH attribute IN unit.attributes.sort %]
-      <dt>[% attribute | html %]</dt>
-      <dd>[% IF unit.$attribute %][% unit.$attribute.join("\n") | html | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+<div id="ldap">
+  <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
+  <dl>
+[% FOREACH attribute IN unit.attributes.sort %]
+    <dt>[% attribute | html %]</dt>
+    <dd>
+  [% IF unit.$attribute %]
+
+    [% FILTER indent('      ') %]
+      [% unit.$attribute.join("\n") | html | html_line_break %]
+    [% END %]
+  [% ELSE %]
+      &nbsp;
   [% END %]
-      </dl>
-    </div>
-
-  [% INCLUDE units/includes/links.tt %]
+    </dd>
 [% END %]
+  </dl>
+</div>
+
+[% INCLUDE units/includes/links.tt -%]

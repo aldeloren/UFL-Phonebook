@@ -1,9 +1,7 @@
-[% WRAPPER wrapper.tt
+[% SET
    title       = 'Not Found'
    stylesheets = [ c.uri_for('/static/css/main.css') ]
-%]
+-%]
 
-    <h2>Not Found</h2>
-    <p>Unfortunately, the page you were trying to retrieve was not found. Try starting from <a href="[% c.uri_for('/') | html %]">the home page</a>.</p>
-
-[% END %]
+<h2>Not Found</h2>
+<p>Unfortunately, the page you were trying to retrieve was not found. Try starting from <a href="[% c.uri_for('/') | html %]">the home page</a>.</p>

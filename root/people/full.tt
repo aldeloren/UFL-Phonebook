@@ -1,22 +1,30 @@
-[% WRAPPER wrapper.tt
+[% SET
    title   = person.cn _ "'s Full LDAP Entry"
    heading = 'people/includes/search.tt'
-%]
+-%]
 
-    <div id="ldap">
-      <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
-      <dl>
-  [% FOREACH attribute IN person.attributes.sort %]
-    [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
-        <dt>[% attribute | html %]</dt>
-    [% SET filter = 'html' %]
-    [% IF attribute == 'mail' OR attribute == 'uflEduAllEmailAddresses' %]
-      [% SET filter = 'spam_armor' %]
-    [% END %]
-        <dd>[% IF person.$attribute %][% person.$attribute.join("\n") | $filter | html_line_break %][% ELSE %]&nbsp;[% END %]</dd>
+<div id="ldap">
+  <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
+  <dl>
+[% FOREACH attribute IN person.attributes.sort %]
+  [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
+    <dt>[% attribute | html %]</dt>
+  [% SET filter = 'html' %]
+  [% IF attribute == 'mail' OR attribute == 'uflEduAllEmailAddresses' %]
+    [% SET filter = 'spam_armor' %]
   [% END %]
-      </dl>
-    </div>
+    <dd>
+  [% IF person.$attribute %]
 
-  [% INCLUDE people/includes/links.tt %]
+    [% FILTER indent('      ') %]
+      [% person.$attribute.join("\n") | $filter | html_line_break %]
+    [% END %]
+  [% ELSE %]
+      &nbsp;
+  [% END %]
+    </dd>
 [% END %]
+  </dl>
+</div>
+
+[% INCLUDE people/includes/links.tt -%]

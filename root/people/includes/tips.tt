@@ -1,13 +1,13 @@
-      <div id="phonebook_help">
-        <h3>Search Tips</h3>
-        <dl>
-          <dt>Enter a last name</dt>
-          <dd>turner</dd>
-          <dt>Enter last name and first initial</dt>
-          <dd>T. Green<br />B. Brown</dd>
-          <dt>Enter a full name</dt>
-          <dd>john q. public<br />Greg Jones</dd>
-          <dt>Enter an email address</dt>
-          <dd>gogators@ufl.edu</dd>
-        </dl>
-      </div>
+<div id="phonebook_help">
+  <h3>Search Tips</h3>
+  <dl>
+    <dt>Enter a last name</dt>
+    <dd>turner</dd>
+    <dt>Enter last name and first initial</dt>
+    <dd>T. Green<br />B. Brown</dd>
+    <dt>Enter a full name</dt>
+    <dd>john q. public<br />Greg Jones</dd>
+    <dt>Enter an email address</dt>
+    <dd>gogators@ufl.edu</dd>
+  </dl>
+</div>

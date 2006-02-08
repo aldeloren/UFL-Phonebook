@@ -1,36 +1,35 @@
-[% WRAPPER wrapper.tt
+[% SET
    title   = c.req.params.query
    heading = 'people/includes/search.tt'
-%]
+-%]
 
-    <div id="results_info">
-  [% IF sizelimit_exceeded %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many units. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
-  [% ELSIF timelimit_exceeded %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
-  [% ELSE %]
-      <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% units.size == 1 ? 'unit' : units.size _ ' units' %]:</p>
-  [% END %]
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-  [% SET odd = 1 %]
-  [% FOREACH unit IN units %]
-        <tr[% IF odd %] class="odd"[% END %]>
-          <td><a href="[% c.uri_for('/units', unit.uflEduUniversityId) | html %]/">[% unit.displayName ? unit.displayName : unit.o | html %]</a></td>
-          <td>[% IF unit.telephoneNumber %][% unit.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
-          <td>[% IF unit.mail %]<a href="mailto:[% unit.mail | spam_armor %]">[% unit.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
-        </tr>
-    [% SET odd = !odd %]
-  [% END %]
-      </tbody>
-    </table>
-
+<div id="results_info">
+[% IF sizelimit_exceeded %]
+  <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many units. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
+[% ELSIF timelimit_exceeded %]
+  <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
+[% ELSE %]
+  <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% units.size == 1 ? 'unit' : units.size _ ' units' %]:</p>
 [% END %]
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+[% SET odd = 1 %]
+[% FOREACH unit IN units %]
+    <tr[% IF odd %] class="odd"[% END %]>
+      <td><a href="[% c.uri_for('/units', unit.uflEduUniversityId) | html %]/">[% unit.displayName ? unit.displayName : unit.o | html %]</a></td>
+      <td>[% IF unit.telephoneNumber %][% unit.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
+      <td>[% IF unit.mail %]<a href="mailto:[% unit.mail | spam_armor %]">[% unit.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>
+    </tr>
+  [% SET odd = !odd %]
+[% END %]
+  </tbody>
+</table>

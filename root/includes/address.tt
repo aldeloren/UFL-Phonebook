@@ -1,5 +1,5 @@
-          <span class="street-address">[% address.street | html %]</span>
-          <span class="locality">[% address.locality | html %]</span>
-          <span class="region">[% address.region | html %]</span>
-          <abbr class="country-name" title="[% address.dominion | code2country | html %]">[% address.dominion | html %]</abbr>
-          <span class="postal-code">[% address.postal_code | html %]</span>
+<span class="street-address">[% address.street | html %]</span>
+<span class="locality">[% address.locality | html %]</span>
+<span class="region">[% address.region | html %]</span>
+<abbr class="country-name" title="[% address.dominion | code2country | html %]">[% address.dominion | html %]</abbr>
+<span class="postal-code">[% address.postal_code | html %]</span>

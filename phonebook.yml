@@ -37,4 +37,5 @@ Model::Person:
   options: *options
 
 View::TT:
-  PRE_CHOMP:  1
+  PRE_CHOMP: 1
+  WRAPPER:   wrapper.tt

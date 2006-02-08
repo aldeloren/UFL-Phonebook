@@ -1,5 +1,4 @@
-[% WRAPPER wrapper.tt
+[% SET
    title       = 'Error'
    stylesheets = [ c.uri_for('/static/css/main.css') ]
-%]
-[% END %]
+-%]
