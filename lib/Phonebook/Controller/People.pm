@@ -22,6 +22,19 @@ Catalyst controller component for finding people.
 
 =head1 METHODS
 
+=head2 default
+
+Handle any actions which did not match, i.e. 404 errors.
+
+=cut
+
+sub default : Private {
+    my ($self, $c) = @_;
+
+    # TODO: Better error handling
+    $c->forward('/default');
+}
+
 =head2 index
 
 Display the people home page.
@@ -69,8 +82,7 @@ specified UFID.
 sub unit : Local {
     my ($self, $c, $ufid) = @_;
 
-    $c->detach('index') unless $ufid;
-
+    $c->detach('default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
     my $mesg = $c->model('Person')->search("departmentNumber=$ufid");
@@ -128,6 +140,7 @@ behavior of the person.
 sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
+    $c->detach('default') unless $ufid;
     $ufid = Phonebook::Util::decode_ufid($ufid);
     $c->log->debug("UFID: $ufid");
 
@@ -136,7 +149,7 @@ sub single : Path('') {
         $c->stash->{person} = Phonebook::Person->new($entry);
 
         if ($action and $self->can($action)) {
-            $c->forward($action, [ $ufid ]);
+            $c->forward($action);
         }
         else {
             $c->stash->{template} = 'people/show.tt';
@@ -154,7 +167,7 @@ Display the full entry for a single person.
 =cut
 
 sub full : Private {
-    my ($self, $c, $ufid) = @_;
+    my ($self, $c) = @_;
 
     $c->stash->{template} = 'people/full.tt';
 }
@@ -166,7 +179,7 @@ Display the vCard for a single person.
 =cut
 
 sub vcard : Private {
-    my ($self, $c, $ufid) = @_;
+    my ($self, $c) = @_;
 
     my $filename = ($c->stash->{person}->uid || 'vcard') . '.vcf';
 

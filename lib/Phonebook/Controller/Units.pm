@@ -23,16 +23,17 @@ campus organizations).
 
 =head1 METHODS
 
-=head2 index
+=head2 default
 
-Display the units home page.
+Handle any actions which did not match, i.e. 404 errors.
 
 =cut
 
-sub index : Private {
+sub default : Private {
     my ($self, $c) = @_;
 
-    $c->res->redirect($c->uri_for('/'));
+    # TODO: Better error handling
+    $c->forward('/default');
 }
 
 =head2 search
@@ -109,6 +110,7 @@ behavior of the unit.
 sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
+    $c->detach('default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
     my $mesg = $c->model('Organization')->search("uflEduUniversityId=$ufid");
@@ -116,7 +118,7 @@ sub single : Path('') {
         $c->stash->{unit} = Phonebook::Unit->new($entry);
 
         if ($action and $self->can($action)) {
-            $c->forward($action, [ $ufid ]);
+            $c->forward($action);
         }
         else {
             $c->stash->{template} = 'units/show.tt';
@@ -134,7 +136,7 @@ Display the full entry for a single unit.
 =cut
 
 sub full : Private {
-    my ($self, $c, $ufid) = @_;
+    my ($self, $c) = @_;
 
     $c->stash->{template} = 'units/full.tt';
 }
