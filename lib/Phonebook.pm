@@ -88,9 +88,14 @@ sub end : Private {
     $c->forward($c->view('TT'));
 }
 
+##
+## Application methods
+##
+
 =head2 uri_for
 
-Overload C<uri_for> to accept objects that respond to C<get_url_args>.
+Overload C<uri_for> to handle query parameters and to accept objects
+that respond to C<get_url_args>.
 
 =cut
 
@@ -98,17 +103,28 @@ sub uri_for {
     my ($c, $path, @args) = @_;
 
     my @parts;
+    my %query;
 
     foreach my $arg (@args) {
         if (Scalar::Util::blessed($arg) and $arg->can('get_url_args')) {
             push @parts, $arg->get_url_args;
+        }
+        elsif (ref $arg eq 'HASH') {
+            while (my ($key, $value) = each %$arg) {
+                my @values = (ref $value eq 'ARRAY' ? @$value : $value);
+                utf8::encode($_) for @values;
+                push @{ $query{$key} }, @values;
+            }
         }
         else {
             push @parts, $arg;
         }
     }
 
-    return $c->SUPER::uri_for($path, @parts);
+    my $uri = $c->SUPER::uri_for($path, @parts);
+    $uri->query_form(%query);
+
+    return $uri;
 }
 
 =head1 AUTHOR
