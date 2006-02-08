@@ -6,7 +6,7 @@ use base 'Catalyst::Controller';
 
 =head1 NAME
 
-Phonebook::Controller::People - People controller component
+Phonebook::Controller::Search - Search controller component
 
 =head1 SYNOPSIS
 
@@ -14,7 +14,7 @@ See L<Phonebook>.
 
 =head1 DESCRIPTION
 
-Catalyst controller component for finding people.
+Catalyst controller component for handling the multisearch form.
 
 =head1 METHODS
 
@@ -30,10 +30,12 @@ sub search : Path('') {
     my $query  = $c->req->param('query');
     my $source = $c->req->param('source');
 
+    my %sources = %{ $c->config->{sources} };
+
     $source =~ s/[^a-z]//g;
-    $source = (exists $c->config->{sources}->{$source}
-               ? $c->config->{sources}->{$source}
-               : $c->config->{sources}->{$c->config->{default_source}}
+    $source = (exists $sources{$source}
+               ? $sources{$source}
+               : $sources{$c->config->{default_source}}
               );
 
     my $url = $c->uri_for(sprintf($source->{url}, $query));
