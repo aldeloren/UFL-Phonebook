@@ -8,6 +8,18 @@ people:
 units:
   default: Search UF Units
 
+default_source: phonebook
+sources:
+  web:
+    name: UF Web with Google
+    url:  http://search.ufl.edu/web?query=%s
+  phonebook:
+    name: UF Phonebook
+    url:  /people/search?query=%s
+  news:
+    name: UF News
+    url:  http://news.ufl.edu/index.php?s=%s
+
 ldap:
   host: &host ldap.ufl.edu
   options: &options
