@@ -75,14 +75,18 @@ sub end : Private {
     return 1 if $c->res->status =~ /^3\d\d$/;
     return 1 if $c->res->body;
 
-    # Display errors in the template if we have one; otherwise, use a
-    # sensible default
     if (@{ $c->error }) {
         $c->res->status(500);
-        $c->log->error($_) for @{ $c->error };
-        $c->stash->{errors}     = $c->error;
-        $c->stash->{template} ||= 'errors.tt';
-        $c->error(0);
+
+        # Override the ugly Catalyst debug screen
+        unless ($c->debug) {
+            $c->log->error($_) for @{ $c->error };
+
+            $c->stash->{errors} = $c->error;
+            $c->error(0);
+
+            $c->stash->{template} = 'error.tt';
+        }
     }
 
     $c->forward($c->view('TT'));
