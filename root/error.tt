@@ -1,0 +1,15 @@
+[% SET
+   title       = 'Error'
+   stylesheets = [ c.uri_for('/static/css/main.css') ]
+-%]
+
+<h2>Error</h2>
+<p>We're sorry, but an error occurred. Please try again. If the problem persists, please email <a href="mailto:[% FILTER spam_armor %]webmaster@ufl.edu[% END %]">[% FILTER spam_armor %]webmaster@ufl.edu[% END %]</a> with the URL, the time of the error, and any text below.</p>
+
+[% IF errors %]
+<ul id="errors">
+  [% FOREACH error IN errors %]
+  <li><strong>Error</strong>: [% error | trim | html %]</li>
+  [% END %]
+</ul>
+[% END -%]
