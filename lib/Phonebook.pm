@@ -23,7 +23,7 @@ Phonebook - University of Florida directory search
 
 =head1 SYNOPSIS
 
-    script/uf_webadmin_phonebook_server.pl
+    script/phonebook_server.pl
 
 =head1 DESCRIPTION
 
