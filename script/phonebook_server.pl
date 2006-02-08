@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl
 
 BEGIN { 
     $ENV{CATALYST_ENGINE} ||= 'HTTP';
@@ -6,6 +6,7 @@ BEGIN {
 }  
 
 use strict;
+use warnings;
 use Getopt::Long;
 use Pod::Usage;
 use FindBin;

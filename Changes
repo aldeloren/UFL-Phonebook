@@ -1,11 +1,13 @@
 This file documents the revision history for Perl extension Phonebook.
 
-0.06  Tue Feb  7 20:48:31 EST 2006
+0.06  Tue Feb  7 20:55:31 EST 2006
         - Implement search sources (local for now)
         - Move TT wrapper into the configuration
         - Add placeholder vCard view to override wrapper (will be
           replaced by a real vCard view)
         - Slightly better error handling
+        - Use /usr/bin/env in script shebang lines for production
+          environment
 
 0.05  Mon Jan  9 13:49:44 EST 2006
         - Minor cleanup
