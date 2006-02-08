@@ -3,7 +3,7 @@ use warnings;
 use Test::More;
 
 eval 'use Test::WWW::Mechanize::Catalyst "Phonebook"';
-plan skip_all => 'Requires Test::WWW::Mechanize::Catalyst' if $@;
+plan skip_all => 'Install Test::WWW::Mechanize::Catalyst to run these tests' if $@;
 plan tests    => 9;
 
 my $mech = Test::WWW::Mechanize::Catalyst->new;
