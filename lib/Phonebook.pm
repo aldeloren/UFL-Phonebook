@@ -9,7 +9,7 @@ use Catalyst qw(
     Static::Simple
 );
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 __PACKAGE__->config(
     YAML::LoadFile(__PACKAGE__->path_to('phonebook.yml')),
@@ -60,6 +60,9 @@ sub default : Private {
     my ($self, $c, $path) = @_;
 
     my $destination;
+    if ($path eq 'display_form.cgi') {
+        $destination = $c->uri_for('/people/search', { query => $c->req->param('person') });
+    }
     if ($path eq 'show.cgi') {
         $destination = $c->uri_for('/people', $c->req->uri->query) . '/';
     }
