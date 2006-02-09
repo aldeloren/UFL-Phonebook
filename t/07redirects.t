@@ -4,9 +4,12 @@ use Test::More;
 
 eval 'use Test::WWW::Mechanize::Catalyst "Phonebook"';
 plan skip_all => 'Install Test::WWW::Mechanize::Catalyst to run these tests' if $@;
-plan tests    => 12;
+plan tests    => 14;
 
 my $mech = Test::WWW::Mechanize::Catalyst->new;
+
+$mech->get_ok('/display_form.cgi', 'request for main form was successful');
+$mech->content_like(qr/div id="priSearch"/i, 'response body looks like main form');
 
 $mech->get_ok('/display_form.cgi?person=trammell', 'request for search results was successful');
 $mech->title_like(qr/trammell/i, 'response title looks like search results');

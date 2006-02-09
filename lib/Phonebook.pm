@@ -61,7 +61,12 @@ sub default : Private {
 
     my $destination;
     if ($path eq 'display_form.cgi') {
-        $destination = $c->uri_for('/people/search', { query => $c->req->param('person') });
+        if (my $query = $c->req->param('person')) {
+            $destination = $c->uri_for('/people/search', { query => $query });
+        }
+        else {
+            $destination = $c->uri_for('/');
+        }
     }
     if ($path eq 'show.cgi') {
         $destination = $c->uri_for('/people', $c->req->uri->query) . '/';
