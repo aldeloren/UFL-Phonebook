@@ -3,6 +3,9 @@ This file documents the revision history for Phonebook.
 0.09
         - Don't redirect to the search page from display_form.cgi if
           no query is specified
+        - Make Test::WWW::Mechanize::Catalyst a build-time dependency
+        - Use wildcard on last name when searching for e.g. "First
+          Last"
 
 0.08  Thu Feb  9 16:13:29 EST 2006
         - Add redirect for old search.ufl.edu form

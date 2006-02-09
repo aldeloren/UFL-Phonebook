@@ -15,6 +15,7 @@ requires 'UNIVERSAL::require';
 requires 'YAML';
 
 build_requires 'Test::More';
+build_requires 'Test::WWW::Mechanize::Catalyst';
 
 catalyst_files;
 install_script glob('script/*.pl');

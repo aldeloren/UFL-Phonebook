@@ -245,7 +245,7 @@ sub _parse_query {
         my $last  = $tokens[1];
         ($first, $last) = ($last, $first) if $query =~ /,/;
 
-        $filter->add('cn',    '=', qq[$last,$first*]);
+        $filter->add('cn',    '=', qq[$last*,$first*]);
 #        $filter->add('mail',  '=', qq[$last@*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
         $filter->add('mail',  '=', qq[$first-$last@*]);
