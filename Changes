@@ -1,6 +1,6 @@
 This file documents the revision history for Phonebook.
 
-0.09
+0.09  Thu Feb  9 16:44:51 EST 2006
         - Don't redirect to the search page from display_form.cgi if
           no query is specified
         - Make Test::WWW::Mechanize::Catalyst a build-time dependency
