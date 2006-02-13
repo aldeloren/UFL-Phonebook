@@ -5,6 +5,8 @@ use Phonebook::Filter::Abstract::Operator;
 use Phonebook::Filter::Abstract::Predicate;
 use Scalar::Util;
 use Tree::Simple;
+use overload
+    '""' => \&as_string;
 
 =head1 NAME
 

@@ -1,26 +1,38 @@
 use strict;
 use warnings;
-use Test::More tests => 9;
+use Test::More tests => 11;
 
 use_ok('Phonebook::Filter::Abstract');
 
 my $filter = Phonebook::Filter::Abstract->new;
-ok($filter);
 $filter->add(qw/objectClass = person/);
-is($filter->as_string, '(objectClass=person)', 'simple filter');
+
+my $simple = '(objectClass=person)';
+is($filter->as_string, $simple, 'simple filter');
+is($filter, $simple, 'simple filter with auto-stringify');
 
 my $filter2 = Phonebook::Filter::Abstract->new('!')->add(qw/telephoneNumber = */);
-ok($filter2);
-is($filter2->as_string, '(!(telephoneNumber=*))', 'logical NOT filter');
+
+my $logical_not = '(!(telephoneNumber=*))';
+is($filter2->as_string, $logical_not, 'logical NOT filter');
+is($filter2, $logical_not, 'logical NOT filter with auto-stringify');
 
 $filter->add($filter2);
-is($filter->as_string, '(&(objectClass=person)(!(telephoneNumber=*)))', 'logical AND of two filters');
+
+my $logical_and = '(&(objectClass=person)(!(telephoneNumber=*)))';
+is($filter->as_string, $logical_and, 'logical AND of two filters');
+is($filter, $logical_and, 'logical AND of two filters with auto-stringify');
 
 my $filter3 = Phonebook::Filter::Abstract->new('|');
-ok($filter3);
 $filter3->add(qw/cn = *a*b*/);
 $filter3->add(qw/cn = *b*a*/);
-is($filter3->as_string, '(|(cn=*a*b*)(cn=*b*a*))', 'logical OR');
+
+my $logical_or = '(|(cn=*a*b*)(cn=*b*a*))';
+is($filter3->as_string, $logical_or, 'logical OR');
+is($filter3, $logical_or, 'logical OR with auto-stringify');
 
 $filter->add($filter3);
-is($filter->as_string, '(&(objectClass=person)(!(telephoneNumber=*))(|(cn=*a*b*)(cn=*b*a*)))', 'complex filter');
+
+my $complex = '(&(objectClass=person)(!(telephoneNumber=*))(|(cn=*a*b*)(cn=*b*a*)))';
+is($filter->as_string, $complex, 'complex filter');
+is($filter, $complex, 'complex filter with auto-stringify');
