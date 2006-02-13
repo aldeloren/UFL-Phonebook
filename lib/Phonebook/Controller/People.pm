@@ -61,12 +61,11 @@ sub search : Local {
         or $query eq $c->config->{people}->{default};
 
     my $filter = $self->_parse_query($query);
-    my $string = $filter->as_string;
 
     $c->log->debug("Query: $query");
-    $c->log->debug("Filter: $string");
+    $c->log->debug("Filter: $filter");
 
-    my $mesg = $c->model('Person')->search($string);
+    my $mesg = $c->model('Person')->search($filter->as_string);
     $c->stash->{mesg} = $mesg;
 
     $c->forward('results');
@@ -85,7 +84,12 @@ sub unit : Local {
     $c->detach('default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
-    my $mesg = $c->model('Person')->search("departmentNumber=$ufid");
+    my $filter = $self->_get_restriction;
+    $filter->add('departmentNumber', '=', $ufid);
+
+    $c->log->debug("Filter: $filter");
+
+    my $mesg = $c->model('Person')->search($filter->as_string);
     $c->stash->{mesg} = $mesg;
 
     $c->forward('results');
