@@ -244,9 +244,9 @@ sub _parse_query {
         my $first = $tokens[0];
         my $last  = $tokens[1];
         ($first, $last) = ($last, $first) if $query =~ /,/;
+        $first =~ s/\.$//;
 
         $filter->add('cn',    '=', qq[$last*,$first*]);
-#        $filter->add('mail',  '=', qq[$last@*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
         $filter->add('mail',  '=', qq[$first-$last@*]);
         # TODO: Searching title seems slow
