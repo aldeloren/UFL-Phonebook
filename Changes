@@ -1,5 +1,10 @@
 This file documents the revision history for Phonebook.
 
+0.10
+        - Strip period at end of first name for "first initial last
+          name" searches
+        - Add default affiliation restriction for people in unit
+
 0.09  Thu Feb  9 16:44:51 EST 2006
         - Don't redirect to the search page from display_form.cgi if
           no query is specified
