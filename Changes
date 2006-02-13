@@ -1,6 +1,6 @@
 This file documents the revision history for Phonebook.
 
-0.10
+0.10  Mon Feb 13 13:49:20 EST 2006
         - Strip period at end of first name for "first initial last
           name" searches
         - Add default affiliation restriction for people in unit
