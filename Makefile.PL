@@ -12,6 +12,7 @@ requires 'Net::LDAP::Constant';
 requires 'Scalar::Util';
 requires 'Tree::Simple';
 requires 'UNIVERSAL::require';
+requires 'URI::Escape';
 requires 'YAML';
 
 build_requires 'Test::More';
