@@ -70,9 +70,9 @@ sub default : Private {
                 $destination = $c->uri_for('/people/search', { query => $query });
             }
         }
-        if ($path eq 'show.cgi' or $path eq 'show-full.cgi') {
+        elsif (($path eq 'show.cgi' or $path eq 'show-full.cgi') and my $query = $c->req->uri->query) {
             require URI::Escape;
-            my $query = URI::Escape::uri_unescape($c->req->uri->query);
+            $query = URI::Escape::uri_unescape($query);
             $query =~ s/\+/ /g;
 
             my $filter = "cn=$query";
