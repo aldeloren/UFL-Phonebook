@@ -13,13 +13,13 @@ $mech->get_ok('/people/search?query=test', 'request for search results');
 $mech->title_like(qr/test/i, 'response title looks like search results');
 $mech->content_like(qr/TEST,NAME/i, 'response body looks like search results');
 
-$mech->get_ok('/people/search?query=mark trammell', 'request for full name search results');
-$mech->title_like(qr/trammell/i, 'response title looks like search results');
-$mech->content_like(qr/TRAMMELL\s+JR,MARK/i, 'response body looks like search results');
+$mech->get_ok('/people/search?query=john smith', 'request for full name search results');
+$mech->title_like(qr/john smith/i, 'response title looks like search results');
+$mech->content_like(qr/SMITH,JOHN/i, 'response body looks like search results');
 
-$mech->get_ok('/people/search?query=m. trammell', 'request for first initial, last name search results');
-$mech->title_like(qr/trammell/i, 'response title looks like search results');
-$mech->content_like(qr/TRAMMELL\s+JR,MARK/i, 'response body looks like search results');
+$mech->get_ok('/people/search?query=j. smith', 'request for first initial, last name search results');
+$mech->title_like(qr/smith/i, 'response title looks like search results');
+$mech->content_like(qr/SMITH,JOHN/i, 'response body looks like search results');
 
 $mech->get_ok('/people/SNJHVEWHH/', 'request for single person');
 $mech->title_like(qr/TEST,NAME/i, 'response title looks like a single person entry');
