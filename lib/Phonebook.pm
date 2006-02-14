@@ -79,7 +79,7 @@ sub default : Private {
             elsif ($query =~ /\+/) {
                 my @name     = split('\+', $query);
                 my $lastname = pop @name;
-                $filter = "cn=$lastname," . join(' ', @name);
+                $filter = "cn=$lastname," . join(' ', @name) . '*';
             }
 
             $c->log->debug("Filter = [$filter]");
