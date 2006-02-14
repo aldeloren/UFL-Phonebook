@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 32;
+use Test::More tests => 26;
 
 use Test::WWW::Mechanize::Catalyst "Phonebook";
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -9,6 +9,7 @@ my $QUERY = 'test';
 my $CN    = 'TESTER,AT A';
 my $UID   = 'attest1';
 my $UFID  = 'TVJVWHJJW';
+my $NAME  = 'AT+A+TESTER';
 
 $mech->get_ok('/display_form.cgi', 'request for main form was successful');
 $mech->content_like(qr/div id="priSearch"/i, 'response body looks like main form');
@@ -37,19 +38,10 @@ $mech->get_ok("/show-full.cgi?$UID", 'request for a full entry by uid');
 $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 
-$mech->get_ok("/show.cgi?$CN", 'request for a single person by full name');
+$mech->get_ok("/show.cgi?$NAME", 'request for a single person by full name');
 $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
-$mech->get_ok("/show-full.cgi?$CN", 'request for a full entry by full name');
-$mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
-$mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
-
-(my $cn = $CN) =~ s/ /\+/g;
-$mech->get_ok("/show.cgi?$cn", 'request for a single person by full name');
-$mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
-$mech->content_like(qr/general information/i, 'response looks like a single person entry');
-
-$mech->get_ok("/show-full.cgi?$cn", 'request for a full entry by full name');
+$mech->get_ok("/show-full.cgi?$NAME", 'request for a full entry by full name');
 $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');

@@ -71,16 +71,15 @@ sub default : Private {
             }
         }
         elsif (($path eq 'show.cgi' or $path eq 'show-full.cgi') and my $query = $c->req->uri->query) {
-            require URI::Escape;
-            $query = URI::Escape::uri_unescape($query);
-            $query =~ s/\+/ /g;
+            my $filter = "uflEduUniversityId=" . Phonebook::Util::decode_ufid($query);
 
-            my $filter = "cn=$query";
-            if ($query =~ /^[A-Z]{8,9}$/) {
-                $filter = "uflEduUniversityId=" . Phonebook::Util::decode_ufid($query);
-            }
-            elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
+            if ($query =~ /^[a-z][-a-z0-9]*$/) {
                 $filter = "uid=$query";
+            }
+            elsif ($query =~ /\+/) {
+                my @name     = split('\+', $query);
+                my $lastname = pop @name;
+                $filter = "cn=$lastname," . join(' ', @name);
             }
 
             $c->log->debug("Filter = [$filter]");
