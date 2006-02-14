@@ -68,14 +68,21 @@ sub default : Private {
         }
     }
     if ($path eq 'show.cgi' or $path eq 'show-full.cgi') {
-        my $query = $c->req->uri->query;
-        $destination = $c->uri_for('/people/search', { query => $query });
+        require URI::Escape;
+        my $query = URI::Escape::uri_unescape($c->req->uri->query);
 
         if ($query =~ /^[A-Z]{8,9}$/) {
             $destination = $c->uri_for('/people', $query, ($path eq 'show-full.cgi' ? 'full/' : ''));
         }
         elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
             my $mesg = $c->model('Person')->search("uid=$query");
+            if (my $entry = $mesg->shift_entry) {
+                my $person = Phonebook::Person->new($entry);
+                $destination = $c->uri_for('/people', $person, ($path eq 'show-full.cgi' ? 'full/' : ''));
+            }
+        }
+        else {
+            my $mesg = $c->model('Person')->search("cn=$query");
             if (my $entry = $mesg->shift_entry) {
                 my $person = Phonebook::Person->new($entry);
                 $destination = $c->uri_for('/people', $person, ($path eq 'show-full.cgi' ? 'full/' : ''));

@@ -26,7 +26,7 @@ $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
 $mech->get_ok("/show-full.cgi?$UFID", 'request for a full LDAP entry by encoded UFID');
-$mech->title_like(qr/$CN's Full LDAP Entry/i, 'response title looks like a full LDAP entry');
+$mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 
 $mech->get_ok("/show.cgi?$UID", 'request for a single person by uid');
@@ -34,7 +34,7 @@ $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
 $mech->get_ok("/show-full.cgi?$UID", 'request for a full entry by uid');
-$mech->title_like(qr/$CN's Full LDAP Entry/i, 'response title looks like a full LDAP entry');
+$mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 
 $mech->get_ok("/show.cgi?$CN", 'request for a single person by full name');
@@ -42,5 +42,5 @@ $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
 $mech->get_ok("/show-full.cgi?$CN", 'request for a full entry by full name');
-$mech->title_like(qr/$CN's Full LDAP Entry/i, 'response title looks like a full LDAP entry');
+$mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
