@@ -35,46 +35,6 @@ sub default : Private {
     $c->forward('/default');
 }
 
-=head2 handle_old_url
-
-Handle URLs from the old Phonebook application.
-
-=cut
-
-sub handle_old_url : Private {
-    my ($self, $c, $path) = @_;
-
-    my $destination;
-    if ($path eq 'display_form.cgi') {
-        $destination = $c->uri_for('/');
-
-        if (my $query = $c->req->param('person')) {
-            $destination = $c->uri_for('/people/search', { query => $query });
-        }
-    }
-    if ($path eq 'show.cgi' or $path eq 'show-full.cgi') {
-        require URI::Escape;
-        my $query = URI::Escape::uri_unescape($c->req->uri->query);
-
-        my $filter = "cn=$query";
-        if ($query =~ /^[A-Z]{8,9}$/) {
-            $filter = "uflEduUniversityId=" . Phonebook::Util::decode_ufid($query);
-        }
-        elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
-            $filter = "uid=$query";
-        }
-
-        my $mesg = $c->model('Person')->search($filter);
-        if (my $entry = $mesg->shift_entry) {
-            my $person = Phonebook::Person->new($entry);
-            $destination = $c->uri_for('/people', $person, ($path eq 'show-full.cgi' ? 'full/' : ''));
-        }
-    }
-
-    return $c->res->redirect($destination, 301)
-        if $destination;
-}
-
 =head2 index
 
 Display the people home page.

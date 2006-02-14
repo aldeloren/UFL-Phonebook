@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 26;
+use Test::More tests => 32;
 
 use Test::WWW::Mechanize::Catalyst "Phonebook";
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -42,5 +42,14 @@ $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
 $mech->get_ok("/show-full.cgi?$CN", 'request for a full entry by full name');
+$mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
+$mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
+
+(my $cn = $CN) =~ s/ /\+/g;
+$mech->get_ok("/show.cgi?$cn", 'request for a single person by full name');
+$mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
+$mech->content_like(qr/general information/i, 'response looks like a single person entry');
+
+$mech->get_ok("/show-full.cgi?$cn", 'request for a full entry by full name');
 $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
