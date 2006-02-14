@@ -31,7 +31,7 @@ $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
 $mech->get_ok("/people/$UFID/full/", 'request for full LDAP entry');
-$mech->title_like(qr/$CN's Full LDAP Entry/i, 'response title looks like a full LDAP entry');
+$mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 
 $mech->get_ok("/people/$UFID/vcard/", 'request for vCard');
