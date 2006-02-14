@@ -66,9 +66,7 @@ sub search : Local {
     $c->log->debug("Filter: $filter");
 
     my $mesg = $c->model('Person')->search($filter->as_string);
-    $c->stash->{mesg} = $mesg;
-
-    $c->forward('results');
+    $c->forward('results', [ $mesg ]);
 }
 
 =head2 unit
@@ -90,9 +88,7 @@ sub unit : Local {
     $c->log->debug("Filter: $filter");
 
     my $mesg = $c->model('Person')->search($filter->as_string);
-    $c->stash->{mesg} = $mesg;
-
-    $c->forward('results');
+    $c->forward('results', [ $mesg ]);
 }
 
 =head2 results
@@ -103,33 +99,28 @@ C<mesg>. If only one person is found, display him or her directly.
 =cut
 
 sub results : Private {
-    my ($self, $c) = @_;
+    my ($self, $c, $mesg) = @_;
 
-    if (exists $c->stash->{mesg} and my $mesg = $c->stash->{mesg}) {
-        $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-        $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
 
-        my $sort = $c->req->param('sort') || 'cn';
-        my @people =
-            sort { $a->$sort cmp $b->$sort }
-            map  { Phonebook::Person->new($_) }
-            $mesg->entries;
+    my $sort = $c->req->param('sort') || 'cn';
+    my @people =
+        sort { $a->$sort cmp $b->$sort }
+        map  { Phonebook::Person->new($_) }
+        $mesg->entries;
 
-        if (scalar @people == 1) {
-            my $ufid = Phonebook::Util::encode_ufid($people[0]->uflEduUniversityId);
-            $c->stash->{single_result} = 1;
-            $c->forward('single', [ $ufid ]);
-        }
-        elsif (scalar @people > 0) {
-            $c->stash->{people} = \@people;
-            $c->stash->{template} = 'people/results.tt';
-        }
-        else {
-            $c->stash->{template} = 'people/noResults.tt';
-        }
+    if (scalar @people == 1) {
+        my $ufid = Phonebook::Util::encode_ufid($people[0]->uflEduUniversityId);
+        $c->stash->{single_result} = 1;
+        $c->forward('single', [ $ufid ]);
+    }
+    elsif (scalar @people > 0) {
+        $c->stash->{people} = \@people;
+        $c->stash->{template} = 'people/results.tt';
     }
     else {
-        $c->error('No LDAP response');
+        $c->stash->{template} = 'people/noResults.tt';
     }
 }
 

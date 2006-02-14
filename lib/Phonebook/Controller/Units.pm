@@ -56,9 +56,7 @@ sub search : Local {
     $c->log->debug("Filter: $string");
 
     my $mesg = $c->model('Organization')->search($string);
-    $c->stash->{mesg} = $mesg;
-
-    $c->forward('results');
+    $c->forward('results', [ $mesg ]);
 }
 
 =head2 results
@@ -69,33 +67,28 @@ C<mesg>. If only one unit is found, display it directly.
 =cut
 
 sub results : Private {
-    my ($self, $c) = @_;
+    my ($self, $c, $mesg) = @_;
 
-    if (exists $c->stash->{mesg} and my $mesg = $c->stash->{mesg}) {
-        $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-        $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
+    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
 
-        my $sort  = $c->req->param('sort') || 'o';
-        my @units =
-            sort { $a->$sort cmp $b->$sort }
-            map  { Phonebook::Unit->new($_) }
-            $mesg->entries;
+    my $sort  = $c->req->param('sort') || 'o';
+    my @units =
+        sort { $a->$sort cmp $b->$sort }
+        map  { Phonebook::Unit->new($_) }
+        $mesg->entries;
 
-        if (scalar @units == 1) {
-            my $ufid = $units[0]->uflEduUniversityId;
-            $c->stash->{single_result} = 1;
-            $c->forward('single', [ $ufid ]);
-        }
-        elsif (scalar @units > 0) {
-            $c->stash->{units}    = \@units;
-            $c->stash->{template} = 'units/results.tt';
-        }
-        else {
-            $c->stash->{template} = 'units/noResults.tt';
-        }
+    if (scalar @units == 1) {
+        my $ufid = $units[0]->uflEduUniversityId;
+        $c->stash->{single_result} = 1;
+        $c->forward('single', [ $ufid ]);
+    }
+    elsif (scalar @units > 0) {
+        $c->stash->{units}    = \@units;
+        $c->stash->{template} = 'units/results.tt';
     }
     else {
-        $c->error('No LDAP response');
+        $c->stash->{template} = 'units/noResults.tt';
     }
 }
 
