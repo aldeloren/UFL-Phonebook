@@ -9,7 +9,7 @@ use Catalyst qw(
     Static::Simple
 );
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 __PACKAGE__->config(
     YAML::LoadFile(__PACKAGE__->path_to('phonebook.yml')),
@@ -67,11 +67,20 @@ sub default : Private {
             $destination = $c->uri_for('/people/search', { query => $query });
         }
     }
-    if ($path eq 'show.cgi') {
-        $destination = $c->uri_for('/people', $c->req->uri->query) . '/';
-    }
-    elsif ($path eq 'show-full.cgi') {
-        $destination = $c->uri_for('/people', $c->req->uri->query, 'full/');
+    if ($path eq 'show.cgi' or $path eq 'show-full.cgi') {
+        my $query = $c->req->uri->query;
+        $destination = $c->uri_for('/people/search', { query => $query });
+
+        if ($query =~ /^[A-Z]{8,9}$/) {
+            $destination = $c->uri_for('/people', $query, ($path eq 'show-full.cgi' ? 'full/' : ''));
+        }
+        elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
+            my $mesg = $c->model('Person')->search("uid=$query");
+            if (my $entry = $mesg->shift_entry) {
+                my $person = Phonebook::Person->new($entry);
+                $destination = $c->uri_for('/people', $person, ($path eq 'show-full.cgi' ? 'full/' : ''));
+            }
+        }
     }
 
     return $c->res->redirect($destination, 301)
