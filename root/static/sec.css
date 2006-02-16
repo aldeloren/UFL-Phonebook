@@ -1,7 +1,7 @@
 * {margin:0;padding:0}
 
 body {
-background:#FFF url(/static/images/bg.jpg) repeat-x;
+background:#FFF url(images/bg.jpg) repeat-x;
 color:#444;
 font:63.125%/200% 'Trebuchet MS', verdana, geneva, Arial, Helvetica, sans-serif
 }
@@ -49,7 +49,7 @@ width:105px;
 }
 
 h1#logo a span {
-background:url(/static/images/unitHeader.gif);
+background:url(images/unitHeader.gif);
 cursor:hand;
 display:block;
 height:100%;
@@ -67,7 +67,7 @@ padding-top: 30px;
 }
 
 h4 {
-background:#fff url(/static/images/bg_dir_heading.gif) bottom repeat-x;
+background:#fff url(images/bg_dir_heading.gif) bottom repeat-x;
 border:3px double #ccc;
 color:#444;
 font-size:1.6em;
@@ -202,7 +202,7 @@ font-weight:700
 }
 
 #results_info {
-background:#d1d1d1 url(/static/images/bg_results.gif) bottom repeat-x;
+background:#d1d1d1 url(images/bg_results.gif) bottom repeat-x;
 color:#222;
 font-size:.8em;
 margin-top: 13px;
@@ -293,7 +293,7 @@ width:550px
 }
 
 #footerHome span {/*\*/
-background:url(/static/images/smallWordmark.gif) no-repeat;
+background:url(images/smallWordmark.gif) no-repeat;
 height:62px;
 position:absolute;
 right:30px;

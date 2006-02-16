@@ -1,5 +1,5 @@
 [% DEFAULT
-   stylesheets = [ c.uri_for('/static/css/sec.css') ]
+   stylesheets = [ c.uri_for('/static/sec.css') ]
 -%]
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -9,8 +9,8 @@
 <meta name="generator" content="[% c.config.name _ ' ' _ c.VERSION %]" />
 <link rel="icon" type="image/x-icon" href="[% c.uri_for('/favicon.ico') | html %]" />
 <link rel="shortcut icon" type="image/x-icon" href="[% c.uri_for('/favicon.ico') | html %]" />
-<link rel="stylesheet" type="text/css" media="screen" href="[% c.uri_for('/static/css/basic.css') | html %]" />
-<link rel="stylesheet" type="text/css" media="print" href="[% c.uri_for('/static/css/print.css') | html %]" />
+<link rel="stylesheet" type="text/css" media="screen" href="[% c.uri_for('/static/basic.css') | html %]" />
+<link rel="stylesheet" type="text/css" media="print" href="[% c.uri_for('/static/print.css') | html %]" />
 <style type="text/css" media="screen">
 [% FOREACH stylesheet IN stylesheets %]
   @import "[% stylesheet | trim | html %]";

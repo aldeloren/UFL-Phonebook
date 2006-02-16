@@ -1,6 +1,6 @@
 [% SET
    title       = 'Error'
-   stylesheets = [ c.uri_for('/static/css/main.css') ]
+   stylesheets = [ c.uri_for('/static/main.css') ]
 -%]
 
 <h2>Error</h2>

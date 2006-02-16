@@ -1,7 +1,7 @@
 * {margin:0;padding:0}
 
 body {
-background:#FFF url(/static/images/bg.jpg) repeat-x;
+background:#FFF url(images/bg.jpg) repeat-x;
 color:#444;
 font:63.125%/200% 'Trebuchet MS', verdana, geneva, Arial, Helvetica, sans-serif;
 text-align:center
@@ -51,7 +51,7 @@ width:181px
 }
 
 h1#logo a span,h2#unit a span {
-background:url(/static/images/unitHeader.gif) no-repeat;
+background:url(images/unitHeader.gif) no-repeat;
 cursor:hand;
 display:block;
 height:100%;
@@ -62,7 +62,7 @@ width:100%
 }
 
 h2#unit a span {
-background:url(/static/images/universityOfFlorida.gif)
+background:url(images/universityOfFlorida.gif)
 }
 
 h3 {
@@ -214,7 +214,7 @@ width:550px
 }
 
 #footerHome span {/*\*/
-background:url(/static/images/smallWordmark.gif) no-repeat;
+background:url(images/smallWordmark.gif) no-repeat;
 height:62px;
 position:absolute;
 right:30px;
