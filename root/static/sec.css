@@ -186,7 +186,7 @@ padding:0 5px
 font-size:1.8em
 }
 
-#query {
+.query {
 font-family:monospace;
 width:20em
 }

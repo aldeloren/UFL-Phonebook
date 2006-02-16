@@ -1,5 +1,9 @@
 This file documents the revision history for Phonebook.
 
+0.14
+        - Fix source selection JavaScript
+        - Make secondary page search form behave like index search form
+
 0.13  Wed Feb 15 23:47:50 EST 2006
         - Move CSS up one directory to simplify image references
 

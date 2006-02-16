@@ -18,6 +18,9 @@
 </style>
 <script type="text/javascript" src="[% c.uri_for('/static/js/common.js') | html %]"></script>
 <script type="text/javascript" src="[% c.uri_for('/static/js/search.js') | html %]"></script>
+<script type="text/javascript">
+  Query.setDefaultValue('phonebook', '[% c.config.people.default | html %]');
+</script>
 </head>
 <body>
 <div id="header"> 
