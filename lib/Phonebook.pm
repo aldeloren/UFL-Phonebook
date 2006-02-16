@@ -59,6 +59,7 @@ Handle any actions which did not match, i.e. 404 errors.
 sub default : Private {
     my ($self, $c, $path) = @_;
 
+    # Handle URLs from old application
     if ($path) {
         $c->log->debug("Old path = [$path]");
 
@@ -77,9 +78,9 @@ sub default : Private {
                 $filter = "uid=$query";
             }
             elsif ($query =~ /\+/) {
-                my @name     = split('\+', $query);
-                my $lastname = pop @name;
-                $filter = "cn=$lastname," . join(' ', @name) . '*';
+                my @name = split /\+/, $query;
+                my $last = pop @name;
+                $filter  = "cn=$last," . join(' ', @name) . '*';
             }
 
             $c->log->debug("Filter = [$filter]");
