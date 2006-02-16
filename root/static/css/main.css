@@ -161,14 +161,18 @@ text-align:center;
 width:500px
 }
 
-#query {
+.query {
 font-size:2.3em;
 padding:3px;
-width:15em
+width:15em;
+color:#ccc;
 }
 
-#search {
-font-size:2em;
+.active {
+color:#000;
+}
+
+.search {
 margin-bottom:5px
 }
 

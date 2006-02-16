@@ -1,5 +1,8 @@
 This file documents the revision history for Phonebook.
 
+0.12
+        - Pull JavaScript from search.ufl.edu
+
 0.11  Tue Feb 14 16:35:49 EST 2006
         - Add redirects for uid and cn searches against show.cgi and
           show-full.cgi

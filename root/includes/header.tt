@@ -17,12 +17,7 @@
 [% END %]
 </style>
 <script type="text/javascript" src="[% c.uri_for('/static/js/common.js') | html %]"></script>
-<script type="text/javascript">
-  var Query = {
-    defaultValue: '[% c.config.people.default %]'
-  };
-</script>
-<script type="text/javascript" src="[% c.uri_for('/static/js/phonebook.js') | html %]"></script>
+<script type="text/javascript" src="[% c.uri_for('/static/js/search.js') | html %]"></script>
 </head>
 <body>
 <div id="header"> 
