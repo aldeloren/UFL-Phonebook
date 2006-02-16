@@ -1,5 +1,4 @@
-  </div><!-- end content -->
-</div><!-- end mainContainer -->
+</div><!-- mainContainer -->
 <div id="footer">
   <h3>Frequently Used Sites</h3>
   <ul>
@@ -21,6 +20,6 @@
     <li><a href="http://www.webadmin.ufl.edu/policies/internet_privacy/">Privacy Policy</a></li>
     <li><a href="http://search.ufl.edu/">Search</a></li>
   </ul>
-</div><!-- end footer -->
+</div><!-- footer -->
 </body>
 </html>

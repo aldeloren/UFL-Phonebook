@@ -1,5 +1,5 @@
-[% DEFAULT
-   stylesheets = [ c.uri_for('/static/sec.css') ]
+[%- DEFAULT
+    stylesheets = [ c.uri_for('/static/sec.css') ]
 -%]
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -29,4 +29,3 @@
 [%+ END -%]
 </div>
 <div id="mainContainer"> 
-  <div id="content">
