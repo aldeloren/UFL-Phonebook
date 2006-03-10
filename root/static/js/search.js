@@ -20,7 +20,7 @@ var Query = {
 			var input = inputs[i];
 			if (Element.hasClassName(input, 'query')) {
 				Query.setDefaultValue(input.id, input.value);
-				addEvent(input, 'onclick', Query.click);
+				addEvent(input, 'onfocus', Query.focus);
 				addEvent(input, 'onblur', Query.blur);
 
 				if (input.value != Query.getDefaultValue(input.id)) {
@@ -29,7 +29,7 @@ var Query = {
 			}
 		}
 	},
-	click: function() {
+	focus: function() {
 		Element.addClassName(this, 'active');
 		if (this.value == Query.getDefaultValue(this.id)) {
 			this.value = '';
