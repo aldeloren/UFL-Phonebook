@@ -32,14 +32,14 @@ var Query = {
 	},
 	activate: function(field) {
 		Element.addClassName(field, 'active');
-		if (field.value == Query.getDefaultValue(field.id)) {
+		if (field.value == Query.getDefaultValue(field)) {
 			field.value = '';
 		}
 	},
 	deactivate: function(field) {
 		if (field.value == '') {
 			Element.removeClassName(field, 'active');
-			field.value = Query.getDefaultValue(field.id);
+			field.value = Query.getDefaultValue(field);
 		}
 	}
 };
