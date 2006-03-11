@@ -5,11 +5,11 @@
 var Query = {
 	defaultValues: {},
 
-	setDefaultValue: function(input, value) {
-		Query.defaultValues[input.id] = value;
+	setDefaultValue: function(key, value) {
+		Query.defaultValues[key] = value;
 	},
-	getDefaultValue: function(input) {
-		return Query.defaultValues[input.id];
+	getDefaultValue: function(key) {
+		return Query.defaultValues[key];
 	},
 	init: function() {
 		var inputs = document.getElementsByTagName('input');
@@ -17,14 +17,14 @@ var Query = {
 			var input = inputs[i];
 			if (Element.hasClassName(input, 'query')) {
 				// Let page override value
-				if (Query.getDefaultValue(input) == null) {
-					Query.setDefaultValue(input, input.defaultValue);
+				if (Query.getDefaultValue(input.id) == null) {
+					Query.setDefaultValue(input.id, input.defaultValue);
 				}
 
 				addEvent(input, 'onfocus', function() { Query.activate(this) });
 				addEvent(input, 'onblur', function() { Query.deactivate(this) });
 
-				if (input.value != Query.getDefaultValue(input)) {
+				if (input.value != Query.getDefaultValue(input.id)) {
 					Query.activate(input);
 				}
 			}
@@ -32,14 +32,14 @@ var Query = {
 	},
 	activate: function(field) {
 		Element.addClassName(field, 'active');
-		if (field.value == Query.getDefaultValue(field)) {
+		if (field.value == Query.getDefaultValue(field.id)) {
 			field.value = '';
 		}
 	},
 	deactivate: function(field) {
 		if (field.value == '') {
 			Element.removeClassName(field, 'active');
-			field.value = Query.getDefaultValue(field);
+			field.value = Query.getDefaultValue(field.id);
 		}
 	}
 };
