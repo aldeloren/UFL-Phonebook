@@ -1,5 +1,8 @@
 This file documents the revision history for Phonebook.
 
+0.16
+        - Refactor search.js for more sensible default value storage
+
 0.15  Thu Mar  9 20:08:38 EST 2006
         - Change search.js to activate the form onfocus instead of
           onclick

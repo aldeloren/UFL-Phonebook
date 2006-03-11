@@ -5,40 +5,41 @@
 var Query = {
 	defaultValues: {},
 
-	setDefaultValue: function(key, value) {
-		// Let page override value from init
-		if (Query.defaultValues[key] == null) {
-			Query.defaultValues[key] = value;
-		}
+	setDefaultValue: function(input, value) {
+		Query.defaultValues[input.id] = value;
 	},
-	getDefaultValue: function(key) {
-		return Query.defaultValues[key];
+	getDefaultValue: function(input) {
+		return Query.defaultValues[input.id];
 	},
 	init: function() {
 		var inputs = document.getElementsByTagName('input');
 		for (var i = 0; i < inputs.length; i++) {
 			var input = inputs[i];
 			if (Element.hasClassName(input, 'query')) {
-				Query.setDefaultValue(input.id, input.value);
-				addEvent(input, 'onfocus', Query.focus);
-				addEvent(input, 'onblur', Query.blur);
+				// Let page override value
+				if (Query.getDefaultValue(input) == null) {
+					Query.setDefaultValue(input, input.defaultValue);
+				}
 
-				if (input.value != Query.getDefaultValue(input.id)) {
-					Element.addClassName(input, 'active');
+				addEvent(input, 'onfocus', function() { Query.activate(this) });
+				addEvent(input, 'onblur', function() { Query.deactivate(this) });
+
+				if (input.value != Query.getDefaultValue(input)) {
+					Query.activate(input);
 				}
 			}
 		}
 	},
-	focus: function() {
-		Element.addClassName(this, 'active');
-		if (this.value == Query.getDefaultValue(this.id)) {
-			this.value = '';
+	activate: function(field) {
+		Element.addClassName(field, 'active');
+		if (field.value == Query.getDefaultValue(field.id)) {
+			field.value = '';
 		}
 	},
-	blur: function() {
-		if (this.value == '') {
-			Element.removeClassName(this, 'active');
-			this.value = Query.getDefaultValue(this.id);
+	deactivate: function(field) {
+		if (field.value == '') {
+			Element.removeClassName(field, 'active');
+			field.value = Query.getDefaultValue(field.id);
 		}
 	}
 };
