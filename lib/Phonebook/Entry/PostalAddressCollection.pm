@@ -17,7 +17,7 @@ our $MAPPINGS = {
     'Emergency Contact'                     => 'emergency',
 };
 
-__PACKAGE__->mk_accessors(values %{ $MAPPINGS }, '_original');
+__PACKAGE__->mk_accessors(values %$MAPPINGS, '_original');
 
 =head1 NAME
 
@@ -87,9 +87,23 @@ sub _parse {
     return ($name, $address);
 }
 
+=head2 types
+
+Return a list of defined address types on this collection.
+
+=cut
+
+sub types {
+    my ($self) = @_;
+
+    my @types = grep { defined $self->$_ } values %$MAPPINGS;
+
+    return @types;
+}
+
 =head2 as_string
 
-Return the original LDAP postal address data as a string.
+Return the original LDAP postal address collection as a string.
 
 =cut
 
