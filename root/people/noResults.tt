@@ -4,7 +4,7 @@
 -%]
 
 <div id="results_info">
-  <p>Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html %]</strong>[% END %] did not match any members of the University of Florida community.</p>
+  <p>Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html %]</strong>[% END %] did not match any members of the [% c.config.organization | html %] community.</p>
 </div>
 
 [% INCLUDE people/includes/tips.tt %]

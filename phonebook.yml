@@ -1,6 +1,7 @@
 --- #YAML:1.0
 # Do not use tabs for indentation or label/value separation!
-name: Phonebook
+name:         Phonebook
+organization: University of Florida
 
 people:
   default: Search UF People

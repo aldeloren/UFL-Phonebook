@@ -5,7 +5,7 @@
 
 <div id="results_info">
   <p>
-    Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html %]</strong>[% END %] did not match any units at the University of Florida. Try browsing the <a href="http://www.ufl.edu/websites/">Web site listing</a>
+    Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html %]</strong>[% END %] did not match any units at the [% c.config.organization | html %]. Try browsing the <a href="http://www.ufl.edu/websites/">Web site listing</a>
 [% USE query = String(c.req.params.query) %]
 [% IF query.search('^[A-Za-z]') %]
   [% letter = query.truncate(1) %] for <a href="http://www.ufl.edu/websites/[% letter | lcfirst | html %].html">sites starting with the letter [% letter | ucfirst | html %]</a>
