@@ -3,17 +3,6 @@ package Phonebook::View::vCard;
 use strict;
 use warnings;
 use base 'Catalyst::View::TT';
-use Locale::Country ();
-use Phonebook::Util;
-
-__PACKAGE__->config(
-    FILTERS => {
-        code2country => \&Locale::Country::code2country,
-        spam_armor   => \&Phonebook::Util::spam_armor,
-        encode_ufid  => \&Phonebook::Util::encode_ufid,
-        decode_ufid  => \&Phonebook::Util::decode_ufid,
-    },
-);
 
 =head1 NAME
 
@@ -25,8 +14,8 @@ See L<Phonebook>.
 
 =head1 DESCRIPTION
 
-The Template Toolkit view component used by L<Phonebook>.  This is a
-placeholder for an actual vCard view, e.g. L<Catalyst::View::vCard>.
+The Template Toolkit view component used by L<Phonebook> to produce
+vCards.
 
 =head1 AUTHOR
 
