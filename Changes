@@ -2,6 +2,10 @@ This file documents the revision history for Phonebook.
 
 0.17
         - Refactor organization name to configuration file
+        - Remove escaping in root/people/vcard.tt even though RFC 2426
+          implies that it's necessary, because it causes problems in
+          Outlook
+        - Add a few more items to the vCard
 
 0.16  Fri Mar 10 19:27:16 EST 2006
         - Refactor search.js for more sensible default value storage
