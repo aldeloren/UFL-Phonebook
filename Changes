@@ -1,6 +1,6 @@
 This file documents the revision history for Phonebook.
 
-0.17
+0.17  Wed Apr  5 18:03:04 EDT 2006
         - Refactor organization name to configuration file
         - Remove escaping in root/people/vcard.tt even though RFC 2426
           implies that it's necessary, because it causes problems in
