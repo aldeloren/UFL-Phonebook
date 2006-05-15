@@ -228,7 +228,7 @@ sub _parse_query {
         my $name = $tokens[0];
 
         $filter->add('cn',    '=', qq[$name,*]);
-        $filter->add('sn',    '=', qq[$name*]);
+        $filter->add('sn',    '=', qq[$name]);
         $filter->add('uid',   '=', $name);
         $filter->add('mail',  '=', qq[$name@*]);
         # TODO: Searching title seems slow
