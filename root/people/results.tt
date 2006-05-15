@@ -29,7 +29,7 @@
     <tr[% IF odd %] class="odd"[% END %]>
       <td><a href="[% c.uri_for('/people', person) | html %]/">[% person.displayName | html %]</a></td>
       <td>
-        [% (person.title ? person.title : person.eduPersonPrimaryAffiliation) | html %]
+        [% (person.eduPersonPrimaryAffiliation != 'student' AND person.title ? person.title : person.eduPersonPrimaryAffiliation) | html %]
         [% IF person.departmentNumber AND person.o %], <a href="[% c.uri_for('/units', person.departmentNumber) | html %]/">[% person.o | html %]</a>[% END %]
       </td>
       <td>[% IF person.telephoneNumber %][% person.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
