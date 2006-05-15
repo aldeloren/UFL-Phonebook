@@ -39,5 +39,5 @@ $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a ful
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 
 $mech->get_ok("/people/$UFID/vcard/", 'request for vCard');
-is($mech->ct, 'text/x-vcard', 'response Content-Type');
-$mech->content_like(qr/NICKNAME:$UID/i, 'response vCard data');
+is($mech->ct, 'text/x-vcard', 'response Content-Type is a vCard');
+$mech->content_like(qr/NICKNAME:$UID/i, 'response looks like vCard data');
