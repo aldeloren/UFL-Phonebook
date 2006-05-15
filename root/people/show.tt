@@ -51,17 +51,17 @@
 [% END %]
   </dl>
 
-[% IF person.eduPersonPrimaryAffiliation != 'student' %]
   <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
   <dl class="employment">
-    <dt>Unit</dt>
+    <dt>[% (person.eduPersonPrimaryAffiliation == 'student' ? 'Department' : 'Unit') | html %]</dt>
     <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for('/units', person.departmentNumber) | html %]/">[% END %]
       [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]
       [% IF person.departmentNumber %]</a>[% END %]</dd>
+[% IF person.title %]
     <dt>Title</dt>
     <dd class="title">[% IF person.title %][% person.title | html %][% ELSE %]&nbsp;[% END %]</dd>
+[% END %]
   </dl>
-  [% END %]
 </div>
 
 [% INCLUDE people/includes/links.tt -%]
