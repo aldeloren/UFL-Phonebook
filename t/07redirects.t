@@ -5,7 +5,7 @@ use Test::More tests => 26;
 use Test::WWW::Mechanize::Catalyst "Phonebook";
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
-my $QUERY = 'test';
+my $QUERY = 'tester';
 my $CN    = 'TESTER,AT A';
 my $UID   = 'attest1';
 my $UFID  = 'TVJVWHJJW';
