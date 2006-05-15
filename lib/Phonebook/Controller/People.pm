@@ -237,7 +237,7 @@ sub _parse_query {
     else {
         # Two or more tokens: first and last name
         my $first = $tokens[0];
-        my $last  = $tokens[1];
+        my $last  = $tokens[-1];
         ($first, $last) = ($last, $first) if $query =~ /,/;
         $first =~ s/\.$//;
 

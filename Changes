@@ -3,6 +3,7 @@ This file documents the revision history for Phonebook.
 0.18
         - Remove wildcard search for last name searches
         - Allow wildcards in search queries
+        - Fix searches which include a middle name
 
 0.17  Wed Apr  5 18:03:04 EDT 2006
         - Refactor organization name to configuration file
