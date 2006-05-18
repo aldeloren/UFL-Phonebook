@@ -108,13 +108,12 @@ sub single : Path('') {
 
     my $mesg = $c->model('Organization')->search("uflEduUniversityId=$ufid");
     if (my $entry = $mesg->shift_entry) {
-        $c->stash->{unit} = Phonebook::Unit->new($entry);
+        $c->stash->{unit}     = Phonebook::Unit->new($entry);
+        $c->stash->{template} = 'units/show.tt';
 
-        if ($action and $self->can($action)) {
-            $c->forward($action);
-        }
-        else {
-            $c->stash->{template} = 'units/show.tt';
+        if ($action) {
+            $c->detach('default') unless $self->can($action);
+            $c->detach($action);
         }
     }
     else {
