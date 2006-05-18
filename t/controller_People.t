@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 24;
+use Test::More tests => 25;
 
 use Test::WWW::Mechanize::Catalyst 'Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -37,6 +37,9 @@ is($mech->status, 404, 'request for single person by UFID 404s');
 $mech->get_ok("/people/$ENCODED_UFID/", 'request for single person');
 $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
+
+$mech->get("/people/$ENCODED_UFID/show/", 'request for single person, invalid action');
+is($mech->status, 404, 'request for single person by UFID 404s');
 
 $mech->get_ok("/people/$ENCODED_UFID/full/", 'request for full LDAP entry');
 $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
