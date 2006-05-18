@@ -1,0 +1,9 @@
+[% INCLUDE includes/header.tt -%]
+
+  <div id="content">
+[% FILTER indent %]
+  [% content %]
+[% END -%]
+  </div><!-- content -->
+
+[%+ INCLUDE includes/footer.tt -%]

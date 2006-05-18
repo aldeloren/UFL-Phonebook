@@ -186,7 +186,6 @@ sub vcard : Private {
     }
 
     $c->stash->{template} = 'people/vcard.tt';
-    $c->forward($c->view('vCard'));
 }
 
 =head2 _parse_query

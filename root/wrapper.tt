@@ -1,9 +1,5 @@
-[% INCLUDE includes/header.tt -%]
-
-  <div id="content">
-[% FILTER indent %]
-  [% content %]
-[% END -%]
-  </div><!-- content -->
-
-[%+ INCLUDE includes/footer.tt -%]
+[% DEFAULT wrapper = template.wrapper OR 'wrappers/default.tt' %]
+[%
+  PROCESS $template
+  WRAPPER $wrapper
+-%]
