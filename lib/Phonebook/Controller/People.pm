@@ -200,7 +200,7 @@ sub _parse_query {
     my @tokens = Phonebook::Util::tokenize_query($query);
 
     my $filter = Phonebook::Filter::Abstract->new('|');
-    if ($query =~ /(.*)\@/) {
+    if ($query =~ /([^@]+)\@/) {
         # Email address
         my $uid  = $1;
         my $mail = $tokens[0];
