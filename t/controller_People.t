@@ -1,16 +1,17 @@
 use strict;
 use warnings;
-use Test::More tests => 23;
+use Test::More tests => 24;
 
 use Test::WWW::Mechanize::Catalyst 'Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
 use_ok('Phonebook::Controller::People');
 
-my $QUERY = 'tester';
-my $CN    = 'TESTER,AT A';
-my $UID   = 'attest1';
-my $UFID  = 'TVJVWHJJW';
+my $QUERY        = 'tester';
+my $CN           = 'TESTER,AT A';
+my $UID          = 'attest1';
+my $UFID         = '59831351';
+my $ENCODED_UFID = 'TVJVWHJJW';
 
 $mech->get_ok('/people/', 'request for people page');
 
@@ -30,14 +31,17 @@ $mech->get_ok('/people/search?query=AT A. TESTER', 'request for first initial, l
 $mech->title_like(qr/$CN/i, 'response title looks like search results');
 $mech->content_like(qr/$CN/i, 'response body looks like search results');
 
-$mech->get_ok("/people/$UFID/", 'request for single person');
+$mech->get("/people/$UFID/", 'request for single person by UFID');
+is($mech->status, 404, 'request for single person by UFID 404s');
+
+$mech->get_ok("/people/$ENCODED_UFID/", 'request for single person');
 $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
-$mech->get_ok("/people/$UFID/full/", 'request for full LDAP entry');
+$mech->get_ok("/people/$ENCODED_UFID/full/", 'request for full LDAP entry');
 $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a full LDAP entry');
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 
-$mech->get_ok("/people/$UFID/vcard/", 'request for vCard');
+$mech->get_ok("/people/$ENCODED_UFID/vcard/", 'request for vCard');
 is($mech->ct, 'text/x-vcard', 'response Content-Type is a vCard');
 $mech->content_like(qr/NICKNAME:$UID/i, 'response looks like vCard data');

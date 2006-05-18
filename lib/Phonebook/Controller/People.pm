@@ -135,8 +135,8 @@ behavior of the person.
 sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
-    $c->detach('default') unless $ufid;
     $ufid = Phonebook::Util::decode_ufid($ufid);
+    $c->detach('default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
     my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");

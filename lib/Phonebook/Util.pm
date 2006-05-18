@@ -48,7 +48,8 @@ phonebook.
 sub encode_ufid {
     my ($ufid) = @_;
 
-    $ufid =~ /^\d{8}$/ or return $ufid;
+    return unless $ufid =~ /^\d{8}$/;
+
     my $encoded = sprintf "%9.9o", $ufid ^ $MASK;
     $encoded =~ tr/0-9/TSJWHEVN/;
 
@@ -57,7 +58,7 @@ sub encode_ufid {
 
 =head2 decode_ufid
 
-Decode the UFID by doing the reverse of C<encode_ufid>.
+Decode the UFID by doing the reverse of L</encode_ufid>.
 
 =cut
 
@@ -65,7 +66,8 @@ Decode the UFID by doing the reverse of C<encode_ufid>.
 sub decode_ufid {
     my ($encoded) = @_;
 
-    $encoded =~ /^[A-Z]+$/ or return $encoded;
+    return unless $encoded =~ /^[A-Z]+$/;
+
     $encoded =~ tr/TSJWHEVN/0-7/;
     my $ufid = sprintf "%8.8d", oct($encoded) ^ $MASK;
 

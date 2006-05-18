@@ -6,6 +6,7 @@ This file documents the revision history for Phonebook.
         - Fix searches which include a middle name
         - Display title and department for students
         - 404 on an invalid ACTION in /people/ENCODED_UFID/ACTION/
+        - 404 on /people/UFID/
 
 0.17  Wed Apr  5 18:03:04 EDT 2006
         - Refactor organization name to configuration file
