@@ -86,7 +86,7 @@ sub tokenize_query {
     my ($query) = @_;
 
     # Strip invalid characters
-    $query =~ s/[^a-z0-9 .,\-_\'\@\*]//gi;
+    $query =~ s/[^a-z0-9 .,\-_\'\@]//gi;
 
     my @tokens;
     if ($query =~ /,/) {
