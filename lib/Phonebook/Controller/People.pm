@@ -22,19 +22,6 @@ Catalyst controller component for finding people.
 
 =head1 METHODS
 
-=head2 default
-
-Handle any actions which did not match, i.e. 404 errors.
-
-=cut
-
-sub default : Private {
-    my ($self, $c) = @_;
-
-    # TODO: Better error handling
-    $c->forward('/default');
-}
-
 =head2 index
 
 Display the people home page.
@@ -79,7 +66,7 @@ specified UFID.
 sub unit : Local {
     my ($self, $c, $ufid) = @_;
 
-    $c->detach('default') unless $ufid;
+    $c->detach('/default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
     my $filter = $self->_get_restriction;
@@ -136,7 +123,7 @@ sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
     $ufid = Phonebook::Util::decode_ufid($ufid);
-    $c->detach('default') unless $ufid;
+    $c->detach('/default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
     my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
@@ -145,7 +132,7 @@ sub single : Path('') {
         $c->stash->{template} = 'people/show.tt';
 
         if ($action) {
-            $c->detach('default') unless $self->can($action);
+            $c->detach('/default') unless $self->can($action);
             $c->detach($action);
         }
     }

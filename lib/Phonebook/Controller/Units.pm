@@ -23,19 +23,6 @@ campus organizations).
 
 =head1 METHODS
 
-=head2 default
-
-Handle any actions which did not match, i.e. 404 errors.
-
-=cut
-
-sub default : Private {
-    my ($self, $c) = @_;
-
-    # TODO: Better error handling
-    $c->forward('/default');
-}
-
 =head2 search
 
 Search the directory for units.
@@ -103,7 +90,7 @@ behavior of the unit.
 sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
-    $c->detach('default') unless $ufid;
+    $c->detach('/default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
     my $mesg = $c->model('Organization')->search("uflEduUniversityId=$ufid");
@@ -112,7 +99,7 @@ sub single : Path('') {
         $c->stash->{template} = 'units/show.tt';
 
         if ($action) {
-            $c->detach('default') unless $self->can($action);
+            $c->detach('/default') unless $self->can($action);
             $c->detach($action);
         }
     }
