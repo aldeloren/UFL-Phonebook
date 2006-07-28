@@ -12,14 +12,17 @@ units:
 default_source: phonebook
 sources:
   web:
-    name: UF Web with Google
-    url:  http://search.ufl.edu/web?query=%s
+    name:  UF Web with Google
+    url:   http://search.ufl.edu/web
+    param: query
   phonebook:
-    name: UF Phonebook
-    url:  /people/search?query=%s
+    name:  UF Phonebook
+    url:   /people/search
+    param: query
   news:
-    name: UF News
-    url:  http://news.ufl.edu/index.php?s=%s
+    name:  UF News
+    url:   http://news.ufl.edu/index.php
+    param: s
 
 ldap:
   host: &host ldap.ufl.edu

@@ -34,14 +34,12 @@ sub search : Path('') {
     my %sources = %{ $c->config->{sources} };
 
     $source =~ s/[^a-z]//g;
-    $source = (exists $sources{$source}
-               ? $sources{$source}
-               : $sources{$c->config->{default_source}}
-              );
+    $source = $sources{$source} || $sources{$c->config->{default_source}};
 
-    my $url = $c->uri_for(sprintf($source->{url}, $query));
+    my $url = URI->new($source->{url});
+    $url->query_form($source->{param} => $query);
+
     $c->log->debug("Search URL: [$url]");
-
     $c->res->redirect($url);
 }
 
