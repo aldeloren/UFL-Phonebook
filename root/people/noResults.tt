@@ -1,10 +1,10 @@
 [% SET
-   title   = c.req.params.query
+   title   = c.req.param('query')
    heading = 'people/includes/search.tt'
 -%]
 
 <div id="results_info">
-  <p>Your search[% IF c.req.params.query %] for <strong>[% c.req.params.query | html %]</strong>[% END %] did not match any members of the [% c.config.organization | html %] community.</p>
+  <p>Your search[% IF c.req.param('query') %] for <strong>[% c.req.param('query') | html %]</strong>[% END %] did not match any members of the [% c.config.organization | html %] community.</p>
 </div>
 
 [% INCLUDE people/includes/tips.tt %]

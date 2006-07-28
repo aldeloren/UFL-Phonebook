@@ -1,5 +1,5 @@
 [% SET
-   query = (c.req.params.query ? c.req.params.query : people.first.o)
+   query   = c.req.param('query') || people.first.o
    title   = query
    heading = 'people/includes/search.tt'
 -%]

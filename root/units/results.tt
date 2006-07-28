@@ -1,15 +1,15 @@
 [% SET
-   title   = c.req.params.query
+   title   = c.req.param('query')
    heading = 'people/includes/search.tt'
 -%]
 
 <div id="results_info">
 [% IF sizelimit_exceeded %]
-  <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned too many units. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
+  <p>Your search for <strong>[% c.req.param('query') | html %]</strong> returned too many units. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
 [% ELSIF timelimit_exceeded %]
-  <p>Your search for <strong>[% c.req.params.query | html %]</strong> was too generic. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
+  <p>Your search for <strong>[% c.req.param('query') | html %]</strong> was too generic. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
 [% ELSE %]
-  <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned the following [% units.size == 1 ? 'unit' : units.size _ ' units' %]:</p>
+  <p>Your search for <strong>[% c.req.param('query') | html %]</strong> returned the following [% units.size == 1 ? 'unit' : units.size _ ' units' %]:</p>
 [% END %]
 </div>
 
