@@ -123,6 +123,10 @@ behavior of the person.
 sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
+    $ufid = Phonebook::Util::decode_ufid($ufid);
+    $c->detach('/default') unless $ufid;
+    $c->log->debug("UFID: $ufid");
+
     # Handle redirection when a search query returns only one person
     my $query = $c->req->cookies->{query};
     if ($query and $query->value) {
@@ -130,10 +134,6 @@ sub single : Path('') {
         $c->stash->{query} = $query->value;
         $c->res->cookies->{query} = { value => '' };
     }
-
-    $ufid = Phonebook::Util::decode_ufid($ufid);
-    $c->detach('/default') unless $ufid;
-    $c->log->debug("UFID: $ufid");
 
     my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
     if (my $entry = $mesg->shift_entry) {
