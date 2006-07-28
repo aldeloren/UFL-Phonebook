@@ -7,7 +7,7 @@
     </select>
   </label>
   <label for="query">
-    <input type="text" name="query" value="[% c.req.params.query ? c.req.params.query : c.config.people.default | html %]" id="phonebook" class="query" />
+    <input type="text" name="query" value="[% c.req.params.query || query || c.config.people.default | html %]" id="phonebook" class="query" />
   </label>
   <input type="image" id="image" src="[% c.uri_for('/static/images/searchEnter.gif') | html %]" alt="Go" />
 </form>

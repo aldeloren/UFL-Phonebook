@@ -5,7 +5,7 @@
 
 [% IF single_result %]
 <div id="results_info">
-  <p>Your search for <strong>[% c.req.params.query | html %]</strong> returned only one member of the UF community, displayed below.</p>
+  <p>Your search for <strong>[% query | html %]</strong> returned only one member of the UF community, displayed below.</p>
 </div>
 
 [% END -%]

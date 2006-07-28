@@ -99,8 +99,9 @@ sub results : Private {
 
     if (scalar @people == 1) {
         my $ufid = Phonebook::Util::encode_ufid($people[0]->uflEduUniversityId);
-        $c->stash->{single_result} = 1;
-        $c->forward('single', [ $ufid ]);
+
+        $c->res->cookies->{query} = { value => $c->req->param('query') };
+        $c->res->redirect($c->uri_for('/people', $ufid, ''));
     }
     elsif (scalar @people > 0) {
         $c->stash->{people} = \@people;
@@ -121,6 +122,14 @@ behavior of the person.
 
 sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
+
+    # Handle redirection when a search query returns only one person
+    my $query = $c->req->cookies->{query};
+    if ($query and $query->value) {
+        $c->stash->{single_result} = 1;
+        $c->stash->{query} = $query->value;
+        $c->res->cookies->{query} = { value => '' };
+    }
 
     $ufid = Phonebook::Util::decode_ufid($ufid);
     $c->detach('/default') unless $ufid;
