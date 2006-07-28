@@ -232,11 +232,11 @@ sub _parse_query {
         # TODO: Searching title seems slow
 #        $filter->add('title', '=', qq[$name*]);
     }
-    else {
-        # Two or more tokens: first and last name
-        my $first = $tokens[0];
-        my $last  = $tokens[-1];
+    elsif (scalar @tokens == 2) {
+        # Two tokens: first and last name
+        my ($first, $last) = @tokens;
         ($first, $last) = ($last, $first) if $query =~ /,/;
+
         $first =~ s/\.$//;
 
         $filter->add('cn',    '=', qq[$last*,$first*]);
@@ -244,6 +244,21 @@ sub _parse_query {
         $filter->add('mail',  '=', qq[$first-$last@*]);
         # TODO: Searching title seems slow
 #        $filter->add('title', '=', qq[$query*]);
+    }
+    else {
+        # Three or more tokens: first, middle, and last name
+        my ($first, $middle, @last) = @tokens;
+        my $last = join ' ', @last;
+
+        ($first, $last) = ($last, $first) if $query =~ /,/;
+
+        for ($first, $middle) {
+            s/\.$//;
+        }
+
+        $filter->add('cn',    '=', qq[$last*,$first* $middle]);
+        $filter->add('mail',  '=', qq[$first$last@*]);
+        $filter->add('mail',  '=', qq[$first-$last@*]);
     }
 
     return Phonebook::Filter::Abstract->new('&')
