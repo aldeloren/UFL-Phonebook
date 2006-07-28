@@ -67,8 +67,9 @@ sub results : Private {
 
     if (scalar @units == 1) {
         my $ufid = $units[0]->uflEduUniversityId;
-        $c->stash->{single_result} = 1;
-        $c->forward('single', [ $ufid ]);
+
+        $c->res->cookies->{query} = { value => $c->req->param('query') };
+        $c->res->redirect($c->uri_for('/units', $ufid, ''));
     }
     elsif (scalar @units > 0) {
         $c->stash->{units}    = \@units;
@@ -92,6 +93,14 @@ sub single : Path('') {
 
     $c->detach('/default') unless $ufid;
     $c->log->debug("UFID: $ufid");
+
+    # Handle redirection when a search query returns only one person
+    my $query = $c->req->cookies->{query};
+    if ($query and $query->value) {
+        $c->stash->{single_result} = 1;
+        $c->stash->{query} = $query->value;
+        $c->res->cookies->{query} = { value => '' };
+    }
 
     my $mesg = $c->model('Organization')->search("uflEduUniversityId=$ufid");
     if (my $entry = $mesg->shift_entry) {
