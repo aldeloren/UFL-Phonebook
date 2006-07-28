@@ -136,17 +136,15 @@ sub single : Path('') {
     }
 
     my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
-    if (my $entry = $mesg->shift_entry) {
-        $c->stash->{person}   = Phonebook::Person->new($entry);
-        $c->stash->{template} = 'people/show.tt';
+    my $entry = $mesg->shift_entry;
+    $c->detach('/default') unless $entry;
 
-        if ($action) {
-            $c->detach('/default') unless $self->can($action);
-            $c->detach($action);
-        }
-    }
-    else {
-        $c->stash->{template} = 'people/noResults.tt';
+    $c->stash->{person}   = Phonebook::Person->new($entry);
+    $c->stash->{template} = 'people/show.tt';
+
+    if ($action) {
+        $c->detach('/default') unless $self->can($action);
+        $c->detach($action);
     }
 }
 
