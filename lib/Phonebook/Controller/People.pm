@@ -315,7 +315,7 @@ sub redirect_show_cgi : Path('/show.cgi') {
     my $filter = $self->get_show_cgi_filter($query);
     unless ($filter) {
         $c->log->debug("Could not determine filter for [$query]");
-        return $c->res->redirect($c->uri_for('/people/search', { query => $query }));
+        return $c->res->redirect($c->uri_for('/people/search', { query => $query }), 301);
     }
 
     $c->log->debug("Filter = [$filter]");
@@ -325,7 +325,7 @@ sub redirect_show_cgi : Path('/show.cgi') {
     $c->detach('/default') unless $entry;
 
     my $person = Phonebook::Person->new($entry);
-    return $c->res->redirect($c->uri_for('/people', $person, ($full ? 'full/' : '')));
+    return $c->res->redirect($c->uri_for('/people', $person, ($full ? 'full/' : '')), 301);
 }
 
 =head2 redirect_show_full_cgi
