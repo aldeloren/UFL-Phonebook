@@ -104,7 +104,7 @@ sub results : Private {
         $c->res->redirect($c->uri_for('/people', $ufid, ''));
     }
     elsif (scalar @people > 0) {
-        $c->stash->{people} = \@people;
+        $c->stash->{people}   = \@people;
         $c->stash->{template} = 'people/results.tt';
     }
     else {
@@ -130,9 +130,10 @@ sub single : Path('') {
     # Handle redirection when a search query returns only one person
     my $query = $c->req->cookies->{query};
     if ($query and $query->value) {
-        $c->stash->{single_result} = 1;
         $c->stash->{query} = $query->value;
         $c->res->cookies->{query} = { value => '' };
+
+        $c->stash->{single_result} = 1;
     }
 
     my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
