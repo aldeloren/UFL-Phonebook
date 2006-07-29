@@ -278,6 +278,81 @@ sub _get_restriction {
     return $filter;
 }
 
+=head2 redirect_display_form_cgi
+
+Handle requests for C</display_form.cgi> from the old L<Phonebook>
+application, which displayed the search form B<and> handled search
+queries.
+
+=cut
+
+sub redirect_display_form_cgi : Path('/display_form.cgi') {
+    my ($self, $c) = @_;
+
+    my $destination = $c->uri_for('/');
+
+    if (my $query = $c->req->param('person')) {
+        $destination = $c->uri_for('/people/search', { query => $query });
+    }
+
+    $c->res->redirect($destination, 301);
+}
+
+=head2 redirect_show_cgi
+
+Handle requests for C</show.cgi> from the old L<Phonebook>
+application, which displayed a single person.
+
+=cut
+
+sub redirect_show_cgi : Path('/show.cgi') {
+    my ($self, $c, $full) = @_;
+
+    my $destination = $c->uri_for('/');
+
+    if (my $query = $c->req->uri->query) {
+        $destination = $c->uri_for('/people/search', { query => $query });
+
+        my $filter;
+        if (my $ufid = Phonebook::Util::decode_ufid($query)) {
+            $filter = "uflEduUniversityId=$ufid";
+        }
+        elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
+            $filter = "uid=$query";
+        }
+        elsif ($query =~ /\+/) {
+            my @name = split /\+/, $query;
+            my $last = pop @name;
+            $filter  = "cn=$last," . join(' ', @name) . '*';
+        }
+
+        if ($filter) {
+            $c->log->debug("Filter = [$filter]");
+
+            my $mesg = $c->model('Person')->search($filter);
+            if (my $entry = $mesg->shift_entry) {
+                my $person = Phonebook::Person->new($entry);
+                $destination = $c->uri_for('/people', $person, ($full ? 'full/' : ''));
+            }
+        }
+    }
+
+    $c->res->redirect($destination, 301);
+}
+
+=head2 redirect_show_full_cgi
+
+Handle requests for C</show-full.cgi> from the old L<Phonebook>
+application, which displayed the full LDAP entry for a single person.
+
+=cut
+
+sub redirect_show_full_cgi : Path('/show-full.cgi') {
+    my ($self, $c) = @_;
+
+    $c->forward('redirect_show_cgi', [ 1 ]);
+}
+
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>

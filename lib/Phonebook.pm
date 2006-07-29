@@ -59,49 +59,6 @@ Handle any actions which did not match, i.e. 404 errors.
 sub default : Private {
     my ($self, $c, $path) = @_;
 
-    # Handle URLs from old application
-    if ($path) {
-        $c->log->debug("Old path = [$path]");
-
-        my $destination;
-        if ($path eq 'display_form.cgi') {
-            $destination = $c->uri_for('/');
-
-            if (my $query = $c->req->param('person')) {
-                $destination = $c->uri_for('/people/search', { query => $query });
-            }
-        }
-        elsif (($path eq 'show.cgi' or $path eq 'show-full.cgi') and my $query = $c->req->uri->query) {
-            my $ufid = Phonebook::Util::decode_ufid($query);
-            my $filter;
-
-            if ($ufid) {
-                $filter = "uflEduUniversityId=$ufid";
-            }
-            elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
-                $filter = "uid=$query";
-            }
-            elsif ($query =~ /\+/) {
-                my @name = split /\+/, $query;
-                my $last = pop @name;
-                $filter  = "cn=$last," . join(' ', @name) . '*';
-            }
-
-            if ($filter) {
-                $c->log->debug("Filter = [$filter]");
-
-                my $mesg = $c->model('Person')->search($filter);
-                if (my $entry = $mesg->shift_entry) {
-                    my $person = Phonebook::Person->new($entry);
-                    $destination = $c->uri_for('/people', $person, ($path eq 'show-full.cgi' ? 'full/' : ''));
-                }
-            }
-        }
-
-        return $c->res->redirect($destination, 301)
-            if $destination;
-    }
-
     $c->res->status(404);
     $c->stash->{template} = '404.tt';
 }
