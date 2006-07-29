@@ -19,6 +19,8 @@
     <dd>[% IF person.mail %]<a class="email" href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</dd>
     <dt>Web Site</dt>
     <dd>[% IF person.homePageURL %]<a class="url" href="[% person.homePageURL | html %]">[% person.homePageURL | html %]</a>[% ELSE %]&nbsp;[% END %]</dd>
+    <dt>Affiliation</dt>
+    <dd class="title">[% IF person.eduPersonPrimaryAffiliation %][% person.eduPersonPrimaryAffiliation | html %][% ELSE %](Unknown)[% END %]</dd>
   </dl>
 
   <h4>Phone Numbers</h4>
@@ -51,17 +53,20 @@
 [% END %]
   </dl>
 
+[% UNLESS person.eduPersonPrimaryAffiliation == 'student' %]
   <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
   <dl class="employment">
-    <dt>[% (person.eduPersonPrimaryAffiliation == 'student' ? 'Department' : 'Unit') | html %]</dt>
+  [% IF c.config.units.hide.grep("^${person.departmentNumber}$").size == 0 %]
+    <dt>Unit</dt>
     <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for('/units', person.departmentNumber) | html %]/">[% END %]
       [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]
       [% IF person.departmentNumber %]</a>[% END %]</dd>
-[% IF person.title %]
+  [% END %]
     <dt>Title</dt>
     <dd class="title">[% IF person.title %][% person.title | html %][% ELSE %]&nbsp;[% END %]</dd>
-[% END %]
   </dl>
+[% END -%]
+
 </div>
 
 [% INCLUDE people/includes/links.tt -%]
