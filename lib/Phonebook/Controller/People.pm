@@ -308,36 +308,24 @@ application, which displayed a single person.
 sub redirect_show_cgi : Path('/show.cgi') {
     my ($self, $c, $full) = @_;
 
-    my $destination = $c->uri_for('/');
+    my $query = $c->req->uri->query;
+    return $c->res->redirect($c->uri_for('/'), 301)
+        unless $query;
 
-    if (my $query = $c->req->uri->query) {
-        $destination = $c->uri_for('/people/search', { query => $query });
-
-        my $filter;
-        if (my $ufid = Phonebook::Util::decode_ufid($query)) {
-            $filter = "uflEduUniversityId=$ufid";
-        }
-        elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
-            $filter = "uid=$query";
-        }
-        elsif ($query =~ /\+/) {
-            my @name = split /\+/, $query;
-            my $last = pop @name;
-            $filter  = "cn=$last," . join(' ', @name) . '*';
-        }
-
-        if ($filter) {
-            $c->log->debug("Filter = [$filter]");
-
-            my $mesg = $c->model('Person')->search($filter);
-            if (my $entry = $mesg->shift_entry) {
-                my $person = Phonebook::Person->new($entry);
-                $destination = $c->uri_for('/people', $person, ($full ? 'full/' : ''));
-            }
-        }
+    my $filter = $self->get_show_cgi_filter($query);
+    unless ($filter) {
+        $c->log->debug("Could not determine filter for [$query]");
+        return $c->res->redirect($c->uri_for('/people/search', { query => $query }));
     }
 
-    $c->res->redirect($destination, 301);
+    $c->log->debug("Filter = [$filter]");
+
+    my $mesg = $c->model('Person')->search($filter);
+    my $entry = $mesg->shift_entry;
+    $c->detach('/default') unless $entry;
+
+    my $person = Phonebook::Person->new($entry);
+    return $c->res->redirect($c->uri_for('/people', $person, ($full ? 'full/' : '')));
 }
 
 =head2 redirect_show_full_cgi
@@ -351,6 +339,34 @@ sub redirect_show_full_cgi : Path('/show-full.cgi') {
     my ($self, $c) = @_;
 
     $c->forward('redirect_show_cgi', [ 1 ]);
+}
+
+=head2 get_show_cgi_filter
+
+Return a filter for the specified C</show.cgi>-style query from the
+old L<Phonebook> application. If no filter could be parsed, return
+C<undef>.
+
+=cut
+
+sub get_show_cgi_filter {
+    my ($self, $query) = @_;
+
+    my $filter;
+
+    if (my $ufid = Phonebook::Util::decode_ufid($query)) {
+        $filter = "uflEduUniversityId=$ufid";
+    }
+    elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
+        $filter = "uid=$query";
+    }
+    elsif ($query =~ /\+/) {
+        my @name = split /\+/, $query;
+        my $last = pop @name;
+        $filter  = "cn=$last," . join(' ', @name) . '*';
+    }
+
+    return $filter;
 }
 
 =head1 AUTHOR
