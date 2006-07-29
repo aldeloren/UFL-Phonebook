@@ -72,9 +72,13 @@ sub default : Private {
             }
         }
         elsif (($path eq 'show.cgi' or $path eq 'show-full.cgi') and my $query = $c->req->uri->query) {
-            my $filter = "uflEduUniversityId=" . Phonebook::Util::decode_ufid($query);
+            my $ufid = Phonebook::Util::decode_ufid($query);
+            my $filter;
 
-            if ($query =~ /^[a-z][-a-z0-9]*$/) {
+            if ($ufid) {
+                $filter = "uflEduUniversityId=$ufid";
+            }
+            elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
                 $filter = "uid=$query";
             }
             elsif ($query =~ /\+/) {
@@ -83,12 +87,14 @@ sub default : Private {
                 $filter  = "cn=$last," . join(' ', @name) . '*';
             }
 
-            $c->log->debug("Filter = [$filter]");
+            if ($filter) {
+                $c->log->debug("Filter = [$filter]");
 
-            my $mesg = $c->model('Person')->search($filter);
-            if (my $entry = $mesg->shift_entry) {
-                my $person = Phonebook::Person->new($entry);
-                $destination = $c->uri_for('/people', $person, ($path eq 'show-full.cgi' ? 'full/' : ''));
+                my $mesg = $c->model('Person')->search($filter);
+                if (my $entry = $mesg->shift_entry) {
+                    my $person = Phonebook::Person->new($entry);
+                    $destination = $c->uri_for('/people', $person, ($path eq 'show-full.cgi' ? 'full/' : ''));
+                }
             }
         }
 
