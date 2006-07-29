@@ -24,14 +24,14 @@ Catalyst controller component for finding people.
 
 =head2 index
 
-Display the people home page.
+Redirect to the L<Phonebook> home page.
 
 =cut
 
 sub index : Private {
     my ($self, $c) = @_;
 
-    $c->stash->{template} = 'people/index.tt';
+    $c->res->redirect($c->uri_for('/'));
 }
 
 =head2 search

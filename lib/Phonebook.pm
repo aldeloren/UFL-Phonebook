@@ -47,7 +47,7 @@ Display the home page.
 sub index : Private {
     my ($self, $c) = @_;
 
-    $c->forward('/people/index');
+    $c->stash->{template} = 'index.tt';
 }
 
 =head2 default

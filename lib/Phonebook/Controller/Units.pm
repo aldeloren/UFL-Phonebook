@@ -23,6 +23,18 @@ campus organizations).
 
 =head1 METHODS
 
+=head2 index
+
+Redirect to the L<Phonebook> home page.
+
+=cut
+
+sub index : Private {
+    my ($self, $c) = @_;
+
+    $c->res->redirect($c->uri_for('/'));
+}
+
 =head2 search
 
 Search the directory for units.

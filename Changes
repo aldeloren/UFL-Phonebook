@@ -7,6 +7,7 @@ This file documents the revision history for Phonebook.
         - 404 on /people/UFID/
         - Remove vCard view; instead use a new TT wrapper
         - Improve URL generation in Phonebook::Controller::Search
+        - Redirect from /people/ and /units/ to /
 
 0.17  Wed Apr  5 18:03:04 EDT 2006
         - Refactor organization name to configuration file
