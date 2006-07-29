@@ -97,9 +97,10 @@ sub single : Path('') {
     # Handle redirection when a search query returns only one person
     my $query = $c->req->cookies->{query};
     if ($query and $query->value) {
-        $c->stash->{single_result} = 1;
         $c->stash->{query} = $query->value;
         $c->res->cookies->{query} = { value => '' };
+
+        $c->stash->{single_result} = 1;
     }
 
     my $mesg = $c->model('Organization')->search("uflEduUniversityId=$ufid");
