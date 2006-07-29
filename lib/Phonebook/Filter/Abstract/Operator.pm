@@ -20,7 +20,7 @@ See L<Phonebook::Filter::Abstract>.
 
 An LDAP operator, which might look like the ampersand (C<&>) in:
 
-  (&(...)(...))
+    (&(...)(...))
 
 This class is not intended to be used directly. See
 L<Phonebook::Filter::Abstract>.
@@ -31,9 +31,9 @@ L<Phonebook::Filter::Abstract>.
 
 Create a new LDAP operator node.
 
-  my $andOperator = Phonebook::Filter::Abstract::Operator->new
-  my $orOperator  = Phonebook::Filter::Abstract::Operator->new('|');
-  my $notOperator = Phonebook::Filter::Abstract::Operator->new('!');
+    my $and_operator = Phonebook::Filter::Abstract::Operator->new
+    my $or_operator  = Phonebook::Filter::Abstract::Operator->new('|');
+    my $not_operator = Phonebook::Filter::Abstract::Operator->new('!');
 
 =cut
 

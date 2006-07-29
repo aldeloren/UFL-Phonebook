@@ -80,8 +80,8 @@ sub unit : Local {
 
 =head2 results
 
-Display the people from the LDAP response stored in the stash at key
-C<mesg>. If only one person is found, display him or her directly.
+Display the people from the specified L<Net::LDAP::Message>. If only
+one person is found, display him or her directly.
 
 =cut
 

@@ -15,7 +15,7 @@ See L<Phonebook::Filter::Abstract>.
 
 An LDAP predicate, which might look like:
 
-  (sn=Test)
+    (sn=Test)
 
 This class is not intended to be used directly. See
 L<Phonebook::Filter::Abstract>.
@@ -26,7 +26,7 @@ L<Phonebook::Filter::Abstract>.
 
 Create a new LDAP predicate node.
 
-  my $predicate = Phonebook::Filter::Abstract::Predicate->new(qw/sn = Test/);
+    my $predicate = Phonebook::Filter::Abstract::Predicate->new(qw/sn = Test/);
 
 =cut
 

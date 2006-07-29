@@ -14,10 +14,10 @@ Phonebook::Filter::Abstract - Generate LDAP filters using a simple API
 
 =head1 SYNOPSIS
 
-  my $filter = Phonebook::Filter::Abstract->new('&');
-  $filter->add(qw/objectClass = person/);
-  $filter->add(qw/uid = dwc/);
-  print $filter->as_string;
+    my $filter = Phonebook::Filter::Abstract->new('&');
+    $filter->add(qw/objectClass = person/);
+    $filter->add(qw/uid = dwc/);
+    print $filter->as_string;
 
 =head1 DESCRIPTION
 
@@ -35,7 +35,7 @@ provides tree manipulation routines written with LDAP filters in mind.
 Create a new LDAP filter. Optionally, provide an operator (see
 L<OPERATORS> below). If none is specified, the default (C<&>) is used.
 
-  my $filter = Phonebook::Filter::Abstract->new;
+    my $filter = Phonebook::Filter::Abstract->new;
 
 =cut
 
@@ -55,14 +55,14 @@ sub new {
 
 Add an operator or predicate to this LDAP filter.
 
-  # Create an operator
-  my $filter2 = Phonebook::Filter::Abstract->new('!');
+    # Create an operator
+    my $filter2 = Phonebook::Filter::Abstract->new('!');
 
-  # Add a predicate
-  $filter2->add(qw/uid = dwc/);
+    # Add a predicate
+    $filter2->add(qw/uid = dwc/);
 
-  # Add the full predicate to the tree
-  $filter->add($filter2);
+    # Add the full predicate to the tree
+    $filter->add($filter2);
 
 =cut
 
@@ -85,7 +85,7 @@ sub add {
 
 Generate the LDAP filter string from the current tree.
 
-  print $filter->as_string;
+    print $filter->as_string;
 
 =cut
 

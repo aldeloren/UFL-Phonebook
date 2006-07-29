@@ -11,12 +11,12 @@ Phonebook::Person - A person phonebook entry
 
 =head1 SYNOPSIS
 
-  # Search using Net::LDAP
-  my $mesg = $ldap->search($filter);
-  my @entries = map {
-      Phonebook::Person->new($_)
-  } $mesg->entries;
-  print $entries[0]->uid;
+    # Search using Net::LDAP
+    my $mesg = $ldap->search($filter);
+    my @entries = map {
+        Phonebook::Person->new($_)
+    } $mesg->entries;
+    print $entries[0]->uid;
 
 =head1 DESCRIPTION
 

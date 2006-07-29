@@ -10,12 +10,12 @@ Phonebook::Unit - A unit phonebook entry
 
 =head1 SYNOPSIS
 
-  # Search using Net::LDAP
-  my $mesg = $ldap->search($filter);
-  my @entries = map {
-      Phonebook::Unit->new($_)
-  } $mesg->entries;
-  print $entries[0]->o;
+    # Search using Net::LDAP
+    my $mesg = $ldap->search($filter);
+    my @entries = map {
+        Phonebook::Unit->new($_)
+    } $mesg->entries;
+    print $entries[0]->o;
 
 =head1 DESCRIPTION
 

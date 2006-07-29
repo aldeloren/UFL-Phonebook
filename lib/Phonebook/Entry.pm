@@ -19,12 +19,12 @@ Phonebook::Entry - A phonebook entry
 
 =head1 SYNOPSIS
 
-  # Search using Net::LDAP
-  my $mesg = $ldap->search($filter);
-  my @entries = map {
-      Phonebook::Entry->new($_)
-  } $mesg->entries;
-  print $entries[0]->eduPersonPrimaryAffiliation;
+    # Search using Net::LDAP
+    my $mesg = $ldap->search($filter);
+    my @entries = map {
+        Phonebook::Entry->new($_)
+    } $mesg->entries;
+    print $entries[0]->eduPersonPrimaryAffiliation;
 
 =head1 DESCRIPTION
 
@@ -101,7 +101,7 @@ sub set {
 Add one or more new attributes to the list and create an accessor for
 each.
 
-  $entry->attribute('o');
+    $entry->attribute('o');
 
 =cut
 
@@ -116,7 +116,7 @@ sub add_attribute {
 
 Return a list of attributes defined on this entry.
 
-  my @attributes = $entry->attributes
+    my @attributes = $entry->attributes
 
 =cut
 

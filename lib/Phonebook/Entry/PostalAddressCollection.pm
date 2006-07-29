@@ -27,10 +27,10 @@ Phonebook::Entry::PostalAddressCollection - A collection of postal addresses
 
 =head1 SYNOPSIS
 
-  my $addresses = Phonebook::Entry::PostalAddressCollection->(
-      'UF Business Mailing Address$PO BOX 112065$GAINESVILLE, FL, US$ 326112065'
-  );
-  print $addresses->campus;
+    my $addresses = Phonebook::Entry::PostalAddressCollection->(
+        'UF Business Mailing Address$PO BOX 112065$GAINESVILLE, FL, US$ 326112065'
+    );
+    print $addresses->campus;
 
 =head1 DESCRIPTION
 

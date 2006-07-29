@@ -60,8 +60,8 @@ sub search : Local {
 
 =head2 results
 
-Display the units from the LDAP response stored in the stash at key
-C<mesg>. If only one unit is found, display it directly.
+Display the units from the specified L<Net::LDAP::Message>. If only
+one unit is found, display it directly.
 
 =cut
 

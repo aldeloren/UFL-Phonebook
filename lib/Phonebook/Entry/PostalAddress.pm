@@ -14,9 +14,9 @@ Phonebook::Entry::PostalAddress - A postal address
 
 =head1 SYNOPSIS
 
-  my $address = Phonebook::Entry::PostalAddress->new(
-      'PO BOX 112065$GAINESVILLE, FL, US$ 326112065'
-  );
+    my $address = Phonebook::Entry::PostalAddress->new(
+        'PO BOX 112065$GAINESVILLE, FL, US$ 326112065'
+    );
 
 =head1 DESCRIPTION
 
