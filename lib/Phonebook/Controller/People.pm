@@ -235,7 +235,10 @@ sub _parse_query {
         my ($first, $middle, @last) = @tokens;
         my $last = join ' ', @last;
 
-        ($first, $last) = ($last, $first) if $query =~ /,/;
+        if ($query =~ /,/) {
+            ($first, $last)   = ($last, $first);
+            ($first, $middle) = ($middle, $first);
+        }
 
         for ($first, $middle) {
             s/\.$//;
