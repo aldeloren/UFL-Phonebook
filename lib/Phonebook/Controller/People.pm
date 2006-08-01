@@ -241,7 +241,7 @@ sub _parse_query {
             s/\.$//;
         }
 
-        $filter->add('cn',    '=', qq[$last*,$first* $middle]);
+        $filter->add('cn',    '=', qq[$last*,$first* $middle*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
         $filter->add('mail',  '=', qq[$first-$last@*]);
     }
