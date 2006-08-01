@@ -220,8 +220,8 @@ sub _parse_query {
     elsif (scalar @tokens == 2) {
         # Two tokens: first and last name
         my ($first, $last) = @tokens;
-        ($first, $last) = ($last, $first) if $query =~ /,/;
 
+        ($first, $last) = ($last, $first) if $query =~ /,/;
         $first =~ s/\.$//;
 
         $filter->add('cn',    '=', qq[$last*,$first*]);
@@ -235,11 +235,7 @@ sub _parse_query {
         my ($first, $middle, @last) = @tokens;
         my $last = join ' ', @last;
 
-        if ($query =~ /,/) {
-            ($first, $last)   = ($last, $first);
-            ($first, $middle) = ($middle, $first);
-        }
-
+        ($first, $middle, $last) = ($middle, $last, $first) if $query =~ /,/;
         for ($first, $middle) {
             s/\.$//;
         }
