@@ -1,9 +1,9 @@
 [% SET
-   query   = c.req.param('query') || people.first.o
-   title   = query
+   title   = c.req.param('query') || people.first.o
    heading = 'people/includes/search.tt'
 -%]
 
+[% SET query = c.req.param('query') %]
 <div id="results_info">
 [% IF sizelimit_exceeded %]
   <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned too many people. The first [% people.size == 1 ? 'result is' : people.size _ ' results are' %] displayed below.</p>
