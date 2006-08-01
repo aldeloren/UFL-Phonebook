@@ -13,6 +13,8 @@ This file documents the revision history for Phonebook.
         - Hide unit if person is in REGISTRAR STUDENTS
         - Change "people in unit" URLs to be /units/UFID/people/
           instead of /people/unit/UFID/
+        - Fix query tokenization to parse "last,first m" into (last
+          first m)
 
 0.17  Wed Apr  5 18:03:04 EDT 2006
         - Refactor organization name to configuration file

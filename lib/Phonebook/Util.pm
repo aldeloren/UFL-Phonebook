@@ -44,7 +44,6 @@ phonebook.
 
 =cut
 
-# TODO: Cleanup
 sub encode_ufid {
     my ($ufid) = @_;
 
@@ -62,7 +61,6 @@ Decode the UFID by doing the reverse of L</encode_ufid>.
 
 =cut
 
-# TODO: Cleanup
 sub decode_ufid {
     my ($encoded) = @_;
 
@@ -81,20 +79,13 @@ filters.
 
 =cut
 
-# TODO: Cleanup
 sub tokenize_query {
     my ($query) = @_;
 
     # Strip invalid characters
     $query =~ s/[^a-z0-9 .,\-_\'\@]//gi;
 
-    my @tokens;
-    if ($query =~ /,/) {
-        @tokens = split /,\s*/, lc($query);
-    }
-    else {
-        @tokens = split /\s+/, lc($query);
-    }
+    my @tokens = split /(?:,\s*|\s+)/, lc($query);
 
     return @tokens;
 }
