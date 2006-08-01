@@ -1,6 +1,6 @@
 This file documents the revision history for Phonebook.
 
-0.18
+0.18  Tue Aug  1 17:49:04 EDT 2006
         - Fix searches which include a middle name
         - Display title and unit for students
         - 404 on an invalid ACTION in /people/ENCODED_UFID/ACTION/
