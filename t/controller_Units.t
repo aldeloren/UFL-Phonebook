@@ -1,8 +1,31 @@
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 11;
 
-use_ok('Catalyst::Test', 'Phonebook');
-use_ok('Phonebook::Controller::Units');
+use Test::WWW::Mechanize::Catalyst 'Phonebook';
+my $mech = Test::WWW::Mechanize::Catalyst->new;
 
-ok(request('units')->is_success);
+use_ok('Phonebook::Controller::People');
+
+my $QUERY = 'oaa';
+my $O     = 'PV-OAA APPLICATION DEVELOP';
+my $UFID  = 'UETHHG63';
+
+$mech->get_ok('/units/', 'request for units page');
+
+
+$mech->get_ok("/units/search?query=$QUERY", 'request for search results');
+$mech->title_like(qr/$QUERY/i, 'response title looks like search results');
+$mech->content_like(qr/$O/i, 'response body looks like search results');
+
+
+$mech->get_ok("/units/$UFID/", 'request for single unit by UFID');
+$mech->title_like(qr/$O/i, 'response title looks like a single unit entry');
+$mech->content_like(qr/general information/i, 'response looks like a single unit entry');
+
+$mech->get("/units/$UFID/show/", 'request for single unit, invalid action');
+is($mech->status, 404, 'request for single unit, invalid action 404s');
+
+$mech->get("/units/$UFID/full/", 'request for full LDAP entry');
+$mech->title_like(qr/Full LDAP Entry for $O/i, 'response title looks like a full LDAP entry');
+$mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
