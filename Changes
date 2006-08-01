@@ -11,6 +11,8 @@ This file documents the revision history for Phonebook.
         - Refactor old application redirect handling into
           Phonebook::Controller::People
         - Hide unit if person is in REGISTRAR STUDENTS
+        - Change "people in unit" URLs to be /units/UFID/people/
+          instead of /people/unit/UFID/
 
 0.17  Wed Apr  5 18:03:04 EDT 2006
         - Refactor organization name to configuration file

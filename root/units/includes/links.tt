@@ -1,5 +1,5 @@
 <div id="adminlinks">
   <p>Link to <a href="[% c.uri_for('/units', unit) | html %]/">this entry</a>.</p>
-  <p>Search for <a href="[% c.uri_for('/people/unit', unit) | html %]/">members of this unit</a>.</p>
+  <p>Search for <a href="[% c.uri_for('/units', unit, 'people') | html %]/">members of this unit</a>.</p>
   <p>Display the full <a href="[% c.uri_for('/units', unit, 'full') | html %]/"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
 </div>

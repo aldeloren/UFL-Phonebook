@@ -140,6 +140,28 @@ sub full : Private {
     $c->stash->{template} = 'units/full.tt';
 }
 
+=head2 people
+
+Search for people whose primary organizational affiliation matches the
+specified UFID.
+
+=cut
+
+sub people : Private {
+    my ($self, $c) = @_;
+
+    my $unit = $c->stash->{unit};
+    $c->detach('/default') unless $unit;
+
+    my $filter = $c->controller('People')->_get_restriction;
+    $filter->add('departmentNumber', '=', $unit->uflEduUniversityId);
+
+    $c->log->debug("Filter: $filter");
+
+    my $mesg = $c->model('Person')->search($filter->as_string);
+    $c->forward('/people/results', [ $mesg ]);
+}
+
 =head2 _parse_query
 
 Parse a query into an LDAP filter.

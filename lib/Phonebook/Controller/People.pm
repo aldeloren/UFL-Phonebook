@@ -58,24 +58,14 @@ sub search : Local {
 
 =head2 unit
 
-Search for people whose primary organizational affiliation matches the
-specified UFID.
+Redirect to C</units/$UFID/people/>.
 
 =cut
 
 sub unit : Local {
     my ($self, $c, $ufid) = @_;
 
-    $c->detach('/default') unless $ufid;
-    $c->log->debug("UFID: $ufid");
-
-    my $filter = $self->_get_restriction;
-    $filter->add('departmentNumber', '=', $ufid);
-
-    $c->log->debug("Filter: $filter");
-
-    my $mesg = $c->model('Person')->search($filter->as_string);
-    $c->forward('results', [ $mesg ]);
+    $c->res->redirect($c->uri_for('/units', $ufid, 'people/'), 301);
 }
 
 =head2 results
