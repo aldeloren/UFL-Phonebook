@@ -24,20 +24,20 @@ $mech->content_like(qr/$CN/i, 'response body looks like search results');
 
 
 $mech->get_ok('/people/search?query=AT A. TESTER', 'request for "first name middle initial. last name" search results');
-$mech->title_like(qr/$CN/i, 'response title looks like search results');
-$mech->content_like(qr/$CN/i, 'response body looks like search results');
+$mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
+$mech->content_like(qr/$CN/i, 'response body looks like a single person entry');
 
 $mech->get_ok('/people/search?query=TESTER, AT A.', 'request for "last name, first name middle initial." search results');
-$mech->title_like(qr/$CN/i, 'response title looks like search results');
-$mech->content_like(qr/$CN/i, 'response body looks like search results');
+$mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
+$mech->content_like(qr/$CN/i, 'response body looks like a single person entry');
 
 $mech->get_ok('/people/search?query=AT A TESTER', 'request for "first name middle initial last name" search results');
-$mech->title_like(qr/$CN/i, 'response title looks like search results');
-$mech->content_like(qr/$CN/i, 'response body looks like search results');
+$mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
+$mech->content_like(qr/$CN/i, 'response body looks like a single person entry');
 
 $mech->get_ok('/people/search?query=TESTER, AT A', 'request for "last name, first name middle initial" search results');
-$mech->title_like(qr/$CN/i, 'response title looks like search results');
-$mech->content_like(qr/$CN/i, 'response body looks like search results');
+$mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
+$mech->content_like(qr/$CN/i, 'response body looks like a single person entry');
 
 $mech->get_ok('/people/search?query=AT TESTER', 'request for "first name last name" search results');
 $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
