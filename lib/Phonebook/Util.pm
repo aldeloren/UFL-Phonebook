@@ -4,7 +4,8 @@ use strict;
 use warnings;
 
 # Used to encode and decode UFIDs
-our $MASK = 56347812;
+our $MASK   = 56347812;
+our $FILTER = 'TSJWHEVN';
 
 =head1 NAME
 
@@ -49,8 +50,11 @@ sub encode_ufid {
 
     return unless $ufid =~ /^\d{8}$/;
 
-    my $encoded = sprintf "%9.9o", $ufid ^ $MASK;
-    $encoded =~ tr/0-9/TSJWHEVN/;
+    # Mask, then convert to octal and zero-pad
+    my $encoded = sprintf "%09o", $ufid ^ $MASK;
+
+    # Use an eval so $FILTER is defined at compile time
+    eval "\$encoded =~ tr/0-7/$FILTER/, 1" or die $@;
 
     return $encoded;
 }
@@ -66,8 +70,11 @@ sub decode_ufid {
 
     return unless $encoded =~ /^[A-Z]+$/;
 
-    $encoded =~ tr/TSJWHEVN/0-7/;
-    my $ufid = sprintf "%8.8d", oct($encoded) ^ $MASK;
+    # Use an eval so $FILTER is defined at compile time
+    eval "\$encoded =~ tr/$FILTER/0-7/, 1" or die $@;
+
+    # Unmask, then convert back to decimal and zero-pad
+    my $ufid = sprintf "%08d", oct($encoded) ^ $MASK;
 
     return $ufid;
 }

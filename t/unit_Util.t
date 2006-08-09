@@ -1,18 +1,20 @@
 use strict;
 use warnings;
-use Test::More tests => 17;
+use Test::More tests => 25;
 
 use_ok('Phonebook::Util');
 
 my $EMAIL = 'webmaster@ufl.edu';
-my $UFID = '12345678';
+my @UFIDS = qw/12345678 87654321 23456789 98765432 00000000 11111111 99999999 93205832 25597530/;
 
 my $result = Phonebook::Util::spam_armor($EMAIL);
 isnt($result, $EMAIL, 'protected email');
 
-my $encoded = Phonebook::Util::encode_ufid($UFID);
-my $decoded = Phonebook::Util::decode_ufid($encoded);
-is($decoded, $UFID, 'encode, decode UFID');
+foreach my $ufid (@UFIDS) {
+    my $encoded = Phonebook::Util::encode_ufid($ufid);
+    my $decoded = Phonebook::Util::decode_ufid($encoded);
+    is($decoded, $ufid, 'encode, decode UFID');
+}
 
 is_deeply([ Phonebook::Util::tokenize_query('one') ], [ qw/one/ ], 'one token');
 is_deeply([ Phonebook::Util::tokenize_query('One') ], [ qw/one/ ], 'one token, case normalization');

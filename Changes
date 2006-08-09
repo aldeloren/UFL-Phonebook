@@ -1,5 +1,8 @@
 This file documents the revision history for Phonebook.
 
+0.19
+        - Cleanup {encode,decode}_ufid
+
 0.18  Tue Aug  1 17:49:04 EDT 2006
         - Fix searches which include a middle name
         - Display title and unit for students
