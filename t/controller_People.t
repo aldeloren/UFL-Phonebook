@@ -12,7 +12,7 @@ my $CN           = 'TESTER,AT A';
 my $UID          = 'attest1';
 my $UFID         = '59831351';
 my $ENCODED_UFID = 'TVJVWHJJW';
-my $UNIT_UFID    = 'UETHHG63';
+my $UNIT_PSID    = '02010601';
 my $UNIT_O       = 'PV-OAA APPLICATION DEVELOP';
 
 $mech->get_ok('/people/', 'request for people page');
@@ -95,6 +95,6 @@ is($mech->ct, 'text/x-vcard', 'response Content-Type is a vCard');
 $mech->content_like(qr/NICKNAME:$UID/i, 'response looks like vCard data');
 
 
-$mech->get_ok("/people/unit/$UNIT_UFID/", 'request for people in unit');
+$mech->get_ok("/people/unit/$UNIT_PSID/", 'request for people in unit');
 $mech->title_like(qr/$UNIT_O/i, 'response title looks like results for people in unit');
 $mech->content_like(qr/$UNIT_O/i, 'response looks like results for people in unit');
