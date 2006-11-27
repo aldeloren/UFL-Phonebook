@@ -1,0 +1,13 @@
+[% DEFAULT
+   query = c.req.param('query')
+-%]
+
+<div id="results_info">
+[% IF sizelimit_exceeded %]
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned too many [% plural | html %]. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+[% ELSIF timelimit_exceeded %]
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+[% ELSE %]
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned the following [% results.size == 1 ? 'person' : results.size _ ' people' %]:</p>
+[% END %]
+</div>

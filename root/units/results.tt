@@ -3,15 +3,7 @@
    heading = 'people/includes/search.tt'
 -%]
 
-<div id="results_info">
-[% IF sizelimit_exceeded %]
-  <p>Your search for <strong>[% c.req.param('query') | html %]</strong> returned too many units. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
-[% ELSIF timelimit_exceeded %]
-  <p>Your search for <strong>[% c.req.param('query') | html %]</strong> was too generic. The first [% units.size == 1 ? 'result is' : units.size _ ' results are' %] displayed below.</p>
-[% ELSE %]
-  <p>Your search for <strong>[% c.req.param('query') | html %]</strong> returned the following [% units.size == 1 ? 'unit' : units.size _ ' units' %]:</p>
-[% END %]
-</div>
+[% INCLUDE includes/resultsInfo.tt results = units, singular = 'unit', plural = 'units' -%]
 
 <table>
   <thead>
