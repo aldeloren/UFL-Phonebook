@@ -6,6 +6,8 @@ This file documents the revision history for Phonebook.
           "the first 100 entries" when sizelimit is reached
         - Phonebook::Controller::People: Use get_url_args instead of
           hard coding use of uflEduUniversityId
+        - Use uflEduPsDeptId instead of uflEduUniversityId for units,
+          since that's now part of the DN
 
 0.18  Tue Aug  1 17:49:04 EDT 2006
         - Fix searches which include a middle name

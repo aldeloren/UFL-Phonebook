@@ -21,6 +21,20 @@ Phonebook::Unit - A unit phonebook entry
 
 A unit or organization in the directory.
 
+=head1 METHODS
+
+=head2 get_url_args
+
+Return the list of URL path arguments needed to identify this unit.
+
+=cut
+
+sub get_url_args {
+    my ($self) = @_;
+
+    return $self->uflEduPsDeptId;
+}
+
 =head1 AUTHOR
 
 University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>

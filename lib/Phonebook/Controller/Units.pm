@@ -115,7 +115,7 @@ sub single : Path('') {
         $c->stash->{single_result} = 1;
     }
 
-    my $mesg = $c->model('Organization')->search("uflEduUniversityId=$ufid");
+    my $mesg = $c->model('Organization')->search("uflEduPsDeptId=$ufid");
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
@@ -154,7 +154,7 @@ sub people : Private {
     $c->detach('/default') unless $unit;
 
     my $filter = $c->controller('People')->_get_restriction;
-    $filter->add('departmentNumber', '=', $unit->uflEduUniversityId);
+    $filter->add('departmentNumber', '=', $unit->uflEduPsDeptId);
 
     $c->log->debug("Filter: $filter");
 
