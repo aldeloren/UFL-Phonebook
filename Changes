@@ -2,6 +2,8 @@ This file documents the revision history for Phonebook.
 
 0.19
         - Cleanup {encode,decode}_ufid
+        - Display "One hundred results are displayed below" instead of
+          "the first 100 entries" when sizelimit is reached
 
 0.18  Tue Aug  1 17:49:04 EDT 2006
         - Fix searches which include a middle name
