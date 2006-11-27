@@ -88,8 +88,9 @@ sub results : Private {
         $mesg->entries;
 
     if (scalar @people == 1) {
-        $c->res->cookies->{query} = { value => $c->req->param('query') };
-        $c->res->redirect($c->uri_for('/people', $people[0]->get_url_args, ''));
+        my $person = shift @people;
+        $c->res->cookies->{query} = { value => $c->req->param('query') || $person->o };
+        $c->res->redirect($c->uri_for('/people', $person, ''));
     }
     elsif (scalar @people > 0) {
         $c->stash->{people}   = \@people;
