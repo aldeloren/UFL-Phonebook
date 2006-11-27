@@ -93,17 +93,17 @@ sub results : Private {
 
 =head2 single
 
-Display a single unit. By specifying an argument after the UFID and
-providing a corresponding local action, you can override the display
-behavior of the unit.
+Display a single unit. By specifying an argument after the PeopleSoft
+department ID and providing a corresponding local action, you can
+override the display behavior of the unit.
 
 =cut
 
 sub single : Path('') {
-    my ($self, $c, $ufid, $action) = @_;
+    my ($self, $c, $psid, $action) = @_;
 
-    $c->detach('/default') unless $ufid;
-    $c->log->debug("UFID: $ufid");
+    $c->detach('/default') unless $psid;
+    $c->log->debug("PeopleSoft department ID: $psid");
 
     # Handle redirection when a search query returns only one person
     my $query = $c->req->cookies->{query};
@@ -114,7 +114,7 @@ sub single : Path('') {
         $c->stash->{single_result} = 1;
     }
 
-    my $mesg = $c->model('Organization')->search("uflEduPsDeptId=$ufid");
+    my $mesg = $c->model('Organization')->search("uflEduPsDeptId=$psid");
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
@@ -142,7 +142,7 @@ sub full : Private {
 =head2 people
 
 Search for people whose primary organizational affiliation matches the
-specified UFID.
+specified PeopleSoft department ID.
 
 =cut
 
