@@ -88,10 +88,8 @@ sub results : Private {
         $mesg->entries;
 
     if (scalar @people == 1) {
-        my $ufid = Phonebook::Util::encode_ufid($people[0]->uflEduUniversityId);
-
         $c->res->cookies->{query} = { value => $c->req->param('query') };
-        $c->res->redirect($c->uri_for('/people', $ufid, ''));
+        $c->res->redirect($c->uri_for('/people', $people[0]->get_url_args, ''));
     }
     elsif (scalar @people > 0) {
         $c->stash->{people}   = \@people;
