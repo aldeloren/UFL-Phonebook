@@ -78,10 +78,9 @@ sub results : Private {
         $mesg->entries;
 
     if (scalar @units == 1) {
-        my $ufid = $units[0]->uflEduUniversityId;
-
-        $c->res->cookies->{query} = { value => $c->req->param('query') };
-        $c->res->redirect($c->uri_for('/units', $ufid, ''));
+        my $unit = shift @units;
+        $c->res->cookies->{query} = { value => $c->req->param('query') || $unit->o };
+        $c->res->redirect($c->uri_for('/units', $unit, ''));
     }
     elsif (scalar @units > 0) {
         $c->stash->{units}    = \@units;
