@@ -7,6 +7,7 @@ requires 'Catalyst'              => '5.60';
 requires 'Catalyst::Model::LDAP' => '0.08';
 requires 'Catalyst::View::TT';
 requires 'Class::Accessor';
+requires 'Lingua::EN::Numbers';
 requires 'Locale::Country';
 requires 'Net::LDAP::Constant';
 requires 'Scalar::Util';

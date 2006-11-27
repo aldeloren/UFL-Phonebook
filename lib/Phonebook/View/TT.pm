@@ -3,12 +3,14 @@ package Phonebook::View::TT;
 use strict;
 use warnings;
 use base 'Catalyst::View::TT';
+use Lingua::EN::Numbers ();
 use Locale::Country ();
 use Phonebook::Util;
 
 __PACKAGE__->config(
     FILTERS => {
         code2country => \&Locale::Country::code2country,
+        num2en       => \&Lingua::EN::Numbers::num2en,
         spam_armor   => \&Phonebook::Util::spam_armor,
         encode_ufid  => \&Phonebook::Util::encode_ufid,
         decode_ufid  => \&Phonebook::Util::decode_ufid,

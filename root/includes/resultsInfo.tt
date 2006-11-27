@@ -4,9 +4,9 @@
 
 <div id="results_info">
 [% IF sizelimit_exceeded %]
-  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned too many [% plural | html %]. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned too many [% plural | html %]. [% IF results.size == 1 %]The result is[% ELSE %][% results.size | num2en | ucfirst %] results are[% END %] displayed below.</p>
 [% ELSIF timelimit_exceeded %]
-  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] was too generic. The first [% results.size == 1 ? 'result is' : results.size _ ' results are' %] displayed below.</p>
+  <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] was too generic. [% IF results.size == 1 %]The result is[% ELSE %][% results.size | num2en | ucfirst %] results are[% END %] displayed below.</p>
 [% ELSE %]
   <p>Your search[% IF query %] for <strong>[% query | html %]</strong>[% END %] returned the following [% results.size == 1 ? singular : "${results.size} ${plural}" %]:</p>
 [% END %]
