@@ -10,6 +10,7 @@ This file documents the revision history for Phonebook.
           since that's now part of the DN
         - When searching for people in a unit, and only one person
           exists in the unit, redirect correctly to that person
+        - Add trailing slash via uri_for instead of in HTML
 
 0.18  Tue Aug  1 17:49:04 EDT 2006
         - Fix searches which include a middle name
