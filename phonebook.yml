@@ -10,7 +10,7 @@ units:
   default: Search UF Units
   hide:
     # REGISTRAR STUDENTS
-    - 8S46Z042
+    - ST010000
 
 default_source: phonebook
 sources:
