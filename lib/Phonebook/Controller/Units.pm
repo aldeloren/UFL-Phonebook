@@ -116,7 +116,18 @@ sub single : Path('') {
 
     my $mesg = $c->model('Organization')->search("uflEduPsDeptId=$psid");
     my $entry = $mesg->shift_entry;
-    $c->detach('/default') unless $entry;
+    unless ($entry) {
+        # Redirect from the UFID to the PeopleSoft department ID
+        $mesg = $c->model('Organization')->search("uflEduUniversityId=$psid");
+        $entry = $mesg->shift_entry;
+        $c->detach('/default') unless $entry;
+
+        my $unit = Phonebook::Unit->new($entry);
+
+        my @args = ($unit->uflEduPsDeptId);
+        push @args, $action if $action;
+        return $c->res->redirect($c->uri_for('/units', @args, ''), 301);
+    }
 
     $c->stash->{unit}     = Phonebook::Unit->new($entry);
     $c->stash->{template} = 'units/show.tt';
