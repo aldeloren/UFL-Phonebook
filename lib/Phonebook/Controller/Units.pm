@@ -123,6 +123,7 @@ sub single : Path('') {
         $c->detach('/default') unless $entry;
 
         my $unit = Phonebook::Unit->new($entry);
+        $c->log->debug('Redirecting unit to PeopleSoft department ID: ' . $unit->uflEduPsDeptId);
 
         my @args = ($unit->uflEduPsDeptId);
         push @args, $action if $action;
