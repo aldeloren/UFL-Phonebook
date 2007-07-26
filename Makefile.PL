@@ -4,6 +4,7 @@ name     'UFL-Phonebook';
 all_from 'lib/UFL/Phonebook.pm';
 
 requires 'Catalyst' => '5.7006';
+requires 'Catalyst::Action::RenderView';
 requires 'Catalyst::Model::LDAP' => '0.08';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::View::TT';
