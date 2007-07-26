@@ -3,12 +3,11 @@ package UFL::Phonebook;
 use strict;
 use warnings;
 use Scalar::Util;
-use YAML;
 
-use Catalyst qw(
+use Catalyst qw/
     ConfigLoader
     Static::Simple
-);
+/;
 
 our $VERSION = '0.20_01';
 
