@@ -19,7 +19,7 @@ UFL::Phonebook - University of Florida directory search
 
 =head1 SYNOPSIS
 
-    script/phonebook_server.pl
+    script/ufl_phonebook_server.pl
 
 =head1 DESCRIPTION
 
