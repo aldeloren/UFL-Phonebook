@@ -5,6 +5,8 @@ This file documents the revision history for UFL::Phonebook.
         - Switch to Catalyst::Plugin::ConfigLoader
         - Move actions from application to Controller::Root
         - Convert /end to Catalyst::Action::RenderView
+        - Move controller-specific configuration into the controller
+          namespaces
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid

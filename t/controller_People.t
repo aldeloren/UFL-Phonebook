@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 61;
+use Test::More tests => 66;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -75,6 +75,12 @@ $mech->content_like(qr/$CN/i, 'response body looks like a single person entry');
 $mech->get_ok('/people/search?query=TESTER,A', 'request for "last name,first initial" search results');
 $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/$CN/i, 'response body looks like a single person entry');
+
+$mech->get_ok('/people/search?query=smith', 'request for common name search results');
+$mech->title_like(qr/smith/i, 'request looks like search results');
+$mech->content_like(qr/smith/i, 'response body looks like search results');
+$mech->content_like(qr|, <a href="[^"]+/units/[A-Z0-9]{8}/|i, 'response body contains a link to a unit');
+$mech->content_unlike(qr/REGISTRAR STUDENTS/i, 'response body does not contain useless unit names');
 
 
 $mech->get("/people/$UFID/", 'request for single person by UFID');

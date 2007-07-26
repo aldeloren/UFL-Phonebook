@@ -21,7 +21,7 @@
       <td><a href="[% c.uri_for('/people', person, '') | html %]">[% person.displayName | html %]</a></td>
       <td>
         [% (person.eduPersonPrimaryAffiliation != 'student' AND person.title ? person.title : person.eduPersonPrimaryAffiliation) | html %]
-        [% IF person.departmentNumber AND person.o AND c.config.units.hide.grep("^${person.departmentNumber}$").size == 0 %], <a href="[% c.uri_for('/units', person.departmentNumber, '') | html %]">[% person.o | html %]</a>[% END %]
+        [% IF person.departmentNumber AND person.o AND c.controller('Units').hide.grep("^${person.departmentNumber}$").size == 0 %], <a href="[% c.uri_for('/units', person.departmentNumber, '') | html %]">[% person.o | html %]</a>[% END %]
       </td>
       <td>[% IF person.telephoneNumber %][% person.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>
       <td>[% IF person.mail %]<a href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a>[% ELSE %]&nbsp;[% END %]</td>

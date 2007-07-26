@@ -4,7 +4,7 @@
 
 <div id="priSearch">
   <form method="get" action="[% c.uri_for('/people/search') | html %]">
-    <input type="text" name="query" value="[% c.req.param('query') || c.config.people.default | html %]" id="phonebook" class="query" />
+    <input type="text" name="query" value="[% c.req.param('query') || c.controller('People').default_query | html %]" id="phonebook" class="query" />
     <input type="submit" value="Search" class="search" />
     <p>Enter a name, email address, or GatorLink ID to find people.</p>
   </form>

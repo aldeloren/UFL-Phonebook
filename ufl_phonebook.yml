@@ -3,15 +3,6 @@
 name:         Phonebook
 organization: University of Florida
 
-people:
-  default: Search UF People
-
-units:
-  default: Search UF Units
-  hide:
-    # REGISTRAR STUDENTS
-    - ST010000
-
 default_source: phonebook
 sources:
   web:
@@ -26,6 +17,15 @@ sources:
     name:  UF News
     url:   http://news.ufl.edu/index.php
     param: s
+
+Controller::People:
+  default_query: Search UF People
+
+Controller::Units:
+  default_query: Search UF Units
+  hide:
+    # REGISTRAR STUDENTS
+    - ST010000
 
 ldap:
   host: &host ldap.ufl.edu

@@ -20,7 +20,7 @@
 <script type="text/javascript" src="[% c.uri_for('/static/js/search.js') | html %]"></script>
 <script type="text/javascript">
   // Set default for subpages
-  Query.setDefaultValue('phonebook', '[% c.config.people.default | html %]');
+  Query.setDefaultValue('phonebook', '[% c.controller('People').default_query | html %]');
 </script>
 </head>
 <body>

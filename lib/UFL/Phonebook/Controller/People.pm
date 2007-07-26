@@ -2,11 +2,13 @@ package UFL::Phonebook::Controller::People;
 
 use strict;
 use warnings;
-use base 'Catalyst::Controller';
+use base qw/Catalyst::Controller/;
 use Net::LDAP::Constant;
 use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Person;
 use UFL::Phonebook::Util;
+
+__PACKAGE__->mk_accessors(qw/default_query/);
 
 =head1 NAME
 
@@ -45,7 +47,7 @@ sub search : Local {
 
     my $query = $c->req->param('query');
     $c->detach('index') if not $query
-        or $query eq $c->config->{people}->{default};
+        or $query eq $self->default_query;
 
     my $filter = $self->_parse_query($query);
 
