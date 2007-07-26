@@ -1,4 +1,4 @@
-package UFL::Phonebook::Model::Organization;
+package UFL::Phonebook::Model::Unit;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use base 'Catalyst::Model::LDAP';
 
 =head1 NAME
 
-UFL::Phonebook::Model::Organization - LDAP Catalyst model component
+UFL::Phonebook::Model::Unit - LDAP Catalyst model component
 
 =head1 SYNOPSIS
 

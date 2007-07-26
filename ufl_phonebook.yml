@@ -27,20 +27,16 @@ Controller::Units:
     # REGISTRAR STUDENTS
     - ST010000
 
-ldap:
-  host: &host ldap.ufl.edu
+Model::Person:
+  host:    &host ldap.ufl.edu
+  base:    ou=People,dc=ufl,dc=edu
   options: &options
     sizelimit: 100
     timelimit: 10
 
-Model::Organization:
+Model::Unit:
   host:    *host
   base:    ou=Organizations,dc=ufl,dc=edu
-  options: *options
-
-Model::Person:
-  host:    *host
-  base:    ou=People,dc=ufl,dc=edu
   options: *options
 
 View::TT:

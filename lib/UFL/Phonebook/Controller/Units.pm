@@ -56,7 +56,7 @@ sub search : Local {
     $c->log->debug("Query: $query");
     $c->log->debug("Filter: $string");
 
-    my $mesg = $c->model('Organization')->search($string);
+    my $mesg = $c->model('Unit')->search($string);
     $c->forward('results', [ $mesg ]);
 }
 
@@ -116,11 +116,11 @@ sub single : Path('') {
         $c->stash->{single_result} = 1;
     }
 
-    my $mesg = $c->model('Organization')->search("uflEduPsDeptId=$psid");
+    my $mesg = $c->model('Unit')->search("uflEduPsDeptId=$psid");
     my $entry = $mesg->shift_entry;
     unless ($entry) {
         # Redirect from the UFID to the PeopleSoft department ID
-        $mesg = $c->model('Organization')->search("uflEduUniversityId=$psid");
+        $mesg = $c->model('Unit')->search("uflEduUniversityId=$psid");
         $entry = $mesg->shift_entry;
         $c->detach('/default') unless $entry;
 
