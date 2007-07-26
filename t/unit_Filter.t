@@ -2,16 +2,16 @@ use strict;
 use warnings;
 use Test::More tests => 11;
 
-use_ok('Phonebook::Filter::Abstract');
+use_ok('UFL::Phonebook::Filter::Abstract');
 
-my $filter = Phonebook::Filter::Abstract->new;
+my $filter = UFL::Phonebook::Filter::Abstract->new;
 $filter->add(qw/objectClass = person/);
 
 my $simple = '(objectClass=person)';
 is($filter->as_string, $simple, 'simple filter');
 is($filter, $simple, 'simple filter with auto-stringify');
 
-my $filter2 = Phonebook::Filter::Abstract->new('!')->add(qw/telephoneNumber = */);
+my $filter2 = UFL::Phonebook::Filter::Abstract->new('!')->add(qw/telephoneNumber = */);
 
 my $logical_not = '(!(telephoneNumber=*))';
 is($filter2->as_string, $logical_not, 'logical NOT filter');
@@ -23,7 +23,7 @@ my $logical_and = '(&(objectClass=person)(!(telephoneNumber=*)))';
 is($filter->as_string, $logical_and, 'logical AND of two filters');
 is($filter, $logical_and, 'logical AND of two filters with auto-stringify');
 
-my $filter3 = Phonebook::Filter::Abstract->new('|');
+my $filter3 = UFL::Phonebook::Filter::Abstract->new('|');
 $filter3->add(qw/cn = *a*b*/);
 $filter3->add(qw/cn = *b*a*/);
 

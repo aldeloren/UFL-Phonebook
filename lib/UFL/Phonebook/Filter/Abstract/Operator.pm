@@ -1,4 +1,4 @@
-package Phonebook::Filter::Abstract::Operator;
+package UFL::Phonebook::Filter::Abstract::Operator;
 
 use strict;
 use base 'Tree::Simple';
@@ -10,11 +10,11 @@ our @UNARY_OPERATORS = qw(
 
 =head1 NAME
 
-Phonebook::Filter::Abstract::Operator - An LDAP operator
+UFL::Phonebook::Filter::Abstract::Operator - An LDAP operator
 
 =head1 SYNOPSIS
 
-See L<Phonebook::Filter::Abstract>.
+See L<UFL::Phonebook::Filter::Abstract>.
 
 =head1 DESCRIPTION
 
@@ -23,7 +23,7 @@ An LDAP operator, which might look like the ampersand (C<&>) in:
     (&(...)(...))
 
 This class is not intended to be used directly. See
-L<Phonebook::Filter::Abstract>.
+L<UFL::Phonebook::Filter::Abstract>.
 
 =head1 METHODS
 
@@ -31,9 +31,9 @@ L<Phonebook::Filter::Abstract>.
 
 Create a new LDAP operator node.
 
-    my $and_operator = Phonebook::Filter::Abstract::Operator->new
-    my $or_operator  = Phonebook::Filter::Abstract::Operator->new('|');
-    my $not_operator = Phonebook::Filter::Abstract::Operator->new('!');
+    my $and_operator = UFL::Phonebook::Filter::Abstract::Operator->new
+    my $or_operator  = UFL::Phonebook::Filter::Abstract::Operator->new('|');
+    my $not_operator = UFL::Phonebook::Filter::Abstract::Operator->new('!');
 
 =cut
 
@@ -90,7 +90,7 @@ sub as_string {
 
 =head1 SEE ALSO
 
-L<Phonebook::Filter::Abstract>
+L<UFL::Phonebook::Filter::Abstract>
 
 =head1 AUTHOR
 

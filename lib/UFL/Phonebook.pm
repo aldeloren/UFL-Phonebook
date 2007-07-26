@@ -1,4 +1,4 @@
-package Phonebook;
+package UFL::Phonebook;
 
 use strict;
 use warnings;
@@ -9,17 +9,17 @@ use Catalyst qw(
     Static::Simple
 );
 
-our $VERSION = '0.19';
+our $VERSION = '0.20_01';
 
 __PACKAGE__->config(
-    YAML::LoadFile(__PACKAGE__->path_to('phonebook.yml')),
+    YAML::LoadFile(__PACKAGE__->path_to('ufl_phonebook.yml')),
 );
 
 __PACKAGE__->setup;
 
 =head1 NAME
 
-Phonebook - University of Florida directory search
+UFL::Phonebook - University of Florida directory search
 
 =head1 SYNOPSIS
 

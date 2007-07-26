@@ -1,19 +1,19 @@
-package Phonebook::Unit;
+package UFL::Phonebook::Unit;
 
 use strict;
 use warnings;
-use base 'Phonebook::Entry';
+use base 'UFL::Phonebook::Entry';
 
 =head1 NAME
 
-Phonebook::Unit - A unit phonebook entry
+UFL::Phonebook::Unit - A unit phonebook entry
 
 =head1 SYNOPSIS
 
     # Search using Net::LDAP
     my $mesg = $ldap->search($filter);
     my @entries = map {
-        Phonebook::Unit->new($_)
+        UFL::Phonebook::Unit->new($_)
     } $mesg->entries;
     print $entries[0]->o;
 

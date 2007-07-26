@@ -1,9 +1,9 @@
 use strict;
 use warnings;
 use Test::More tests => 12;
-use Phonebook;
+use UFL::Phonebook;
 
-use_ok('Phonebook::Entry');
+use_ok('UFL::Phonebook::Entry');
 
 my $UID                = 'gkt';
 my $TITLE              = 'CREC - LAKE ALFRED';
@@ -15,11 +15,11 @@ my $POSTAL_CODE        = '338502243';
 my $PARSED_POSTAL_CODE = '33850-2243';
 my $ADDRESS            = join '$', $TITLE, $STREET, "$LOCALITY, $REGION, $DOMINION", " $POSTAL_CODE";
 
-my $mesg    = Phonebook->model('Person')->search("(uid=$UID)");
+my $mesg    = UFL::Phonebook->model('Person')->search("(uid=$UID)");
 my @entries = $mesg->entries;
 cmp_ok(scalar @entries, '>', 0, 'got results');
 
-my $entry = Phonebook::Entry->new($entries[0]);
+my $entry = UFL::Phonebook::Entry->new($entries[0]);
 
 cmp_ok(scalar @{ $entry->attributes }, '>', 0, 'has attributes');
 is($entry->uid, $UID, 'uid');

@@ -1,20 +1,20 @@
-package Phonebook::Controller::Units;
+package UFL::Phonebook::Controller::Units;
 
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
-use Phonebook::Filter::Abstract;
-use Phonebook::Unit;
-use Phonebook::Util;
+use UFL::Phonebook::Filter::Abstract;
+use UFL::Phonebook::Unit;
+use UFL::Phonebook::Util;
 
 =head1 NAME
 
-Phonebook::Controller::Units - Units controller component
+UFL::Phonebook::Controller::Units - Units controller component
 
 =head1 SYNOPSIS
 
-See L<Phonebook>.
+See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 
@@ -25,7 +25,7 @@ campus organizations).
 
 =head2 index
 
-Redirect to the L<Phonebook> home page.
+Redirect to the L<UFL::Phonebook> home page.
 
 =cut
 
@@ -74,7 +74,7 @@ sub results : Private {
     my $sort  = $c->req->param('sort') || 'o';
     my @units =
         sort { $a->$sort cmp $b->$sort }
-        map  { Phonebook::Unit->new($_) }
+        map  { UFL::Phonebook::Unit->new($_) }
         $mesg->entries;
 
     if (scalar @units == 1) {
@@ -122,7 +122,7 @@ sub single : Path('') {
         $entry = $mesg->shift_entry;
         $c->detach('/default') unless $entry;
 
-        my $unit = Phonebook::Unit->new($entry);
+        my $unit = UFL::Phonebook::Unit->new($entry);
         $c->log->debug('Redirecting unit to PeopleSoft department ID: ' . $unit->uflEduPsDeptId);
 
         my @args = ($unit->uflEduPsDeptId);
@@ -130,7 +130,7 @@ sub single : Path('') {
         return $c->res->redirect($c->uri_for('/units', @args, ''), 301);
     }
 
-    $c->stash->{unit}     = Phonebook::Unit->new($entry);
+    $c->stash->{unit}     = UFL::Phonebook::Unit->new($entry);
     $c->stash->{template} = 'units/show.tt';
 
     if ($action) {
@@ -182,9 +182,9 @@ Parse a query into an LDAP filter.
 sub _parse_query {
     my ($self, $query) = @_;
 
-    my @tokens = Phonebook::Util::tokenize_query($query);
+    my @tokens = UFL::Phonebook::Util::tokenize_query($query);
 
-    my $filter = Phonebook::Filter::Abstract->new('|');
+    my $filter = UFL::Phonebook::Filter::Abstract->new('|');
     if ($query =~ /([^@]+)\@/) {
         # Email address
         my $mail = $tokens[0];
@@ -198,7 +198,7 @@ sub _parse_query {
 #        my $exchange = $2;
 #        my $last_four = $3;
 #
-#        my $phone_number = Phonebook::Util::getPhoneNumber($area_code, $exchange, $last_four);
+#        my $phone_number = UFL::Phonebook::Util::getPhoneNumber($area_code, $exchange, $last_four);
 #
 #        $filter->add('telephoneNumber',          '=', qq[$phone_number*]);
 #        $filter->add('facsimileTelephoneNumber', '=', qq[$phone_number*]);

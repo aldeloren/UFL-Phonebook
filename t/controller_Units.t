@@ -2,10 +2,10 @@ use strict;
 use warnings;
 use Test::More tests => 25;
 
-use Test::WWW::Mechanize::Catalyst 'Phonebook';
+use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
-use_ok('Phonebook::Controller::People');
+use_ok('UFL::Phonebook::Controller::People');
 
 my $QUERY = 'oaa';
 my $O     = 'PV-OAA APPLICATION DEVELOP';

@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!/usr/bin/perl -w
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use Getopt::Long;
 use Pod::Usage;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Catalyst::Test 'Phonebook';
+use Catalyst::Test 'UFL::Phonebook';
 
 my $help = 0;
 
@@ -20,18 +20,18 @@ print request($ARGV[0])->content . "\n";
 
 =head1 NAME
 
-phonebook_test.pl - Catalyst Test
+ufl_phonebook_test.pl - Catalyst Test
 
 =head1 SYNOPSIS
 
-phonebook_test.pl [options] uri
+ufl_phonebook_test.pl [options] uri
 
  Options:
    -help    display this help and exits
 
  Examples:
-   phonebook_test.pl http://localhost/some_action
-   phonebook_test.pl /some_action
+   ufl_phonebook_test.pl http://localhost/some_action
+   ufl_phonebook_test.pl /some_action
 
  See also:
    perldoc Catalyst::Manual
@@ -44,10 +44,9 @@ Run a Catalyst action from the command line.
 =head1 AUTHOR
 
 Sebastian Riedel, C<sri@oook.de>
+Maintained by the Catalyst Core Team.
 
 =head1 COPYRIGHT
-
-Copyright 2004 Sebastian Riedel. All rights reserved.
 
 This library is free software, you can redistribute it and/or modify
 it under the same terms as Perl itself.

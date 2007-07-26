@@ -1,15 +1,15 @@
-package Phonebook::Filter::Abstract::Predicate;
+package UFL::Phonebook::Filter::Abstract::Predicate;
 
 use strict;
 use base 'Tree::Simple';
 
 =head1 NAME
 
-Phonebook::Filter::Abstract::Predicate - An LDAP predicate
+UFL::Phonebook::Filter::Abstract::Predicate - An LDAP predicate
 
 =head1 SYNOPSIS
 
-See L<Phonebook::Filter::Abstract>.
+See L<UFL::Phonebook::Filter::Abstract>.
 
 =head1 DESCRIPTION
 
@@ -18,7 +18,7 @@ An LDAP predicate, which might look like:
     (sn=Test)
 
 This class is not intended to be used directly. See
-L<Phonebook::Filter::Abstract>.
+L<UFL::Phonebook::Filter::Abstract>.
 
 =head1 METHODS
 
@@ -26,7 +26,7 @@ L<Phonebook::Filter::Abstract>.
 
 Create a new LDAP predicate node.
 
-    my $predicate = Phonebook::Filter::Abstract::Predicate->new(qw/sn = Test/);
+    my $predicate = UFL::Phonebook::Filter::Abstract::Predicate->new(qw/sn = Test/);
 
 =cut
 
@@ -59,7 +59,7 @@ sub as_string {
 
 =head1 SEE ALSO
 
-L<Phonebook::Filter::Abstract>
+L<UFL::Phonebook::Filter::Abstract>
 
 =head1 AUTHOR
 

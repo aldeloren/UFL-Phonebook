@@ -1,4 +1,4 @@
-package Phonebook::Controller::Search;
+package UFL::Phonebook::Controller::Search;
 
 use strict;
 use warnings;
@@ -6,11 +6,11 @@ use base 'Catalyst::Controller';
 
 =head1 NAME
 
-Phonebook::Controller::Search - Search controller component
+UFL::Phonebook::Controller::Search - Search controller component
 
 =head1 SYNOPSIS
 
-See L<Phonebook>.
+See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 
@@ -27,7 +27,7 @@ Search the specified source.
 sub search : Path('') {
     my ($self, $c) = @_;
 
-    # Check for 'person' for old Phonebook search
+    # Check for 'person' for old UFL::Phonebook search
     my $query  = $c->req->param('query')  || $c->req->param('person');
     my $source = $c->req->param('source') || '';
 

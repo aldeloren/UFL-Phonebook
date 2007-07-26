@@ -2,10 +2,10 @@ use strict;
 use warnings;
 use Test::More tests => 12;
 
-use Test::WWW::Mechanize::Catalyst 'Phonebook';
+use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
-use_ok('Phonebook::Controller::Search');
+use_ok('UFL::Phonebook::Controller::Search');
 
 my $QUERY   = 'test';
 my %SOURCES = (

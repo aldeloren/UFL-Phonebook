@@ -1,4 +1,7 @@
-This file documents the revision history for Phonebook.
+This file documents the revision history for UFL::Phonebook.
+
+0.20
+        - Rename from Phonebook to UFL::Phonebook
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid

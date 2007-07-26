@@ -1,4 +1,4 @@
-package Phonebook::Entry;
+package UFL::Phonebook::Entry;
 
 use strict;
 use warnings;
@@ -6,23 +6,23 @@ use base 'Class::Accessor';
 use UNIVERSAL::require;
 
 our $RELATIONSHIPS = {
-    postalAddress            => 'Phonebook::Entry::PostalAddress',
-    registeredAddress        => 'Phonebook::Entry::PostalAddress',
-    street                   => 'Phonebook::Entry::PostalAddress',
-    uflEduAllPostalAddresses => 'Phonebook::Entry::PostalAddressCollection',
-    uflEduOfficeLocation     => 'Phonebook::Entry::PostalAddress',
+    postalAddress            => 'UFL::Phonebook::Entry::PostalAddress',
+    registeredAddress        => 'UFL::Phonebook::Entry::PostalAddress',
+    street                   => 'UFL::Phonebook::Entry::PostalAddress',
+    uflEduAllPostalAddresses => 'UFL::Phonebook::Entry::PostalAddressCollection',
+    uflEduOfficeLocation     => 'UFL::Phonebook::Entry::PostalAddress',
 };
 
 =head1 NAME
 
-Phonebook::Entry - A phonebook entry
+UFL::Phonebook::Entry - A phonebook entry
 
 =head1 SYNOPSIS
 
     # Search using Net::LDAP
     my $mesg = $ldap->search($filter);
     my @entries = map {
-        Phonebook::Entry->new($_)
+        UFL::Phonebook::Entry->new($_)
     } $mesg->entries;
     print $entries[0]->eduPersonPrimaryAffiliation;
 

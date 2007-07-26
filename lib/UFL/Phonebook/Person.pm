@@ -1,20 +1,20 @@
-package Phonebook::Person;
+package UFL::Phonebook::Person;
 
 use strict;
 use warnings;
-use base 'Phonebook::Entry';
-use Phonebook::Util;
+use base 'UFL::Phonebook::Entry';
+use UFL::Phonebook::Util;
 
 =head1 NAME
 
-Phonebook::Person - A person phonebook entry
+UFL::Phonebook::Person - A person phonebook entry
 
 =head1 SYNOPSIS
 
     # Search using Net::LDAP
     my $mesg = $ldap->search($filter);
     my @entries = map {
-        Phonebook::Person->new($_)
+        UFL::Phonebook::Person->new($_)
     } $mesg->entries;
     print $entries[0]->uid;
 
@@ -33,7 +33,7 @@ Return the list of URL path arguments needed to identify this person.
 sub get_url_args {
     my ($self) = @_;
 
-    return Phonebook::Util::encode_ufid($self->uflEduUniversityId);
+    return UFL::Phonebook::Util::encode_ufid($self->uflEduUniversityId);
 }
 
 =head1 AUTHOR

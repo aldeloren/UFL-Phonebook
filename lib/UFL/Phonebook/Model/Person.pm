@@ -1,4 +1,4 @@
-package Phonebook::Model::Organization;
+package UFL::Phonebook::Model::Person;
 
 use strict;
 use warnings;
@@ -6,15 +6,15 @@ use base 'Catalyst::Model::LDAP';
 
 =head1 NAME
 
-Phonebook::Model::Organization - LDAP Catalyst model component
+UFL::Phonebook::Model::Person - LDAP Catalyst model component
 
 =head1 SYNOPSIS
 
-See L<Phonebook>.
+See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 
-Catalyst model component for the University of Florida Phonebook.
+Catalyst model component for the University of Florida UFL::Phonebook.
 
 =head1 AUTHOR
 

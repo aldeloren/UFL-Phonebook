@@ -1,9 +1,9 @@
 use inc::Module::Install;
 
-name     'Phonebook';
-all_from 'lib/Phonebook.pm';
+name     'UFL-Phonebook';
+all_from 'lib/UFL/Phonebook.pm';
 
-requires 'Catalyst'              => '5.60';
+requires 'Catalyst'              => '5.70';
 requires 'Catalyst::Model::LDAP' => '0.08';
 requires 'Catalyst::View::TT';
 requires 'Class::Accessor';

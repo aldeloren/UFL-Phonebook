@@ -1,4 +1,4 @@
-package Phonebook::Util;
+package UFL::Phonebook::Util;
 
 use strict;
 use warnings;
@@ -9,11 +9,11 @@ our $FILTER = 'TSJWHEVN';
 
 =head1 NAME
 
-Phonebook::Util - Utility functions
+UFL::Phonebook::Util - Utility functions
 
 =head1 SYNOPSIS
 
-See L<Phonebook>.
+See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 

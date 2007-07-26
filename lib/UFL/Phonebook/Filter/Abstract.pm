@@ -1,8 +1,8 @@
-package Phonebook::Filter::Abstract;
+package UFL::Phonebook::Filter::Abstract;
 
 use strict;
-use Phonebook::Filter::Abstract::Operator;
-use Phonebook::Filter::Abstract::Predicate;
+use UFL::Phonebook::Filter::Abstract::Operator;
+use UFL::Phonebook::Filter::Abstract::Predicate;
 use Scalar::Util;
 use Tree::Simple;
 use overload
@@ -10,11 +10,11 @@ use overload
 
 =head1 NAME
 
-Phonebook::Filter::Abstract - Generate LDAP filters using a simple API
+UFL::Phonebook::Filter::Abstract - Generate LDAP filters using a simple API
 
 =head1 SYNOPSIS
 
-    my $filter = Phonebook::Filter::Abstract->new('&');
+    my $filter = UFL::Phonebook::Filter::Abstract->new('&');
     $filter->add(qw/objectClass = person/);
     $filter->add(qw/uid = dwc/);
     print $filter->as_string;
@@ -35,14 +35,14 @@ provides tree manipulation routines written with LDAP filters in mind.
 Create a new LDAP filter. Optionally, provide an operator (see
 L<OPERATORS> below). If none is specified, the default (C<&>) is used.
 
-    my $filter = Phonebook::Filter::Abstract->new;
+    my $filter = UFL::Phonebook::Filter::Abstract->new;
 
 =cut
 
 sub new {
     my $class = shift;
 
-    my $root = Phonebook::Filter::Abstract::Operator->new($_[0]);
+    my $root = UFL::Phonebook::Filter::Abstract::Operator->new($_[0]);
     my $self = {
         root => $root,
     };
@@ -56,7 +56,7 @@ sub new {
 Add an operator or predicate to this LDAP filter.
 
     # Create an operator
-    my $filter2 = Phonebook::Filter::Abstract->new('!');
+    my $filter2 = UFL::Phonebook::Filter::Abstract->new('!');
 
     # Add a predicate
     $filter2->add(qw/uid = dwc/);
@@ -114,7 +114,7 @@ sub _node {
     }
     elsif (scalar @_ == 3) {
         # Predicate
-        $node = Phonebook::Filter::Abstract::Predicate->new(@_);
+        $node = UFL::Phonebook::Filter::Abstract::Predicate->new(@_);
     }
     else {
         warn "Unknown node type";

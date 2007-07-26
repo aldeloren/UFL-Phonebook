@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Test::More tests => 26;
 
-use Test::WWW::Mechanize::Catalyst "Phonebook";
+use Test::WWW::Mechanize::Catalyst "UFL::Phonebook";
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
 my $QUERY = 'tester';

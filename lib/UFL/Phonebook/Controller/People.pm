@@ -1,20 +1,20 @@
-package Phonebook::Controller::People;
+package UFL::Phonebook::Controller::People;
 
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Net::LDAP::Constant;
-use Phonebook::Filter::Abstract;
-use Phonebook::Person;
-use Phonebook::Util;
+use UFL::Phonebook::Filter::Abstract;
+use UFL::Phonebook::Person;
+use UFL::Phonebook::Util;
 
 =head1 NAME
 
-Phonebook::Controller::People - People controller component
+UFL::Phonebook::Controller::People - People controller component
 
 =head1 SYNOPSIS
 
-See L<Phonebook>.
+See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 
@@ -24,7 +24,7 @@ Catalyst controller component for finding people.
 
 =head2 index
 
-Redirect to the L<Phonebook> home page.
+Redirect to the L<UFL::Phonebook> home page.
 
 =cut
 
@@ -84,7 +84,7 @@ sub results : Private {
     my $sort = $c->req->param('sort') || 'cn';
     my @people =
         sort { $a->$sort cmp $b->$sort }
-        map  { Phonebook::Person->new($_) }
+        map  { UFL::Phonebook::Person->new($_) }
         $mesg->entries;
 
     if (scalar @people == 1) {
@@ -112,7 +112,7 @@ behavior of the person.
 sub single : Path('') {
     my ($self, $c, $ufid, $action) = @_;
 
-    $ufid = Phonebook::Util::decode_ufid($ufid);
+    $ufid = UFL::Phonebook::Util::decode_ufid($ufid);
     $c->detach('/default') unless $ufid;
     $c->log->debug("UFID: $ufid");
 
@@ -129,7 +129,7 @@ sub single : Path('') {
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
-    $c->stash->{person}   = Phonebook::Person->new($entry);
+    $c->stash->{person}   = UFL::Phonebook::Person->new($entry);
     $c->stash->{template} = 'people/show.tt';
 
     if ($action) {
@@ -181,9 +181,9 @@ Parse a query into an LDAP filter.
 sub _parse_query {
     my ($self, $query) = @_;
 
-    my @tokens = Phonebook::Util::tokenize_query($query);
+    my @tokens = UFL::Phonebook::Util::tokenize_query($query);
 
-    my $filter = Phonebook::Filter::Abstract->new('|');
+    my $filter = UFL::Phonebook::Filter::Abstract->new('|');
     if ($query =~ /([^@]+)\@/) {
         # Email address
         my $uid  = $1;
@@ -200,7 +200,7 @@ sub _parse_query {
 #        my $exchange = $2;
 #        my $last_four = $3;
 #
-#        my $phone_number = Phonebook::Util::getPhoneNumber($area_code, $exchange, $last_four);
+#        my $phone_number = UFL::Phonebook::Util::getPhoneNumber($area_code, $exchange, $last_four);
 #
 #        $filter->add('homePhone',       '=', qq[$phone_number*]);
 #        $filter->add('telephoneNumber', '=', qq[$phone_number*]);
@@ -244,7 +244,7 @@ sub _parse_query {
         $filter->add('mail',  '=', qq[$first-$last@*]);
     }
 
-    return Phonebook::Filter::Abstract->new('&')
+    return UFL::Phonebook::Filter::Abstract->new('&')
         ->add($filter)
         ->add($self->_get_restriction);
 }
@@ -259,16 +259,16 @@ members of the community.
 sub _get_restriction {
     my ($self) = @_;
 
-    my $filter = Phonebook::Filter::Abstract->new('&');
-    $filter->add(Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/));
-    $filter->add(Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/));
+    my $filter = UFL::Phonebook::Filter::Abstract->new('&');
+    $filter->add(UFL::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/));
+    $filter->add(UFL::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/));
 
     return $filter;
 }
 
 =head2 redirect_display_form_cgi
 
-Handle requests for C</display_form.cgi> from the old L<Phonebook>
+Handle requests for C</display_form.cgi> from the old L<UFL::Phonebook>
 application, which displayed the search form B<and> handled search
 queries.
 
@@ -288,7 +288,7 @@ sub redirect_display_form_cgi : Path('/display_form.cgi') {
 
 =head2 redirect_show_cgi
 
-Handle requests for C</show.cgi> from the old L<Phonebook>
+Handle requests for C</show.cgi> from the old L<UFL::Phonebook>
 application, which displayed a single person.
 
 =cut
@@ -312,13 +312,13 @@ sub redirect_show_cgi : Path('/show.cgi') {
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
-    my $person = Phonebook::Person->new($entry);
+    my $person = UFL::Phonebook::Person->new($entry);
     return $c->res->redirect($c->uri_for('/people', $person, ($full ? 'full/' : '')), 301);
 }
 
 =head2 redirect_show_full_cgi
 
-Handle requests for C</show-full.cgi> from the old L<Phonebook>
+Handle requests for C</show-full.cgi> from the old L<UFL::Phonebook>
 application, which displayed the full LDAP entry for a single person.
 
 =cut
@@ -332,7 +332,7 @@ sub redirect_show_full_cgi : Path('/show-full.cgi') {
 =head2 get_show_cgi_filter
 
 Return a filter for the specified C</show.cgi>-style query from the
-old L<Phonebook> application. If no filter could be parsed, return
+old L<UFL::Phonebook> application. If no filter could be parsed, return
 C<undef>.
 
 =cut
@@ -342,7 +342,7 @@ sub get_show_cgi_filter {
 
     my $filter;
 
-    if (my $ufid = Phonebook::Util::decode_ufid($query)) {
+    if (my $ufid = UFL::Phonebook::Util::decode_ufid($query)) {
         $filter = "uflEduUniversityId=$ufid";
     }
     elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
