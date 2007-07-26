@@ -6,14 +6,11 @@ use Scalar::Util;
 use YAML;
 
 use Catalyst qw(
+    ConfigLoader
     Static::Simple
 );
 
 our $VERSION = '0.20_01';
-
-__PACKAGE__->config(
-    YAML::LoadFile(__PACKAGE__->path_to('ufl_phonebook.yml')),
-);
 
 __PACKAGE__->setup;
 
