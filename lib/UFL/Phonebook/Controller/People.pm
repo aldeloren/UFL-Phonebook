@@ -270,9 +270,9 @@ sub _get_restriction {
 
 =head2 redirect_display_form_cgi
 
-Handle requests for C</display_form.cgi> from the old L<UFL::Phonebook>
-application, which displayed the search form B<and> handled search
-queries.
+Handle requests for C</display_form.cgi> from the old
+L<UFL::Phonebook> application, which displayed the search form B<and>
+handled search queries.
 
 =cut
 
@@ -334,8 +334,8 @@ sub redirect_show_full_cgi : Path('/show-full.cgi') {
 =head2 get_show_cgi_filter
 
 Return a filter for the specified C</show.cgi>-style query from the
-old L<UFL::Phonebook> application. If no filter could be parsed, return
-C<undef>.
+old L<UFL::Phonebook> application. If no filter could be parsed,
+return C<undef>.
 
 =cut
 
@@ -361,9 +361,7 @@ sub get_show_cgi_filter {
 
 =head1 AUTHOR
 
-University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
-
-L<http://www.webadmin.ufl.edu/>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 =head1 LICENSE
 

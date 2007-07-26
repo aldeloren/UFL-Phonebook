@@ -2,7 +2,7 @@ package UFL::Phonebook::View::TT;
 
 use strict;
 use warnings;
-use base 'Catalyst::View::TT';
+use base qw/Catalyst::View::TT/;
 use Lingua::EN::Numbers ();
 use Locale::Country ();
 use UFL::Phonebook::Util;
@@ -31,9 +31,7 @@ The Template Toolkit view component used by L<UFL::Phonebook>.
 
 =head1 AUTHOR
 
-University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
-
-L<http://www.webadmin.ufl.edu/>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 =head1 LICENSE
 

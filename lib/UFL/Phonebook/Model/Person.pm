@@ -2,7 +2,7 @@ package UFL::Phonebook::Model::Person;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model::LDAP';
+use base qw/Catalyst::Model::LDAP/;
 
 =head1 NAME
 
@@ -14,11 +14,11 @@ See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 
-Catalyst model component for the University of Florida UFL::Phonebook.
+Catalyst model component for L<UFL::Phonebook>.
 
 =head1 AUTHOR
 
-University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 L<http://www.webadmin.ufl.edu/>
 

@@ -2,7 +2,7 @@ package UFL::Phonebook::Entry;
 
 use strict;
 use warnings;
-use base 'Class::Accessor';
+use base qw/Class::Accessor/;
 use UNIVERSAL::require;
 
 our $RELATIONSHIPS = {
@@ -140,9 +140,7 @@ sub get_url_args {
 
 =head1 AUTHOR
 
-University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
-
-L<http://www.webadmin.ufl.edu/>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 =head1 LICENSE
 

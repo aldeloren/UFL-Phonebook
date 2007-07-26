@@ -17,7 +17,7 @@ See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 
-Utility functions for the University of Florida phonebook.
+Utility functions for L<UFL::Phonebook>.
 
 =head1 METHODS
 
@@ -99,9 +99,7 @@ sub tokenize_query {
 
 =head1 AUTHOR
 
-University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
-
-L<http://www.webadmin.ufl.edu/>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 =head1 LICENSE
 

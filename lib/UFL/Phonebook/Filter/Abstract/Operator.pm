@@ -49,8 +49,8 @@ sub new {
 
 =head2 as_string
 
-Generate the LDAP filter string, starting with this operator and
-then walking the tree recursively.
+Generate the LDAP filter string, starting with this operator and then
+walking the tree recursively.
 
 The operator is only needed if:
 
@@ -94,9 +94,7 @@ L<UFL::Phonebook::Filter::Abstract>
 
 =head1 AUTHOR
 
-University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
-
-L<http://www.webadmin.ufl.edu/>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 =head1 LICENSE
 

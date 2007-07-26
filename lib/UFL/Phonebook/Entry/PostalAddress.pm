@@ -2,7 +2,7 @@ package UFL::Phonebook::Entry::PostalAddress;
 
 use strict;
 use warnings;
-use base 'Class::Accessor';
+use base qw/Class::Accessor/;
 use overload
     '""' => \&as_string;
 
@@ -102,9 +102,7 @@ sub as_string {
 
 =head1 AUTHOR
 
-University of Florida Web Administration E<lt>webmaster@ufl.eduE<gt>
-
-L<http://www.webadmin.ufl.edu/>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 =head1 LICENSE
 
