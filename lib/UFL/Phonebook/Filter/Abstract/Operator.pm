@@ -1,7 +1,7 @@
 package UFL::Phonebook::Filter::Abstract::Operator;
 
 use strict;
-use base 'Tree::Simple';
+use base qw/Tree::Simple/;
 
 our $DEFAULT_OPERATOR = '&';
 our @UNARY_OPERATORS = qw(

@@ -1,7 +1,7 @@
 package UFL::Phonebook::Filter::Abstract::Predicate;
 
 use strict;
-use base 'Tree::Simple';
+use base qw/Tree::Simple/;
 
 =head1 NAME
 
