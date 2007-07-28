@@ -2,7 +2,9 @@ package UFL::Phonebook::Controller::Search;
 
 use strict;
 use warnings;
-use base 'Catalyst::Controller';
+use base qw/Catalyst::Controller/;
+
+__PACKAGE__->mk_accessors(qw/sources default_source/);
 
 =head1 NAME
 
@@ -31,10 +33,10 @@ sub search : Path('') {
     my $query  = $c->req->param('query')  || $c->req->param('person');
     my $source = $c->req->param('source') || '';
 
-    my %sources = %{ $c->config->{sources} };
+    my %sources = %{ $self->sources || {} };
 
     $source =~ s/[^a-z]//g;
-    $source = $sources{$source} || $sources{$c->config->{default_source}};
+    $source = $sources{$source} || $sources{$self->default_source};
 
     my $url = URI->new($source->{url});
     $url->query_form($source->{param} => $query);

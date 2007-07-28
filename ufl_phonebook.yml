@@ -3,23 +3,24 @@
 name:         Phonebook
 organization: University of Florida
 
-default_source: phonebook
-sources:
-  web:
-    name:  UF Web with Google
-    url:   http://search.ufl.edu/web
-    param: query
-  phonebook:
-    name:  UF Phonebook
-    url:   /people/search
-    param: query
-  news:
-    name:  UF News
-    url:   http://news.ufl.edu/index.php
-    param: s
-
 Controller::People:
   default_query: Search UF People
+
+Controller::Search:
+  default_source: phonebook
+  sources:
+    web:
+      name:  UF Web with Google
+      url:   http://search.ufl.edu/web
+      param: query
+    phonebook:
+      name:  UF Phonebook
+      url:   /people/search
+      param: query
+    news:
+      name:  UF News
+      url:   http://news.ufl.edu/index.php
+      param: s
 
 Controller::Units:
   default_query: Search UF Units

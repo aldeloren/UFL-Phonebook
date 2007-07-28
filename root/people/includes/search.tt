@@ -1,8 +1,9 @@
 <form method="get" action="[% c.uri_for('/search') | html %]" id="search" name="search">
   <label for="source">
     <select name="source" id="source">
-[% FOREACH key IN c.config.sources.keys %]
-      <option value="[% key | html %]"[% IF key == c.config.default_source %] selected="selected"[% END %]>[% c.config.sources.$key.name | html %]</option>
+[% SET sources = c.controller('Search').sources %]
+[% FOREACH key IN sources.keys %]
+      <option value="[% key | html %]"[% IF key == c.controller('Search').default_source %] selected="selected"[% END %]>[% sources.$key.name | html %]</option>
 [% END %]
     </select>
   </label>
