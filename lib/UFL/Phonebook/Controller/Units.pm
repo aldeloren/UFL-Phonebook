@@ -5,7 +5,6 @@ use warnings;
 use base qw/Catalyst::Controller/;
 use Net::LDAP::Constant;
 use UFL::Phonebook::Filter::Abstract;
-use UFL::Phonebook::Unit;
 use UFL::Phonebook::Util;
 
 __PACKAGE__->mk_accessors(qw/default_query hide/);
@@ -76,7 +75,6 @@ sub results : Private {
     my $sort  = $c->req->param('sort') || 'o';
     my @units =
         sort { $a->$sort cmp $b->$sort }
-        map  { UFL::Phonebook::Unit->new($_) }
         $mesg->entries;
 
     if (scalar @units == 1) {
@@ -124,15 +122,14 @@ sub single : Path('') {
         $entry = $mesg->shift_entry;
         $c->detach('/default') unless $entry;
 
-        my $unit = UFL::Phonebook::Unit->new($entry);
-        $c->log->debug('Redirecting unit to PeopleSoft department ID: ' . $unit->uflEduPsDeptId);
+        $c->log->debug('Redirecting unit to PeopleSoft department ID: ' . $entry->uflEduPsDeptId);
 
-        my @args = ($unit->uflEduPsDeptId);
+        my @args = ($entry->uflEduPsDeptId);
         push @args, $action if $action;
         return $c->res->redirect($c->uri_for('/units', @args, ''), 301);
     }
 
-    $c->stash->{unit}     = UFL::Phonebook::Unit->new($entry);
+    $c->stash->{unit}     = $entry;
     $c->stash->{template} = 'units/show.tt';
 
     if ($action) {

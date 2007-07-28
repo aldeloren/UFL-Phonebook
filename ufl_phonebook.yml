@@ -33,11 +33,13 @@ Model::Person:
   options: &options
     sizelimit: 100
     timelimit: 10
+  entry_class: UFL::Phonebook::Person
 
 Model::Unit:
   host:    *host
   base:    ou=Organizations,dc=ufl,dc=edu
   options: *options
+  entry_class: UFL::Phonebook::Unit
 
 View::TT:
   PRE_CHOMP: 1

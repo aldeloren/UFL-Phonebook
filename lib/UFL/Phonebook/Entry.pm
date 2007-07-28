@@ -2,8 +2,8 @@ package UFL::Phonebook::Entry;
 
 use strict;
 use warnings;
-use base qw/Class::Accessor/;
-use UNIVERSAL::require;
+use base qw/Catalyst::Model::LDAP::Entry/;
+use Class::C3;
 
 our $RELATIONSHIPS = {
     postalAddress            => 'UFL::Phonebook::Entry::PostalAddress',
@@ -28,8 +28,7 @@ UFL::Phonebook::Entry - A phonebook entry
 
 =head1 DESCRIPTION
 
-Exposes attributes from a L<Net::LDAP::Entry> as instance variables,
-so repeated calls to C<get_value> are not necessary.
+Parses the postal addresses on the associated LDAP entry.
 
 =head1 METHODS
 
@@ -40,90 +39,24 @@ Given a L<Net::LDAP::Entry>, create our view of that entry.
 =cut
 
 sub new {
-    my ($class, $entry) = @_;
+    my $self = shift->next::method(@_);
 
-    my $self = bless({}, (ref $class or $class));
-    $self->_parse($entry);
-
-    return $self;
-}
-
-=head2 _parse
-
-Parse the attributes and corresponding values. Basic validation is
-done to avoid blank and "unknown" values.
-
-=cut
-
-sub _parse {
-    my ($self, $entry) = @_;
-
-    foreach my $attribute ($entry->attributes) {
-        $self->add_attribute($attribute);
-        my @values = $entry->get_value($attribute);
+    foreach my $attribute ($self->attributes) {
+        my @values = $self->get_value($attribute);
 
         if (exists $RELATIONSHIPS->{$attribute}) {
             my $class = $RELATIONSHIPS->{$attribute};
-            $class->require or die $@;
+            eval "require $class"; die $@ if $@;
 
-            $self->$attribute($class->new(@values));
+            $self->$attribute([ $class->new(@values) ]);
         }
         else {
             my @valid = grep { $_ and $_ ne '--UNKNOWN--' } @values;
-            $self->$attribute(@valid);
+            $self->$attribute(\@valid);
         }
     }
 
     return $self;
-}
-
-=head2 set
-
-Override the C<set> method from L<Class::Accessor> to push values
-instead of replacing them.
-
-=cut
-
-sub set {
-    my ($self, $key) = splice(@_, 0, 2);
-
-    my $values = $self->get($key);
-
-    my @new;
-    push @new, @{ $values } if ref $values eq 'ARRAY';
-    push @new, @_;
-
-    $self->SUPER::set($key, @new);
-}
-
-=head2 add_attribute
-
-Add one or more new attributes to the list and create an accessor for
-each.
-
-    $entry->attribute('o');
-
-=cut
-
-sub add_attribute {
-    my ($self, @attributes) = @_;
-
-    push @{ $self->{_attributes} }, @attributes;
-    $self->mk_accessors(@attributes);
-}
-
-=head2 attributes
-
-Return a list of attributes defined on this entry.
-
-    my @attributes = $entry->attributes
-
-=cut
-
-sub attributes {
-    my ($self) = @_;
-
-    return $self->{_attributes};
 }
 
 =head2 get_url_args

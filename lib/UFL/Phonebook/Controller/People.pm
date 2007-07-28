@@ -5,7 +5,6 @@ use warnings;
 use base qw/Catalyst::Controller/;
 use Net::LDAP::Constant;
 use UFL::Phonebook::Filter::Abstract;
-use UFL::Phonebook::Person;
 use UFL::Phonebook::Util;
 
 __PACKAGE__->mk_accessors(qw/default_query/);
@@ -86,7 +85,6 @@ sub results : Private {
     my $sort = $c->req->param('sort') || 'cn';
     my @people =
         sort { $a->$sort cmp $b->$sort }
-        map  { UFL::Phonebook::Person->new($_) }
         $mesg->entries;
 
     if (scalar @people == 1) {
@@ -131,7 +129,7 @@ sub single : Path('') {
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
-    $c->stash->{person}   = UFL::Phonebook::Person->new($entry);
+    $c->stash->{person}   = $entry;
     $c->stash->{template} = 'people/show.tt';
 
     if ($action) {
@@ -314,8 +312,7 @@ sub redirect_show_cgi : Path('/show.cgi') {
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
-    my $person = UFL::Phonebook::Person->new($entry);
-    return $c->res->redirect($c->uri_for('/people', $person, ($full ? 'full/' : '')), 301);
+    return $c->res->redirect($c->uri_for('/people', $entry, ($full ? 'full/' : '')), 301);
 }
 
 =head2 redirect_show_full_cgi
