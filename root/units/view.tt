@@ -3,7 +3,7 @@
    heading = 'people/includes/search.tt'
 -%]
 
-[% IF single_result %]
+[% IF single %]
 <div id="results_info">
   <p>Your search for <strong>[% query | html %]</strong> returned only one unit, displayed below.</p>
 </div>

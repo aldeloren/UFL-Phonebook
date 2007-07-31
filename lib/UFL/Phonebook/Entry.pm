@@ -59,16 +59,16 @@ sub new {
     return $self;
 }
 
-=head2 get_url_args
+=head2 uri_args
 
 Return the list of URL path arguments needed to identify this entry.
 
 =cut
 
-sub get_url_args {
+sub uri_args {
     my ($self) = @_;
 
-    return $self->uflEduUniversityId;
+    return [ $self->uflEduUniversityId ];
 }
 
 =head1 AUTHOR

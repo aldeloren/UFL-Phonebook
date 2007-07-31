@@ -24,16 +24,16 @@ A person in the directory.
 
 =head1 METHODS
 
-=head2 get_url_args
+=head2 uri_args
 
 Return the list of URL path arguments needed to identify this person.
 
 =cut
 
-sub get_url_args {
+sub uri_args {
     my ($self) = @_;
 
-    return UFL::Phonebook::Util::encode_ufid($self->uflEduUniversityId);
+    return [ UFL::Phonebook::Util::encode_ufid($self->uflEduUniversityId) ];
 }
 
 =head1 AUTHOR

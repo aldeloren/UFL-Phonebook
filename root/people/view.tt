@@ -3,7 +3,7 @@
    heading = 'people/includes/search.tt'
 -%]
 
-[% IF single_result %]
+[% IF single %]
 <div id="results_info">
   <p>Your search for <strong>[% query | html %]</strong> returned only one member of the UF community, displayed below.</p>
 </div>
@@ -58,7 +58,7 @@
   <dl class="employment">
   [% IF c.config.units.hide.grep("^${person.departmentNumber}$").size == 0 %]
     <dt>Unit</dt>
-    <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for('/units', person.departmentNumber, '') | html %]">[% END %]
+    <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for(c.controller('Units').action_for('view'), [ person.departmentNumber ], '') | html %]">[% END %]
       [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]
       [% IF person.departmentNumber %]</a>[% END %]</dd>
   [% END %]

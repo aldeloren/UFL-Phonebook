@@ -30,7 +30,7 @@ Redirect to the L<UFL::Phonebook> home page.
 
 =cut
 
-sub index : Private {
+sub index : Path('') Args(0) {
     my ($self, $c) = @_;
 
     $c->res->redirect($c->uri_for('/'));
@@ -42,7 +42,7 @@ Search the directory for units.
 
 =cut
 
-sub search : Local {
+sub search : Local Args(0) {
     my ($self, $c) = @_;
 
     my $query = $c->req->param('query');
@@ -50,12 +50,11 @@ sub search : Local {
         or $query eq $self->default_query;
 
     my $filter = $self->_parse_query($query);
-    my $string = $filter->as_string;
 
     $c->log->debug("Query: $query");
-    $c->log->debug("Filter: $string");
+    $c->log->debug("Filter: $filter");
 
-    my $mesg = $c->model('Unit')->search($string);
+    my $mesg = $c->model('Unit')->search($filter->as_string);
     $c->forward('results', [ $mesg ]);
 }
 
@@ -69,29 +68,33 @@ one unit is found, display it directly.
 sub results : Private {
     my ($self, $c, $mesg) = @_;
 
-    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+    $c->stash(
+        sizelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED),
+        timelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED),
+    );
 
-    my $sort  = $c->req->param('sort') || 'o';
-    my @units =
-        sort { $a->$sort cmp $b->$sort }
-        $mesg->entries;
+    my @units = $mesg->entries;
 
-    if (scalar @units == 1) {
+    if (@units == 1) {
         my $unit = shift @units;
         $c->res->cookies->{query} = { value => $c->req->param('query') || $unit->o };
-        $c->res->redirect($c->uri_for('/units', $unit, ''));
+        $c->res->redirect($c->uri_for($self->action_for('view'), $unit->uri_args, ''));
     }
-    elsif (scalar @units > 0) {
-        $c->stash->{units}    = \@units;
-        $c->stash->{template} = 'units/results.tt';
+    elsif (@units) {
+        my $sort = $c->req->param('sort') || 'o';
+        @units   = sort { $a->$sort cmp $b->$sort } @units;
+
+        $c->stash(
+            units    => \@units,
+            template => 'units/results.tt',
+        );
     }
     else {
-        $c->stash->{template} = 'units/no_results.tt';
+        $c->stash(template => 'units/no_results.tt');
     }
 }
 
-=head2 single
+=head2 unit
 
 Display a single unit. By specifying an argument after the PeopleSoft
 department ID and providing a corresponding local action, you can
@@ -99,43 +102,48 @@ override the display behavior of the unit.
 
 =cut
 
-sub single : Path('') {
-    my ($self, $c, $psid, $action) = @_;
+sub unit : PathPart('units') Chained('/') CaptureArgs(1) {
+    my ($self, $c, $psid) = @_;
 
-    $c->detach('/default') unless $psid;
     $c->log->debug("PeopleSoft department ID: $psid");
 
     # Handle redirection when a search query returns only one person
     my $query = $c->req->cookies->{query};
-    if ($query and $query->value) {
-        $c->stash->{query} = $query->value;
-        $c->res->cookies->{query} = { value => '' };
+    if ($query and my $value = $query->value) {
+        $c->stash(
+            query  => $value,
+            single => 1,
+        );
 
-        $c->stash->{single_result} = 1;
+        $c->res->cookies->{query} = { value => '' };
     }
 
-    my $mesg = $c->model('Unit')->search("uflEduPsDeptId=$psid");
+    my $mesg  = $c->model('Unit')->search("uflEduPsDeptId=$psid");
     my $entry = $mesg->shift_entry;
     unless ($entry) {
         # Redirect from the UFID to the PeopleSoft department ID
-        $mesg = $c->model('Unit')->search("uflEduUniversityId=$psid");
+        $mesg  = $c->model('Unit')->search("uflEduUniversityId=$psid");
         $entry = $mesg->shift_entry;
         $c->detach('/default') unless $entry;
 
         $c->log->debug('Redirecting unit to PeopleSoft department ID: ' . $entry->uflEduPsDeptId);
 
-        my @args = ($entry->uflEduPsDeptId);
-        push @args, $action if $action;
-        return $c->res->redirect($c->uri_for('/units', @args, ''), 301);
+        return $c->res->redirect($c->uri_for($c->action, $entry->uri_args, ''), 301);
     }
 
-    $c->stash->{unit}     = $entry;
-    $c->stash->{template} = 'units/show.tt';
+    $c->stash(unit => $entry);
+}
 
-    if ($action) {
-        $c->detach('/default') unless $self->can($action);
-        $c->detach($action);
-    }
+=head2 view
+
+Display the stashed unit.
+
+=cut
+
+sub view : PathPart('') Chained('unit') Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(template => 'units/view.tt');
 }
 
 =head2 full
@@ -144,10 +152,10 @@ Display the full entry for a single unit.
 
 =cut
 
-sub full : Private {
+sub full : PathPart Chained('unit') Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash->{template} = 'units/full.tt';
+    $c->stash(template => 'units/full.tt');
 }
 
 =head2 people
@@ -157,14 +165,11 @@ specified PeopleSoft department ID.
 
 =cut
 
-sub people : Private {
+sub people : PathPart Chained('unit') Args(0) {
     my ($self, $c) = @_;
 
-    my $unit = $c->stash->{unit};
-    $c->detach('/default') unless $unit;
-
     my $filter = $c->controller('People')->_get_restriction;
-    $filter->add('departmentNumber', '=', $unit->uflEduPsDeptId);
+    $filter->add('departmentNumber', '=', $c->stash->{unit}->uflEduPsDeptId);
 
     $c->log->debug("Filter: $filter");
 

@@ -29,7 +29,7 @@ Redirect to the L<UFL::Phonebook> home page.
 
 =cut
 
-sub index : Private {
+sub index : Path('') Args(0) {
     my ($self, $c) = @_;
 
     $c->res->redirect($c->uri_for('/'));
@@ -41,7 +41,7 @@ Search the directory for people.
 
 =cut
 
-sub search : Local {
+sub search : Local Args(0) {
     my ($self, $c) = @_;
 
     my $query = $c->req->param('query');
@@ -63,10 +63,10 @@ Redirect to C</units/$UFID/people/>.
 
 =cut
 
-sub unit : Local {
+sub unit : Local Args(1) {
     my ($self, $c, $ufid) = @_;
 
-    $c->res->redirect($c->uri_for('/units', $ufid, 'people/'), 301);
+    $c->res->redirect($c->uri_for($c->controller('Units')->action_for('people'), [ $ufid ], ''), 301);
 }
 
 =head2 results
@@ -79,29 +79,32 @@ one person is found, display him or her directly.
 sub results : Private {
     my ($self, $c, $mesg) = @_;
 
-    $c->stash->{sizelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED);
-    $c->stash->{timelimit_exceeded} = ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED);
+    $c->stash(
+        sizelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED),
+        timelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED),
+    );
 
-    my $sort = $c->req->param('sort') || 'cn';
-    my @people =
-        sort { $a->$sort cmp $b->$sort }
-        $mesg->entries;
-
-    if (scalar @people == 1) {
+    my @people = $mesg->entries;
+    if (@people == 1) {
         my $person = shift @people;
         $c->res->cookies->{query} = { value => $c->req->param('query') || $person->o };
-        $c->res->redirect($c->uri_for('/people', $person, ''));
+        $c->res->redirect($c->uri_for($self->action_for('view'), $person->uri_args, ''));
     }
-    elsif (scalar @people > 0) {
-        $c->stash->{people}   = \@people;
-        $c->stash->{template} = 'people/results.tt';
+    elsif (@people) {
+        my $sort = $c->req->param('sort') || 'cn';
+        @people  = sort { $a->$sort cmp $b->$sort } @people;
+
+        $c->stash(
+            people   => \@people,
+            template => 'people/results.tt',
+        );
     }
     else {
-        $c->stash->{template} = 'people/no_results.tt';
+        $c->stash(template => 'people/no_results.tt');
     }
 }
 
-=head2 single
+=head2 person
 
 Display a single person. By specifying an argument after the UFID and
 providing a corresponding local action, you can override the display
@@ -109,8 +112,8 @@ behavior of the person.
 
 =cut
 
-sub single : Path('') {
-    my ($self, $c, $ufid, $action) = @_;
+sub person : PathPart('people') Chained('/') CaptureArgs(1) {
+    my ($self, $c, $ufid) = @_;
 
     $ufid = UFL::Phonebook::Util::decode_ufid($ufid);
     $c->detach('/default') unless $ufid;
@@ -118,24 +121,32 @@ sub single : Path('') {
 
     # Handle redirection when a search query returns only one person
     my $query = $c->req->cookies->{query};
-    if ($query and $query->value) {
-        $c->stash->{query} = $query->value;
-        $c->res->cookies->{query} = { value => '' };
+    if ($query and my $value = $query->value) {
+        $c->stash(
+            query  => $value,
+            single => 1,
+        );
 
-        $c->stash->{single_result} = 1;
+        $c->res->cookies->{query} = { value => '' };
     }
 
-    my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
+    my $mesg  = $c->model('Person')->search("uflEduUniversityId=$ufid");
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
-    $c->stash->{person}   = $entry;
-    $c->stash->{template} = 'people/show.tt';
+    $c->stash(person => $entry);
+}
 
-    if ($action) {
-        $c->detach('/default') unless $self->can($action);
-        $c->detach($action);
-    }
+=head2 view
+
+Display the stashed person.
+
+=cut
+
+sub view : PathPart('') Chained('person') Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(template => 'people/view.tt');
 }
 
 =head2 full
@@ -144,10 +155,10 @@ Display the full entry for a single person.
 
 =cut
 
-sub full : Private {
+sub full : PathPart Chained('person') Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash->{template} = 'people/full.tt';
+    $c->stash(template => 'people/full.tt');
 }
 
 =head2 vcard
@@ -156,7 +167,7 @@ Display the vCard for a single person.
 
 =cut
 
-sub vcard : Private {
+sub vcard : PathPart Chained('person') Args(0) {
     my ($self, $c) = @_;
 
     my $filename = ($c->stash->{person}->uid || 'vcard') . '.vcf';
@@ -169,8 +180,76 @@ sub vcard : Private {
         $c->res->header('Content-Disposition', "attachment; filename=$filename");
     }
 
-    $c->stash->{template} = 'people/vcard.tt';
+    $c->stash(template => 'people/vcard.tt');
     $c->forward($c->view('vCard'));
+}
+
+=head2 redirect_display_form_cgi
+
+Handle requests for C</display_form.cgi> from the old
+L<UFL::Phonebook> application, which displayed the search form B<and>
+handled search queries.
+
+=cut
+
+sub redirect_display_form_cgi : Path('/display_form.cgi') Args(0) {
+    my ($self, $c) = @_;
+
+    my $destination = $c->uri_for('/');
+
+    if (my $query = $c->req->param('person')) {
+        $destination = $c->uri_for('/people/search', { query => $query });
+    }
+
+    $c->res->redirect($destination, 301);
+}
+
+=head2 redirect_show_cgi
+
+Handle requests for C</show.cgi> from the old L<UFL::Phonebook>
+application, which displayed a single person.
+
+=cut
+
+sub redirect_show_cgi : Path('/show.cgi') Args(0) {
+    my ($self, $c) = @_;
+
+    my $query = $c->req->uri->query;
+    return $c->res->redirect($c->uri_for('/'), 301)
+        unless $query;
+
+    my $filter = $self->_get_show_cgi_filter($query);
+    unless ($filter) {
+        $c->log->debug("Could not determine filter for [$query]");
+        return $c->res->redirect($c->uri_for('/people/search', { query => $query }), 301);
+    }
+
+    $c->log->debug("Filter = [$filter]");
+
+    my $mesg = $c->model('Person')->search($filter);
+    my $entry = $mesg->shift_entry;
+    $c->detach('/default') unless $entry;
+
+    my $action = $self->action_for('view');
+    if ($c->stash->{full}) {
+        $action = $self->action_for('full');
+    }
+
+    return $c->res->redirect($c->uri_for($action, $entry->uri_args), 301);
+}
+
+=head2 redirect_show_full_cgi
+
+Handle requests for C</show-full.cgi> from the old L<UFL::Phonebook>
+application, which displayed the full LDAP entry for a single person.
+
+=cut
+
+sub redirect_show_full_cgi : Path('/show-full.cgi') {
+    my ($self, $c) = @_;
+
+    $c->stash(full => 1);
+    $c->forward('redirect_show_cgi');
 }
 
 =head2 _parse_query
@@ -267,69 +346,7 @@ sub _get_restriction {
     return $filter;
 }
 
-=head2 redirect_display_form_cgi
-
-Handle requests for C</display_form.cgi> from the old
-L<UFL::Phonebook> application, which displayed the search form B<and>
-handled search queries.
-
-=cut
-
-sub redirect_display_form_cgi : Path('/display_form.cgi') {
-    my ($self, $c) = @_;
-
-    my $destination = $c->uri_for('/');
-
-    if (my $query = $c->req->param('person')) {
-        $destination = $c->uri_for('/people/search', { query => $query });
-    }
-
-    $c->res->redirect($destination, 301);
-}
-
-=head2 redirect_show_cgi
-
-Handle requests for C</show.cgi> from the old L<UFL::Phonebook>
-application, which displayed a single person.
-
-=cut
-
-sub redirect_show_cgi : Path('/show.cgi') {
-    my ($self, $c, $full) = @_;
-
-    my $query = $c->req->uri->query;
-    return $c->res->redirect($c->uri_for('/'), 301)
-        unless $query;
-
-    my $filter = $self->get_show_cgi_filter($query);
-    unless ($filter) {
-        $c->log->debug("Could not determine filter for [$query]");
-        return $c->res->redirect($c->uri_for('/people/search', { query => $query }), 301);
-    }
-
-    $c->log->debug("Filter = [$filter]");
-
-    my $mesg = $c->model('Person')->search($filter);
-    my $entry = $mesg->shift_entry;
-    $c->detach('/default') unless $entry;
-
-    return $c->res->redirect($c->uri_for('/people', $entry, ($full ? 'full/' : '')), 301);
-}
-
-=head2 redirect_show_full_cgi
-
-Handle requests for C</show-full.cgi> from the old L<UFL::Phonebook>
-application, which displayed the full LDAP entry for a single person.
-
-=cut
-
-sub redirect_show_full_cgi : Path('/show-full.cgi') {
-    my ($self, $c) = @_;
-
-    $c->forward('redirect_show_cgi', [ 1 ]);
-}
-
-=head2 get_show_cgi_filter
+=head2 _get_show_cgi_filter
 
 Return a filter for the specified C</show.cgi>-style query from the
 old L<UFL::Phonebook> application. If no filter could be parsed,
@@ -337,7 +354,7 @@ return C<undef>.
 
 =cut
 
-sub get_show_cgi_filter {
+sub _get_show_cgi_filter {
     my ($self, $query) = @_;
 
     my $filter;
