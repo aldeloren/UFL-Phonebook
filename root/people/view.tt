@@ -56,7 +56,7 @@
 [% UNLESS person.eduPersonPrimaryAffiliation == 'student' %]
   <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
   <dl class="employment">
-  [% IF c.config.units.hide.grep("^${person.departmentNumber}$").size == 0 %]
+  [% IF c.controller('Units').hide.grep("^${person.departmentNumber}$").size == 0 %]
     <dt>Unit</dt>
     <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for(c.controller('Units').action_for('view'), [ person.departmentNumber ], '') | html %]">[% END %]
       [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]

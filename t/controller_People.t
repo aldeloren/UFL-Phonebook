@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 67;
+use Test::More tests => 68;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -12,6 +12,7 @@ my $CN           = 'TESTER,AT A';
 my $UID          = 'attest1';
 my $UFID         = '59831351';
 my $ENCODED_UFID = 'TVJVWHJJW';
+
 my $UNIT_PSID    = '02010601';
 my $UNIT_UFID    = 'UETHHG63';
 my $UNIT_O       = 'PV-OAA APPLICATION DEVELOP';
@@ -90,6 +91,7 @@ is($mech->status, 404, 'request for single person by UFID 404s');
 $mech->get_ok("/people/$ENCODED_UFID/", 'request for single person');
 $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
+$mech->content_like(qr|href="[^"]+units/14200000/">IT-AT ACADEMIC TECHNOLOGY|i, 'response contains a unit reference');
 
 $mech->get("/people/$ENCODED_UFID/show/", 'request for single person, invalid action');
 is($mech->status, 404, 'request for single person, invalid action 404s');
