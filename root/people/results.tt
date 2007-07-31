@@ -3,7 +3,7 @@
    heading = 'people/includes/search.tt'
 -%]
 
-[% INCLUDE includes/resultsInfo.tt results = people, singular = 'person', plural = 'people' -%]
+[% INCLUDE includes/results_info.tt results = people, singular = 'person', plural = 'people' -%]
 
 <table>
   <thead>

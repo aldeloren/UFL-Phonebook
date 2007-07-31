@@ -87,7 +87,7 @@ sub results : Private {
         $c->stash->{template} = 'units/results.tt';
     }
     else {
-        $c->stash->{template} = 'units/noResults.tt';
+        $c->stash->{template} = 'units/no_results.tt';
     }
 }
 

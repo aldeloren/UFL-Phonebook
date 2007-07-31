@@ -97,7 +97,7 @@ sub results : Private {
         $c->stash->{template} = 'people/results.tt';
     }
     else {
-        $c->stash->{template} = 'people/noResults.tt';
+        $c->stash->{template} = 'people/no_results.tt';
     }
 }
 
