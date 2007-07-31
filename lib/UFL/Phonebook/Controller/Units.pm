@@ -126,9 +126,8 @@ sub unit : PathPart('units') Chained('/') CaptureArgs(1) {
         $entry = $mesg->shift_entry;
         $c->detach('/default') unless $entry;
 
-        $c->log->debug('Redirecting unit to PeopleSoft department ID: ' . $entry->uflEduPsDeptId);
-
-        return $c->res->redirect($c->uri_for($c->action, $entry->uri_args, ''), 301);
+        $c->res->redirect($c->uri_for($c->action, $entry->uri_args, ''), 301);
+        $c->detach;
     }
 
     $c->stash(unit => $entry);
