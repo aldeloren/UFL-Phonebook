@@ -12,8 +12,6 @@ __PACKAGE__->config(
         code2country => \&Locale::Country::code2country,
         num2en       => \&Lingua::EN::Numbers::num2en,
         spam_armor   => \&UFL::Phonebook::Util::spam_armor,
-        encode_ufid  => \&UFL::Phonebook::Util::encode_ufid,
-        decode_ufid  => \&UFL::Phonebook::Util::decode_ufid,
     },
 );
 
