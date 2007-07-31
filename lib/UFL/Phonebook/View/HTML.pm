@@ -1,4 +1,4 @@
-package UFL::Phonebook::View::TT;
+package UFL::Phonebook::View::HTML;
 
 use strict;
 use warnings;
@@ -19,7 +19,7 @@ __PACKAGE__->config(
 
 =head1 NAME
 
-UFL::Phonebook::View::TT - Template Toolkit view component
+UFL::Phonebook::View::HTML - Template Toolkit view component
 
 =head1 SYNOPSIS
 

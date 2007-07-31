@@ -11,6 +11,7 @@ This file documents the revision history for UFL::Phonebook.
           of the application
         - Refactor UFL::Phonebook::Entry to use newer style
           Catalyst::Model::LDAP
+        - Split view into HTML and vCard content types
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid

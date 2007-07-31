@@ -2,6 +2,7 @@
 # Do not use tabs for indentation or label/value separation!
 name:         Phonebook
 organization: University of Florida
+default_view: HTML
 
 Controller::People:
   default_query: Search UF People
@@ -42,6 +43,9 @@ Model::Unit:
   options: *options
   entry_class: UFL::Phonebook::Unit
 
-View::TT:
+View::HTML:
   PRE_CHOMP: 1
   WRAPPER:   wrapper.tt
+
+View::vCard:
+  PRE_CHOMP: 1

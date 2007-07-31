@@ -1,4 +1,3 @@
-[% META wrapper = 'wrappers/none.tt' -%]
 BEGIN:vCard
 VERSION:3.0
 FN:[% person.displayName %]
