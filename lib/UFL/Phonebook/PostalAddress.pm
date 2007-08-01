@@ -1,4 +1,4 @@
-package UFL::Phonebook::Entry::PostalAddress;
+package UFL::Phonebook::PostalAddress;
 
 use strict;
 use warnings;
@@ -10,11 +10,11 @@ __PACKAGE__->mk_accessors(qw/title street locality region dominion postal_code _
 
 =head1 NAME
 
-UFL::Phonebook::Entry::PostalAddress - A postal address
+UFL::Phonebook::PostalAddress - A postal address
 
 =head1 SYNOPSIS
 
-    my $address = UFL::Phonebook::Entry::PostalAddress->new(
+    my $address = UFL::Phonebook::PostalAddress->new(
         'PO BOX 112065$GAINESVILLE, FL, US$ 326112065'
     );
 

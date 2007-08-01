@@ -37,8 +37,8 @@ is($entry->uid, $attributes{uid}, 'uid matches');
 my @phones = $entry->uflEduAllPhones;
 is(@phones, 2, 'has 4 phone numbers');
 
-isa_ok($entry->uflEduAllPostalAddresses, 'UFL::Phonebook::Entry::PostalAddressCollection');
-isa_ok($entry->uflEduAllPostalAddresses->campus, 'UFL::Phonebook::Entry::PostalAddress');
+isa_ok($entry->uflEduAllPostalAddresses, 'UFL::Phonebook::PostalAddressCollection');
+isa_ok($entry->uflEduAllPostalAddresses->campus, 'UFL::Phonebook::PostalAddress');
 my $campus_address = $entry->uflEduAllPostalAddresses->campus;
 is($campus_address->title, $TITLE, 'title matches');
 is($campus_address->street, $STREET, 'street matches');

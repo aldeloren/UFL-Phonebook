@@ -1,11 +1,11 @@
-package UFL::Phonebook::Entry::PostalAddressCollection;
+package UFL::Phonebook::PostalAddressCollection;
 
 use strict;
 use warnings;
 use base qw/Class::Accessor/;
 use overload
     '""' => \&as_string;
-use UFL::Phonebook::Entry::PostalAddress;
+use UFL::Phonebook::PostalAddress;
 
 # uflEduAllPostalAddresses name => External name
 our $MAPPINGS = {
@@ -23,11 +23,11 @@ __PACKAGE__->mk_accessors(values %$MAPPINGS, '_original');
 
 =head1 NAME
 
-UFL::Phonebook::Entry::PostalAddressCollection - A collection of postal addresses
+UFL::Phonebook::PostalAddressCollection - A collection of postal addresses
 
 =head1 SYNOPSIS
 
-    my $addresses = UFL::Phonebook::Entry::PostalAddressCollection->(
+    my $addresses = UFL::Phonebook::PostalAddressCollection->(
         'UF Business Mailing Address$PO BOX 112065$GAINESVILLE, FL, US$ 326112065'
     );
     print $addresses->campus;
@@ -68,8 +68,8 @@ sub new {
 =head2 _parse
 
 Parse the specified address into a
-L<UFL::Phonebook::Entry::PostalAddress>. If the address cannot be
-parsed, an exception is thrown.
+L<UFL::Phonebook::PostalAddress>. If the address cannot be parsed, an
+exception is thrown.
 
 =cut
 
@@ -84,7 +84,7 @@ sub _parse {
         unless exists $MAPPINGS->{$ldap_name};
 
     my $name    = $MAPPINGS->{$ldap_name};
-    my $address = UFL::Phonebook::Entry::PostalAddress->new($ldap_value);
+    my $address = UFL::Phonebook::PostalAddress->new($ldap_value);
 
     return ($name, $address);
 }

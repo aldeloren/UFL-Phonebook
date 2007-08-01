@@ -14,6 +14,7 @@ This file documents the revision history for UFL::Phonebook.
         - Split view into HTML and vCard content types
         - Convert controllers to Chained actions
         - Remove ugly uri_for override
+        - Move address-related packages out of the ::Entry namespace
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid

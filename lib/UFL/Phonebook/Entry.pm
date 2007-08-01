@@ -6,11 +6,11 @@ use base qw/Catalyst::Model::LDAP::Entry/;
 use Class::C3;
 
 our $RELATIONSHIPS = {
-    postalAddress            => 'UFL::Phonebook::Entry::PostalAddress',
-    registeredAddress        => 'UFL::Phonebook::Entry::PostalAddress',
-    street                   => 'UFL::Phonebook::Entry::PostalAddress',
-    uflEduAllPostalAddresses => 'UFL::Phonebook::Entry::PostalAddressCollection',
-    uflEduOfficeLocation     => 'UFL::Phonebook::Entry::PostalAddress',
+    postalAddress            => 'UFL::Phonebook::PostalAddress',
+    registeredAddress        => 'UFL::Phonebook::PostalAddress',
+    street                   => 'UFL::Phonebook::PostalAddress',
+    uflEduAllPostalAddresses => 'UFL::Phonebook::PostalAddressCollection',
+    uflEduOfficeLocation     => 'UFL::Phonebook::PostalAddress',
 };
 
 =head1 NAME
