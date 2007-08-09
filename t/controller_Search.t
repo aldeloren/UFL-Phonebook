@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 12;
+use Test::More tests => 14;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -27,11 +27,9 @@ $mech->title_like(qr/$QUERY/i, 'response title looks like search results');
 
 
 foreach my $source (keys %SOURCES) {
-    $mech->get("/search?query=$QUERY&source=$source");
+    $mech->get_ok("http://localhost/search?query=$QUERY&source=$source");
 
-    # Test::WWW::Mechanize::Catalyst automatically follows the redirect, but
-    # thinks it's local to the Catalyst instance
     my $response = $mech->response->previous;
-    is($response->code, 302, "request for '$source' source redirected");
+    ok($response->is_redirect, "request for '$source' source redirected");
     like($response->header('Location'), $SOURCES{$source}, 'looks like it redirected to the right URL');
 }
