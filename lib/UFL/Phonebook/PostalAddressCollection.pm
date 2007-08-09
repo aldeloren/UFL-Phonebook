@@ -17,6 +17,7 @@ our $MAPPINGS = {
     'Permanent Home Mailing Address'        => 'permanent',
     'Housing Address'                       => 'housing',
     'Emergency Contact'                     => 'emergency',
+    'Emergency Contact Mailing Address'     => 'emergency_mailing',
 };
 
 __PACKAGE__->mk_accessors(values %$MAPPINGS, '_original');
