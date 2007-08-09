@@ -8,7 +8,7 @@ requires 'Catalyst::Action::RenderView';
 requires 'Catalyst::Model::LDAP' => '0.15';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::View::TT';
-requires 'Class::Accessor';
+requires 'Class::Accessor::Fast';
 requires 'Lingua::EN::Numbers';
 requires 'Locale::Country';
 requires 'Net::LDAP::Constant';

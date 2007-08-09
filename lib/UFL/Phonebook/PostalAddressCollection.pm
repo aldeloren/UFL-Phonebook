@@ -2,7 +2,7 @@ package UFL::Phonebook::PostalAddressCollection;
 
 use strict;
 use warnings;
-use base qw/Class::Accessor/;
+use base qw/Class::Accessor::Fast/;
 use overload
     '""' => \&as_string;
 use UFL::Phonebook::PostalAddress;
