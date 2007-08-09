@@ -41,6 +41,24 @@ Given a L<Net::LDAP::Entry>, create our view of that entry.
 sub new {
     my $self = shift->next::method(@_);
 
+    $self->_init;
+
+    return $self;
+}
+
+# XXX: Fix when Catalyst::Model::LDAP has a sensible entry creation
+# (should be done on ->new)
+sub _ldap_client {
+    my $self = shift;
+
+    $self->_init;
+
+    $self->next::method(@_);
+}
+
+sub _init {
+    my ($self) = @_;
+
     foreach my $attribute ($self->attributes) {
         my @values = $self->get_value($attribute);
 
