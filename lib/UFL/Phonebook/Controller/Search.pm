@@ -33,13 +33,12 @@ sub search : Path('') {
     my $query  = $c->req->param('query')  || $c->req->param('person');
     my $source = $c->req->param('source') || '';
 
-    my %sources = %{ $self->sources || {} };
-
     $source =~ s/[^a-z]//g;
-    $source = $sources{$source} || $sources{$self->default_source};
+    my $source_info = $self->sources->{$source} || $self->sources->{$self->default_source};
+    $c->detach('/default') unless $source_info;
 
-    my $url = URI->new($source->{url});
-    $url->query_form($source->{param} => $query);
+    my $url = URI->new($source_info->{url});
+    $url->query_form($source_info->{param} => $query);
 
     $c->log->debug("Search URL: [$url]");
     $c->res->redirect($url);

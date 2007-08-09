@@ -18,6 +18,7 @@ This file documents the revision history for UFL::Phonebook.
         - Add address inflation for 'Emergency Contact Mailing
           Address'
         - Convert to Class::Accessor::Fast
+        - 404 on invalid source in Controller::Search
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid
