@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base qw/Catalyst::Model::LDAP::Connection/;
 use Authen::SASL qw/Perl/;
+use Carp qw/croak/;
 use Class::C3;
 use Net::LDAP::Control::ProxyAuth;
 
@@ -46,6 +47,8 @@ Request authorization and then search as the current C<REMOTE_USER>.
 sub search {
     my $self = shift;
     my %args = scalar @_ == 1 ? (filter => shift) : @_;
+
+    croak 'No REMOTE_USER found' unless $ENV{REMOTE_USER};
 
     my $auth = Net::LDAP::Control::ProxyAuth->new(
         authzID => "u:$ENV{REMOTE_USER}",
