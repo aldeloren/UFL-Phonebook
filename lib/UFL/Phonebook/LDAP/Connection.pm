@@ -13,8 +13,9 @@ UFL::Phonebook::LDAP::Connection - LDAP connection for authenticated requests
 
 =head1 DESCRIPTION
 
-Overrides L<Catalyst::Model::LDAP::Connection> to authenticate based
-on the C<REMOTE_USER> environment variable.
+Overrides L<Catalyst::Model::LDAP::Connection> to assume the identity
+of the person associated with the current C<REMOTE_USER> environment
+variable.
 
 =head1 METHODS
 
