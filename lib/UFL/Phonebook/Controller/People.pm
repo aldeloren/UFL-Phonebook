@@ -130,7 +130,9 @@ sub person : PathPart('people') Chained('/') CaptureArgs(1) {
         $c->res->cookies->{query} = { value => '' };
     }
 
-    my $mesg  = $c->model('Person')->search("uflEduUniversityId=$ufid");
+    my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
+    die $mesg->error if $mesg->is_error;
+
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 

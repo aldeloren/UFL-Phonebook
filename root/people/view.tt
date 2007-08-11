@@ -21,6 +21,8 @@
     <dd>[% IF person.homePageURL %]<a class="url" href="[% person.homePageURL | html %]">[% person.homePageURL | html %]</a>[% ELSE %]&nbsp;[% END %]</dd>
     <dt>Affiliation</dt>
     <dd class="title">[% IF person.eduPersonPrimaryAffiliation %][% person.eduPersonPrimaryAffiliation | html %][% ELSE %](Unknown)[% END %]</dd>
+    <dt>Gender</dt>
+    <dd>[% IF person.uflEduGender %][% person.uflEduGender | html %][% ELSE %](Unknown)[% END %]</dd>
   </dl>
 
   <h4>Phone Numbers</h4>

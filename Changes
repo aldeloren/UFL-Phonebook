@@ -19,6 +19,8 @@ This file documents the revision history for UFL::Phonebook.
           Address'
         - Convert to Class::Accessor::Fast
         - 404 on invalid source in Controller::Search
+        - Add SASL-based REMOTE_USER LDAP connection class for
+          authenticated phonebook
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid
