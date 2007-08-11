@@ -31,9 +31,9 @@ sub bind {
     $sasl_args{mechanism} ||= 'GSSAPI';
 
     my $sasl = Authen::SASL->new(%sasl_args);
-    use Data::Dumper; warn Dumper \%sasl_args;
+    $args{sasl} = $sasl;
 
-    $self->next::method(sasl => $sasl);
+    $self->next::method(%args);
 }
 
 =head2 search
@@ -51,7 +51,6 @@ sub search {
     );
 
     push @{ $args{control} }, $auth;
-    use Data::Dumper; warn Dumper \%args;
 
     $self->next::method(%args);
 }
