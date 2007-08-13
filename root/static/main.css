@@ -113,6 +113,26 @@ width:60em
 text-align:left
 }
 
+#header p {
+color:#fff;
+font-size:10px;
+left:150px;
+position:absolute;
+top:5px;
+}
+
+#header p a {
+border:none;
+color:#fff;
+padding:2px;
+text-decoration:underline;
+}
+
+#header p a:hover {
+background:#fff;
+color:#000;
+}
+
 #mainContainer {
 margin:30px
 }
@@ -155,16 +175,19 @@ padding:0 5px
 font-size:1.8em
 }
 
-#priSearch {
+#priSearch, #login {
 margin:0 auto;
 text-align:center;
 width:500px
 }
 
-.query {
+.query, #username, #password {
 font-size:2.3em;
 padding:3px;
 width:15em;
+}
+
+.query {
 color:#ccc
 }
 
@@ -172,7 +195,7 @@ color:#ccc
 color:#000
 }
 
-.search {
+.submit {
 margin-bottom:5px
 }
 

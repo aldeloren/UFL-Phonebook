@@ -1,0 +1,14 @@
+[% SET
+   stylesheets = [ c.uri_for('/static/main.css') ]
+   title = 'Login'
+-%]
+
+[% IF authentication_error %]
+<p>Error: [% authentication_error | html %].</p>
+[% END -%]
+
+<form method="post" id="login">
+  <label for="username">Username:</label> <input type="text" name="username" id="username" /><br />
+  <label for="password">Password:</label> <input type="password" name="password" id="password" /><br />
+  <input type="submit" class="submit" value="Login" />
+</form>

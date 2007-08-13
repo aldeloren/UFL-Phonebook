@@ -26,6 +26,11 @@
 <body>
 <div id="header"> 
   <h1 class="replace" id="logo"><a href="[% c.uri_for('/') | html %]">[% c.config.name | html %]<span></span></a></h1>
+[% IF c.user_exists %]
+  <p>Logged in as <strong>[% c.user.id | html %]</strong> (<a href="[% c.uri_for('/logout') | html %]">Logout</a>)</p>
+[% ELSE %]
+  <p><a href="[% c.uri_for('/login') | html %]">Login</a></p>
+[% END %]
 [% IF heading %]
   [%+ INCLUDE $heading %]
 [% ELSE %]

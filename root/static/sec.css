@@ -126,6 +126,26 @@ margin:40px 0 20px 30px
 margin:25px 30px
 }
 
+#header p {
+color:#fff;
+font-size:10px;
+left:150px;
+position:absolute;
+top:5px;
+}
+
+#header p a {
+border:none;
+color:#fff;
+padding:2px;
+text-decoration:underline;
+}
+
+#header p a:hover {
+background:#fff;
+color:#000;
+}
+
 #ldap {
 margin:30px
 }

@@ -8,6 +8,8 @@ use Carp qw/croak/;
 use Class::C3;
 use Net::LDAP::Control::ProxyAuth;
 
+__PACKAGE__->mk_accessors(qw/catalyst_user/);
+
 =head1 NAME
 
 UFL::Phonebook::LDAP::Connection - LDAP connection for authenticated requests
@@ -15,8 +17,7 @@ UFL::Phonebook::LDAP::Connection - LDAP connection for authenticated requests
 =head1 DESCRIPTION
 
 Overrides L<Catalyst::Model::LDAP::Connection> to assume the identity
-of the person associated with the current C<REMOTE_USER> environment
-variable.
+of the person associated with the current L<Catalyst> user.
 
 =head1 METHODS
 
@@ -35,12 +36,16 @@ sub bind {
     my $sasl = Authen::SASL->new(%sasl_args);
     $args{sasl} = $sasl;
 
+    # Store the Catalyst user for later
+    die 'No user found' unless $args{catalyst_user};
+    $self->catalyst_user(delete $args{catalyst_user});
+
     $self->next::method(%args);
 }
 
 =head2 search
 
-Request authorization and then search as the current C<REMOTE_USER>.
+Request authorization and then search as the current L<Catalyst> user.
 
 =cut
 
@@ -48,10 +53,8 @@ sub search {
     my $self = shift;
     my %args = scalar @_ == 1 ? (filter => shift) : @_;
 
-    croak 'No REMOTE_USER found' unless $ENV{REMOTE_USER};
-
     my $auth = Net::LDAP::Control::ProxyAuth->new(
-        authzID => "u:$ENV{REMOTE_USER}",
+        authzID => 'u:' . $self->catalyst_user->id,
     );
 
     push @{ $args{control} }, $auth;

@@ -6,6 +6,10 @@ use Scalar::Util;
 
 use Catalyst qw/
     ConfigLoader
+    Authentication
+    Session
+    Session::State::Cookie
+    Session::Store::File
     Static::Simple
 /;
 
