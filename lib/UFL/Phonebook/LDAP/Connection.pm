@@ -33,13 +33,11 @@ sub bind {
     my %sasl_args = %{ delete $args{sasl} || {} };
 
     if (my $catalyst_user = delete $args{catalyst_user}) {
-        $sasl_args{mechanism} ||= 'GSSAPI';
-
-        my $sasl = Authen::SASL->new(%sasl_args);
-        $args{sasl} = $sasl;
-
         # Store the Catalyst user for later
         $self->catalyst_user($catalyst_user);
+
+        my $sasl = Authen::SASL->new(mechanism => 'GSSAPI', %sasl_args);
+        $args{sasl} = $sasl;
     }
 
     $self->next::method(%args);
