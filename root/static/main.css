@@ -121,14 +121,14 @@ position:absolute;
 top:5px;
 }
 
-#header p a {
+#header p a.logout {
 border:none;
 color:#fff;
 padding:2px;
 text-decoration:underline;
 }
 
-#header p a:hover {
+#header p a.logout:hover {
 background:#fff;
 color:#000;
 }

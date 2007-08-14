@@ -137,11 +137,14 @@ top:5px;
 #header p a {
 border:none;
 color:#fff;
+}
+
+#header p a.logout {
 padding:2px;
 text-decoration:underline;
 }
 
-#header p a:hover {
+#header p a.logout:hover {
 background:#fff;
 color:#000;
 }
