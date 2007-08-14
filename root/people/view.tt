@@ -12,6 +12,17 @@
 
 <div class="vcard results">
   <h3><span class="fn">[% person.displayName | html %]</span></h3>
+[% IF c.config.demo %]
+
+  <h4>Demo Information (looking at [% person.eduPersonPrimaryAffiliation | html %])</h4>
+  <dl>
+  [% SET attributes = [ 'uflEduGender', 'uflEduBirthDate' ] %]
+  [% FOREACH attribute IN attributes %]
+    <dt>[% attribute | html %]</dt>
+    <dd>[% person.$attribute | html %]</dd>
+  [% END %]
+  </dl>
+[% END %]
 
   <h4>General Information</h4>
   <dl class="gen">
@@ -21,14 +32,6 @@
     <dd>[% IF person.homePageURL %]<a class="url" href="[% person.homePageURL | html %]">[% person.homePageURL | html %]</a>[% ELSE %]&nbsp;[% END %]</dd>
     <dt>Affiliation</dt>
     <dd class="title">[% IF person.eduPersonPrimaryAffiliation %][% person.eduPersonPrimaryAffiliation | html %][% ELSE %](Unknown)[% END %]</dd>
-[% IF person.uflEduGender %]
-    <dt>Gender</dt>
-    <dd>[% person.uflEduGender | html %]</dd>
-[% END %]
-[% IF person.uflEduBirthDate %]
-    <dt>Birth Date</dt>
-    <dd>[% person.uflEduBirthDate | html %]</dd>
-[% END %]
   </dl>
 
   <h4>Phone Numbers</h4>
