@@ -20,7 +20,8 @@
     [% affliation %]
   [% END %]
 
-  <h4>Demo Information (you're [% c.user_exists ? affiliation(c.user.ldap_record.eduPersonPrimaryAffiliation) : 'anonymous' | html %] looking at [% affiliation(person.eduPersonPrimaryAffiliation) | html %])</h4>
+  <h4>Demo Information</h4>
+  <p>You're <strong>[% c.user_exists ? affiliation(c.user.ldap_record.eduPersonPrimaryAffiliation) : 'anonymous' | html %]</strong> looking at <strong>[% affiliation(person.eduPersonPrimaryAffiliation) | html %]</strong>.</p>
   <dl>
   [% SET attributes = [ 'uflEduGender', 'uflEduBirthDate' ] %]
   [% FOREACH attribute IN attributes %]
@@ -62,11 +63,18 @@
   </dl><!-- .tel -->
 [% END -%]
 
-[% IF person.uflEduAllPostalAddresses.campus OR person.uflEduAllPostalAddresses.home OR person.uflEduAllPostalAddresses.permanent OR person.uflEduAllPostalAddresses.mailing %]
+[% SET postal_addresses = [ 'campus', 'home', 'permanent', 'mailing', 'emergency' ] %]
+[% SET display_addresses = 0 %]
+[% FOREACH postal_address_name IN postal_addresses %]
+  [% IF person.uflEduAllPostalAddresses.$postal_address_name %]
+    [% SET display_addresses = 1 %]
+    [% LAST %]
+  [% END %]
+[% END %]
+[% IF display_addresses %]
 
   <h4>Addresses</h4>
   <dl class="adr">
-  [% SET postal_addresses = [ 'campus', 'home', 'permanent', 'mailing' ] %]
   [% FOREACH postal_address_name IN postal_addresses %]
     [% postal_address = person.uflEduAllPostalAddresses.$postal_address_name %]
     [% IF postal_address %]
@@ -82,15 +90,14 @@
   </dl><!-- .adr -->
 [% END -%]
 
-[% UNLESS person.eduPersonPrimaryAffiliation == 'student' %]
+[% SET display_unit = (person.o AND c.controller('Units').hide.grep("^${person.departmentNumber}$").size == 0) %]
+[% IF person.eduPersonPrimaryAffiliation != 'student' AND (display_unit OR person.title) %]
 
   <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
   <dl class="employment">
-  [% IF person.departmentNumber AND c.controller('Units').hide.grep("^${person.departmentNumber}$").size == 0 %]
+  [% IF display_unit %]
     <dt>Unit</dt>
-    <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for(c.controller('Units').action_for('view'), [ person.departmentNumber ], '') | html %]">[% END %]
-      [% IF person.o %][% person.o | html %][% ELSE %]&nbsp;[% END %]
-      [% IF person.departmentNumber %]</a>[% END %]</dd>
+    <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for(c.controller('Units').action_for('view'), [ person.departmentNumber ], '') | html %]">[% END %][% person.o | html %][% IF person.departmentNumber %]</a>[% END %]</dd>
   [% END %]
   [% IF person.title %]
     <dt>Title</dt>

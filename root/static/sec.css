@@ -268,7 +268,7 @@ padding:0 30px
 color:#333
 }
 
-.results dl {
+.results dl, .results p {
 line-height:2em;
 margin:0 0 0 10px
 }
