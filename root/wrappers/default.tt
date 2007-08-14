@@ -4,6 +4,6 @@
 [% FILTER indent %]
   [% content %]
 [% END -%]
-  </div><!-- content -->
+  </div><!-- #content -->
 
 [%+ INCLUDE includes/footer.tt -%]
