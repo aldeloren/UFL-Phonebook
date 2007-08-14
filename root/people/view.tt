@@ -13,13 +13,18 @@
 <div class="vcard results">
   <h3><span class="fn">[% person.displayName | html %]</span></h3>
 [% IF c.config.demo %]
+  [% MACRO affiliation(affliation) BLOCK %]
+    [% (affliation == 'staff' || affliation == 'faculty') ? '' : 'a' %]
+    [% affliation.match('') ? 'n ' : ' ' %]
+    [% affliation %]
+  [% END %]
 
-  <h4>Demo Information (looking at [% person.eduPersonPrimaryAffiliation | html %])</h4>
+  <h4>Demo Information (you're [% c.user_exists ? affiliation(c.user.ldap_record.eduPersonPrimaryAffiliation) : 'anonymous' | html %] looking at [% affiliation(person.eduPersonPrimaryAffiliation) | html %])</h4>
   <dl>
   [% SET attributes = [ 'uflEduGender', 'uflEduBirthDate' ] %]
   [% FOREACH attribute IN attributes %]
     <dt>[% attribute | html %]</dt>
-    <dd>[% person.$attribute | html %]</dd>
+    <dd>[% IF person.$attribute %][% person.$attribute | html %][% ELSE %](Unknown)[% END %]</dd>
   [% END %]
   </dl>
 [% END %]

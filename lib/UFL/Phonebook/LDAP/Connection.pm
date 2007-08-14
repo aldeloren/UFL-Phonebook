@@ -31,14 +31,16 @@ sub bind {
     my ($self, %args) = @_;
 
     my %sasl_args = %{ delete $args{sasl} || {} };
-    $sasl_args{mechanism} ||= 'GSSAPI';
 
-    my $sasl = Authen::SASL->new(%sasl_args);
-    $args{sasl} = $sasl;
+    if (my $catalyst_user = delete $args{catalyst_user}) {
+        $sasl_args{mechanism} ||= 'GSSAPI';
 
-    # Store the Catalyst user for later
-    die 'No user found' unless $args{catalyst_user};
-    $self->catalyst_user(delete $args{catalyst_user});
+        my $sasl = Authen::SASL->new(%sasl_args);
+        $args{sasl} = $sasl;
+
+        # Store the Catalyst user for later
+        $self->catalyst_user($catalyst_user);
+    }
 
     $self->next::method(%args);
 }
@@ -53,11 +55,13 @@ sub search {
     my $self = shift;
     my %args = scalar @_ == 1 ? (filter => shift) : @_;
 
-    my $auth = Net::LDAP::Control::ProxyAuth->new(
-        authzID => 'u:' . $self->catalyst_user->id,
-    );
+    if ($self->catalyst_user) {
+        my $auth = Net::LDAP::Control::ProxyAuth->new(
+            authzID => 'u:' . $self->catalyst_user->id,
+        );
 
-    push @{ $args{control} }, $auth;
+        push @{ $args{control} }, $auth;
+    }
 
     $self->next::method(%args);
 }
