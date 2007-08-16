@@ -124,16 +124,24 @@ top:5px;
 #header p a {
 border:none;
 color:#fff;
-}
-
-#header p a.logout {
 padding:2px;
 text-decoration:underline;
 }
 
-#header p a.logout:hover {
+#header p a:hover {
 background:#fff;
 color:#000;
+}
+
+#header p a.user {
+font-weight:bold;
+padding:0;
+text-decoration:none;
+}
+
+#header p a.user:hover {
+background:none;
+color:#fff;
 }
 
 #mainContainer {
