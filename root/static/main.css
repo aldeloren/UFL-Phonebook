@@ -121,9 +121,12 @@ position:absolute;
 top:5px;
 }
 
-#header p a.logout {
+#header p a {
 border:none;
 color:#fff;
+}
+
+#header p a.logout {
 padding:2px;
 text-decoration:underline;
 }
