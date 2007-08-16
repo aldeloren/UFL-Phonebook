@@ -90,8 +90,8 @@ text-align: left;
 font-size:1.3em;
 }
 
-th {
-padding-left: 10px
+th, td {
+padding:8px 15px 8px 10px;
 }
 
 tr {
@@ -104,7 +104,6 @@ background:#eee
 }
 
 td {
-padding:8px 15px 8px 10px;
 border-right: 1px solid #e1e1e1;
 }
 
