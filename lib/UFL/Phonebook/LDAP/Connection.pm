@@ -61,7 +61,39 @@ sub bind {
 
 =head2 _krb5_login
 
-Request a ticket using C<kinit> and the specific arguments.
+Request a Kerberos ticket.
+
+    $self->_krb5_login(
+        principal => 'user@ufl.edu',
+        keytab    => '/home/user/keytab',
+        lifetime  => 86400,  # 1 day
+    );
+
+=cut
+
+sub _krb5_login {
+    my ($self, %args) = @_;
+
+    my $keytab   = $args{keytab};
+    my $lifetime = $args{lifetime} || 3600;
+
+    die 'No keytab found' unless $keytab and -f $keytab;
+
+    my $kinited_file = "$keytab.$>.kinited";
+    my $mtime = (stat $kinited_file)[9];
+
+    if (! $mtime or time() - $mtime > $lifetime / 2) {
+        $self->_krb5_login_via_kinit(%args);
+
+        open my $fh, '>', $kinited_file
+            or die "Error storing kinit time: $!";
+        close $fh;
+    }
+}
+
+=head2 _krb5_login_via_kinit
+
+Request a Kerberos ticket using C<kinit>.
 
     $self->_krb5_login(
         principal => 'user@ufl.edu',
@@ -71,9 +103,11 @@ Request a ticket using C<kinit> and the specific arguments.
         timeout   => 10,  # Wait 10 seconds for kinit to finish
     );
 
+Note: You probably want to use L</_krb5_login> instead.
+
 =cut
 
-sub _krb5_login {
+sub _krb5_login_via_kinit {
     my ($self, %args) = @_;
 
     my $principal = $args{principal};
@@ -89,7 +123,7 @@ sub _krb5_login {
     my @cmd = ($command, '-l', $lifetime, '-k', '-t', $keytab, $principal);
     my ($in, $out, $err);
     eval {
-        local $SIG{ALRM} = sub { die "time out" };
+        local $SIG{ALRM} = sub { die "timeout after $timeout seconds" };
         alarm $timeout;
         my $pid = IPC::Open3::open3($in, $out, $err, @cmd);
         waitpid $pid, 0;
