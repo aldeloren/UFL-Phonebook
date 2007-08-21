@@ -86,8 +86,12 @@ sub login_via_env : Private {
 
     my $username_env_key = $self->username_env_key;
 
+    my $username = $ENV{$username_env_key};
+    die "Could not determine username from $username_env_key"
+        unless $username;
+
     $c->authenticate({
-        username => $ENV{$username_env_key},
+        username => $username,
     }) or die "Could not authenticate based on $username_env_key";
 }
 
