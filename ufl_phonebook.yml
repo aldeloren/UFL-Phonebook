@@ -34,16 +34,16 @@ Controller::Units:
     - ST010000
 
 Model::Person:
-  host:    &host ldap.ufl.edu
-  base:    ou=People,dc=ufl,dc=edu
+  host: &host ldap.ufl.edu
+  base: ou=People,dc=ufl,dc=edu
   options: &options
     sizelimit: 100
     timelimit: 10
   entry_class: UFL::Phonebook::Person
 
 Model::Unit:
-  host:    *host
-  base:    ou=Organizations,dc=ufl,dc=edu
+  host: *host
+  base: ou=Organizations,dc=ufl,dc=edu
   options: *options
   entry_class: UFL::Phonebook::Unit
 
