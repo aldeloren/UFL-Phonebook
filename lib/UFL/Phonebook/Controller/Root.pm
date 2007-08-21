@@ -5,6 +5,7 @@ use warnings;
 use base qw/Catalyst::Controller/;
 
 __PACKAGE__->config(namespace => '');
+__PACKAGE__->mk_accessors(qw/auto_login/);
 
 =head1 NAME
 
@@ -15,6 +16,20 @@ UFL::Phonebook::Controller::Root - Root controller
 Root L<Catalyst> controller for L<UFL::Phonebook>.
 
 =head1 METHODS
+
+=head2 auto
+
+Automatically log in users if configured to do so.
+
+=cut
+
+sub auto : Private {
+    my ($self, $c) = @_;
+
+    $c->forward('/authentication/login') if $self->auto_login;
+
+    return 1;
+}
 
 =head2 default
 
