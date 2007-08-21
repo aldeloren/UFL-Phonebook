@@ -50,7 +50,7 @@ sub login : Global {
         if $c->user_exists;
 }
 
-=head login_via_form
+=head2 login_via_form
 
 Log the user in via a standard username and password form.
 
