@@ -1,4 +1,4 @@
-<form method="get" action="[% c.uri_for('/search') | html %]" id="search" name="search">
+<form method="get" action="[% c.uri_for(c.controller('Search').action_for('search')) | html %]" id="search" name="search">
   <label for="source">
     <select name="source" id="source">
 [% SET sources = c.controller('Search').sources %]

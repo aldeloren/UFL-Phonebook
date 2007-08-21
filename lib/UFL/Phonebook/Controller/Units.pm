@@ -33,7 +33,7 @@ Redirect to the L<UFL::Phonebook> home page.
 sub index : Path('') Args(0) {
     my ($self, $c) = @_;
 
-    $c->res->redirect($c->uri_for('/'));
+    $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')));
 }
 
 =head2 search

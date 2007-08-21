@@ -32,7 +32,7 @@ Redirect to the L<UFL::Phonebook> home page.
 sub index : Path('') Args(0) {
     my ($self, $c) = @_;
 
-    $c->res->redirect($c->uri_for('/'));
+    $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')));
 }
 
 =head2 search
@@ -197,10 +197,10 @@ handled search queries.
 sub redirect_display_form_cgi : Path('/display_form.cgi') Args(0) {
     my ($self, $c) = @_;
 
-    my $destination = $c->uri_for('/');
+    my $destination = $c->uri_for($c->controller('Root')->action_for('index'));
 
     if (my $query = $c->req->param('person')) {
-        $destination = $c->uri_for('/people/search', { query => $query });
+        $destination = $c->uri_for($self->action_for('search'), { query => $query });
     }
 
     $c->res->redirect($destination, 301);
@@ -217,13 +217,13 @@ sub redirect_show_cgi : Path('/show.cgi') Args(0) {
     my ($self, $c) = @_;
 
     my $query = $c->req->uri->query;
-    return $c->res->redirect($c->uri_for('/'), 301)
+    return $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')), 301)
         unless $query;
 
     my $filter = $self->_get_show_cgi_filter($query);
     unless ($filter) {
         $c->log->debug("Could not determine filter for [$query]");
-        return $c->res->redirect($c->uri_for('/people/search', { query => $query }), 301);
+        return $c->res->redirect($c->uri_for($self->action_for('search'), { query => $query }), 301);
     }
 
     $c->log->debug("Filter = [$filter]");

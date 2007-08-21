@@ -46,7 +46,8 @@ sub login : Global {
         die 'Could not log you in';
     }
 
-    return $c->res->redirect($c->uri_for('/')) if $c->user_exists;
+    return $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')))
+        if $c->user_exists;
 }
 
 =head login_via_form
@@ -106,7 +107,8 @@ sub logout : Global {
 
     $c->logout;
 
-    my $logout_uri = $c->config->{logout_uri} || $c->uri_for('/');
+    my $logout_uri = $c->config->{logout_uri}
+        || $c->uri_for($c->controller('Root')->action_for('index'));
     $c->res->redirect($logout_uri);
 }
 

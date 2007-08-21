@@ -4,7 +4,7 @@
   <ul>
     <li><a href="http://news.ufl.edu/">News</a></li>
     <li><a href="http://calendar.ufl.edu/">Calendar</a></li>
-    <li><a href="[% c.uri_for('/') | html %]">[% c.config.name | html %]</a></li>
+    <li><a href="[% c.uri_for(c.controller('Root').action_for('index')) | html %]">[% c.config.name | html %]</a></li>
     <li><a href="https://my.ufl.edu/ps/signon.html">MyUFL</a></li>
     <li><a href="http://www.isis.ufl.edu/">ISIS</a></li>
     <li><a href="http://www.ufl.edu/websites/">Web Site Listing</a></li>
