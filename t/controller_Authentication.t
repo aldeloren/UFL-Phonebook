@@ -56,5 +56,5 @@ SKIP: {
     # With REMOTE_USER
     local $ENV{$username_env_key} = 'dwc';
     $mech->get_ok('/login', 'request for login page');
-    $mech->content_like(qr/Logged in as <a href="http://localhost/people/[A-Z]{8,9}/" class="user">dwc</a>/, 'looks like we logged in');
+    $mech->content_like(qr|Logged in as <a href="http://localhost/people/[A-Z]{8,9}/" class="user">dwc</a>|, 'looks like we logged in');
 }
