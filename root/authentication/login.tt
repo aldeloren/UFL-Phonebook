@@ -4,7 +4,7 @@
 -%]
 
 [% IF authentication_error %]
-<p>Error: [% authentication_error | html %].</p>
+<p>Error: Invalid username or password.</p>
 [% END -%]
 
 <form method="post" id="login">

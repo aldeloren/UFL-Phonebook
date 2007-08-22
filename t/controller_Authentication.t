@@ -36,12 +36,12 @@ my $controller = UFL::Phonebook->controller('Authentication');
     $mech->content_like(qr/Password/i, 'appears to contain a password field');
 }
 
-# Test login form
+# Test login via environment
 SKIP: {
     my $default_realm = UFL::Phonebook->config->{authentication}->{default_realm};
     my $realm_config  = UFL::Phonebook->config->{authentication}->{realms}->{$default_realm};
     skip 'Default realm must use AnyUser store', 3
-        unless $realm_config->{store}->{class} eq 'AnyUser';
+        unless $realm_config->{store}->{class} =~ /AnyUser$/;
 
     my $username_env_key = 'REMOTE_USER';
 
@@ -56,5 +56,5 @@ SKIP: {
     # With REMOTE_USER
     local $ENV{$username_env_key} = 'dwc';
     $mech->get_ok('/login', 'request for login page');
-    $mech->content_like(qr/Logged in as dwc/, 'looks like we logged in');
+    $mech->content_like(qr/Logged in as <a href="http://localhost/people/[A-Z]{8,9}/" class="user">dwc</a>/, 'looks like we logged in');
 }

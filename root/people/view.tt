@@ -21,7 +21,7 @@
   [% END %]
 
   <h4>Demo Information</h4>
-  <p>You're <strong>[% c.user_exists ? affiliation(c.user.ldap_record.eduPersonPrimaryAffiliation) : 'anonymous' | html %]</strong> looking at <strong>[% affiliation(person.eduPersonPrimaryAffiliation) | html %]</strong>.</p>
+  <p>You're <strong>[% c.user_exists ? affiliation(c.user.eduPersonPrimaryAffiliation) : 'anonymous' | html %]</strong> looking at <strong>[% affiliation(person.eduPersonPrimaryAffiliation) | html %]</strong>.</p>
   <dl>
   [% SET attributes = [ 'uflEduGender', 'uflEduBirthDate' ] %]
   [% FOREACH attribute IN attributes %]

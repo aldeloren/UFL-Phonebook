@@ -33,17 +33,7 @@ sub ACCEPT_CONTEXT {
     $self->{catalyst_user} = $c->user;
     weaken($self->{catalyst_user});
 
-    my $conn = $self->next::method(@_);
-
-    if ($c->user_exists) {
-        # Grab the current user's LDAP record
-        my $mesg = $conn->search("uid=" . $c->user->id);
-        if ($mesg->entries) {
-            $c->user->ldap_record($mesg->shift_entry);
-        }
-    }
-
-    return $conn;
+    $self->next::method(@_);
 }
 
 =head1 AUTHOR

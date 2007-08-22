@@ -21,7 +21,7 @@ This file documents the revision history for UFL::Phonebook.
         - 404 on invalid source in Controller::Search
         - Add SASL-based LDAP connection class for authenticated
           phonebook
-        - Add authentication bits for demoing
+        - Add authentication bits for allowing access by any user
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid

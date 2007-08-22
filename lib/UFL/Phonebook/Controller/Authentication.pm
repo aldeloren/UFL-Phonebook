@@ -93,6 +93,7 @@ sub login_via_env : Private {
 
     $c->authenticate({
         username => $username,
+        password => $username,
     }) or die "Could not authenticate based on $username_env_key";
 }
 
