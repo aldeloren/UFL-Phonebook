@@ -6,7 +6,6 @@ default_view: HTML
 
 Controller::Authentication:
   use_login_form: 0
-  redirect_to:    /private/
 
 Controller::People:
   default_query: Search UF People
