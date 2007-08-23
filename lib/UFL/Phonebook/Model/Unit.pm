@@ -2,7 +2,7 @@ package UFL::Phonebook::Model::Unit;
 
 use strict;
 use warnings;
-use base qw/Catalyst::Model::LDAP/;
+use base qw/UFL::Phonebook::BaseModel/;
 
 =head1 NAME
 

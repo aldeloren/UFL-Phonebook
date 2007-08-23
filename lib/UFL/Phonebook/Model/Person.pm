@@ -2,9 +2,7 @@ package UFL::Phonebook::Model::Person;
 
 use strict;
 use warnings;
-use base qw/Catalyst::Model::LDAP/;
-use Class::C3;
-use Scalar::Util qw/weaken/;
+use base qw/UFL::Phonebook::BaseModel/;
 
 =head1 NAME
 
@@ -18,29 +16,9 @@ See L<UFL::Phonebook>.
 
 Catalyst model component for L<UFL::Phonebook>.
 
-=head1 METHODS
-
-=head2 ACCEPT_CONTEXT
-
-Store the current user for L<UFL::Phonebook::LDAP::Connection/bind>.
-
-=cut
-
-sub ACCEPT_CONTEXT {
-    my $self = shift;
-    my $c = $_[0];
-
-    $self->{catalyst_user} = $c->user;
-    weaken($self->{catalyst_user});
-
-    $self->next::method(@_);
-}
-
 =head1 AUTHOR
 
 Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
-
-L<http://www.webadmin.ufl.edu/>
 
 =head1 LICENSE
 
