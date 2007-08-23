@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
 
-__PACKAGE__->mk_accessors(qw/redirect_to use_login_form username_env_key/);
+__PACKAGE__->mk_accessors(qw/redirect_to use_login_form username_env_key logout_uri/);
 
 =head1 NAME
 
@@ -108,7 +108,7 @@ sub logout : Global {
 
     $c->logout;
 
-    my $logout_uri = $c->config->{logout_uri}
+    my $logout_uri = $self->logout_uri
         || $c->uri_for($c->controller('Root')->action_for('index'));
     $c->res->redirect($logout_uri);
 }
