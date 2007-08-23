@@ -7,7 +7,9 @@ my $mech = Test::WWW::Mechanize::Catalyst->new;
 
 use_ok('UFL::Phonebook::Controller::Authentication');
 
-my $controller = UFL::Phonebook->controller('Authentication');
+my $controller    = UFL::Phonebook->controller('Authentication');
+my $auth_config   = UFL::Phonebook->config->{authentication};
+my $can_test_auth = exists $auth_config->{realms};
 
 # Test redirection to protected location
 {
@@ -27,7 +29,7 @@ my $controller = UFL::Phonebook->controller('Authentication');
 }
 
 # Test login form
-{
+SKIP: {
     $controller->redirect_to(undef);
     $controller->use_login_form(1);
     $controller->username_env_key(undef);
@@ -37,6 +39,8 @@ my $controller = UFL::Phonebook->controller('Authentication');
     $mech->title_like(qr/Login/i, 'looks like a login page');
     $mech->content_like(qr/Username/i, 'appears to contain a username field');
     $mech->content_like(qr/Password/i, 'appears to contain a password field');
+
+    skip 'Need at least one configured realm', 3 unless $can_test_auth;
     $mech->submit_form(with_fields => {
         username => 'dwc',
         password => 'dwc',
@@ -49,8 +53,10 @@ my $controller = UFL::Phonebook->controller('Authentication');
 
 # Test login via environment
 SKIP: {
-    my $default_realm = UFL::Phonebook->config->{authentication}->{default_realm};
-    my $realm_config  = UFL::Phonebook->config->{authentication}->{realms}->{$default_realm};
+    skip 'Need at least one configured realm', 7 unless $can_test_auth;
+
+    my $default_realm = $auth_config->{default_realm};
+    my $realm_config  = $auth_config->{realms}->{$default_realm};
     skip 'Default realm must use AnyUser store', 3
         unless $realm_config->{store}->{class} =~ /AnyUser$/;
 
