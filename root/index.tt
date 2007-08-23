@@ -8,6 +8,7 @@
     <input type="submit" class="submit" value="Search" />
     <p>Enter a name, email address, or GatorLink ID to find people.</p>
   </form>
+  <p>For additional access depending on your affiliation, please <a href="[% c.uri_for(c.controller('Authentication').action_for('login')) | html %]">login</a> using your GatorLink ID.</p>
 
 [% FILTER indent('  ') -%]
   [% INCLUDE people/includes/tips.tt -%]
