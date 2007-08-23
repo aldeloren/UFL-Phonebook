@@ -26,7 +26,8 @@ Automatically log in users if configured to do so.
 sub auto : Private {
     my ($self, $c) = @_;
 
-    $c->forward('/authentication/login') if $self->auto_login;
+    $c->forward('/authentication/login') if $self->auto_login
+        and not $c->user_exists;
 
     if ($c->user_exists) {
         my $mesg = $c->model('Person')->search("uid=" . $c->user->id);
