@@ -32,10 +32,9 @@ sub auto : Private {
     if ($c->user_exists) {
         my $mesg = $c->model('Person')->search("uid=" . $c->user->id);
         if (my $entry = $mesg->shift_entry) {
-            # XXX: Can't store the entry (no GLOB items in session)
-            $c->user->uflEduUniversityId($entry->uflEduUniversityId);
-            $c->user->eduPersonPrimaryAffiliation($entry->eduPersonPrimaryAffiliation);
-            $c->user->uri_args($entry->uri_args);
+            # XXX: Copy a few items (can't store the entry itself in session)
+            $c->user->$_($entry->$_)
+                for qw/eduPersonPrimaryAffiliation uflEduUniversityId uri_args/;
         }
     }
 
