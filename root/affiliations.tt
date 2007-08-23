@@ -1,0 +1,21 @@
+[% SET
+   title = 'Affiliations'
+   stylesheets = [ c.uri_for('/static/main.css') ]
+-%]
+
+<div id="affiliations">
+  <h3>Affiliations</h3>
+  <p>Information in <a href="http://www.ufl.edu/">UF</a>'s <a href="[% c.uri_for(c.controller('Authentication').action_for('login')) | html %]">authenticated [% c.config.name | html %]</a> is available depending on your affiliation with the university. Affiliations include:</p>
+  <ul>
+    <li>Faculty</li>
+    <li>Staff</li>
+    <li>Student</li>
+    <li>Member</li>
+  </ul>
+  <p>For example, if you are a student, you will see a limited view of information on other members of the university community.</p>
+  <p>If you are staff or faculty, the information you see depends on who you are looking at and their privacy preferences.</p>
+[% IF c.user_exists %]
+  <h4>Your affiliation</h4>
+  <p>Based on your current directory information, your affiliation is <strong>[% c.user.eduPersonPrimaryAffiliation | html %]</strong>. If you think this is an error, please contact the <a href="http://helpdesk.ufl.edu/">UF Help Desk</a> for assistance.</p>
+[% END %]
+</div><!-- #affiliations -->

@@ -95,6 +95,20 @@ list-style:circle;
 margin-left:20px
 }
 
+#affiliations ul {
+list-style:disc;
+margin-left:40px;
+}
+
+#affiliations p {
+padding:0.5em;
+}
+
+#affiliations h4 {
+font-size:14px;
+padding-top:1em;
+}
+
 #directories {
 margin:10px auto;
 width:34em

@@ -66,6 +66,18 @@ sub index : Path('') Args(0) {
     $c->stash(template  => 'index.tt');
 }
 
+=head2 affiliations
+
+Display the home page.
+
+=cut
+
+sub affiliations : Local Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(template  => 'affiliations.tt');
+}
+
 =head2 render
 
 Attempt to render a view, if needed.
