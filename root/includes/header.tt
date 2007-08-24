@@ -5,8 +5,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>[% IF title %][% title | trim | html %] - [% END %][% "${c.config.organization} ${c.config.name}" | html %]</title>
-<meta name="generator" content="[% "${c.config.name} ${c.VERSION}" | html %]" />
+<title>[% IF title %][% title | trim | html %] - [% END %]University of Florida [% c.config.name | html %]</title>
+<meta name="generator" content="University of Florida [% "${c.config.name} ${c.VERSION}" | html %]" />
 <link rel="icon" type="image/x-icon" href="[% c.uri_for('/favicon.ico') | html %]" />
 <link rel="shortcut icon" type="image/x-icon" href="[% c.uri_for('/favicon.ico') | html %]" />
 <link rel="stylesheet" type="text/css" media="screen" href="[% c.uri_for('/static/basic.css') | html %]" />
@@ -34,7 +34,7 @@
 [% IF heading %]
   [%+ INCLUDE $heading %]
 [% ELSE %]
-  <h2 class="replace" id="unit"><a href="http://www.ufl.edu/">[% c.config.organization | html %]<span></span></a></h2>
+  <h2 class="replace" id="unit"><a href="http://www.ufl.edu/">University of Florida<span></span></a></h2>
 [%+ END -%]
 </div>
 <div id="mainContainer"> 

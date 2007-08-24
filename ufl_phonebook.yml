@@ -1,7 +1,6 @@
 --- #YAML:1.0
 # Do not use tabs for indentation or label/value separation!
 name:         Phonebook
-organization: University of Florida
 default_view: HTML
 
 Controller::Authentication:
