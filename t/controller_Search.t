@@ -4,6 +4,7 @@ use Test::More tests => 14;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
+$mech->allow_external(1);
 
 use_ok('UFL::Phonebook::Controller::Search');
 

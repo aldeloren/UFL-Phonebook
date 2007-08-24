@@ -4,6 +4,7 @@ use Test::More tests => 19;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
+$mech->allow_external(1);
 
 use_ok('UFL::Phonebook::Controller::Authentication');
 
@@ -13,7 +14,7 @@ my $can_test_auth = exists $auth_config->{realms};
 
 # Test redirection to protected location
 {
-    my $redirect_to = 'http://localhost/private/';
+    my $redirect_to = '/private/';
 
     $controller->redirect_to($redirect_to);
     $controller->use_login_form(0);
@@ -23,7 +24,7 @@ my $can_test_auth = exists $auth_config->{realms};
     my $response = $mech->response->previous;
     ok($response, 'found response chain');
     ok($response->is_redirect, 'previous response was a redirect');
-    is($response->header('Location'), $redirect_to, 'response redirected to correct place');
+    is($response->header('Location'), "http://localhost$redirect_to", 'response redirected to correct place');
 
     $mech->get_ok('/logout', 'request to logout');
 }

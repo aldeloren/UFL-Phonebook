@@ -24,7 +24,7 @@ requires 'URI';
 requires 'YAML';
 
 build_requires 'Test::More';
-build_requires 'Test::WWW::Mechanize::Catalyst' => '0.39';
+build_requires 'Test::WWW::Mechanize::Catalyst' => '0.40';
 
 catalyst_files;
 install_script glob('script/*.pl');
