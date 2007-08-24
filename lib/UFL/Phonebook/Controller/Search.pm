@@ -3,6 +3,7 @@ package UFL::Phonebook::Controller::Search;
 use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
+use URI;
 
 __PACKAGE__->mk_accessors(qw/sources default_source/);
 
@@ -37,7 +38,9 @@ sub search : Path('') {
     my $source_info = $self->sources->{$source} || $self->sources->{$self->default_source};
     $c->detach('/default') unless $source_info;
 
-    my $url = URI->new($source_info->{url});
+    my $url = $source_info->{url} =~ /^http:/
+        ? URI->new($source_info->{url})
+        : $c->uri_for($source_info->{url});
     $url->query_form($source_info->{param} => $query);
 
     $c->log->debug("Search URL: [$url]");

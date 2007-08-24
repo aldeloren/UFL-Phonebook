@@ -22,6 +22,7 @@ This file documents the revision history for UFL::Phonebook.
         - Add SASL-based LDAP connection class for authenticated
           phonebook
         - Add authentication bits for allowing access by any user
+        - Use uri_for in Controller::Search for local URLs
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid
