@@ -2,7 +2,6 @@ package UFL::Phonebook;
 
 use strict;
 use warnings;
-use Scalar::Util;
 
 use Catalyst qw/
     ConfigLoader
