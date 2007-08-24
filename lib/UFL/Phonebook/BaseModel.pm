@@ -30,12 +30,13 @@ sub ACCEPT_CONTEXT {
     my $self = shift;
     my $c = $_[0];
 
-    if ($c->user_exists) {
-        $self->{catalyst_user} = $c->user;
-        weaken($self->{catalyst_user});
+    my $conn = $self->next::method(@_);
+
+    if ($conn->can('catalyst_user') and $c->user_exists) {
+        $conn->catalyst_user($c->user);
     }
 
-    $self->next::method(@_);
+    return $conn;
 }
 
 =head1 AUTHOR

@@ -46,12 +46,7 @@ sub bind {
     my %krb5_args = %{ delete $args{krb5} || {} };
     my %sasl_args = %{ delete $args{sasl} || {} };
 
-    my $catalyst_user = delete $args{catalyst_user};
-
-    if (%krb5_args and %sasl_args and $catalyst_user) {
-        # Store the Catalyst user for use in search
-        $self->catalyst_user($catalyst_user);
-
+    if (%krb5_args and %sasl_args) {
         $self->_krb5_login(%krb5_args);
 
         my $sasl = Authen::SASL->new(mechanism => 'GSSAPI', %sasl_args);
