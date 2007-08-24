@@ -7,7 +7,7 @@ use Catalyst::Plugin::Authentication::User::Hash;
 
 =head1 NAME
 
-UFL::Phonebook::Entry - A phonebook entry
+UFL::Phonebook::Authentication::Store::AnyUser - Allow any user to authenticate
 
 =head1 SYNOPSIS
 
