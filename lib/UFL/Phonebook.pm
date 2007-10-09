@@ -9,6 +9,7 @@ use Catalyst qw/
     Session
     Session::State::Cookie
     Session::Store::File
+    StackTrace
     Static::Simple
 /;
 
