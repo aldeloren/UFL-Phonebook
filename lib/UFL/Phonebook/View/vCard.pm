@@ -1,27 +1,28 @@
 package UFL::Phonebook::View::vCard;
 
 use strict;
-use base 'Catalyst::View::TT';
+use warnings;
+use base qw/Catalyst::View::TT/;
 
 =head1 NAME
 
-UFL::Phonebook::View::vCard - Catalyst TT View
+UFL::Phonebook::View::vCard - Template Toolkit view component
 
 =head1 SYNOPSIS
 
-See L<UFL::Phonebook>
+See L<UFL::Phonebook>.
 
 =head1 DESCRIPTION
 
-Catalyst TT View.
+The Template Toolkit view component used by L<UFL::Phonebook>.
 
 =head1 AUTHOR
 
-A clever guy
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
 =head1 LICENSE
 
-This library is free software, you can redistribute it and/or modify
+This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
