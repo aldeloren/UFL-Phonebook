@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use base qw/Catalyst::Model::LDAP/;
 use Class::C3;
-use Scalar::Util qw/weaken/;
 
 =head1 NAME
 
