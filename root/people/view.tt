@@ -12,24 +12,6 @@
 
 <div class="vcard results">
   <h3><span class="fn">[% person.displayName | html %]</span></h3>
-[% IF c.config.demo %]
-  [% MACRO affiliation(affliation) BLOCK %]
-    [% IF affliation != 'staff' AND affliation != 'faculty' %]
-      [% affliation.match('^[AEIOUaeiou]') ? 'an ' : 'a ' %]
-    [% END %]
-    [% affliation %]
-  [% END %]
-
-  <h4>Demo Information</h4>
-  <p>You're <strong>[% c.user_exists ? affiliation(c.user.eduPersonPrimaryAffiliation) : 'anonymous' | html %]</strong> looking at <strong>[% affiliation(person.eduPersonPrimaryAffiliation) | html %]</strong>.</p>
-  <dl>
-  [% SET attributes = [ 'uflEduGender', 'uflEduBirthDate' ] %]
-  [% FOREACH attribute IN attributes %]
-    <dt>[% attribute | html %]</dt>
-    <dd>[% IF person.$attribute %][% person.$attribute | html %][% ELSE %](Unknown)[% END %]</dd>
-  [% END %]
-  </dl>
-[% END %]
 
   <h4>General Information</h4>
   <dl class="gen">
