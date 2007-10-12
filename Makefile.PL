@@ -28,6 +28,7 @@ requires 'Tree::Simple';
 requires 'URI';
 requires 'YAML';
 
+build_requires 'Test::MockObject';
 build_requires 'Test::More';
 build_requires 'Test::WWW::Mechanize::Catalyst' => '0.40';
 
