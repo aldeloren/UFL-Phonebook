@@ -55,10 +55,9 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 # Authenticated searches
 #
 
-my $principal  = '02010600/app/phonebook';
-my $filename   = '02010600_app_phonebook';
-my $keytab     = File::Spec->join($FindBin::Bin, File::Spec->updir, 'keytab', $filename);
-diag($keytab);
+my $principal = '02010600/app/phonebook';
+(my $filename = $principal) =~ s|/|_|g;
+my $keytab = File::Spec->join($FindBin::Bin, File::Spec->updir, 'keytab', $filename);
 my $authenticated_model = UFL::Phonebook::Model::Person->new({
     %config,
     connection_class => 'UFL::Phonebook::LDAP::Connection',
