@@ -28,4 +28,5 @@
 
 # Runtime files and directories
 _local.yml$
+\bconf\b
 \bkeytab\b
