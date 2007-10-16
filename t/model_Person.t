@@ -3,7 +3,7 @@ use warnings;
 use File::Spec;
 use FindBin;
 use Test::MockObject;
-use Test::More tests => 33;
+use Test::More tests => 42;
 
 use_ok('UFL::Phonebook::Model::Person');
 
@@ -137,6 +137,24 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
     my $entry = $mesg->entry(0);
     isa_ok($entry, 'UFL::Phonebook::Person');
     is($entry->uid, 'twishap', 'uid matches');
+    is($entry->eduPersonPrimaryAffiliation, 'student', 'primary affiliation is student');
+    ok($entry->exists('postalAddress'), 'has a postal address');
+    ok($entry->exists('telephoneNumber'), 'has a phone number');
+    ok(! $entry->exists('mail'), 'entry does not have an email address');
+}
+
+# Student search for student
+{
+    $user->remove('id');
+    $user->set_always('id', 'twishap');
+    my $conn = $authenticated_model->ACCEPT_CONTEXT($c);
+
+    my $mesg = $conn->search('uid=shubha');
+    is($mesg->count, 1, 'student search for student returned something');
+
+    my $entry = $mesg->entry(0);
+    isa_ok($entry, 'UFL::Phonebook::Person');
+    is($entry->uid, 'shubha', 'uid matches');
     is($entry->eduPersonPrimaryAffiliation, 'student', 'primary affiliation is student');
     ok($entry->exists('postalAddress'), 'has a postal address');
     ok($entry->exists('telephoneNumber'), 'has a phone number');
