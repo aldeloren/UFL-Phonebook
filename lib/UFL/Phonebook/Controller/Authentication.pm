@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
 
-__PACKAGE__->mk_accessors(qw/redirect_to use_login_form username_env_key logout_uri/);
+__PACKAGE__->mk_accessors(qw/redirect_to use_login_form use_environment logout_uri/);
 
 =head1 NAME
 
@@ -39,7 +39,7 @@ sub login : Global {
     if ($self->use_login_form) {
         $c->forward('login_via_form');
     }
-    elsif ($self->username_env_key) {
+    elsif ($self->use_environment) {
         $c->forward('login_via_env');
     }
     else {
@@ -78,23 +78,21 @@ sub login_via_form : Private {
 
 =head2 login_via_env
 
-Log the user in based on the configured environment key.
+Log the user in based on the environment (via C<REMOTE_USER>).
 
 =cut
 
 sub login_via_env : Private {
     my ($self, $c) = @_;
 
-    my $username_env_key = $self->username_env_key;
-
-    my $username = $ENV{$username_env_key};
-    die "Could not determine username from $username_env_key"
+    my $username = $c->request->user;
+    die "Could not determine username from environment"
         unless $username;
 
     $c->authenticate({
         username => $username,
         password => $username,
-    }) or die "Could not authenticate based on $username_env_key";
+    }) or die "Could not authenticate based on environment";
 }
 
 =head2 logout
