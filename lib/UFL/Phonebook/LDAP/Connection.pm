@@ -6,7 +6,6 @@ use base qw/Catalyst::Model::LDAP::Connection/;
 use Authen::SASL qw/Perl/;
 use Carp qw/croak/;
 use Class::C3;
-use IPC::Open3 qw//;
 use Net::LDAP::Control::ProxyAuth;
 
 __PACKAGE__->mk_accessors(qw/catalyst_user/);
@@ -17,8 +16,25 @@ UFL::Phonebook::LDAP::Connection - LDAP connection for authenticated requests
 
 =head1 DESCRIPTION
 
-Overrides L<Catalyst::Model::LDAP::Connection> to assume the identity
-of the person associated with the current L<Catalyst> user.
+Overrides L<Catalyst::Model::LDAP::Connection> to run LDAP searches as
+the person associated with the current L<Catalyst> user.
+
+The connection uses Kerberos to authenticate as an
+application-specific account that has the authority to assume the
+identity of other users.
+
+An external command, C<kinit>, is used to get a ticket from the
+Kerberos server. The ticket is only refreshed when needed, based on
+the mtime of the ticket cache file.
+
+Occasionally the Kerberos ticket will become invalid. This problem
+often shows up as the following error:
+
+    LDAP error: Local error
+
+If this happens, check that there is a valid Kerberos ticket for the
+user running the code and make sure that the ticket cache path as
+configured for this connection is correct.
 
 =head1 METHODS
 
@@ -29,9 +45,10 @@ Bind the connection, authenticating via SASL.
     $conn->bind(
         host => 'ldap.ufl.edu',
         krb5 => {
-            principal => 'user@ufl.edu',
-            keytab    => '/home/user/keytab',
-            lifetime  => 86400,  # 1 day
+            principal  => 'user@ufl.edu',
+            keytab     => '/home/user/keytab',
+            cred_cache => '/tmp/krb5cc_1000',
+            lifetime   => 86400,  # 1 day
         },
         sasl => {
             service => 'user@ufl.edu',
@@ -47,6 +64,10 @@ sub bind {
     my %sasl_args = %{ delete $args{sasl} || {} };
 
     if (%krb5_args and %sasl_args) {
+        $krb5_args{cred_cache} ||= "/tmp/krb5cc_$>";
+        $krb5_args{lifetime}   ||= 3600;
+        $krb5_args{command}    ||= '/usr/bin/kinit';
+
         $self->_krb5_login(%krb5_args);
 
         my $sasl = Authen::SASL->new(mechanism => 'GSSAPI', %sasl_args);
@@ -61,9 +82,10 @@ sub bind {
 Request a Kerberos ticket.
 
     $self->_krb5_login(
-        principal => 'user@ufl.edu',
-        keytab    => '/home/user/keytab',
-        lifetime  => 86400,  # 1 day
+        principal  => 'user@ufl.edu',
+        keytab     => '/home/user/keytab',
+        cred_cache => '/tmp/krb5cc_1000',
+        lifetime   => 86400,  # 1 day
     );
 
 =cut
@@ -71,20 +93,13 @@ Request a Kerberos ticket.
 sub _krb5_login {
     my ($self, %args) = @_;
 
-    my $keytab   = $args{keytab};
-    my $lifetime = $args{lifetime} || 3600;
+    my $cred_cache = $args{cred_cache};
+    my $lifetime   = $args{lifetime};
+    die 'You must specify the path to the credential cache' unless $cred_cache;
 
-    die 'No keytab found' unless $keytab and -f $keytab;
-
-    my $kinited_file = "$keytab.$>.kinited";
-    my $mtime = (stat $kinited_file)[9];
-
+    my $mtime = (stat $cred_cache)[9];
     if (! $mtime or time() - $mtime > $lifetime / 2) {
         $self->_krb5_login_via_kinit(%args);
-
-        open my $fh, '>', $kinited_file
-            or die "Error storing kinit time: $!";
-        close $fh;
     }
 }
 
@@ -92,12 +107,12 @@ sub _krb5_login {
 
 Request a Kerberos ticket using C<kinit>.
 
-    $self->_krb5_login(
-        principal => 'user@ufl.edu',
-        keytab    => '/home/user/keytab',
-        lifetime  => 86400,  # 1 day
-        command   => '/usr/local/bin/kinit',
-        timeout   => 10,  # Wait 10 seconds for kinit to finish
+    $self->_krb5_login_via_kinit(
+        principal  => 'user@ufl.edu',
+        keytab     => '/home/user/keytab',
+        cred_cache => '/tmp/krb5cc_1000',
+        lifetime   => 86400,  # 1 day
+        command    => '/usr/local/bin/kinit',
     );
 
 Note: You probably want to use L</_krb5_login> instead.
@@ -107,24 +122,23 @@ Note: You probably want to use L</_krb5_login> instead.
 sub _krb5_login_via_kinit {
     my ($self, %args) = @_;
 
-    my $principal = $args{principal};
-    my $keytab    = $args{keytab};
-    my $lifetime  = $args{lifetime} || 3600;
-    my $command   = $args{command} || '/usr/bin/kinit';
-    my $timeout   = $args{timeout} || 10;
+    my $principal  = $args{principal};
+    my $keytab     = $args{keytab};
+    my $cred_cache = $args{cred_cache};
+    my $lifetime   = $args{lifetime};
+    my $command    = $args{command};
 
-    die 'No principal found' unless $principal;
+    die 'You must specify the principal' unless $principal;
     die 'No keytab found' unless $keytab and -f $keytab;
+    die 'You must specify the path to the credential cache' unless $cred_cache;
     die 'No kinit command available' unless -x $command;
 
-    my @cmd = ($command, '-l', $lifetime, '-k', '-t', $keytab, $principal);
-    my ($in, $out, $err);
+    my @cmd = ($command, '-c', $cred_cache, '-l', $lifetime, '-k', '-t', $keytab, $principal);
+    warn "Calling kinit: [" , join(' ', @cmd) . "]";
     eval {
-        local $SIG{ALRM} = sub { die "timeout after $timeout seconds" };
-        alarm $timeout;
-        my $pid = IPC::Open3::open3($in, $out, $err, @cmd);
-        waitpid $pid, 0;
-        alarm 0;
+        # Override the Catalyst::Engine::HTTP signal handler
+        local $SIG{CHLD} = '';
+        system(@cmd) == 0 or die "[$?] [$!]";
     };
     die "kinit failed: $@" if $@;
 }
