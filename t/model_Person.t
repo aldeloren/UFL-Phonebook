@@ -3,7 +3,10 @@ use warnings;
 use File::Spec;
 use FindBin;
 use Test::MockObject;
-use Test::More tests => 42;
+use Test::More;
+
+plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
+plan tests    => 42;
 
 use_ok('UFL::Phonebook::Model::Person');
 

@@ -47,7 +47,7 @@ SKIP: {
         password => 'dwc',
     });
     ok($mech->success, 'submitted form');
-    $mech->content_like(qr|Logged in as <a href="http://localhost/people/[A-Z]{8,9}/" class="user">dwc</a>|, 'looks like we logged in');
+    $mech->content_like(qr|Logged in as <a href[^>]+>dwc</a>|, 'looks like we logged in');
 
     $mech->get_ok('/logout', 'request to logout');
 }
@@ -75,7 +75,7 @@ SKIP: {
     # With REMOTE_USER
     local $ENV{REMOTE_USER} = 'dwc';
     $mech->get_ok('/login', 'request for login page');
-    $mech->content_like(qr|Logged in as <a href="http://localhost/people/[A-Z]{8,9}/" class="user">dwc</a>|, 'looks like we logged in');
+    $mech->content_like(qr|Logged in as <a href[^>]+>dwc</a>|, 'looks like we logged in');
 
     $mech->get_ok('/logout', 'request to logout');
     my $response = $mech->response->previous;
