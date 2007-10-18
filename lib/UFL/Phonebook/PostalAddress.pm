@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use base qw/Class::Accessor::Fast/;
 use overload
+    'eq' => \&equals,
+    'ne' => \&not_equals,
     '""' => \&as_string;
 
 __PACKAGE__->mk_accessors(qw/title street locality region dominion postal_code _original/);
@@ -86,6 +88,42 @@ sub _parse {
     # Any remaining stuff we call a 'title'
     my $title = join "\n", @parts;
     $self->title($title);
+}
+
+=head2 equals
+
+Return true iff this address is the same as the specified address.
+
+    $address->equals($another_address);
+    $address eq $another_address;
+
+=cut
+
+sub equals {
+    my ($self, $other) = @_;
+
+    my $equals = 1;
+    for my $part (qw/street locality region dominion postal_code/) {
+        if ($self->$part ne $other->$part) {
+            $equals = 0;
+            last;
+        }
+    }
+
+    return $equals;
+}
+
+=head2 not_equals
+
+Return true iff this address is not the same as the specified address.
+
+    $address->not_equals($another_address);
+    $address ne $another_address;
+
+=cut
+
+sub not_equals {
+    return ! shift->equals(@_);
 }
 
 =head2 as_string

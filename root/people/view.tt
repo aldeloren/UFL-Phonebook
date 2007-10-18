@@ -45,29 +45,24 @@
   </dl><!-- .tel -->
 [% END -%]
 
-[% SET postal_addresses = [ 'campus', 'home', 'permanent', 'mailing', 'emergency' ] %]
-[% SET display_addresses = 0 %]
-[% FOREACH postal_address_name IN postal_addresses %]
-  [% IF person.uflEduAllPostalAddresses.$postal_address_name %]
-    [% SET display_addresses = 1 %]
-    [% LAST %]
-  [% END %]
-[% END %]
-[% IF display_addresses %]
-
+[% IF person.postalAddress OR person.registeredAddress %]
   <h4>Addresses</h4>
   <dl class="adr">
-  [% FOREACH postal_address_name IN postal_addresses %]
-    [% postal_address = person.uflEduAllPostalAddresses.$postal_address_name %]
-    [% IF postal_address %]
-    <dt class="type">[% postal_address_name | ucfirst %]</dt>
+    <dt class="type">Campus</dt>
     <dd>
-      [% FILTER indent('      ') %]
+  [% FILTER indent('      ') %]
 
-        [% INCLUDE includes/address.tt address = postal_address %]
-      [% END -%]
+    [% INCLUDE includes/address.tt address = person.postalAddress %]
+  [% END -%]
     </dd>
+  [% IF person.postalAddress != person.registeredAddress %]
+    <dt class="type">Home</dt>
+    <dd>
+    [% FILTER indent('      ') %]
+
+      [% INCLUDE includes/address.tt address = person.registeredAddress %]
     [% END -%]
+    </dd>
   [% END %]
   </dl><!-- .adr -->
 [% END -%]
