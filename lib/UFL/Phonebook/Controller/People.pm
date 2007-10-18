@@ -91,8 +91,8 @@ sub results : Private {
         $c->res->redirect($c->uri_for($self->action_for('view'), $person->uri_args, ''));
     }
     elsif (@people) {
-        my $sort = $c->req->param('sort') || 'cn';
-        @people  = sort { $a->$sort cmp $b->$sort } @people;
+#        my $sort = $c->req->param('sort') || 'cn';
+#        @people  = sort { $a->$sort cmp $b->$sort } @people;
 
         $c->stash(
             people   => \@people,
