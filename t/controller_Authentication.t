@@ -14,26 +14,26 @@ my $can_test_auth = exists $auth_config->{realms};
 
 # Test redirection to protected location
 {
-    my $redirect_to = '/private/';
+    my $authenticated_uri = '/private/';
 
-    $controller->redirect_to($redirect_to);
     $controller->use_login_form(0);
-    $controller->username_env_key(undef);
+    $controller->use_environment(0);
+    $controller->authenticated_uri($authenticated_uri);
 
     $mech->get('/login');
     my $response = $mech->response->previous;
     ok($response, 'found response chain');
     ok($response->is_redirect, 'previous response was a redirect');
-    is($response->header('Location'), "http://localhost$redirect_to", 'response redirected to correct place');
+    is($response->header('Location'), "http://localhost$authenticated_uri", 'response redirected to correct place');
 
     $mech->get_ok('/logout', 'request to logout');
 }
 
 # Test login form
 SKIP: {
-    $controller->redirect_to(undef);
     $controller->use_login_form(1);
-    $controller->username_env_key(undef);
+    $controller->use_environment(0);
+    $controller->authenticated_uri(undef);
     $controller->logout_uri(undef);
 
     $mech->get_ok('/login', 'request for login page');
@@ -61,12 +61,11 @@ SKIP: {
     skip 'Default realm must use AnyUser store', 3
         unless $realm_config->{store}->{class} =~ /AnyUser$/;
 
-    my $username_env_key = 'REMOTE_USER';
-    my $logout_uri       = 'http://login.gatorlink.ufl.edu/quit.cgi';
+    my $logout_uri = 'http://login.gatorlink.ufl.edu/quit.cgi';
 
-    $controller->redirect_to(undef);
     $controller->use_login_form(0);
-    $controller->username_env_key($username_env_key);
+    $controller->use_environment(1);
+    $controller->authenticated_uri(undef);
     $controller->logout_uri($logout_uri);
 
     # Without REMOTE_USER
@@ -74,7 +73,7 @@ SKIP: {
     is($mech->status, 500, 'request failed');
 
     # With REMOTE_USER
-    local $ENV{$username_env_key} = 'dwc';
+    local $ENV{REMOTE_USER} = 'dwc';
     $mech->get_ok('/login', 'request for login page');
     $mech->content_like(qr|Logged in as <a href="http://localhost/people/[A-Z]{8,9}/" class="user">dwc</a>|, 'looks like we logged in');
 

@@ -5,6 +5,9 @@ This file documents the revision history for UFL::Phonebook.
         - Add tests of LDAP ACLs
         - Improve handling of environment-based authentication for
           REMOTE_USER on mod_fastcgi
+        - Controller::Authentication: Rename configuration paramter
+          for redirecting to private version from redirect_to to
+          authenticated_uri
 
 0.20  Fri Aug 24 18:04:29 EDT 2007
         - Rename from Phonebook to UFL::Phonebook

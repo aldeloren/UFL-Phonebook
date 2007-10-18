@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
 
-__PACKAGE__->mk_accessors(qw/redirect_to use_login_form use_environment logout_uri/);
+__PACKAGE__->mk_accessors(qw/use_login_form use_environment authenticated_uri logout_uri/);
 
 =head1 NAME
 
@@ -30,10 +30,10 @@ sub login : Global {
     my ($self, $c) = @_;
 
     # Allow redirection to a separate, authenticated URL
-    if ($self->redirect_to) {
-        my $redirect_to = $c->uri_for($self->redirect_to);
-        return $c->res->redirect($redirect_to)
-            unless $c->req->uri =~ /^$redirect_to/;
+    if ($self->authenticated_uri) {
+        my $authenticated_uri = $c->uri_for($self->authenticated_uri);
+        return $c->res->redirect($authenticated_uri)
+            unless $c->req->uri =~ /^$authenticated_uri/;
     }
 
     if ($self->use_login_form) {
