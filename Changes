@@ -12,6 +12,8 @@ This file documents the revision history for UFL::Phonebook.
           file descriptors when running in FastCGI
         - ::LDAP::Connection: Use the Kerberos credential cache
           instead of a separate lock file to determine when to kinit
+        - In /units/people, use stashed unit for page title instead of
+          relying on a field that the person might not have
 
 0.20  Fri Aug 24 18:04:29 EDT 2007
         - Rename from Phonebook to UFL::Phonebook
