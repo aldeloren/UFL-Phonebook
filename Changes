@@ -5,7 +5,7 @@ This file documents the revision history for UFL::Phonebook.
         - Add tests of LDAP ACLs
         - Improve handling of environment-based authentication for
           REMOTE_USER on mod_fastcgi
-        - Controller::Authentication: Rename configuration paramter
+        - ::Controller::Authentication: Rename configuration paramter
           for redirecting to private version from redirect_to to
           authenticated_uri
         - ::LDAP::Connection: Rewrite to avoid issues with incorrect
@@ -18,14 +18,13 @@ This file documents the revision history for UFL::Phonebook.
 0.20  Fri Aug 24 18:04:29 EDT 2007
         - Rename from Phonebook to UFL::Phonebook
         - Switch to Catalyst::Plugin::ConfigLoader
-        - Move actions from application to Controller::Root
+        - Move actions from application to ::Controller::Root
         - Convert /end to Catalyst::Action::RenderView
         - Move controller-specific configuration into the controller
           namespaces
-        - Rename Model::Organization to Model::Unit to match the rest
-          of the application
-        - Refactor UFL::Phonebook::Entry to use newer style
-          Catalyst::Model::LDAP
+        - Rename ::Model::Organization to ::Model::Unit to match the
+          rest of the application
+        - Refactor ::Entry to use newer style Catalyst::Model::LDAP
         - Split view into HTML and vCard content types
         - Convert controllers to Chained actions
         - Remove ugly uri_for override
@@ -33,18 +32,18 @@ This file documents the revision history for UFL::Phonebook.
         - Add address inflation for 'Emergency Contact Mailing
           Address'
         - Convert to Class::Accessor::Fast
-        - 404 on invalid source in Controller::Search
+        - 404 on invalid source in ::Controller::Search
         - Add SASL-based LDAP connection class for authenticated
           phonebook
         - Add authentication bits for allowing access by any user
-        - Use uri_for in Controller::Search for local URLs
+        - Use uri_for in ::Controller::Search for local URLs
 
 0.19  Tue Nov 28 16:00:51 EST 2006
         - Cleanup {encode,decode}_ufid
         - Display "One hundred results are displayed below" instead of
           "the first 100 entries" when sizelimit is reached
-        - Phonebook::Controller::People: Use get_url_args instead of
-          hard coding use of uflEduUniversityId
+        - ::Controller::People: Use get_url_args instead of hard
+          coding use of uflEduUniversityId
         - Use uflEduPsDeptId instead of uflEduUniversityId for units,
           since that's now part of the DN
         - When searching for people in a unit, and only one person
@@ -59,10 +58,10 @@ This file documents the revision history for UFL::Phonebook.
         - 404 on an invalid ACTION in /people/ENCODED_UFID/ACTION/
         - 404 on /people/UFID/
         - Remove vCard view; instead use a new TT wrapper
-        - Improve URL generation in Phonebook::Controller::Search
+        - Improve URL generation in ::Controller::Search
         - Redirect from /people/ and /units/ to /
         - Refactor old application redirect handling into
-          Phonebook::Controller::People
+          ::Controller::People
         - Hide unit if person is in REGISTRAR STUDENTS
         - Change "people in unit" URLs to be /units/UFID/people/
           instead of /people/unit/UFID/
@@ -136,10 +135,9 @@ This file documents the revision history for UFL::Phonebook.
 0.03  Wed Dec 28 13:36:22 EST 2005
         - Upgrade to Catalyst 5.60
         - Move Uf::Webadmin::Phonebook to Phonebook
-        - Remove Phonebook::Constants, as it wasn't helping with
-          readability
-        - Rename Phonebook::Utilities to Phonebook::Util for
-          consistency with other Perl packages
+        - Remove ::Constants, as it wasn't helping with readability
+        - Rename ::Utilities to ::Util for consistency with other Perl
+          packages
 
 0.02  Mon Nov 21 18:24:31 EST 2005
         - Improve address parsing and output
