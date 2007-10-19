@@ -18,7 +18,7 @@
 [% SET odd = 1 %]
 [% FOREACH person IN people %]
     <tr[% IF odd %] class="odd"[% END %]>
-      <td><a href="[% c.uri_for(c.controller('People').action_for('view'), person.uri_args, '') | html %]">[% person.displayName || '(Unknown)' | html %]</a></td>
+      <td><a href="[% c.uri_for(c.controller('People').action_for('view'), person.uri_args, '') | html %]">[% person.displayName || '(Not Available)' | html %]</a></td>
       <td>
         [% (person.eduPersonPrimaryAffiliation != 'student' AND person.title ? person.title : person.eduPersonPrimaryAffiliation) | html %]
         [% IF person.departmentNumber AND person.o AND c.controller('Units').hide.grep("^${person.departmentNumber}$").size == 0 %], <a href="[% c.uri_for(c.controller('Units').action_for('view'), [ person.departmentNumber ], '') | html %]">[% person.o | html %]</a>[% END %]

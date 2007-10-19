@@ -1,5 +1,8 @@
 This file documents the revision history for UFL::Phonebook.
 
+0.22
+        - Say "Not Available" instead of "Unknown" for search results
+
 0.21  Thu Oct 18 19:41:42 EDT 2007
         - Add a few missing (mostly core) modules to Makefile.PL
         - Add tests of LDAP ACLs
