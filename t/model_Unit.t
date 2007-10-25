@@ -1,6 +1,9 @@
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More;
+
+plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
+plan tests    => 6;
 
 use_ok('UFL::Phonebook::Model::Unit');
 

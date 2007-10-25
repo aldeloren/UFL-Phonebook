@@ -1,5 +1,5 @@
 <div id="adminlinks">
-  <p>Link to <a href="[% c.uri_for(c.controller.action_for('view'), unit.uri_args, '') | html %]">this entry</a>.</p>
-  <p>Search for <a href="[% c.uri_for(c.controller.action_for('people'), unit.uri_args, '') | html %]">members of this unit</a>.</p>
-  <p>Display the full <a href="[% c.uri_for(c.controller.action_for('full'), unit.uri_args, '') | html %]"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
+  <p>Link to <a href="[% c.uri_for(c.controller.action_for('view'), entry.uri_args, '') | html %]">this entry</a>.</p>
+  <p>Search for <a href="[% c.uri_for(c.controller.action_for('people'), entry.uri_args, '') | html %]">members of this unit</a>.</p>
+  <p>Display the full <a href="[% c.uri_for(c.controller.action_for('full'), entry.uri_args, '') | html %]"><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> entry</a>.</p>
 </div>

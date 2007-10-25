@@ -3,7 +3,7 @@
    heading = 'people/includes/search.tt'
 -%]
 
-[% INCLUDE includes/results_info.tt results = units, singular = 'unit', plural = 'units' -%]
+[% INCLUDE includes/results_info.tt results = entries, singular = 'unit', plural = 'units' -%]
 
 <table>
   <thead>
@@ -15,7 +15,7 @@
   </thead>
   <tbody>
 [% SET odd = 1 %]
-[% FOREACH unit IN units %]
+[% FOREACH unit IN entries %]
     <tr[% IF odd %] class="odd"[% END %]>
       <td><a href="[% c.uri_for(c.controller.action_for('view'), unit.uri_args, '') | html %]">[% unit.displayName ? unit.displayName : unit.o | html %]</a></td>
       <td>[% IF unit.telephoneNumber %][% unit.telephoneNumber | html %][% ELSE %]&nbsp;[% END %]</td>

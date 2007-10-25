@@ -1,18 +1,18 @@
 [% SET
-   title   = 'Full LDAP Entry for ' _ unit.o
+   title   = 'Full LDAP Entry for ' _ entry.o
    heading = 'people/includes/search.tt'
 -%]
 
 <div id="ldap">
   <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
   <dl>
-[% FOREACH attribute IN unit.attributes.sort %]
+[% FOREACH attribute IN entry.attributes.sort %]
     <dt>[% attribute | html %]</dt>
     <dd>
-  [% IF unit.$attribute %]
+  [% IF entry.$attribute %]
 
     [% FILTER indent('      ') %]
-      [% unit.$attribute.join("\n") | html | html_line_break %]
+      [% entry.$attribute.join("\n") | html | html_line_break %]
     [% END %]
   [% ELSE %]
       &nbsp;

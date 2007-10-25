@@ -1,5 +1,5 @@
 [% SET
-   title   = person.displayName
+   title   = entry.displayName
    heading = 'people/includes/search.tt'
 -%]
 
@@ -11,74 +11,74 @@
 [% END -%]
 
 <div class="vcard results">
-  <h3><span class="fn">[% person.displayName | html %]</span></h3>
+  <h3><span class="fn">[% entry.displayName | html %]</span></h3>
 
   <h4>General Information</h4>
   <dl class="gen">
-[% IF person.mail %]
+[% IF entry.mail %]
     <dt>Email</dt>
-    <dd><a class="email" href="mailto:[% person.mail | spam_armor %]">[% person.mail | spam_armor %]</a></dd>
+    <dd><a class="email" href="mailto:[% entry.mail | spam_armor %]">[% entry.mail | spam_armor %]</a></dd>
 [% END %]
-[% IF person.homePageURL %]
+[% IF entry.homePageURL %]
     <dt>Web Site</dt>
-    <dd><a class="url" href="[% person.homePageURL | html %]">[% person.homePageURL | html %]</a></dd>
+    <dd><a class="url" href="[% entry.homePageURL | html %]">[% entry.homePageURL | html %]</a></dd>
 [% END %]
     <dt>Affiliation</dt>
-    <dd class="title">[% IF person.eduPersonPrimaryAffiliation %][% person.eduPersonPrimaryAffiliation | html %][% ELSE %](Unknown)[% END %]</dd>
+    <dd class="title">[% IF entry.eduPersonPrimaryAffiliation %][% entry.eduPersonPrimaryAffiliation | html %][% ELSE %](Unknown)[% END %]</dd>
   </dl><!-- .gen -->
 
-[% IF person.telephoneNumber OR person.homePhone OR person.mobile %]
+[% IF entry.telephoneNumber OR entry.homePhone OR entry.mobile %]
   <h4>Phone Numbers</h4>
   <dl class="tel">
-  [% IF person.telephoneNumber %]
+  [% IF entry.telephoneNumber %]
     <dt class="type">Campus</dt>
-    <dd class="value">[% person.telephoneNumber | html %]</dd>
+    <dd class="value">[% entry.telephoneNumber | html %]</dd>
   [% END %]
-  [% IF person.homePhone %]
+  [% IF entry.homePhone %]
     <dt class="type">Home</dt>
-    <dd class="value">[% person.homePhone | html %]</dd>
+    <dd class="value">[% entry.homePhone | html %]</dd>
   [% END %]
-  [% IF person.mobile %]
+  [% IF entry.mobile %]
     <dt class="type">Mobile</dt>
-    <dd class="value">[% person.mobile | html %]</dd>
+    <dd class="value">[% entry.mobile | html %]</dd>
   [% END %]
   </dl><!-- .tel -->
 [% END -%]
 
-[% IF person.postalAddress OR person.registeredAddress %]
+[% IF entry.postalAddress OR entry.registeredAddress %]
   <h4>Addresses</h4>
   <dl class="adr">
     <dt class="type">Campus</dt>
     <dd>
   [% FILTER indent('      ') %]
 
-    [% INCLUDE includes/address.tt address = person.postalAddress %]
+    [% INCLUDE includes/address.tt address = entry.postalAddress %]
   [% END -%]
     </dd>
-  [% IF person.postalAddress != person.registeredAddress %]
+  [% IF entry.postalAddress != entry.registeredAddress %]
     <dt class="type">Home</dt>
     <dd>
     [% FILTER indent('      ') %]
 
-      [% INCLUDE includes/address.tt address = person.registeredAddress %]
+      [% INCLUDE includes/address.tt address = entry.registeredAddress %]
     [% END -%]
     </dd>
   [% END %]
   </dl><!-- .adr -->
 [% END -%]
 
-[% SET display_unit = (person.o AND c.controller('Units').hide.grep("^${person.departmentNumber}$").size == 0) %]
-[% IF person.eduPersonPrimaryAffiliation != 'student' AND (display_unit OR person.title) %]
+[% SET display_unit = (entry.o AND c.controller('Units').hide.grep("^${entry.departmentNumber}$").size == 0) %]
+[% IF entry.eduPersonPrimaryAffiliation != 'student' AND (display_unit OR entry.title) %]
 
-  <h4>[% person.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
+  <h4>[% entry.eduPersonPrimaryAffiliation | ucfirst | html %] Information</h4>
   <dl class="employment">
   [% IF display_unit %]
     <dt>Unit</dt>
-    <dd>[% IF person.departmentNumber %]<a class="org" href="[% c.uri_for(c.controller('Units').action_for('view'), [ person.departmentNumber ], '') | html %]">[% END %][% person.o | html %][% IF person.departmentNumber %]</a>[% END %]</dd>
+    <dd>[% IF entry.departmentNumber %]<a class="org" href="[% c.uri_for(c.controller('Units').action_for('view'), [ entry.departmentNumber ], '') | html %]">[% END %][% entry.o | html %][% IF entry.departmentNumber %]</a>[% END %]</dd>
   [% END %]
-  [% IF person.title %]
+  [% IF entry.title %]
     <dt>Title</dt>
-    <dd class="title">[% IF person.title %][% person.title | html %][% ELSE %]&nbsp;[% END %]</dd>
+    <dd class="title">[% IF entry.title %][% entry.title | html %][% ELSE %]&nbsp;[% END %]</dd>
   [% END %]
   </dl><!-- .employment -->
 [% END -%]

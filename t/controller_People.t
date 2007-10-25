@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 70;
+use Test::More tests => 92;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -16,6 +16,85 @@ my $ENCODED_UFID = 'TVJVWHJJW';
 my $UNIT_PSID    = '02010601';
 my $UNIT_UFID    = 'UETHHG63';
 my $UNIT_O       = 'PV-OAA APPLICATION DEVELOP';
+
+my $controller = UFL::Phonebook::Controller::People->new;
+isa_ok($controller, 'UFL::Phonebook::BaseController');
+
+# Test default filter restriction
+{
+    my $filter = $controller->_get_restriction;
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-)))", 'default restriction filter matches');
+}
+
+# Test simple filter generation
+{
+    my $filter = $controller->filter('cn', '=', $CN);
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(cn=$CN)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter matches');
+}
+
+# Test filter generation for query with one word
+{
+    my $filter = $controller->_parse_query($QUERY);
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(|(cn=$QUERY,*)(sn=$QUERY*)(uid=$QUERY)(mail=$QUERY\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for one-word query matches');
+}
+
+# Test filter generation for query with two words
+{
+    my $filter = $controller->_parse_query('First Last');
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(|(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query matches');
+}
+
+# Test filter generation for query with two comma-separated words
+{
+    my $filter = $controller->_parse_query('Last, First');
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(|(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query with comma matches');
+}
+
+# Test filter generation for query with three words
+{
+    my $filter = $controller->_parse_query('First M. Last');
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(|(cn=last*,first* m*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
+}
+
+# Test filter generation for query with three comma-separated words
+{
+    my $filter = $controller->_parse_query('Last,First M.');
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(|(cn=last*,first* m*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
+}
+
+# Test filter generation for old show.cgi-style UFID query
+{
+    my $filter = $controller->_get_show_cgi_filter($ENCODED_UFID);
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(uflEduUniversityId=$UFID)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi UFID query matches');
+}
+
+# Test filter generation for old show.cgi-style uid query
+{
+    my $filter = $controller->_get_show_cgi_filter($UID);
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(uid=$UID)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi uid query matches');
+}
+
+# Test filter generation for old show.cgi-style name query
+{
+    my $filter = $controller->_get_show_cgi_filter('AT+A.+TESTER');
+    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
+    is($filter->as_string, "(&(cn=$CN.*)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi name query matches');
+}
+
+# Test filter generation for old show.cgi-style name query
+{
+    eval { my $filter = $controller->_get_show_cgi_filter('something invalid') };
+    ok($@, 'invalid show.cgi query threw an error');
+}
 
 $mech->get_ok('/people/', 'request for people page');
 

@@ -2,12 +2,14 @@ package UFL::Phonebook::Controller::People;
 
 use strict;
 use warnings;
-use base qw/Catalyst::Controller/;
-use Net::LDAP::Constant;
+use base qw/UFL::Phonebook::BaseController/;
 use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Util;
 
-__PACKAGE__->mk_accessors(qw/default_query/);
+__PACKAGE__->config(
+    model_name => 'Person',
+    sort_field => 'cn',
+);
 
 =head1 NAME
 
@@ -23,40 +25,6 @@ Catalyst controller component for finding people.
 
 =head1 METHODS
 
-=head2 index
-
-Redirect to the L<UFL::Phonebook> home page.
-
-=cut
-
-sub index : Path('') Args(0) {
-    my ($self, $c) = @_;
-
-    $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')));
-}
-
-=head2 search
-
-Search the directory for people.
-
-=cut
-
-sub search : Local Args(0) {
-    my ($self, $c) = @_;
-
-    my $query = $c->req->param('query');
-    $c->detach('index') if not $query
-        or $query eq $self->default_query;
-
-    my $filter = $self->_parse_query($query);
-
-    $c->log->debug("Query: $query");
-    $c->log->debug("Filter: $filter");
-
-    my $mesg = $c->model('Person')->search($filter->as_string);
-    $c->forward('results', [ $mesg ]);
-}
-
 =head2 unit
 
 Redirect to C</units/$UFID/people/>.
@@ -69,42 +37,7 @@ sub unit : Local Args(1) {
     $c->res->redirect($c->uri_for($c->controller('Units')->action_for('people'), [ $ufid ], ''), 301);
 }
 
-=head2 results
-
-Display the people from the specified L<Net::LDAP::Message>. If only
-one person is found, display him or her directly.
-
-=cut
-
-sub results : Private {
-    my ($self, $c, $mesg) = @_;
-
-    $c->stash(
-        sizelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED),
-        timelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED),
-    );
-
-    my @people = $mesg->entries;
-    if (@people == 1) {
-        my $person = shift @people;
-        $c->res->cookies->{query} = { value => $c->req->param('query') || $person->o };
-        $c->res->redirect($c->uri_for($self->action_for('view'), $person->uri_args, ''));
-    }
-    elsif (@people) {
-#        my $sort = $c->req->param('sort') || 'cn';
-#        @people  = sort { $a->$sort cmp $b->$sort } @people;
-
-        $c->stash(
-            people   => \@people,
-            template => 'people/results.tt',
-        );
-    }
-    else {
-        $c->stash(template => 'people/no_results.tt');
-    }
-}
-
-=head2 person
+=head2 single
 
 Display a single person. By specifying an argument after the UFID and
 providing a corresponding local action, you can override the display
@@ -112,7 +45,7 @@ behavior of the person.
 
 =cut
 
-sub person : PathPart('people') Chained('/') CaptureArgs(1) {
+sub single : PathPart('people') Chained('/') CaptureArgs(1) {
     my ($self, $c, $ufid) = @_;
 
     $ufid = UFL::Phonebook::Util::decode_ufid($ufid);
@@ -130,37 +63,13 @@ sub person : PathPart('people') Chained('/') CaptureArgs(1) {
         $c->res->cookies->{query} = { value => '' };
     }
 
-    my $mesg = $c->model('Person')->search("uflEduUniversityId=$ufid");
+    my $mesg = $self->model($c)->search("uflEduUniversityId=$ufid");
     die $mesg->error if $mesg->is_error;
 
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
-    $c->stash(person => $entry);
-}
-
-=head2 view
-
-Display the stashed person.
-
-=cut
-
-sub view : PathPart('') Chained('person') Args(0) {
-    my ($self, $c) = @_;
-
-    $c->stash(template => 'people/view.tt');
-}
-
-=head2 full
-
-Display the full entry for a single person.
-
-=cut
-
-sub full : PathPart Chained('person') Args(0) {
-    my ($self, $c) = @_;
-
-    $c->stash(template => 'people/full.tt');
+    $c->stash(entry => $entry);
 }
 
 =head2 vcard
@@ -169,10 +78,10 @@ Display the vCard for a single person.
 
 =cut
 
-sub vcard : PathPart Chained('person') Args(0) {
+sub vcard : PathPart Chained('single') Args(0) {
     my ($self, $c) = @_;
 
-    my $filename = ($c->stash->{person}->uid || 'vcard') . '.vcf';
+    my $filename = ($c->stash->{entry}->uid || 'vcard') . '.vcf';
 
     if ($c->req->param('debug')) {
         $c->res->content_type('text/plain');
@@ -221,14 +130,9 @@ sub redirect_show_cgi : Path('/show.cgi') Args(0) {
         unless $query;
 
     my $filter = $self->_get_show_cgi_filter($query);
-    unless ($filter) {
-        $c->log->debug("Could not determine filter for [$query]");
-        return $c->res->redirect($c->uri_for($self->action_for('search'), { query => $query }), 301);
-    }
-
     $c->log->debug("Filter = [$filter]");
 
-    my $mesg = $c->model('Person')->search($filter);
+    my $mesg = $self->model($c)->search($filter->as_string);
     my $entry = $mesg->shift_entry;
     $c->detach('/default') unless $entry;
 
@@ -252,6 +156,39 @@ sub redirect_show_full_cgi : Path('/show-full.cgi') {
 
     $c->stash(full => 1);
     $c->forward('redirect_show_cgi');
+}
+
+=head2 filter
+
+Return a new L<UFL::Phonebook::Filter::Abstract> used for finding
+people.  This includes a default restriction on affiliation, as
+specified by L</_get_restriction>.
+
+=cut
+
+sub filter {
+    my ($self, @filter) = @_;
+
+    return UFL::Phonebook::Filter::Abstract->new('&')
+        ->add(@filter)
+        ->add($self->_get_restriction);
+}
+
+=head2 _get_restriction
+
+Build the default filter for restricting people searches to current
+members of the community.
+
+=cut
+
+sub _get_restriction {
+    my ($self) = @_;
+
+    my $filter = UFL::Phonebook::Filter::Abstract->new('&');
+    $filter->add(UFL::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/));
+    $filter->add(UFL::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/));
+
+    return $filter;
 }
 
 =head2 _parse_query
@@ -326,26 +263,7 @@ sub _parse_query {
         $filter->add('mail',  '=', qq[$first-$last@*]);
     }
 
-    return UFL::Phonebook::Filter::Abstract->new('&')
-        ->add($filter)
-        ->add($self->_get_restriction);
-}
-
-=head2 _get_restriction
-
-Build the default filter for restricting people searches to current
-members of the community.
-
-=cut
-
-sub _get_restriction {
-    my ($self) = @_;
-
-    my $filter = UFL::Phonebook::Filter::Abstract->new('&');
-    $filter->add(UFL::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = affiliate/));
-    $filter->add(UFL::Phonebook::Filter::Abstract->new('!')->add(qw/eduPersonPrimaryAffiliation = -*-/));
-
-    return $filter;
+    return $self->filter($filter);
 }
 
 =head2 _get_show_cgi_filter
@@ -359,21 +277,26 @@ return C<undef>.
 sub _get_show_cgi_filter {
     my ($self, $query) = @_;
 
-    my $filter;
+    my $filter = UFL::Phonebook::Filter::Abstract->new('|');
 
     if (my $ufid = UFL::Phonebook::Util::decode_ufid($query)) {
-        $filter = "uflEduUniversityId=$ufid";
+        $filter->add('uflEduUniversityId', '=', $ufid);
     }
     elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
-        $filter = "uid=$query";
+        $filter->add('uid', '=', $query);
     }
     elsif ($query =~ /\+/) {
         my @name = split /\+/, $query;
         my $last = pop @name;
-        $filter  = "cn=$last," . join(' ', @name) . '*';
+
+        my $name = "$last," . join(' ', @name) . '*';
+        $filter->add('cn', '=', $name);
+    }
+    else {
+        die 'Invalid query; please stop using show.cgi';
     }
 
-    return $filter;
+    return $self->filter($filter);
 }
 
 =head1 AUTHOR

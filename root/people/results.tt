@@ -1,9 +1,9 @@
 [% SET
-   title   = c.req.param('query') || unit.o
+   title   = c.req.param('query') || entry.o
    heading = 'people/includes/search.tt'
 -%]
 
-[% INCLUDE includes/results_info.tt results = people, singular = 'person', plural = 'people' -%]
+[% INCLUDE includes/results_info.tt results = entries, singular = 'person', plural = 'people' -%]
 
 <table>
   <thead>
@@ -16,7 +16,7 @@
   </thead>
   <tbody>
 [% SET odd = 1 %]
-[% FOREACH person IN people %]
+[% FOREACH person IN entries %]
     <tr[% IF odd %] class="odd"[% END %]>
       <td><a href="[% c.uri_for(c.controller('People').action_for('view'), person.uri_args, '') | html %]">[% person.displayName || '(Not Available)' | html %]</a></td>
       <td>

@@ -2,12 +2,15 @@ package UFL::Phonebook::Controller::Units;
 
 use strict;
 use warnings;
-use base qw/Catalyst::Controller/;
-use Net::LDAP::Constant;
+use base qw/UFL::Phonebook::BaseController/;
 use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Util;
 
-__PACKAGE__->mk_accessors(qw/default_query hide/);
+__PACKAGE__->config(
+    model_name => 'Unit',
+    sort_field => 'o',
+);
+__PACKAGE__->mk_accessors(qw/hide/);
 
 =head1 NAME
 
@@ -24,77 +27,7 @@ campus organizations).
 
 =head1 METHODS
 
-=head2 index
-
-Redirect to the L<UFL::Phonebook> home page.
-
-=cut
-
-sub index : Path('') Args(0) {
-    my ($self, $c) = @_;
-
-    $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')));
-}
-
-=head2 search
-
-Search the directory for units.
-
-=cut
-
-sub search : Local Args(0) {
-    my ($self, $c) = @_;
-
-    my $query = $c->req->param('query');
-    $c->detach('index') if not $query
-        or $query eq $self->default_query;
-
-    my $filter = $self->_parse_query($query);
-
-    $c->log->debug("Query: $query");
-    $c->log->debug("Filter: $filter");
-
-    my $mesg = $c->model('Unit')->search($filter->as_string);
-    $c->forward('results', [ $mesg ]);
-}
-
-=head2 results
-
-Display the units from the specified L<Net::LDAP::Message>. If only
-one unit is found, display it directly.
-
-=cut
-
-sub results : Private {
-    my ($self, $c, $mesg) = @_;
-
-    $c->stash(
-        sizelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_SIZELIMIT_EXCEEDED),
-        timelimit_exceeded => ($mesg->code == &Net::LDAP::Constant::LDAP_TIMELIMIT_EXCEEDED),
-    );
-
-    my @units = $mesg->entries;
-
-    if (@units == 1) {
-        my $unit = shift @units;
-        $c->res->cookies->{query} = { value => $c->req->param('query') || $unit->o };
-        $c->res->redirect($c->uri_for($self->action_for('view'), $unit->uri_args, ''));
-    }
-    elsif (@units) {
-        my $sort = $c->req->param('sort') || 'o';
-        @units   = sort { $a->$sort cmp $b->$sort } @units;
-
-        $c->stash(
-            units    => \@units,
-            template => 'units/results.tt',
-        );
-    }
-    else {
-        $c->stash(template => 'units/no_results.tt');
-    }
-}
-
-=head2 unit
+=head2 single
 
 Display a single unit. By specifying an argument after the PeopleSoft
 department ID and providing a corresponding local action, you can
@@ -102,7 +35,7 @@ override the display behavior of the unit.
 
 =cut
 
-sub unit : PathPart('units') Chained('/') CaptureArgs(1) {
+sub single : PathPart('units') Chained('/') CaptureArgs(1) {
     my ($self, $c, $psid) = @_;
 
     $c->log->debug("PeopleSoft department ID: $psid");
@@ -118,11 +51,11 @@ sub unit : PathPart('units') Chained('/') CaptureArgs(1) {
         $c->res->cookies->{query} = { value => '' };
     }
 
-    my $mesg  = $c->model('Unit')->search("uflEduPsDeptId=$psid");
+    my $mesg  = $self->model($c)->search("uflEduPsDeptId=$psid");
     my $entry = $mesg->shift_entry;
     unless ($entry) {
         # Redirect from the UFID to the PeopleSoft department ID
-        $mesg  = $c->model('Unit')->search("uflEduUniversityId=$psid");
+        $mesg  = $self->model($c)->search("uflEduUniversityId=$psid");
         $entry = $mesg->shift_entry;
         $c->detach('/default') unless $entry;
 
@@ -130,31 +63,7 @@ sub unit : PathPart('units') Chained('/') CaptureArgs(1) {
         $c->detach;
     }
 
-    $c->stash(unit => $entry);
-}
-
-=head2 view
-
-Display the stashed unit.
-
-=cut
-
-sub view : PathPart('') Chained('unit') Args(0) {
-    my ($self, $c) = @_;
-
-    $c->stash(template => 'units/view.tt');
-}
-
-=head2 full
-
-Display the full entry for a single unit.
-
-=cut
-
-sub full : PathPart Chained('unit') Args(0) {
-    my ($self, $c) = @_;
-
-    $c->stash(template => 'units/full.tt');
+    $c->stash(entry => $entry);
 }
 
 =head2 people
@@ -164,16 +73,30 @@ specified PeopleSoft department ID.
 
 =cut
 
-sub people : PathPart Chained('unit') Args(0) {
+sub people : PathPart Chained('single') Args(0) {
     my ($self, $c) = @_;
 
-    my $filter = $c->controller('People')->_get_restriction;
-    $filter->add('departmentNumber', '=', $c->stash->{unit}->uflEduPsDeptId);
+    my $unit = $c->stash->{entry};
 
+    my $filter = $c->controller('People')->filter('departmentNumber', '=', $unit->uflEduPsDeptId);
     $c->log->debug("Filter: $filter");
 
     my $mesg = $c->model('Person')->search($filter->as_string);
     $c->forward('/people/results', [ $mesg ]);
+}
+
+=head2 filter
+
+Return a new L<UFL::Phonebook::Filter::Abstract> used for finding
+units.
+
+=cut
+
+sub filter {
+    my ($self, @filter) = @_;
+
+    return UFL::Phonebook::Filter::Abstract->new('&')
+        ->add(@filter);
 }
 
 =head2 _parse_query
@@ -210,6 +133,8 @@ sub _parse_query {
         # Unit name
         $filter->add('o', '=', qq[*$query*]);
     }
+
+    return $self->filter($filter);
 }
 
 =head1 AUTHOR
