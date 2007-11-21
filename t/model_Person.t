@@ -6,7 +6,7 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
-plan tests    => 6 + 7*24;
+plan tests    => 6 + 8*24;
 
 use_ok('UFL::Phonebook::Model::Person');
 
@@ -18,7 +18,6 @@ my %config = (
 
 # Mock Catalyst objects for authenticated tests
 my $c = Test::MockObject->new;
-$c->set_true('user_exists');
 
 my $user = Test::MockObject->new;
 $c->mock('user', sub { $user });
@@ -46,7 +45,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
     my $mesg = search($anonymous_model, 'uid=asr');
     is($mesg->count, 1, 'anonymous search for staff returned something');
 
-    check_entry($mesg->entry(0), 'asr', 1, 1, 0, 'staff');
+    check_entry($mesg->entry(0), 'asr', 1, 1, 1, 0, 'staff');
 }
 
 # Anonymous search for student
@@ -54,7 +53,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
     my $mesg = search($anonymous_model, 'uid=shubha');
     is($mesg->count, 1, 'anonymous search for a student returned something');
 
-    check_entry($mesg->entry(0), 'shubha', 0, 1, 0, 'student');
+    check_entry($mesg->entry(0), 'shubha', 1, 1, 0, 0, 'student');
 }
 
 
@@ -82,57 +81,78 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
 
 # Protected person search for self
 {
-    $user->remove('id');
     $user->set_always('id', 'dwc');
+    $c->set_true('user_exists');
 
     my $mesg = search($authenticated_model, 'uid=dwc');
     is($mesg->count, 1, 'authenticated search for protected person returned something');
 
-    check_entry($mesg->entry(0), 'dwc', 1, 1, 1, 'staff');
+    check_entry($mesg->entry(0), 'dwc', 1, 1, 1, 1, 'staff');
+
+    $user->remove('id');
 }
 
 # Faculty search for faculty
 {
-    $user->remove('id');
     $user->set_always('id', 'manuel81');
+    $c->set_true('user_exists');
 
     my $mesg = search($authenticated_model, 'uid=tigrr');
     is($mesg->count, 1, 'faculty search for faculty returned something');
 
-    check_entry($mesg->entry(0), 'tigrr', 1, 1, 0, 'faculty');
+    check_entry($mesg->entry(0), 'tigrr', 1, 1, 1, 0, 'faculty');
+
+    $user->remove('id');
 }
 
 # Faculty search for student
 {
-    $user->remove('id');
     $user->set_always('id', 'manuel81');
+    $c->set_true('user_exists');
 
     my $mesg = search($authenticated_model, 'uid=shubha');
     is($mesg->count, 1, 'faculty search for a student returned something');
 
-    check_entry($mesg->entry(0), 'shubha', 1, 1, 0, 'student');
+    check_entry($mesg->entry(0), 'shubha', 1, 1, 1, 0, 'student');
+
+    $user->remove('id');
 }
 
 # Student search for student
 {
-    $user->remove('id');
     $user->set_always('id', 'shubha');
+    $c->set_true('user_exists');
 
     my $mesg = search($authenticated_model, 'uid=twishap');
-    is($mesg->count, 1, 'faculty search for a student returned something');
+    is($mesg->count, 1, 'student search for a student returned something');
 
-    check_entry($mesg->entry(0), 'twishap', 0, 0, 0, 'student');
+    check_entry($mesg->entry(0), 'twishap', 0, 0, 0, 0, 'student');
+
+    $user->remove('id');
 }
 
 # Student search for student
 {
-    $user->remove('id');
     $user->set_always('id', 'twishap');
+    $c->set_true('user_exists');
 
     my $mesg = search($authenticated_model, 'uid=shubha');
-    is($mesg->count, 1, 'faculty search for a student returned something');
+    is($mesg->count, 1, 'student search for a student returned something');
 
-    check_entry($mesg->entry(0), 'shubha', 0, 1, 0, 'student');
+    check_entry($mesg->entry(0), 'shubha', 1, 1, 0, 0, 'student');
+
+    $user->remove('id');
+}
+
+
+# Search for student with SASL but without proxy authentication
+{
+    $c->set_false('user_exists');
+
+    my $mesg = search($authenticated_model, 'uid=shubha');
+    is($mesg->count, 1, 'search for a student without proxy authentication returned something');
+
+    check_entry($mesg->entry(0), 'shubha', 1, 1, 0, 0, 'student');
 }
 
 
@@ -145,11 +165,13 @@ sub search {
 }
 
 sub check_entry {
-    my ($entry, $uid, $has_mail, $has_office, $has_personal, $affiliation) = @_;
+    my ($entry, $uid, $has_phone, $has_office, $has_mail, $has_personal, $affiliation) = @_;
+
+    diag($entry->uid . ': ' . join(', ', $entry->attributes));
 
     isa_ok($entry, 'UFL::Phonebook::Person');
 
-    ok($entry->dn, "LDAP infrastructure fields: '$uid' has a distinguished name");
+    ok($entry->dn, "LDAP infrastructure fields: '$uid' has a DN");
     ok($entry->exists('objectClass'), "LDAP infrastructure fields: '$uid' has at least one object class");
     ok($entry->exists('ou'), "LDAP infrastructure fields: '$uid' has an organizational unit");
 
@@ -165,7 +187,7 @@ sub check_entry {
     ok($entry->exists('givenName'), "basic person identification fields: '$uid' has a given name");
     is($entry->eduPersonPrimaryAffiliation, $affiliation, "basic person identification fields: '$uid' has a primary affiliation of '$affiliation'");
 
-    ok($entry->exists('telephoneNumber'), "primary contact information fields: '$uid' has an official university phone number");
+    ok($entry->exists('telephoneNumber') == $has_phone, "primary contact information fields: '$uid' " . ($has_phone ? 'has' : 'does not have') . " an official university phone number");
     ok($entry->exists('street'), "primary contact information fields: '$uid' has an official university street address");
     ok($entry->exists('postalAddress'), "primary contact information fields: '$uid' has an official university postal address");
     ok($entry->exists('registeredAddress'), "primary contact information fields: '$uid' has an official university registered address");
