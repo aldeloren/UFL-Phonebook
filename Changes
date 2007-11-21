@@ -3,6 +3,8 @@ This file documents the revision history for UFL::Phonebook.
 0.23
         - Refactor common searching and results code to
           ::BaseController
+        - Disallow searches when SASL is configured but no Catalyst
+          user is found
 
 0.22  Fri Oct 19 12:51:11 EDT 2007
         - Say "Not Available" instead of "Unknown" for search results

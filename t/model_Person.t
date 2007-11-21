@@ -6,7 +6,7 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
-plan tests    => 6 + 8*24;
+plan tests    => 7 + 7*24;
 
 use_ok('UFL::Phonebook::Model::Person');
 
@@ -149,10 +149,10 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
 {
     $c->set_false('user_exists');
 
-    my $mesg = search($authenticated_model, 'uid=shubha');
-    is($mesg->count, 1, 'search for a student without proxy authentication returned something');
+    eval { search($authenticated_model, 'uid=shubha') };
 
-    check_entry($mesg->entry(0), 'shubha', 1, 1, 0, 0, 'student');
+    my $error = $@;
+    ok($error, "search for student with SASL but without proxy authentication died ($error)");
 }
 
 

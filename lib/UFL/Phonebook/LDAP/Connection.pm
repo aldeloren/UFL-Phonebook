@@ -40,7 +40,8 @@ configured for this connection is correct.
 
 =head2 bind
 
-Bind the connection, authenticating via SASL.
+Bind the connection, authenticating via SASL if we are configured to
+do so.
 
     $conn->bind(
         host => 'ldap.ufl.edu',
@@ -74,7 +75,7 @@ sub bind {
         $args{sasl} = $sasl;
     }
 
-    $self->next::method(%args);
+    return $self->next::method(%args);
 }
 
 =head2 _krb5_login
@@ -153,15 +154,15 @@ sub search {
     my $self = shift;
     my %args = scalar @_ == 1 ? (filter => shift) : @_;
 
-    if ($self->catalyst_user) {
-        my $auth = Net::LDAP::Control::ProxyAuth->new(
-            authzID => 'u:' . $self->catalyst_user->id,
-        );
+    die 'No user found' unless $self->catalyst_user;
 
-        push @{ $args{control} }, $auth;
-    }
+    my $auth = Net::LDAP::Control::ProxyAuth->new(
+        authzID => 'u:' . $self->catalyst_user->id,
+    );
 
-    $self->next::method(%args);
+    push @{ $args{control} }, $auth;
+
+    return $self->next::method(%args);
 }
 
 =head1 AUTHOR

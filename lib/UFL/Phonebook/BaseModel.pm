@@ -21,7 +21,7 @@ Base Catalyst model component for L<UFL::Phonebook>.
 
 =head2 ACCEPT_CONTEXT
 
-Store the current user for L<UFL::Phonebook::LDAP::Connection/bind>.
+Store the current user for L<UFL::Phonebook::LDAP::Connection/search>.
 
 =cut
 
