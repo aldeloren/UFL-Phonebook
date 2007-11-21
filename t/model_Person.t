@@ -6,9 +6,10 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
-plan tests    => 7 + 7*24;
+plan tests    => 6 + 8*24;
 
 use_ok('UFL::Phonebook::Model::Person');
+
 
 my %config = (
     host        => 'misc01.osg.ufl.edu',
@@ -36,24 +37,17 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 
 # Anonymous search for protected person
 {
-    my $mesg = search($anonymous_model, 'uid=dwc');
-    is($mesg->count, 0, 'anonymous search for protected person returned nothing');
+    my $mesg = search($anonymous_model, undef, 'dwc', 0);
 }
 
 # Anonymous search for staff
 {
-    my $mesg = search($anonymous_model, 'uid=asr');
-    is($mesg->count, 1, 'anonymous search for staff returned something');
-
-    check_entry($mesg->entry(0), 'asr', 1, 1, 1, 0, 'staff');
+    my $mesg = search($anonymous_model, undef, 'asr', 1, 1, 1, 1, 0, 'staff');
 }
 
 # Anonymous search for student
 {
-    my $mesg = search($anonymous_model, 'uid=shubha');
-    is($mesg->count, 1, 'anonymous search for a student returned something');
-
-    check_entry($mesg->entry(0), 'shubha', 1, 1, 0, 0, 'student');
+    my $mesg = search($anonymous_model, undef, 'shubha', 1, 1, 1, 0, 0, 'student');
 }
 
 
@@ -81,89 +75,67 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
 
 # Protected person search for self
 {
-    $user->set_always('id', 'dwc');
-    $c->set_true('user_exists');
-
-    my $mesg = search($authenticated_model, 'uid=dwc');
-    is($mesg->count, 1, 'authenticated search for protected person returned something');
-
-    check_entry($mesg->entry(0), 'dwc', 1, 1, 1, 1, 'staff');
-
-    $user->remove('id');
+    my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 1, 'staff');
 }
 
 # Faculty search for faculty
 {
-    $user->set_always('id', 'manuel81');
-    $c->set_true('user_exists');
-
-    my $mesg = search($authenticated_model, 'uid=tigrr');
-    is($mesg->count, 1, 'faculty search for faculty returned something');
-
-    check_entry($mesg->entry(0), 'tigrr', 1, 1, 1, 0, 'faculty');
-
-    $user->remove('id');
+    my $mesg = search($authenticated_model, 'manuel81', 'tigrr', 1, 1, 1, 1, 0, 'faculty');
 }
 
 # Faculty search for student
 {
-    $user->set_always('id', 'manuel81');
-    $c->set_true('user_exists');
-
-    my $mesg = search($authenticated_model, 'uid=shubha');
-    is($mesg->count, 1, 'faculty search for a student returned something');
-
-    check_entry($mesg->entry(0), 'shubha', 1, 1, 1, 0, 'student');
-
-    $user->remove('id');
+    my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 1, 1, 0, 'student');
 }
 
 # Student search for student
 {
-    $user->set_always('id', 'shubha');
-    $c->set_true('user_exists');
-
-    my $mesg = search($authenticated_model, 'uid=twishap');
-    is($mesg->count, 1, 'student search for a student returned something');
-
-    check_entry($mesg->entry(0), 'twishap', 0, 0, 0, 0, 'student');
-
-    $user->remove('id');
+    my $mesg = search($authenticated_model, 'shubha', 'twishap', 1, 0, 0, 0, 0, 'student');
 }
 
 # Student search for student
 {
-    $user->set_always('id', 'twishap');
-    $c->set_true('user_exists');
-
-    my $mesg = search($authenticated_model, 'uid=shubha');
-    is($mesg->count, 1, 'student search for a student returned something');
-
-    check_entry($mesg->entry(0), 'shubha', 1, 1, 0, 0, 'student');
-
-    $user->remove('id');
+    my $mesg = search($authenticated_model, 'twishap', 'shubha', 1, 1, 1, 0, 0, 'student');
 }
 
 
 # Search for student with SASL but without proxy authentication
 {
-    $c->set_false('user_exists');
-
-    eval { search($authenticated_model, 'uid=shubha') };
+    eval { search($authenticated_model, undef, 'shubha', 1, 1, 1, 0, 0, 'student') };
 
     my $error = $@;
     ok($error, "search for student with SASL but without proxy authentication died ($error)");
 }
 
 
+# Total: 24 tests
 sub search {
-    my ($model, $filter) = @_;
+    my ($model, $requestor, $target, $expected_count, $has_phone, $has_office, $has_mail, $has_personal, $affiliation) = @_;
+
+    if ($requestor) {
+        $user->set_always('id', $requestor);
+        $c->set_true('user_exists');
+    }
+    else {
+        $c->set_false('user_exists');
+    }
 
     my $conn = $model->ACCEPT_CONTEXT($c);
 
-    return $conn->search($filter);
+    my $mesg = $conn->search("uid=$target");
+    is($mesg->count, $expected_count, "Found $expected_count result" . ($expected_count == 1 ? '' : 's'));
+
+    SKIP: {
+        skip 'need an entry', 23 unless $mesg->count > 0;
+        check_entry($mesg->entry(0), $target, $has_phone, $has_office, $has_mail, $has_personal, $affiliation);
+    }
+
+    $user->remove('id');
+
+    return $mesg;
 }
 
+# Total: 23 tests
 sub check_entry {
     my ($entry, $uid, $has_phone, $has_office, $has_mail, $has_personal, $affiliation) = @_;
 
