@@ -48,7 +48,6 @@ do so.
         krb5 => {
             principal  => 'user@ufl.edu',
             keytab     => '/home/user/keytab',
-            cred_cache => '/tmp/krb5cc_1000',
             lifetime   => 86400,  # 1 day
         },
         sasl => {
@@ -65,9 +64,8 @@ sub bind {
     my %sasl_args = %{ delete $args{sasl} || {} };
 
     if (%krb5_args and %sasl_args) {
-        $krb5_args{cred_cache} ||= "/tmp/krb5cc_$>";
-        $krb5_args{lifetime}   ||= 3600;
-        $krb5_args{command}    ||= '/usr/bin/kinit';
+        $krb5_args{lifetime} ||= 3600;
+        $krb5_args{command}  ||= '/usr/bin/kinit';
 
         $self->_krb5_login(%krb5_args);
 
@@ -85,7 +83,6 @@ Request a Kerberos ticket.
     $self->_krb5_login(
         principal  => 'user@ufl.edu',
         keytab     => '/home/user/keytab',
-        cred_cache => '/tmp/krb5cc_1000',
         lifetime   => 86400,  # 1 day
     );
 
@@ -94,7 +91,7 @@ Request a Kerberos ticket.
 sub _krb5_login {
     my ($self, %args) = @_;
 
-    my $cred_cache = $args{cred_cache};
+    my $cred_cache = $ENV{KRB5CCNAME} || "/tmp/krb5cc_$>";
     my $lifetime   = $args{lifetime};
     die 'You must specify the path to the credential cache' unless $cred_cache;
 
@@ -111,7 +108,6 @@ Request a Kerberos ticket using C<kinit>.
     $self->_krb5_login_via_kinit(
         principal  => 'user@ufl.edu',
         keytab     => '/home/user/keytab',
-        cred_cache => '/tmp/krb5cc_1000',
         lifetime   => 86400,  # 1 day
         command    => '/usr/local/bin/kinit',
     );
@@ -125,16 +121,15 @@ sub _krb5_login_via_kinit {
 
     my $principal  = $args{principal};
     my $keytab     = $args{keytab};
-    my $cred_cache = $args{cred_cache};
     my $lifetime   = $args{lifetime};
     my $command    = $args{command};
 
     die 'You must specify the principal' unless $principal;
     die 'No keytab found' unless $keytab and -f $keytab;
-    die 'You must specify the path to the credential cache' unless $cred_cache;
+    die 'You must specify the lifetime' unless $lifetime;
     die 'No kinit command available' unless -x $command;
 
-    my @cmd = ($command, '-c', $cred_cache, '-l', $lifetime, '-k', '-t', $keytab, $principal);
+    my @cmd = ($command, '-l', $lifetime, '-k', '-t', $keytab, $principal);
     warn "Calling kinit: [" , join(' ', @cmd) . "]";
     eval {
         # Override the Catalyst::Engine::HTTP signal handler

@@ -55,6 +55,8 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 # Authenticated searches
 #
 
+$ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
+
 my $principal = '02010600/app/phonebook';
 (my $filename = $principal) =~ s|/|_|g;
 my $keytab = File::Spec->join($FindBin::Bin, File::Spec->updir, 'keytab', $filename);
