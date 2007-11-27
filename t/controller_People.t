@@ -1,6 +1,7 @@
 use strict;
 use warnings;
-use Test::More tests => 92;
+use Test::More tests => 100;
+use Text::vCard::Addressbook;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -12,6 +13,8 @@ my $CN           = 'TESTER,AT A';
 my $UID          = 'attest1';
 my $UFID         = '59831351';
 my $ENCODED_UFID = 'TVJVWHJJW';
+my $EMAIL        = 'attest1@ufl.edu';
+my $O            = 'IT-AT ACADEMIC TECHNOLOGY';
 
 my $UNIT_PSID    = '02010601';
 my $UNIT_UFID    = 'UETHHG63';
@@ -184,6 +187,29 @@ $mech->content_unlike(qr/--UNKNOWN--/i, 'response does not contain unknown infor
 $mech->get_ok("/people/$ENCODED_UFID/vcard/", 'request for vCard');
 is($mech->ct, 'text/x-vcard', 'response Content-Type is a vCard');
 $mech->content_like(qr/NICKNAME:$UID/i, 'response looks like vCard data');
+{
+    my $address_book = Text::vCard::Addressbook->new({ source_text => $mech->content });
+
+    my @vcards = $address_book->vcards;
+    is(@vcards, 1, 'found one vCard');
+
+    my $vcard = $vcards[0];
+    is($vcard->fullname, $CN, 'full name matches');
+    is($vcard->nickname, $UID, 'nickname matches');
+
+    # Email information
+    my @emails = $vcard->get({ node_type => 'email' });
+    is(@emails, 1, 'found an email address');
+    is($emails[0]->value, $EMAIL, 'email address matches');
+
+    # Unit information
+    my @orgs = $vcard->get({ node_type => 'org' });
+    is(@orgs, 1, 'found an organization');
+
+    my @units = $orgs[0]->unit;
+    is(@units, 1, 'found a unit');
+    is($units[0][0], $O, 'unit name matches');
+}
 
 
 $mech->get_ok("/people/unit/$UNIT_PSID/", 'request for people in unit');
