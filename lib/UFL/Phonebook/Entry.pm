@@ -9,6 +9,7 @@ our $RELATIONSHIPS = {
     postalAddress            => 'UFL::Phonebook::PostalAddress',
     registeredAddress        => 'UFL::Phonebook::PostalAddress',
     street                   => 'UFL::Phonebook::PostalAddress',
+    homePostalAddress        => 'UFL::Phonebook::PostalAddress',
     uflEduAllPostalAddresses => 'UFL::Phonebook::PostalAddressCollection',
     uflEduOfficeLocation     => 'UFL::Phonebook::PostalAddress',
 };
