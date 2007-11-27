@@ -6,6 +6,8 @@ This file documents the revision history for UFL::Phonebook.
         - Disallow searches when SASL is configured but no Catalyst
           user is found
         - Rely more on $ENV{KRB5CCNAME} instead of trying to fake it
+        - Update root/people/view.tt to reflect LDAP data moving
+          around
 
 0.22  Fri Oct 19 12:51:11 EDT 2007
         - Say "Not Available" instead of "Unknown" for search results

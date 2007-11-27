@@ -27,11 +27,11 @@
     <dd class="title">[% IF entry.eduPersonPrimaryAffiliation %][% entry.eduPersonPrimaryAffiliation | html %][% ELSE %](Unknown)[% END %]</dd>
   </dl><!-- .gen -->
 
-[% IF entry.telephoneNumber OR entry.homePhone OR entry.mobile %]
+[% IF entry.telephoneNumber OR entry.homePhone OR entry.mobile OR entry.facsimileTelephoneNumber %]
   <h4>Phone Numbers</h4>
   <dl class="tel">
   [% IF entry.telephoneNumber %]
-    <dt class="type">Campus</dt>
+    <dt><span class="type">Pref</span>erred</dt>
     <dd class="value">[% entry.telephoneNumber | html %]</dd>
   [% END %]
   [% IF entry.homePhone %]
@@ -39,28 +39,43 @@
     <dd class="value">[% entry.homePhone | html %]</dd>
   [% END %]
   [% IF entry.mobile %]
-    <dt class="type">Mobile</dt>
+    <dt class="type">Cell</dt>
     <dd class="value">[% entry.mobile | html %]</dd>
+  [% END %]
+  [% IF entry.facsimileTelephoneNumber %]
+    <dt class="type">Fax</dt>
+    <dd class="value">[% entry.facsimileTelephoneNumber | html %]</dd>
   [% END %]
   </dl><!-- .tel -->
 [% END -%]
 
-[% IF entry.postalAddress OR entry.registeredAddress %]
+[% IF entry.postalAddress OR entry.uflEduOfficeLocation OR entry.homePostalAddress %]
   <h4>Addresses</h4>
   <dl class="adr">
-    <dt class="type">Campus</dt>
+  [% IF entry.postalAddress %]
+    <dt><span class="type">Pref</span>erred</dt>
     <dd>
-  [% FILTER indent('      ') %]
+    [% FILTER indent('      ') %]
 
-    [% INCLUDE includes/address.tt address = entry.postalAddress %]
-  [% END -%]
+      [% INCLUDE includes/address.tt address = entry.postalAddress %]
+    [% END -%]
     </dd>
-  [% IF entry.postalAddress != entry.registeredAddress %]
+  [% END %]
+  [% IF entry.uflEduOfficeLocation %]
+    <dt class="type">Work</dt>
+    <dd>
+    [% FILTER indent('      ') %]
+
+      [% INCLUDE includes/address.tt address = entry.uflEduOfficeLocation %]
+    [% END -%]
+    </dd>
+  [% END %]
+  [% IF entry.homePostalAddress %]
     <dt class="type">Home</dt>
     <dd>
     [% FILTER indent('      ') %]
 
-      [% INCLUDE includes/address.tt address = entry.registeredAddress %]
+      [% INCLUDE includes/address.tt address = entry.homePostalAddress %]
     [% END -%]
     </dd>
   [% END %]
