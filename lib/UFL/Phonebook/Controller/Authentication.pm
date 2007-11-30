@@ -32,6 +32,8 @@ sub login : Global {
 
     # Allow redirection to a separate, authenticated URL
     if ($self->authenticated_uri) {
+        $c->res->cookies->{referer} = { value => $c->req->referer };
+
         my $authenticated_uri = $c->uri_for($self->authenticated_uri);
         return $c->res->redirect($authenticated_uri)
             unless $c->req->uri =~ /^$authenticated_uri/;
@@ -85,7 +87,7 @@ Log the user in based on the environment (via C<REMOTE_USER>).
 sub login_via_env : Private {
     my ($self, $c) = @_;
 
-    my $username = $c->request->user;
+    my $username = $c->req->user;
     die "Could not determine username from environment"
         unless $username;
 
@@ -94,7 +96,17 @@ sub login_via_env : Private {
         password => $username,
     }) or die "Could not authenticate based on environment";
 
-    $c->stash(return_to => $c->req->referer);
+    # Determine where to send the user
+    my $return_to = $c->req->referer;
+
+    # For separate, authenticated URL case
+    my $cookie = $c->req->cookies->{referer};
+    if ($cookie and $cookie->value) {
+        $return_to = $cookie->value;
+        $c->res->cookies->{referer} = { value => '' };
+    }
+
+    $c->stash(return_to => $return_to);
 
     $c->forward('redirect');
 }
