@@ -36,6 +36,7 @@ sub find_user {
     my ($self, $authinfo, $c) = @_;
 
     my $id = $authinfo->{id} || $authinfo->{username};
+    die 'No username specified' unless $id;
 
     return Catalyst::Plugin::Authentication::User::Hash->new(
         id       => $id,
