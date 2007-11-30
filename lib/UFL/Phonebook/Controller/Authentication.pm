@@ -3,6 +3,7 @@ package UFL::Phonebook::Controller::Authentication;
 use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
+use URI;
 
 __PACKAGE__->mk_accessors(qw/use_login_form use_environment authenticated_uri logout_uri/);
 
@@ -45,9 +46,6 @@ sub login : Global {
     else {
         die 'Could not log you in';
     }
-
-    return $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')))
-        if $c->user_exists;
 }
 
 =head2 login_via_form
@@ -64,7 +62,9 @@ sub login_via_form : Private {
         my $password = $c->req->param('password');
 
         if ($username and $password) {
-            $c->authenticate({
+            $c->stash(return_to => $c->req->param('return_to'));
+
+            $c->detach('redirect') if $c->authenticate({
                 username => $username,
                 password => $password,
             });
@@ -93,6 +93,34 @@ sub login_via_env : Private {
         username => $username,
         password => $username,
     }) or die "Could not authenticate based on environment";
+
+    $c->stash(return_to => $c->req->referer);
+
+    $c->forward('redirect');
+}
+
+=head2 redirect
+
+Determine where to send the user after successful login. We check for
+a C<referer> cookie for returning the user to the authenticated view
+of the previous page.
+
+=cut
+
+sub redirect : Private {
+    my ($self, $c) = @_;
+
+    # Determine where to send the user
+    my $location = $c->uri_for($c->controller('Root')->action_for('index'));
+
+    my $return_to = $c->stash->{return_to};
+    if ($return_to) {
+        # Build a new, authenticated URL based on the anonymous referer URL
+        my $uri = URI->new($return_to);
+        $location = $c->uri_for($uri->path, { $uri->query_form });
+    }
+
+    return $c->res->redirect($location);
 }
 
 =head2 logout
