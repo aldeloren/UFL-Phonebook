@@ -1,6 +1,6 @@
 This file documents the revision history for UFL::Phonebook.
 
-0.23
+0.23  Mon Dec  3 19:01:32 EST 2007
         - Refactor common searching and results code to
           ::BaseController
         - Disallow searches when SASL is configured but no Catalyst
