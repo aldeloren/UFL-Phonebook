@@ -1,13 +1,14 @@
 [% SET
    title   = person.cn _ "'s Full LDAP Entry"
    heading = 'people/includes/search.tt'
+   hidden  = [ 'uflEduUniversityId', 'uidNumber', 'uflEduAllEmailAddresses', 'uflEduAllNames', 'uflEduAllPhones', 'uflEduAllPostalAddresses' ]
 -%]
 
 <div id="ldap">
   <h3><acronym title="Lightweight Directory Access Protocol">LDAP</acronym> Entry</h3>
   <dl>
 [% FOREACH attribute IN person.attributes.sort %]
-  [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
+  [% NEXT IF hidden.grep("^${attribute}$").size > 0 %]
     <dt>[% attribute | html %]</dt>
   [% SET filter = 'html' %]
   [% IF attribute == 'mail' OR attribute == 'uflEduAllEmailAddresses' %]
