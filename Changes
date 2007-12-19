@@ -1,6 +1,6 @@
 This file documents the revision history for Phonebook.
 
-0.19-emergency1
+0.19001
         - Hide uflEduAll* fields on root/people/full.tt
 
 0.19  Tue Nov 28 16:00:51 EST 2006
