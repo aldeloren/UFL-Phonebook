@@ -92,12 +92,12 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
 
 # Student search for student
 {
-    my $mesg = search($authenticated_model, 'shubha', 'twishap', 1, 0, 0, 0, 0, 'student');
+    my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 0, 1, 0, 'student');
 }
 
 # Student search for student
 {
-    my $mesg = search($authenticated_model, 'twishap', 'shubha', 1, 1, 1, 0, 0, 'student');
+    my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 1, 0, 'student');
 }
 
 
@@ -115,10 +115,12 @@ sub search {
     my ($model, $requestor, $target, $expected_count, $has_phone, $has_office, $has_mail, $has_personal, $affiliation) = @_;
 
     if ($requestor) {
+        diag("$requestor searching for $target");
         $user->set_always('id', $requestor);
         $c->set_true('user_exists');
     }
     else {
+        diag("Anonymous search for $target");
         $c->set_false('user_exists');
     }
 
