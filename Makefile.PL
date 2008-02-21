@@ -7,7 +7,7 @@ requires 'Authen::SASL';
 requires 'Carp';
 requires 'Catalyst' => '5.7006';
 requires 'Catalyst::Action::RenderView';
-requires 'Catalyst::Model::LDAP' => '0.16_01';
+requires 'Catalyst::Model::LDAP' => '0.16';
 requires 'Catalyst::Plugin::Authentication' => '0.10002';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Session';
