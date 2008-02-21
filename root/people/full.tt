@@ -17,7 +17,9 @@
   [% IF entry.$attribute %]
 
     [% FILTER indent('      ') %]
-      [% entry.$attribute.join("\n") | $filter | html_line_break %]
+      [%-# Workaround for Template-Toolkit-2.19 -%]
+      [%-# entry.$attribute.join("\n") | $filter | html_line_break -%]
+      [% entry.$attribute.can('as_string') ? entry.$attribute.as_string : entry.$attribute.join("\n") | $filter | html_line_break %]
     [% END %]
   [% ELSE %]
       &nbsp;
