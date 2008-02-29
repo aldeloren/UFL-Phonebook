@@ -6,6 +6,9 @@ This file documents the revision history for UFL::Phonebook.
         - Fix poor URI construction for private instance (#2)
         - Configuration change: Controller::Authentication's
           authenticated_uri becomes authenticated_path_segments
+        - Remove
+          UFL::Phonebook::Plugin::Authentication::Store::AnyUser in
+          favor of Catalyst::Authentication::Store::Null
 
 0.23  Mon Dec  3 19:01:32 EST 2007
         - Refactor common searching and results code to

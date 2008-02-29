@@ -84,7 +84,7 @@ sub login_via_form : Private {
             $c->stash(return_to => $c->req->param('return_to'));
 
             $c->detach('redirect') if $c->authenticate({
-                username => $username,
+                id       => $username,
                 password => $password,
             });
         }
@@ -113,7 +113,7 @@ sub login_via_env : Private {
         unless $username;
 
     $c->authenticate({
-        username => $username,
+        id       => $username,
         password => $username,
     }) or die "Could not authenticate based on environment";
 }
