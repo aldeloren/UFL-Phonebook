@@ -2,7 +2,10 @@ This file documents the revision history for UFL::Phonebook.
 
 0.24
         - Direct links to private pages now go to the right place
-          instead of redirecting to the private home page
+          instead of redirecting to the private home page (#3)
+        - Fix poor URI construction for private instance (#2)
+        - Configuration change: Controller::Authentication's
+          authenticated_uri becomes authenticated_path_segments
 
 0.23  Mon Dec  3 19:01:32 EST 2007
         - Refactor common searching and results code to

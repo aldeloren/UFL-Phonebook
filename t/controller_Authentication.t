@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 34;
+use Test::More tests => 35;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -15,11 +15,11 @@ my $can_test_auth   = exists $auth_config->{realms};
 
 # Test redirection to protected location
 {
-    my $authenticated_uri = '/private/';
+    my $authenticated_path_segments = [ 'private' ];
 
     $auth_controller->use_login_form(0);
     $auth_controller->use_environment(0);
-    $auth_controller->authenticated_uri($authenticated_uri);
+    $auth_controller->authenticated_path_segments($authenticated_path_segments);
     $auth_controller->logout_uri(undef);
 
     ok(! $auth_controller->auto_login, 'controller does not automatically authenticate users');
@@ -30,7 +30,7 @@ my $can_test_auth   = exists $auth_config->{realms};
     my $response = $mech->response->previous;
     ok($response, 'found response chain');
     ok($response->is_redirect, 'previous response was a redirect');
-    is($response->header('Location'), "http://localhost$authenticated_uri", 'response redirected to correct place');
+    like($response->header('Location'), qr/\Q$authenticated_path_segments->[0]\E/, 'response redirected to correct place');
 
     $mech->get_ok('http://localhost/logout', 'request to logout');
 }
@@ -39,7 +39,7 @@ my $can_test_auth   = exists $auth_config->{realms};
 SKIP: {
     $auth_controller->use_login_form(1);
     $auth_controller->use_environment(0);
-    $auth_controller->authenticated_uri(undef);
+    $auth_controller->authenticated_path_segments(undef);
     $auth_controller->logout_uri(undef);
 
     ok(! $auth_controller->auto_login, 'controller does not automatically authenticate users');
@@ -64,13 +64,13 @@ SKIP: {
 
 # Test login via environment
 SKIP: {
-    skip 'need at least one configured realm', 7 unless $can_test_auth;
+    skip 'need at least one configured realm', 8 unless $can_test_auth;
 
     my $logout_uri = 'http://login.gatorlink.ufl.edu/quit.cgi';
 
     $auth_controller->use_login_form(0);
     $auth_controller->use_environment(1);
-    $auth_controller->authenticated_uri(undef);
+    $auth_controller->authenticated_path_segments(undef);
     $auth_controller->logout_uri($logout_uri);
 
     ok($auth_controller->auto_login, 'controller automatically authenticates users');
@@ -93,12 +93,12 @@ SKIP: {
 
 # Test redirect with previous referer
 SKIP: {
-    skip 'need at least one configured realm', 5 unless $can_test_auth;
+    skip 'need at least one configured realm', 8 unless $can_test_auth;
 
     # Start at public instance
     $auth_controller->use_login_form(0);
     $auth_controller->use_environment(0);
-    $auth_controller->authenticated_uri('/private/');
+    $auth_controller->authenticated_path_segments([ 'private' ]);
     $auth_controller->logout_uri(undef);
 
     ok(! $auth_controller->auto_login, 'controller does not automatically authenticate users');
@@ -111,25 +111,26 @@ SKIP: {
 
     $auth_controller->use_login_form(0);
     $auth_controller->use_environment(1);
-    $auth_controller->authenticated_uri(undef);
+    $auth_controller->authenticated_path_segments(undef);
     $auth_controller->logout_uri(undef);
 
     ok($auth_controller->auto_login, 'controller automatically authenticates users');
 
     local $ENV{REMOTE_USER} = 'dwc';
-    $mech->get_ok('http://localhost/', 'starting at the home page');
+    $mech->get_ok('http://localhost/affiliations/', 'starting at the home page');
     $mech->title_like(qr/Affiliations/i, 'returned to affiliations page after public-private switch');
+    $mech->content_like(qr/Your affiliation is [^ ]*staff/i, 'contains information about logged in user');
 
     $mech->get_ok('http://localhost/logout', 'request to logout');
 }
 
 # Test direct private link
 SKIP: {
-    skip 'need at least one configured realm', 2 unless $can_test_auth;
+    skip 'need at least one configured realm', 3 unless $can_test_auth;
 
     $auth_controller->use_login_form(0);
     $auth_controller->use_environment(1);
-    $auth_controller->authenticated_uri(undef);
+    $auth_controller->authenticated_path_segments(undef);
     $auth_controller->logout_uri(undef);
 
     ok($auth_controller->auto_login, 'controller automatically authenticates users');

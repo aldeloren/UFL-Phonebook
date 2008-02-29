@@ -5,7 +5,7 @@ use warnings;
 use base qw/Catalyst::Controller/;
 use URI;
 
-__PACKAGE__->mk_accessors(qw/use_login_form use_environment authenticated_uri logout_uri/);
+__PACKAGE__->mk_accessors(qw/use_login_form use_environment authenticated_path_segments logout_uri/);
 
 =head1 NAME
 
@@ -47,14 +47,13 @@ sub login : Global {
     my ($self, $c) = @_;
 
     # Handle redirecting to a separate, authenticated URL
-    if ($self->authenticated_uri) {
-        my $value = $c->req->referer || $c->req->uri;
-        $c->res->cookies->{referer} = { value => $value };
-        $c->log->debug("Setting referer cookie to [$value]");
+    if (my $authenticated_path_segments = $self->authenticated_path_segments) {
+        my $authenticated_uri = URI->new($c->req->referer || $c->req->uri);
+        my @path = $authenticated_uri->path_segments;
+        shift @path;  # Remove initial slash
+        $authenticated_uri->path_segments(@{ $authenticated_path_segments || [] }, @path);
 
-        my $authenticated_uri = $c->uri_for($self->authenticated_uri);
-        return $c->res->redirect($authenticated_uri)
-            unless $c->req->uri =~ /^$authenticated_uri/;
+        return $c->res->redirect($authenticated_uri);
     }
 
     if ($self->use_login_form) {
@@ -105,6 +104,10 @@ Log the user in based on the environment (via C<REMOTE_USER>).
 sub login_via_env : Private {
     my ($self, $c) = @_;
 
+    # Send them back to the home page if already logged in
+    return $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')))
+        if $c->user_exists;
+
     my $username = $c->req->user;
     die "Could not determine username from environment"
         unless $username;
@@ -113,27 +116,13 @@ sub login_via_env : Private {
         username => $username,
         password => $username,
     }) or die "Could not authenticate based on environment";
-
-    # Determine where to send the user
-    my $return_to = $c->req->uri;
-
-    # For separate, authenticated URL case
-    my $cookie = $c->req->cookies->{referer};
-    if ($cookie and $cookie->value) {
-        $return_to = $cookie->value;
-        $c->res->cookies->{referer} = { value => '' };
-    }
-
-    $c->stash(return_to => $return_to);
-
-    $c->forward('redirect');
 }
 
 =head2 redirect
 
-Determine where to send the user after successful login. We check for
-a C<referer> cookie for returning the user to the authenticated view
-of the previous page.
+Determine where to send the user after successful login. We default to
+the home page but allow specification of a C<return_to> parameter in
+case the calling login method knows a better place to send the user.
 
 =cut
 
@@ -141,16 +130,8 @@ sub redirect : Private {
     my ($self, $c) = @_;
 
     # Determine where to send the user
-    my $location = $c->uri_for($c->controller('Root')->action_for('index'));
-
-    my $return_to = $c->stash->{return_to};
-    if ($return_to) {
-        # Build a new, authenticated URL based on the anonymous referer URL
-        my $uri = URI->new($return_to);
-        $location = $c->uri_for($uri->path, { $uri->query_form });
-    }
-
-    $c->log->debug("return_to = [$return_to], location = [$location]");
+    my $location = $c->stash->{return_to}
+        || $c->uri_for($c->controller('Root')->action_for('index'));
 
     return $c->res->redirect($location);
 }
