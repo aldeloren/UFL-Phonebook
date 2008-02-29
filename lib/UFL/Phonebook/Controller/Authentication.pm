@@ -21,6 +21,22 @@ L<Catalyst> controller component for authentication.
 
 =head1 METHODS
 
+=head2 auto_login
+
+Return true iff we are supposed to automatically authenticate users in
+e.g. L<UFL::Phonebook::Controller::Root/auto>.
+
+Currently this is true only for cases where we are using the
+environment (C<REMOTE_USER>) to authenticate users.
+
+=cut
+
+sub auto_login {
+    my ($self) = @_;
+
+    return $self->use_environment;
+}
+
 =head2 login
 
 Log the current user in.
@@ -30,9 +46,11 @@ Log the current user in.
 sub login : Global {
     my ($self, $c) = @_;
 
-    # Allow redirection to a separate, authenticated URL
+    # Handle redirecting to a separate, authenticated URL
     if ($self->authenticated_uri) {
-        $c->res->cookies->{referer} = { value => $c->req->referer };
+        my $value = $c->req->referer || $c->req->uri;
+        $c->res->cookies->{referer} = { value => $value };
+        $c->log->debug("Setting referer cookie to [$value]");
 
         my $authenticated_uri = $c->uri_for($self->authenticated_uri);
         return $c->res->redirect($authenticated_uri)
@@ -97,7 +115,7 @@ sub login_via_env : Private {
     }) or die "Could not authenticate based on environment";
 
     # Determine where to send the user
-    my $return_to = $c->req->referer;
+    my $return_to = $c->req->uri;
 
     # For separate, authenticated URL case
     my $cookie = $c->req->cookies->{referer};
@@ -131,6 +149,8 @@ sub redirect : Private {
         my $uri = URI->new($return_to);
         $location = $c->uri_for($uri->path, { $uri->query_form });
     }
+
+    $c->log->debug("return_to = [$return_to], location = [$location]");
 
     return $c->res->redirect($location);
 }

@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 28;
+use Test::More tests => 34;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -8,18 +8,21 @@ $mech->allow_external(1);
 
 use_ok('UFL::Phonebook::Controller::Authentication');
 
-my $controller    = UFL::Phonebook->controller('Authentication');
-my $auth_config   = UFL::Phonebook->config->{authentication};
-my $can_test_auth = exists $auth_config->{realms};
+my $root_controller = UFL::Phonebook->controller('Root');
+my $auth_controller = UFL::Phonebook->controller('Authentication');
+my $auth_config     = UFL::Phonebook->config->{authentication};
+my $can_test_auth   = exists $auth_config->{realms};
 
 # Test redirection to protected location
 {
     my $authenticated_uri = '/private/';
 
-    $controller->use_login_form(0);
-    $controller->use_environment(0);
-    $controller->authenticated_uri($authenticated_uri);
-    $controller->logout_uri(undef);
+    $auth_controller->use_login_form(0);
+    $auth_controller->use_environment(0);
+    $auth_controller->authenticated_uri($authenticated_uri);
+    $auth_controller->logout_uri(undef);
+
+    ok(! $auth_controller->auto_login, 'controller does not automatically authenticate users');
 
     $mech->get_ok('http://localhost/', 'starting at the home page');
 
@@ -34,10 +37,12 @@ my $can_test_auth = exists $auth_config->{realms};
 
 # Test login form
 SKIP: {
-    $controller->use_login_form(1);
-    $controller->use_environment(0);
-    $controller->authenticated_uri(undef);
-    $controller->logout_uri(undef);
+    $auth_controller->use_login_form(1);
+    $auth_controller->use_environment(0);
+    $auth_controller->authenticated_uri(undef);
+    $auth_controller->logout_uri(undef);
+
+    ok(! $auth_controller->auto_login, 'controller does not automatically authenticate users');
 
     $mech->get_ok('http://localhost/', 'starting at the home page');
 
@@ -59,24 +64,24 @@ SKIP: {
 
 # Test login via environment
 SKIP: {
-    skip 'need at least one configured realm', 9 unless $can_test_auth;
+    skip 'need at least one configured realm', 7 unless $can_test_auth;
 
     my $logout_uri = 'http://login.gatorlink.ufl.edu/quit.cgi';
 
-    $controller->use_login_form(0);
-    $controller->use_environment(1);
-    $controller->authenticated_uri(undef);
-    $controller->logout_uri($logout_uri);
+    $auth_controller->use_login_form(0);
+    $auth_controller->use_environment(1);
+    $auth_controller->authenticated_uri(undef);
+    $auth_controller->logout_uri($logout_uri);
+
+    ok($auth_controller->auto_login, 'controller automatically authenticates users');
 
     # Without REMOTE_USER
-    $mech->get_ok('http://localhost/', 'starting at the home page');
-    eval { $mech->get('http://localhost/login', 'request for login page') };
-    is($mech->status, 500, 'request failed');
+    eval { $mech->get('http://localhost/', 'starting at the home page') };
+    is($mech->status, 500, 'request failed without username');
 
     # With REMOTE_USER
     local $ENV{REMOTE_USER} = 'dwc';
     $mech->get_ok('http://localhost/', 'starting at the home page');
-    $mech->get_ok('http://localhost/login', 'request for login page');
     $mech->content_like(qr|Logged in as <a href[^>]+>dwc</a>|, 'looks like we logged in');
 
     $mech->get_ok('http://localhost/logout', 'request to logout');
@@ -90,22 +95,46 @@ SKIP: {
 SKIP: {
     skip 'need at least one configured realm', 5 unless $can_test_auth;
 
-    my $search_uri = 'http://localhost/people/search?query=smith';
+    # Start at public instance
+    $auth_controller->use_login_form(0);
+    $auth_controller->use_environment(0);
+    $auth_controller->authenticated_uri('/private/');
+    $auth_controller->logout_uri(undef);
 
-    $controller->use_login_form(0);
-    $controller->use_environment(1);
-    $controller->authenticated_uri(undef);
-    $controller->logout_uri(undef);
+    ok(! $auth_controller->auto_login, 'controller does not automatically authenticate users');
 
-    $mech->get_ok('http://localhost/', 'starting at the home page');
+    $mech->get_ok('http://localhost/affiliations/', 'viewed affiliations page on public instance');
+    $mech->title_like(qr/Affiliations/i, 'looks like we got the affiliations page');
+
+    # Simulate switch to private instance
+    $mech->get('http://localhost/login');
+
+    $auth_controller->use_login_form(0);
+    $auth_controller->use_environment(1);
+    $auth_controller->authenticated_uri(undef);
+    $auth_controller->logout_uri(undef);
+
+    ok($auth_controller->auto_login, 'controller automatically authenticates users');
 
     local $ENV{REMOTE_USER} = 'dwc';
-    $mech->add_header(Referer => $search_uri);
-    $mech->get('http://localhost/login');
-    my $response = $mech->response->previous;
-    ok($response, 'found response chain');
-    ok($response->is_redirect, 'previous response was a redirect');
-    is($response->header('Location'), $search_uri, 'login response redirected back to search results');
+    $mech->get_ok('http://localhost/', 'starting at the home page');
+    $mech->title_like(qr/Affiliations/i, 'returned to affiliations page after public-private switch');
 
     $mech->get_ok('http://localhost/logout', 'request to logout');
+}
+
+# Test direct private link
+SKIP: {
+    skip 'need at least one configured realm', 2 unless $can_test_auth;
+
+    $auth_controller->use_login_form(0);
+    $auth_controller->use_environment(1);
+    $auth_controller->authenticated_uri(undef);
+    $auth_controller->logout_uri(undef);
+
+    ok($auth_controller->auto_login, 'controller automatically authenticates users');
+
+    local $ENV{REMOTE_USER} = 'dwc';
+    $mech->get_ok("http://localhost/people/WHHVHEWHV/", 'automatically redirected to private page on direct request');
+    $mech->content_like(qr/Westermann-Clark/i, 'direct link to private page landed in the right place');
 }

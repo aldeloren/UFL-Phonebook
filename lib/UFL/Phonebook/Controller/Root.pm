@@ -5,7 +5,6 @@ use warnings;
 use base qw/Catalyst::Controller/;
 
 __PACKAGE__->config(namespace => '');
-__PACKAGE__->mk_accessors(qw/auto_login/);
 
 =head1 NAME
 
@@ -27,7 +26,7 @@ sub auto : Private {
     my ($self, $c) = @_;
 
     $c->forward($c->controller('Authentication')->action_for('login'))
-        if $self->auto_login and not $c->user_exists;
+        if $c->controller('Authentication')->auto_login and not $c->user_exists;
 
     if ($c->user_exists) {
         my $mesg = $c->model('Person')->search("uid=" . $c->user->id);
