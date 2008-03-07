@@ -24,6 +24,7 @@ requires 'Net::LDAP::Constant';
 requires 'Net::LDAP::Control::ProxyAuth';
 requires 'Scalar::Util';
 requires 'Tree::Simple';
+requires 'UFL::Controller::Authentication';
 requires 'URI';
 requires 'YAML';
 
