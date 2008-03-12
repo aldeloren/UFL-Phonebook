@@ -47,7 +47,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 
 # Anonymous search for student
 {
-    my $mesg = search($anonymous_model, undef, 'shubha', 1, 1, 1, 0, 0, 'student');
+    my $mesg = search($anonymous_model, undef, 'shubha', 0);
 }
 
 
