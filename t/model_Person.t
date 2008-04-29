@@ -92,7 +92,7 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
 
 # Student search for student
 {
-    my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 0, 1, 0, 'student');
+    my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 1, 1, 0, 'student');
 }
 
 # Student search for student
