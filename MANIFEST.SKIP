@@ -28,5 +28,7 @@
 
 # Runtime files and directories
 _local.yml$
+_private.yml$
+_public.yml$
 \bconf\b
 \bkeytab\b
