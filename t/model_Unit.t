@@ -8,7 +8,7 @@ plan tests    => 6;
 use_ok('UFL::Phonebook::Model::Unit');
 
 my %config = (
-    host        => 'misc01.osg.ufl.edu',
+    host        => 'misc02.osg.ufl.edu',
     base        => 'ou=Organizations,dc=ufl,dc=edu',
     entry_class => 'UFL::Phonebook::Unit',
 );

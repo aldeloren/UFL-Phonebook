@@ -12,7 +12,7 @@ use_ok('UFL::Phonebook::Model::Person');
 
 
 my %config = (
-    host        => 'misc01.osg.ufl.edu',
+    host        => 'misc02.osg.ufl.edu',
     base        => 'ou=People,dc=ufl,dc=edu',
     entry_class => 'UFL::Phonebook::Person',
 );
