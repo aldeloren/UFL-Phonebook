@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Test::More;
 
-plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
+plan skip_all => 'set TEST_LDAP to enable this test' unless $ENV{TEST_LDAP};
 plan tests    => 6;
 
 use_ok('UFL::Phonebook::Model::Unit');

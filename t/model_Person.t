@@ -5,7 +5,7 @@ use FindBin;
 use Test::MockObject;
 use Test::More;
 
-plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
+plan skip_all => 'set TEST_LDAP to enable this test' unless $ENV{TEST_LDAP};
 plan tests    => 6 + 2 + 6*24;
 
 use_ok('UFL::Phonebook::Model::Person');
