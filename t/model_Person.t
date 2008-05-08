@@ -6,7 +6,7 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_AUTHOR to enable this test' unless $ENV{TEST_AUTHOR};
-plan tests    => 6 + 8*24;
+plan tests    => 6 + 2 + 6*24;
 
 use_ok('UFL::Phonebook::Model::Person');
 
@@ -127,10 +127,10 @@ sub search {
     my $conn = $model->ACCEPT_CONTEXT($c);
 
     my $mesg = $conn->search("uid=$target");
-    is($mesg->count, $expected_count, "Found $expected_count result" . ($expected_count == 1 ? '' : 's'));
+    my $count = $mesg->count;
+    is($count, $expected_count, "Found $expected_count result" . ($expected_count == 1 ? '' : 's'));
 
-    SKIP: {
-        skip 'need an entry', 23 unless $mesg->count > 0;
+    if ($count > 0) {
         check_entry($mesg->entry(0), $target, $has_phone, $has_office, $has_mail, $has_personal, $affiliation);
     }
 
