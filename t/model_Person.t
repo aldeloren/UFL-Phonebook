@@ -6,13 +6,13 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_LDAP to enable this test' unless $ENV{TEST_LDAP};
-plan tests    => 6 + 2 + 6*24;
+plan tests    => 6 + 2 + 2 + 10*24;
 
 use_ok('UFL::Phonebook::Model::Person');
 
 
 my %config = (
-    host        => 'misc02.osg.ufl.edu',
+    host        => $ENV{TEST_LDAP_HOST} || 'misc02.osg.ufl.edu',
     base        => 'ou=People,dc=ufl,dc=edu',
     entry_class => 'UFL::Phonebook::Person',
 );
@@ -100,7 +100,6 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
     my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 1, 0, 'student');
 }
 
-
 # Search for student with SASL but without proxy authentication
 {
     eval { search($authenticated_model, undef, 'shubha', 1, 1, 1, 0, 0, 'student') };
@@ -109,6 +108,44 @@ isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
     ok($error, "search for student with SASL but without proxy authentication died ($error)");
 }
 
+
+#
+# Adminstrative ID access
+#
+
+SKIP: {
+    skip 'set TEST_LDAP_BINDDN and TEST_LDAP_PASSWORD to test administrative ID access', 2 + 4*24
+        unless $ENV{TEST_LDAP_BINDDN} and $ENV{TEST_LDAP_PASSWORD};
+
+    my $admin_model = UFL::Phonebook::Model::Person->new({
+        %config,
+        dn       => $ENV{TEST_LDAP_BINDDN},
+        password => $ENV{TEST_LDAP_PASSWORD},
+    });
+
+    isa_ok($authenticated_model, 'UFL::Phonebook::Model::Person');
+    isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
+
+    # Search for protected person
+    {
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'dwc', 1, 1, 1, 1, 1, 'staff');
+    }
+
+    # Search for faculty
+    {
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'tigrr', 1, 1, 1, 1, 1, 'faculty');
+    }
+
+    # Search for faculty
+    {
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'asr', 1, 1, 1, 1, 1, 'staff');
+    }
+
+    # Search for student
+    {
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'shubha', 1, 1, 1, 1, 1, 'student');
+    }
+}
 
 # Total: 24 tests
 sub search {
