@@ -30,7 +30,7 @@ my %config = (
 
 # Simple bind
 SKIP: {
-    skip 'set TEST_LDAP_BINDDN and TEST_LDAP_PASSWORD to run these tests', 4
+    skip 'set TEST_LDAP_BINDDN and TEST_LDAP_PASSWORD to test a simple bind', 4
         unless $ENV{TEST_LDAP_BINDDN} and $ENV{TEST_LDAP_PASSWORD};
 
     diag("Doing simple bind against $config{host}");
