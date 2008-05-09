@@ -147,6 +147,7 @@ SKIP: {
     }
 }
 
+
 # Total: 24 tests
 sub search {
     my ($model, $requestor, $target, $expected_count, $has_phone, $has_office, $has_mail, $has_personal, $affiliation) = @_;
