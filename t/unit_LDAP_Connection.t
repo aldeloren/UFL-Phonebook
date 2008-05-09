@@ -10,7 +10,7 @@ use_ok('UFL::Phonebook::LDAP::Connection');
 
 
 my %config = (
-    host => $ENV{TEST_LDAP_HOST} || 'misc01.osg.ufl.edu',
+    host => $ENV{TEST_LDAP_HOST} || 'ldap.ufl.edu',
     base => 'ou=People,dc=ufl,dc=edu',
 );
 
@@ -49,10 +49,13 @@ SKIP: {
 }
 
 # SASL bind
-{
+SKIP: {
+    skip 'set TEST_LDAP_PRINCIPAL to test a SASL bind', 4
+        unless $ENV{TEST_LDAP_PRINCIPAL};
+
     $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
 
-    my $principal = '02010600/app/phonebook';
+    my $principal = $ENV{TEST_LDAP_PRINCIPAL};
     (my $filename = $principal) =~ s|/|_|g;
     my $keytab = File::Spec->join($FindBin::Bin, File::Spec->updir, 'keytab', $filename);
 

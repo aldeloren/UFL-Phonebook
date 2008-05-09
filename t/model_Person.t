@@ -12,7 +12,7 @@ use_ok('UFL::Phonebook::Model::Person');
 
 
 my %config = (
-    host        => $ENV{TEST_LDAP_HOST} || 'misc02.osg.ufl.edu',
+    host        => $ENV{TEST_LDAP_HOST} || 'ldap.ufl.edu',
     base        => 'ou=People,dc=ufl,dc=edu',
     entry_class => 'UFL::Phonebook::Person',
 );
@@ -55,57 +55,62 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 # Authenticated searches
 #
 
-$ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
+SKIP: {
+    skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 5*24 + 1
+        unless $ENV{TEST_LDAP_PRINCIPAL};
 
-my $principal = '02010600/app/phonebook';
-(my $filename = $principal) =~ s|/|_|g;
-my $keytab = File::Spec->join($FindBin::Bin, File::Spec->updir, 'keytab', $filename);
-my $authenticated_model = UFL::Phonebook::Model::Person->new({
-    %config,
-    connection_class => 'UFL::Phonebook::LDAP::Connection',
-    krb5 => {
-        principal => $principal,
-        keytab    => $keytab,
-    },
-    sasl => {
-        service => $principal,
-    },
-});
+    $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
 
-isa_ok($authenticated_model, 'UFL::Phonebook::Model::Person');
-isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
+    my $principal = $ENV{TEST_LDAP_PRINCIPAL};
+    (my $filename = $principal) =~ s|/|_|g;
+    my $keytab = File::Spec->join($FindBin::Bin, File::Spec->updir, 'keytab', $filename);
+    my $authenticated_model = UFL::Phonebook::Model::Person->new({
+        %config,
+        connection_class => 'UFL::Phonebook::LDAP::Connection',
+        krb5 => {
+            principal => $principal,
+            keytab    => $keytab,
+        },
+        sasl => {
+            service => $principal,
+        },
+    });
 
-# Protected person search for self
-{
-    my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 1, 'staff');
-}
+    isa_ok($authenticated_model, 'UFL::Phonebook::Model::Person');
+    isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
 
-# Faculty search for faculty
-{
-    my $mesg = search($authenticated_model, 'manuel81', 'tigrr', 1, 1, 1, 1, 0, 'faculty');
-}
+    # Protected person search for self
+    {
+        my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 1, 'staff');
+    }
 
-# Faculty search for student
-{
-    my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 1, 1, 0, 'student');
-}
+    # Faculty search for faculty
+    {
+        my $mesg = search($authenticated_model, 'manuel81', 'tigrr', 1, 1, 1, 1, 0, 'faculty');
+    }
 
-# Student search for student
-{
-    my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 1, 1, 0, 'student');
-}
+    # Faculty search for student
+    {
+        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 1, 1, 0, 'student');
+    }
 
-# Student search for student
-{
-    my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 1, 0, 'student');
-}
+    # Student search for student
+    {
+        my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 1, 1, 0, 'student');
+    }
 
-# Search for student with SASL but without proxy authentication
-{
-    eval { search($authenticated_model, undef, 'shubha', 1, 1, 1, 0, 0, 'student') };
+    # Student search for student
+    {
+        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 1, 0, 'student');
+    }
 
-    my $error = $@;
-    ok($error, "search for student with SASL but without proxy authentication died ($error)");
+    # Search for student with SASL but without proxy authentication
+    {
+        eval { search($authenticated_model, undef, 'shubha', 1, 1, 1, 0, 0, 'student') };
+
+        my $error = $@;
+        ok($error, "search for student with SASL but without proxy authentication died ($error)");
+    }
 }
 
 
@@ -123,8 +128,8 @@ SKIP: {
         password => $ENV{TEST_LDAP_PASSWORD},
     });
 
-    isa_ok($authenticated_model, 'UFL::Phonebook::Model::Person');
-    isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
+    isa_ok($admin_model, 'UFL::Phonebook::Model::Person');
+    isa_ok($admin_model, 'Catalyst::Model::LDAP');
 
     # Search for protected person
     {
