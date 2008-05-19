@@ -32,7 +32,8 @@ Controller::Units:
     - ST010000
 
 Model::Person:
-  host: &host ldap.ufl.edu
+#  host: &host ldap.ufl.edu
+  host: &host dir7.osg.ufl.edu
   base: ou=People,dc=ufl,dc=edu
   options: &options
     sizelimit: 100
