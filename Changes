@@ -1,5 +1,9 @@
 This file documents the revision history for UFL::Phonebook.
 
+0.25
+        - Make the proxy authentication control critical to avoid
+          privacy leaks
+
 0.24  Tue Apr 29 12:21:35 EDT 2008
         - Direct links to private pages now go to the right place
           instead of redirecting to the private home page (#3)
