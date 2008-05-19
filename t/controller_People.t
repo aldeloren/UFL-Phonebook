@@ -9,7 +9,7 @@ my $mech = Test::WWW::Mechanize::Catalyst->new;
 use_ok('UFL::Phonebook::Controller::People');
 
 my $QUERY        = 'tester';
-my $CN           = 'TESTER,AT A';
+my $CN           = 'Tester,AT A';
 my $UID          = 'attest1';
 my $UFID         = '59831351';
 my $ENCODED_UFID = 'TVJVWHJJW';
@@ -90,7 +90,7 @@ isa_ok($controller, 'UFL::Phonebook::BaseController');
 {
     my $filter = $controller->_get_show_cgi_filter('AT+A.+TESTER');
     isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(cn=$CN.*)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi name query matches');
+    is($filter->as_string, "(&(cn=TESTER,AT A.*)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi name query matches');
 }
 
 # Test filter generation for old show.cgi-style name query
