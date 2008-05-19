@@ -6,7 +6,7 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_LDAP to enable this test' unless $ENV{TEST_LDAP};
-plan tests    => 6 + 2 + 2 + 10*24;
+plan tests    => 1 + 3*2 + 10*24 + 4*1;
 
 use_ok('UFL::Phonebook::Model::Person');
 
@@ -56,7 +56,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 #
 
 SKIP: {
-    skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 5*24 + 1
+    skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 5*24 + 2*1
         unless $ENV{TEST_LDAP_PRINCIPAL};
 
     $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
@@ -102,6 +102,11 @@ SKIP: {
     # Student search for student
     {
         my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 1, 0, 'student');
+    }
+
+    # Staff search for protected person
+    {
+        my $mesg = search($authenticated_model, 'asr', 'dwc', 0);
     }
 
     # Search for student with SASL but without proxy authentication
