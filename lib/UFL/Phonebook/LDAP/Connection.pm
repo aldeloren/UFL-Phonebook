@@ -134,7 +134,7 @@ sub _krb5_login_via_kinit {
     eval {
         # Override the Catalyst::Engine::HTTP signal handler
         local $SIG{CHLD} = '';
-        system(@cmd) == 0 or die "[$?] [$!]";
+        system(@cmd) == 0 or die("child exited with value " . ($? >> 8));
     };
     die "kinit failed: $@" if $@;
 }
