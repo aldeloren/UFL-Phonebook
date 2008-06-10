@@ -228,7 +228,6 @@ sub _parse_query {
         # One token: last name or username
         my $name = $tokens[0];
 
-        $filter->add('cn',    '=', qq[$name,*]);
         $filter->add('sn',    '=', qq[$name*]);
         $filter->add('uid',   '=', $name);
         $filter->add('mail',  '=', qq[$name@*]);
@@ -238,10 +237,12 @@ sub _parse_query {
     elsif (scalar @tokens == 2) {
         # Two tokens: first and last name
         my ($first, $last) = @tokens;
-
-        ($first, $last) = ($last, $first) if $query =~ /,/;
         $first =~ s/\.$//;
 
+        my $name_filter = $self->_get_name_filter($first, $last);
+        $filter->add($name_filter);
+
+        $filter->add('cn',    '=', qq[$last*, $first*]);
         $filter->add('cn',    '=', qq[$last*,$first*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
         $filter->add('mail',  '=', qq[$first-$last@*]);
@@ -249,21 +250,50 @@ sub _parse_query {
 #        $filter->add('title', '=', qq[$query*]);
     }
     else {
-        # Three or more tokens: first, middle, and last name
-        my ($first, $middle, @last) = @tokens;
-        my $last = join ' ', @last;
+        # Three or more tokens: default to simple query
+        $filter->add('sn', '=', qq[$query*]);
 
-        ($first, $middle, $last) = ($middle, $last, $first) if $query =~ /,/;
-        for ($first, $middle) {
-            s/\.$//;
+        # Limit number of permutations
+        if (@tokens < 5) {
+            for (@tokens) {
+                s/\.$//;
+            }
+
+            # Add all permutations of first and last name from given tokens
+            for my $i (1 .. @tokens-1) {
+                my $first = join(' ', @tokens[0 .. $i-1]);
+                my $last = join(' ', @tokens[$i .. @tokens-1]);
+
+                my $name_filter = $self->_get_name_filter($first, $last);
+                $filter->add($name_filter);
+
+                $filter->add('cn',   '=', qq[$last*, *$first*]);
+                $filter->add('cn',   '=', qq[$last*,*$first*]);
+                $filter->add('mail', '=', qq[$first$last@*]);
+                $filter->add('mail', '=', qq[$first-$last@*]);
+            }
         }
-
-        $filter->add('cn',    '=', qq[$last*,$first* $middle*]);
-        $filter->add('mail',  '=', qq[$first$last@*]);
-        $filter->add('mail',  '=', qq[$first-$last@*]);
     }
 
     return $self->filter($filter);
+}
+
+=head2 _get_name_filter
+
+Return a filter for the specified first and last name.  This searches
+the C<givenName> and C<sn> fields, respectively, which users can set
+on their own.
+
+=cut
+
+sub _get_name_filter {
+    my ($self, $first, $last) = @_;
+
+    my $filter = UFL::Phonebook::Filter::Abstract->new('&');
+    $filter->add('givenName', '=', qq[*$first*]);
+    $filter->add('sn',        '=', qq[$last*]);
+
+    return $filter;
 }
 
 =head2 _get_show_cgi_filter

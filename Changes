@@ -3,6 +3,8 @@ This file documents the revision history for UFL::Phonebook.
 0.26
         - Redirect on single result only when a query is provided (for
           e.g. /units/*/people/)
+        - Improve tokenizer and query builder for current state of
+          names in LDAP
 
 0.25  Mon May 19 11:50:33 EDT 2008
         - Make the proxy authentication control critical to avoid
