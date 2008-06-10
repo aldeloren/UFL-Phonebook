@@ -72,9 +72,9 @@ sub results : Private {
 
     my @entries = $mesg->entries;
 
-    if (@entries == 1) {
+    if (@entries == 1 and my $query = $c->req->param('query')) {
         my $entry = shift @entries;
-        $c->res->cookies->{query} = { value => $c->req->param('query') };
+        $c->res->cookies->{query} = { value => $query };
         $c->res->redirect($c->uri_for($self->action_for('view'), $entry->uri_args, ''));
     }
     elsif (@entries) {
