@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 100;
+use Test::More tests => 101;
 use Text::vCard::Addressbook;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
@@ -20,8 +20,9 @@ my $UNIT_PSID    = '02010601';
 my $UNIT_UFID    = 'UETHHG63';
 my $UNIT_O       = 'PV-OAA APPLICATION DEVELOP';
 
-my $controller = UFL::Phonebook::Controller::People->new;
+my $controller = UFL::Phonebook::Controller::People->new({ max_permuted_tokens => 10 });
 isa_ok($controller, 'UFL::Phonebook::BaseController');
+is($controller->max_permuted_tokens, 10, 'set maximum number of tokens allowed in permuting query');
 
 # Test default filter restriction
 {
