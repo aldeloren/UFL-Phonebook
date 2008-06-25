@@ -6,9 +6,12 @@ use base qw/UFL::Phonebook::BaseController/;
 use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Util;
 
+__PACKAGE__->mk_accessors(qw/max_permuted_tokens/);
+
 __PACKAGE__->config(
-    model_name => 'Person',
-    sort_field => 'cn',
+    model_name          => 'Person',
+    sort_field          => 'cn',
+    max_permuted_tokens => 5,
 );
 
 =head1 NAME
@@ -254,7 +257,7 @@ sub _parse_query {
         $filter->add('sn', '=', qq[$query*]);
 
         # Limit number of permutations
-        if (@tokens < 5) {
+        if (@tokens <= $self->max_permuted_tokens) {
             for (@tokens) {
                 s/\.$//;
             }
