@@ -92,7 +92,12 @@ sub tokenize_query {
     # Strip invalid characters
     $query =~ s/[^a-z0-9 .,\-_\'\@]//gi;
 
-    my @tokens = split /(?:,\s*|\s+)/, lc($query);
+    if ($query =~ /,/) {
+        my ($last, $first) = split /(?:,\s*)/, $query;
+        $query = join ' ', grep { $_ } ($first, $last);
+    }
+
+    my @tokens = split /(?:\s+)/, lc($query);
 
     return @tokens;
 }
