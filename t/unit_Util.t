@@ -13,7 +13,7 @@ isnt($result, $EMAIL, 'protected email');
 foreach my $ufid (@UFIDS) {
     my $encoded = UFL::Phonebook::Util::encode_ufid($ufid);
     my $decoded = UFL::Phonebook::Util::decode_ufid($encoded);
-    is($decoded, $ufid, 'encode, decode UFID');
+    is($decoded, $ufid, "encode, decode UFID ($ufid => $encoded => $decoded)");
 }
 
 is_deeply([ UFL::Phonebook::Util::tokenize_query('one') ], [ qw/one/ ], 'one token');

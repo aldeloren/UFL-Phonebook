@@ -1,12 +1,10 @@
 use strict;
 use warnings;
-use Test::More tests => 101;
+use Test::More tests => 87;
 use Text::vCard::Addressbook;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
-
-use_ok('UFL::Phonebook::Controller::People');
 
 my $QUERY        = 'tester';
 my $CN           = 'Tester,AT A';
@@ -20,85 +18,6 @@ my $UNIT_PSID    = '02010601';
 my $UNIT_UFID    = 'UETHHG63';
 my $UNIT_O       = 'PV-OAA APPLICATION DEVELOP';
 
-my $controller = UFL::Phonebook::Controller::People->new({ max_permuted_tokens => 10 });
-isa_ok($controller, 'UFL::Phonebook::BaseController');
-is($controller->max_permuted_tokens, 10, 'set maximum number of tokens allowed in permuting query');
-
-# Test default filter restriction
-{
-    my $filter = $controller->_get_restriction;
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-)))", 'default restriction filter matches');
-}
-
-# Test simple filter generation
-{
-    my $filter = $controller->filter('cn', '=', $CN);
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(cn=$CN)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter matches');
-}
-
-# Test filter generation for query with one word
-{
-    my $filter = $controller->_parse_query($QUERY);
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(sn=$QUERY*)(uid=$QUERY)(mail=$QUERY\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for one-word query matches');
-}
-
-# Test filter generation for query with two words
-{
-    my $filter = $controller->_parse_query('First Last');
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(&(givenName=*first*)(sn=last*))(cn=last*, first*)(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query matches');
-}
-
-# Test filter generation for query with two comma-separated words
-{
-    my $filter = $controller->_parse_query('Last, First');
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(&(givenName=*first*)(sn=last*))(cn=last*, first*)(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query with comma matches');
-}
-
-# Test filter generation for query with three words
-{
-    my $filter = $controller->_parse_query('First M. Last');
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(sn=First M. Last*)(&(givenName=*first*)(sn=m last*))(cn=m last*, *first*)(cn=m last*,*first*)(mail=firstm last\@*)(mail=first-m last\@*)(&(givenName=*first m*)(sn=last*))(cn=last*, *first m*)(cn=last*,*first m*)(mail=first mlast@*)(mail=first m-last@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
-}
-
-# Test filter generation for query with three comma-separated words
-{
-    my $filter = $controller->_parse_query('Last,First M.');
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(sn=Last,First M.*)(&(givenName=*first*)(sn=m last*))(cn=m last*, *first*)(cn=m last*,*first*)(mail=firstm last\@*)(mail=first-m last\@*)(&(givenName=*first m*)(sn=last*))(cn=last*, *first m*)(cn=last*,*first m*)(mail=first mlast@*)(mail=first m-last@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
-}
-
-# Test filter generation for old show.cgi-style UFID query
-{
-    my $filter = $controller->_get_show_cgi_filter($ENCODED_UFID);
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(uflEduUniversityId=$UFID)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi UFID query matches');
-}
-
-# Test filter generation for old show.cgi-style uid query
-{
-    my $filter = $controller->_get_show_cgi_filter($UID);
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(uid=$UID)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi uid query matches');
-}
-
-# Test filter generation for old show.cgi-style name query
-{
-    my $filter = $controller->_get_show_cgi_filter('AT+A.+TESTER');
-    isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(cn=TESTER,AT A.*)(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for show.cgi name query matches');
-}
-
-# Test filter generation for old show.cgi-style name query
-{
-    eval { my $filter = $controller->_get_show_cgi_filter('something invalid') };
-    ok($@, 'invalid show.cgi query threw an error');
-}
 
 $mech->get_ok('/people/', 'request for people page');
 
@@ -224,3 +143,34 @@ $mech->content_like(qr/$UNIT_O/i, 'response looks like results for people in uni
 $mech->get_ok("/people/unit/$UNIT_UFID/", 'request for people in unit');
 $mech->title_like(qr/$UNIT_O/i, 'response title looks like results for people in unit');
 $mech->content_like(qr/$UNIT_O/i, 'response looks like results for people in unit');
+
+
+# Test filtering of test LDAP entries
+{
+    # Reset the filter list to get a full view
+    my $filter_key = UFL::Phonebook->controller('People')->filter_key;
+    my $filter_values = UFL::Phonebook->controller('People')->filter_values;
+    UFL::Phonebook->model('People')->filter_values([]);
+
+    $mech->get_ok("/people/search?query=alligator");
+    $mech->content_like(qr|/people/WVWNENEVH/|i, 'search results contain record for UFID 09704400');
+    $mech->content_like(qr|/people/VTESVTSNJ/|i, 'search results contain record for UFID 89074910');
+    $mech->get_ok('/people/WVWNENEVH/', 'found single view for UFID 09704400');
+    $mech->get_ok('/people/VTESVTSNJ/', 'found single view for UFID 89074910');
+
+    # Set the filter list
+    UFL::Phonebook->model('People')->filter_key('uflEduUniversityId');
+    UFL::Phonebook->model('People')->filter_values([ qw/09704400 89074910/ ]);
+
+    $mech->get_ok("/people/search?query=alligator");
+    $mech->content_unlike(qr|/people/WVWNENEVH/|i, 'search results contain record for UFID 09704400');
+    $mech->content_unlike(qr|/people/VTESVTSNJ/|i, 'search results contain record for UFID 89074910');
+    $mech->get('/people/WVWNENEVH/');
+    is($mech->status, 404, 'single view for UFID 09704400 returned 404');
+    $mech->get('/people/VTESVTSNJ/');
+    is($mech->status, 404, 'single view for UFID 89074910 returned 404');
+
+    # Restore the previous filter list
+    UFL::Phonebook->controller('People')->filter_key($filter_key);
+    UFL::Phonebook->model('People')->filter_values($filter_values);
+}

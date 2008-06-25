@@ -3,15 +3,19 @@ package UFL::Phonebook::Controller::People;
 use strict;
 use warnings;
 use base qw/UFL::Phonebook::BaseController/;
+use Class::C3;
 use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Util;
 
-__PACKAGE__->mk_accessors(qw/max_permuted_tokens/);
+__PACKAGE__->mk_accessors(qw/max_permuted_tokens filter_key filter_values _filter_values_hash/);
 
 __PACKAGE__->config(
     model_name          => 'Person',
     sort_field          => 'cn',
     max_permuted_tokens => 5,
+    filter_key          => 'uflEduUniversityId',
+    filter_values       => [],
+    _filter_values_hash => {},
 );
 
 =head1 NAME
@@ -27,6 +31,53 @@ See L<UFL::Phonebook>.
 Catalyst controller component for finding people.
 
 =head1 METHODS
+
+=head2 new
+
+Initialize the information needed to filter entries, creating and
+storing a hash table based on the configured list of C<filter_values>.
+
+=cut
+
+sub new {
+    my $self = shift->next::method(@_);
+
+    # XXX: Class::Accessor does not appear to call the setter on
+    # XXX: build, so we have to do it here (until Moose)
+    $self->_build_filter_values_hash($self->filter_values);
+
+    return $self;
+}
+
+=head2 filter_values
+
+Override the corresponding accessor to rebuild the hash table when
+setting the C<filter_values> parameter.
+
+=cut
+
+sub filter_values {
+    my $self = shift;
+
+    if (@_) {
+        $self->_build_filter_values_hash(@_);
+    }
+
+    return $self->_filter_values_accessor(@_);
+}
+
+=head2 _build_filter_values_hash
+
+Convert the specified filter values arrayref to a hash table.
+
+=cut
+
+sub _build_filter_values_hash {
+    my ($self, $filter_values) = @_;
+
+    my %filter_values = map { $_ => 1 } @{ $filter_values || [] };
+    $self->_filter_values_hash(\%filter_values);
+}
 
 =head2 unit
 
@@ -70,7 +121,7 @@ sub single : PathPart('people') Chained('/') CaptureArgs(1) {
     die $mesg->error if $mesg->is_error;
 
     my $entry = $mesg->shift_entry;
-    $c->detach('/default') unless $entry;
+    $c->detach('/default') if not $entry or $self->hide_entry($entry);
 
     $c->stash(entry => $entry);
 }
@@ -330,6 +381,47 @@ sub _get_show_cgi_filter {
     }
 
     return $self->filter($filter);
+}
+
+=head2 filter_entries
+
+Filter the specified list of entries according to the configured
+C<filter_key> and C<filter_values> list.
+
+=cut
+
+sub filter_entries {
+    my ($self, @entries) = @_;
+
+    return grep { not $self->hide_entry($_) } @entries;
+}
+
+=head2 hide_entry
+
+Return true iff the specified entry should be filtered based on the
+configured L<filter_key> and L<filter_values> list.
+
+=cut
+
+sub hide_entry {
+    my ($self, $entry) = @_;
+
+    my $key = $self->filter_key;
+
+    return $self->_filter_value($entry->$key);
+}
+
+=head2 _filter_value
+
+Return true iff the specified value exists in the configured
+L<filter_values> list.
+
+=cut
+
+sub _filter_value {
+    my ($self, $value) = @_;
+
+    return exists $self->_filter_values_hash->{$value};
 }
 
 =head1 AUTHOR

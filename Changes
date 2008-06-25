@@ -5,6 +5,9 @@ This file documents the revision history for UFL::Phonebook.
           e.g. /units/*/people/)
         - Improve tokenizer and query builder for current state of
           names in LDAP
+        - Add filtering of test entries from LDAP
+        - Add the default list of test entries to filter to the main
+          configuration file
 
 0.25  Mon May 19 11:50:33 EDT 2008
         - Make the proxy authentication control critical to avoid
