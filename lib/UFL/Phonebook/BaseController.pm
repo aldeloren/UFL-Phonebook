@@ -71,6 +71,8 @@ sub results : Private {
     );
 
     my @entries = $mesg->entries;
+    @entries = $self->filter_entries(@entries)
+        if $self->can('filter_entries');
 
     if (@entries == 1 and my $query = $c->req->param('query')) {
         my $entry = shift @entries;
