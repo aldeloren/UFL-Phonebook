@@ -37,35 +37,35 @@ is($controller->max_permuted_tokens, 10, 'set maximum number of tokens allowed i
 {
     my $filter = $controller->_parse_query($QUERY);
     isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(sn=$QUERY*)(uid=$QUERY)(mail=$QUERY\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for one-word query matches');
+    is($filter->as_string, "(&(|(cn=*$QUERY*)(sn=*$QUERY*)(uid=$QUERY)(mail=$QUERY\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for one-word query matches');
 }
 
 # Test filter generation for query with two words
 {
     my $filter = $controller->_parse_query('First Last');
     isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(&(givenName=*first*)(sn=last*))(cn=last*, first*)(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query matches');
+    is($filter->as_string, "(&(|(&(givenName=*first*)(sn=last*))(cn=*First Last*)(cn=last*, first*)(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query matches');
 }
 
 # Test filter generation for query with two comma-separated words
 {
     my $filter = $controller->_parse_query('Last, First');
     isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(&(givenName=*first*)(sn=last*))(cn=last*, first*)(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query with comma matches');
+    is($filter->as_string, "(&(|(&(givenName=*first*)(sn=last*))(cn=*Last, First*)(cn=last*, first*)(cn=last*,first*)(mail=firstlast\@*)(mail=first-last\@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for two-word query with comma matches');
 }
 
 # Test filter generation for query with three words
 {
     my $filter = $controller->_parse_query('First M. Last');
     isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(sn=First M. Last*)(&(givenName=*first*)(sn=m last*))(cn=m last*, *first*)(cn=m last*,*first*)(mail=firstm last\@*)(mail=first-m last\@*)(&(givenName=*first m*)(sn=last*))(cn=last*, *first m*)(cn=last*,*first m*)(mail=first mlast@*)(mail=first m-last@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
+    is($filter->as_string, "(&(|(cn=*First M. Last*)(sn=First M. Last*)(&(givenName=*first*)(sn=m last*))(cn=m last*, *first*)(cn=m last*,*first*)(mail=firstm last\@*)(mail=first-m last\@*)(&(givenName=*first m*)(sn=last*))(cn=last*, *first m*)(cn=last*,*first m*)(mail=first mlast@*)(mail=first m-last@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
 }
 
 # Test filter generation for query with three comma-separated words
 {
     my $filter = $controller->_parse_query('Last,First M.');
     isa_ok($filter, 'UFL::Phonebook::Filter::Abstract');
-    is($filter->as_string, "(&(|(sn=Last,First M.*)(&(givenName=*first*)(sn=m last*))(cn=m last*, *first*)(cn=m last*,*first*)(mail=firstm last\@*)(mail=first-m last\@*)(&(givenName=*first m*)(sn=last*))(cn=last*, *first m*)(cn=last*,*first m*)(mail=first mlast@*)(mail=first m-last@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
+    is($filter->as_string, "(&(|(cn=*Last,First M.*)(sn=Last,First M.*)(&(givenName=*first*)(sn=m last*))(cn=m last*, *first*)(cn=m last*,*first*)(mail=firstm last\@*)(mail=first-m last\@*)(&(givenName=*first m*)(sn=last*))(cn=last*, *first m*)(cn=last*,*first m*)(mail=first mlast@*)(mail=first m-last@*))(&(!(eduPersonPrimaryAffiliation=affiliate))(!(eduPersonPrimaryAffiliation=-*-))))", 'filter for three-word query matches');
 }
 
 # Test filter generation for old show.cgi-style UFID query

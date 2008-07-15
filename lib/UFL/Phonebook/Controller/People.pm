@@ -282,7 +282,8 @@ sub _parse_query {
         # One token: last name or username
         my $name = $tokens[0];
 
-        $filter->add('sn',    '=', qq[$name*]);
+        $filter->add('cn',    '=', qq[*$name*]);
+        $filter->add('sn',    '=', qq[*$name*]);
         $filter->add('uid',   '=', $name);
         $filter->add('mail',  '=', qq[$name@*]);
         # TODO: Searching title seems slow
@@ -296,6 +297,7 @@ sub _parse_query {
         my $name_filter = $self->_get_name_filter($first, $last);
         $filter->add($name_filter);
 
+        $filter->add('cn',    '=', qq[*$query*]);
         $filter->add('cn',    '=', qq[$last*, $first*]);
         $filter->add('cn',    '=', qq[$last*,$first*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
@@ -305,6 +307,7 @@ sub _parse_query {
     }
     else {
         # Three or more tokens: default to simple query
+        $filter->add('cn', '=', qq[*$query*]);
         $filter->add('sn', '=', qq[$query*]);
 
         # Limit number of permutations
