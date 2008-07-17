@@ -6,7 +6,7 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_LDAP to enable this test' unless $ENV{TEST_LDAP};
-plan tests    => 1 + 3*2 + 10*24 + 4*1;
+plan tests    => 1 + 3*2 + 12*26 + 4*1;
 
 use_ok('UFL::Phonebook::Model::Person');
 
@@ -42,7 +42,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 
 # Anonymous search for staff
 {
-    my $mesg = search($anonymous_model, undef, 'asr', 1, 1, 1, 1, 0, 'staff');
+    my $mesg = search($anonymous_model, undef, 'asr', 1, 0, 0, 0, 'staff');
 }
 
 # Anonymous search for student
@@ -56,7 +56,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 #
 
 SKIP: {
-    skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 5*24 + 2*1
+    skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 7*26 + 2*1
         unless $ENV{TEST_LDAP_PRINCIPAL};
 
     $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
@@ -81,27 +81,37 @@ SKIP: {
 
     # Protected person search for self
     {
-        my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 1, 'staff');
+        my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 'staff');
     }
 
     # Faculty search for faculty
     {
-        my $mesg = search($authenticated_model, 'manuel81', 'tigrr', 1, 1, 1, 1, 0, 'faculty');
+        my $mesg = search($authenticated_model, 'manuel81', 'tigrr', 1, 0, 0, 0, 'faculty');
+    }
+
+    # Faculty search for faculty
+    {
+        my $mesg = search($authenticated_model, 'tigrr', 'manuel81', 1, 0, 1, 0, 'faculty');
     }
 
     # Faculty search for student
     {
-        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 1, 1, 0, 'student');
+        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 0, 0, 0, 'student');
     }
 
     # Student search for student
     {
-        my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 1, 1, 0, 'student');
+        my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 0, 0, 0, 'student');
     }
 
     # Student search for student
     {
-        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 1, 0, 'student');
+        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 0, 0, 0, 'student');
+    }
+
+    # Staff search for student
+    {
+        my $mesg = search($authenticated_model, 'dwc', 'oxarart', 1, 0, 0, 0, 'student');
     }
 
     # Staff search for protected person
@@ -111,7 +121,7 @@ SKIP: {
 
     # Search for student with SASL but without proxy authentication
     {
-        eval { search($authenticated_model, undef, 'shubha', 1, 1, 1, 0, 0, 'student') };
+        eval { search($authenticated_model, undef, 'shubha', 1, 0, 0, 0, 'student') };
 
         my $error = $@;
         ok($error, "search for student with SASL but without proxy authentication died ($error)");
@@ -124,7 +134,7 @@ SKIP: {
 #
 
 SKIP: {
-    skip 'set TEST_LDAP_BINDDN and TEST_LDAP_PASSWORD to test administrative ID access', 2 + 4*24
+    skip 'set TEST_LDAP_BINDDN and TEST_LDAP_PASSWORD to test administrative ID access', 2 + 4*26
         unless $ENV{TEST_LDAP_BINDDN} and $ENV{TEST_LDAP_PASSWORD};
 
     my $admin_model = UFL::Phonebook::Model::Person->new({
@@ -138,29 +148,29 @@ SKIP: {
 
     # Search for protected person
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'dwc', 1, 1, 1, 1, 1, 'staff');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'dwc', 1, 1, 1, 1, 'staff');
     }
 
     # Search for faculty
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'tigrr', 1, 1, 1, 1, 1, 'faculty');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'tigrr', 1, 1, 1, 1, 'faculty');
     }
 
     # Search for faculty
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'asr', 1, 1, 1, 1, 1, 'staff');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'asr', 1, 1, 1, 1, 'staff');
     }
 
     # Search for student
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'shubha', 1, 1, 1, 1, 1, 'student');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'shubha', 1, 1, 1, 1, 'student');
     }
 }
 
 
-# Total: 24 tests
+# Total: 26 tests
 sub search {
-    my ($model, $requestor, $target, $expected_count, $has_phone, $has_office, $has_mail, $has_personal, $affiliation) = @_;
+    my ($model, $requestor, $target, $expected_count, $has_home_phone, $has_home_address, $has_personal, $affiliation) = @_;
 
     if ($requestor) {
         diag("$requestor searching for $target");
@@ -179,7 +189,7 @@ sub search {
     is($count, $expected_count, "Found $expected_count result" . ($expected_count == 1 ? '' : 's'));
 
     if ($count > 0) {
-        check_entry($mesg->entry(0), $target, $has_phone, $has_office, $has_mail, $has_personal, $affiliation);
+        check_entry($mesg->entry(0), $target, $has_home_phone, $has_home_address, $has_personal, $affiliation);
     }
 
     $user->remove('id');
@@ -187,9 +197,9 @@ sub search {
     return $mesg;
 }
 
-# Total: 23 tests
+# Total: 25 tests
 sub check_entry {
-    my ($entry, $uid, $has_phone, $has_office, $has_mail, $has_personal, $affiliation) = @_;
+    my ($entry, $uid, $has_home_phone, $has_home_address, $has_personal, $affiliation) = @_;
 
     diag($entry->uid . ': ' . join(', ', $entry->attributes));
 
@@ -211,13 +221,16 @@ sub check_entry {
     ok($entry->exists('givenName'), "basic person identification fields: '$uid' has a given name");
     is($entry->eduPersonPrimaryAffiliation, $affiliation, "basic person identification fields: '$uid' has a primary affiliation of '$affiliation'");
 
-    ok($entry->exists('telephoneNumber') == $has_phone, "primary contact information fields: '$uid' " . ($has_phone ? 'has' : 'does not have') . " an official university phone number");
+    ok($entry->exists('telephoneNumber'), "primary contact information fields: '$uid' has an official university phone number");
     ok($entry->exists('street'), "primary contact information fields: '$uid' has an official university street address");
     ok($entry->exists('postalAddress'), "primary contact information fields: '$uid' has an official university postal address");
     ok($entry->exists('registeredAddress'), "primary contact information fields: '$uid' has an official university registered address");
-    ok($entry->exists('uflEduOfficeLocation') == $has_office, "primary contact information fields: '$uid' " . ($has_office ? 'has' : 'does not have') . " an official university office location");
+    ok($entry->exists('uflEduOfficeLocation'), "primary contact information fields: '$uid' has an official university office location");
 
-    ok($entry->exists('mail') == $has_mail, "primary email fields: '$uid' " . ($has_mail ? 'has' : 'does not have') . " a primary email address");
+    ok($entry->exists('homePhone') == $has_home_phone, "home contact information fields: '$uid' " . ($has_home_phone ? 'has' : 'does not have') . " a home phone number");
+    ok($entry->exists('homePostalAddress') == $has_home_address, "home contact information fields: '$uid' " . ($has_home_address ? 'has' : 'does not have') . " a home postal address");
+
+    ok($entry->exists('mail'), "primary email fields: '$uid' has a primary email address");
 
     is($entry->uid, $uid, "POSIX account fields: '$uid' has correct uid");
 
