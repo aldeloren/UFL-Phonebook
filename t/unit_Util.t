@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 26;
+use Test::More tests => 36;
 
 use_ok('UFL::Phonebook::Util');
 
@@ -19,17 +19,27 @@ foreach my $ufid (@UFIDS) {
 is_deeply([ UFL::Phonebook::Util::tokenize_query('one') ], [ qw/one/ ], 'one token');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('One') ], [ qw/one/ ], 'one token, case normalization');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('ONE') ], [ qw/one/ ], 'one token, case normalization');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' one') ], [ qw/one/ ], 'one token with leading space');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('one ') ], [ qw/one/ ], 'one token with trailing space');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' one ') ], [ qw/one/ ], 'one token with leading and trailing space');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('one, ') ], [ qw/one/ ], 'one token with trailing comma');
 
 is_deeply([ UFL::Phonebook::Util::tokenize_query('two tokens') ], [ qw/two tokens/ ], 'two tokens');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('Two TOkens') ], [ qw/two tokens/ ], 'two tokens, case normalization');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' two tokens') ], [ qw/two tokens/ ], 'two tokens with leading space');
+is_deeply([ UFL::Phonebook::Util::tokenize_query('two tokens ') ], [ qw/two tokens/ ], 'two tokens with trailing space');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' two tokens ') ], [ qw/two tokens/ ], 'two tokens with leading and trailing space');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' two   tokens ') ], [ qw/two tokens/ ], 'two tokens with leading, additional, and trailing space');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('tokens, two') ], [ qw/two tokens/ ], 'two tokens with comma and space');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('tokens,two') ], [ qw/two tokens/ ], 'two tokens with comma');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('tokeNS,Two') ], [ qw/two tokens/ ], 'two tokens with comma and case normalization');
 
 is_deeply([ UFL::Phonebook::Util::tokenize_query('thr ee tokens') ], [ qw/thr ee tokens/ ], 'three tokens');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('Thr Ee Tokens') ], [ qw/thr ee tokens/ ], 'three tokens, case normalization');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' thr ee tokens') ], [ qw/thr ee tokens/ ], 'three tokens with leading space');
+is_deeply([ UFL::Phonebook::Util::tokenize_query('thr ee tokens ') ], [ qw/thr ee tokens/ ], 'three tokens with trailing space');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' thr ee tokens ') ], [ qw/thr ee tokens/ ], 'three tokens with leading and trailing space');
+is_deeply([ UFL::Phonebook::Util::tokenize_query(' thr   ee   tokens ') ], [ qw/thr ee tokens/ ], 'three tokens with leading, additional, and trailing space');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('tokens, thr ee') ], [ qw/thr ee tokens/ ], 'three tokens with comma and space');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('tokens,thr ee') ], [ qw/thr ee tokens/ ], 'three tokens with comma');
 is_deeply([ UFL::Phonebook::Util::tokenize_query('tOKens,THr eE') ], [ qw/thr ee tokens/ ], 'three tokens with comma and case normalization');

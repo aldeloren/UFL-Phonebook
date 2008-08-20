@@ -92,6 +92,13 @@ sub tokenize_query {
     # Strip invalid characters
     $query =~ s/[^a-z0-9 .,\-_\'\@]//gi;
 
+    # Trim leading and trailing space
+    for ($query) {
+        s/^\s+//;
+        s/\s+$//;
+    }
+
+    # Swap tokens if a comma was entered to put in standard "First Last" format
     if ($query =~ /,/) {
         my ($last, $first) = split /(?:,\s*)/, $query;
         $query = join ' ', grep { $_ } ($first, $last);
