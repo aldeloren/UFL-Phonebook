@@ -3,7 +3,6 @@ package UFL::Phonebook::Controller::Authentication;
 use strict;
 use warnings;
 use base qw/UFL::Controller::Authentication/;
-use URI;
 
 =head1 NAME
 

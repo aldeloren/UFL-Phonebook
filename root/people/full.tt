@@ -8,6 +8,7 @@
   <dl>
 [% FOREACH attribute IN entry.attributes.sort %]
   [% NEXT IF attribute == 'uflEduUniversityId' OR attribute == 'uidNumber' %]
+  [% NEXT IF c.user_exists AND c.user.eduPersonPrimaryAffiliation == 'student' AND entry.eduPersonPrimaryAffiliation == 'student' AND attribute == 'employeeNumber' %]
     <dt>[% attribute | html %]</dt>
   [% SET filter = 'html' %]
   [% IF attribute == 'mail' OR attribute == 'uflEduAllEmailAddresses' %]

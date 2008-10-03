@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 35;
+use Test::More tests => 38;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -138,4 +138,28 @@ SKIP: {
     local $ENV{REMOTE_USER} = 'dwc';
     $mech->get_ok("http://localhost/people/WHHVHEWHV/", 'automatically redirected to private page on direct request');
     $mech->content_like(qr/Westermann-Clark/i, 'direct link to private page landed in the right place');
+
+    # Clear REMOTE_USER so we aren't automatically logged in again
+    local $ENV{REMOTE_USER} = '';
+    $mech->get('http://localhost/logout', 'request to logout');
+}
+
+# Test hiding of student UFIDs
+SKIP: {
+    skip 'need at least one configured realm', 3 unless $can_test_auth;
+
+    $auth_controller->use_login_form(0);
+    $auth_controller->use_environment(1);
+    $auth_controller->authenticated_path_segments(undef);
+    $auth_controller->logout_uri(undef);
+
+    local $ENV{REMOTE_USER} = 'cr';
+    $mech->get_ok('http://localhost/login');
+
+    $mech->get_ok("http://localhost/people/WHWEWENSN/full/", 'loaded full LDAP entry page');
+    $mech->content_unlike(qr/employeeNumber/i, 'page does not contain the employeeNumber field');
+
+    # Clear REMOTE_USER so we aren't automatically logged in again
+    local $ENV{REMOTE_USER} = '';
+    $mech->get('http://localhost/logout', 'request to logout');
 }
