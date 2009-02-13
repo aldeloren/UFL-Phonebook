@@ -1,3 +1,5 @@
+#!perl
+
 use strict;
 use warnings;
 use File::Spec;
@@ -42,7 +44,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 
 # Anonymous search for staff
 {
-    my $mesg = search($anonymous_model, undef, 'asr', 1, 0, 0, 0, 'staff');
+    my $mesg = search($anonymous_model, undef, 'asr', 1, 1, 0, 0, 'staff');
 }
 
 # Anonymous search for student
