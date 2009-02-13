@@ -1,5 +1,8 @@
 This file documents the revision history for UFL::Phonebook.
 
+0.30
+        - Update list of directories
+
 0.29  Fri Oct  3 16:02:54 EDT 2008
         - Hide employeeNumber for student-student interactions (#26)
 
