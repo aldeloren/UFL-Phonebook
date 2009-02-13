@@ -98,7 +98,7 @@ SKIP: {
 
     # Faculty search for student
     {
-        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 0, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 0, 0, 'student');
     }
 
     # Student search for student
@@ -108,12 +108,12 @@ SKIP: {
 
     # Student search for student
     {
-        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 0, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 0, 0, 'student');
     }
 
     # Staff search for student
     {
-        my $mesg = search($authenticated_model, 'dwc', 'oxarart', 1, 0, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'dwc', 'shubha', 1, 1, 0, 0, 'student');
     }
 
     # Staff search for protected person
