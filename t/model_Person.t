@@ -190,8 +190,8 @@ sub search {
     my $count = $mesg->count;
     is($count, $expected_count, "Found $expected_count result" . ($expected_count == 1 ? '' : 's'));
 
-    if ($count > 0) {
-        check_entry($mesg->entry(0), $target, $has_home_phone, $has_home_address, $has_personal, $affiliation);
+    if ($expected_count > 0) {
+        check_entry($mesg->shift_entry, $target, $has_home_phone, $has_home_address, $has_personal, $affiliation);
     }
 
     $user->remove('id');
@@ -203,39 +203,43 @@ sub search {
 sub check_entry {
     my ($entry, $uid, $has_home_phone, $has_home_address, $has_personal, $affiliation) = @_;
 
-    diag($entry->uid . ': ' . join(', ', $entry->attributes));
+    SKIP: {
+        skip 'need an entry to run tests on it', 25 unless $entry;
 
-    isa_ok($entry, 'UFL::Phonebook::Person');
+        diag($entry->uid . ': ' . join(', ', $entry->attributes));
 
-    ok($entry->dn, "LDAP infrastructure fields: '$uid' has a DN");
-    ok($entry->exists('objectClass'), "LDAP infrastructure fields: '$uid' has at least one object class");
-    ok($entry->exists('ou'), "LDAP infrastructure fields: '$uid' has an organizational unit");
+        isa_ok($entry, 'UFL::Phonebook::Person');
 
-    ok($entry->exists('uflEduUniversityId'), "administrative fields: '$uid' has a UFID");
-    ok($entry->exists('uflEduPsDeptId'), "administrative fields: '$uid' has a PeopleSoft department ID");
-    ok($entry->exists('eduPersonOrgDN'), "administrative fields: '$uid' has an eduPerson organization DN");
-    ok($entry->exists('departmentNumber'), "administrative fields: '$uid' has a department number");
-    ok($entry->exists('uflEduPrivacy'), "administrative fields: '$uid' has privacy information");
+        ok($entry->dn, "LDAP infrastructure fields: '$uid' has a DN");
+        ok($entry->exists('objectClass'), "LDAP infrastructure fields: '$uid' has at least one object class");
+        ok($entry->exists('ou'), "LDAP infrastructure fields: '$uid' has an organizational unit");
 
-    ok($entry->exists('displayName'), "basic person identification fields: '$uid' has a display name");
-    ok($entry->exists('cn'), "basic person identification fields: '$uid' has a common name");
-    ok($entry->exists('sn'), "basic person identification fields: '$uid' has a surname");
-    ok($entry->exists('givenName'), "basic person identification fields: '$uid' has a given name");
-    is($entry->eduPersonPrimaryAffiliation, $affiliation, "basic person identification fields: '$uid' has a primary affiliation of '$affiliation'");
+        ok($entry->exists('uflEduUniversityId'), "administrative fields: '$uid' has a UFID");
+        ok($entry->exists('uflEduPsDeptId'), "administrative fields: '$uid' has a PeopleSoft department ID");
+        ok($entry->exists('eduPersonOrgDN'), "administrative fields: '$uid' has an eduPerson organization DN");
+        ok($entry->exists('departmentNumber'), "administrative fields: '$uid' has a department number");
+        ok($entry->exists('uflEduPrivacy'), "administrative fields: '$uid' has privacy information");
 
-    ok($entry->exists('telephoneNumber'), "primary contact information fields: '$uid' has an official university phone number");
-    ok($entry->exists('street'), "primary contact information fields: '$uid' has an official university street address");
-    ok($entry->exists('postalAddress'), "primary contact information fields: '$uid' has an official university postal address");
-    ok($entry->exists('registeredAddress'), "primary contact information fields: '$uid' has an official university registered address");
-    ok($entry->exists('uflEduOfficeLocation'), "primary contact information fields: '$uid' has an official university office location");
+        ok($entry->exists('displayName'), "basic person identification fields: '$uid' has a display name");
+        ok($entry->exists('cn'), "basic person identification fields: '$uid' has a common name");
+        ok($entry->exists('sn'), "basic person identification fields: '$uid' has a surname");
+        ok($entry->exists('givenName'), "basic person identification fields: '$uid' has a given name");
+        is($entry->eduPersonPrimaryAffiliation, $affiliation, "basic person identification fields: '$uid' has a primary affiliation of '$affiliation'");
 
-    ok($entry->exists('homePhone') == $has_home_phone, "home contact information fields: '$uid' " . ($has_home_phone ? 'has' : 'does not have') . " a home phone number");
-    ok($entry->exists('homePostalAddress') == $has_home_address, "home contact information fields: '$uid' " . ($has_home_address ? 'has' : 'does not have') . " a home postal address");
+        ok($entry->exists('telephoneNumber'), "primary contact information fields: '$uid' has an official university phone number");
+        ok($entry->exists('street'), "primary contact information fields: '$uid' has an official university street address");
+        ok($entry->exists('postalAddress'), "primary contact information fields: '$uid' has an official university postal address");
+        ok($entry->exists('registeredAddress'), "primary contact information fields: '$uid' has an official university registered address");
+        ok($entry->exists('uflEduOfficeLocation'), "primary contact information fields: '$uid' has an official university office location");
 
-    ok($entry->exists('mail'), "primary email fields: '$uid' has a primary email address");
+        ok($entry->exists('homePhone') == $has_home_phone, "home contact information fields: '$uid' " . ($has_home_phone ? 'has' : 'does not have') . " a home phone number");
+        ok($entry->exists('homePostalAddress') == $has_home_address, "home contact information fields: '$uid' " . ($has_home_address ? 'has' : 'does not have') . " a home postal address");
 
-    is($entry->uid, $uid, "POSIX account fields: '$uid' has correct uid");
+        ok($entry->exists('mail'), "primary email fields: '$uid' has a primary email address");
 
-    ok($entry->exists('uflEduBirthDate') == $has_personal, "personal information fields: '$uid' " . ($has_personal ? 'has' : 'does not have') . " a birth date");
-    ok($entry->exists('uflEduGender') == $has_personal, "personal information fields: '$uid' " . ($has_personal ? 'has' : 'does not have') . " a gender");
+        is($entry->uid, $uid, "POSIX account fields: '$uid' has correct uid");
+
+        ok($entry->exists('uflEduBirthDate') == $has_personal, "personal information fields: '$uid' " . ($has_personal ? 'has' : 'does not have') . " a birth date");
+        ok($entry->exists('uflEduGender') == $has_personal, "personal information fields: '$uid' " . ($has_personal ? 'has' : 'does not have') . " a gender");
+    }
 }
