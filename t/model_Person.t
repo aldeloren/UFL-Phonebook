@@ -19,6 +19,14 @@ my %config = (
     entry_class => 'UFL::Phonebook::Person',
 );
 
+if ($ENV{TEST_LDAP_START_TLS}) {
+    $config{start_tls} = 1;
+    $config{start_tls_options} = {
+        verify => 'require',
+        capath => '/etc/ssl/certs'
+    };
+}
+
 # Mock Catalyst objects for authenticated tests
 my $c = Test::MockObject->new;
 
