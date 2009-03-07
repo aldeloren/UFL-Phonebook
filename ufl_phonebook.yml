@@ -134,7 +134,7 @@ Controller::Units:
 
 Model::Person:
 #  host: &host ldap.ufl.edu
-  host: &host dir7.osg.ufl.edu
+  host: &host dir8.osg.ufl.edu
   base: ou=People,dc=ufl,dc=edu
   options: &options
     sizelimit: 100
