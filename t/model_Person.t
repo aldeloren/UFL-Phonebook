@@ -8,7 +8,7 @@ use Test::MockObject;
 use Test::More;
 
 plan skip_all => 'set TEST_LDAP to enable this test' unless $ENV{TEST_LDAP};
-plan tests    => 1 + 3*2 + 12*26 + 4*1;
+plan tests    => 1 + 3*2 + 14*26 + 4*1;
 
 use_ok('UFL::Phonebook::Model::Person');
 
@@ -60,13 +60,18 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
     my $mesg = search($anonymous_model, undef, 'shubha', 0);
 }
 
+# Anonymous search for member
+{
+    my $mesg = search($anonymous_model, undef, 'linkatri', 1, 0, 0, 0, 'member');
+}
+
 
 #
 # Authenticated searches
 #
 
 SKIP: {
-    skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 7*26 + 2*1
+    skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 8*26 + 2*1
         unless $ENV{TEST_LDAP_PRINCIPAL};
 
     $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
@@ -122,6 +127,11 @@ SKIP: {
     # Staff search for student
     {
         my $mesg = search($authenticated_model, 'dwc', 'shubha', 1, 1, 0, 0, 'student');
+    }
+
+    # Staff search for member
+    {
+        my $mesg = search($authenticated_model, 'dwc', 'linkatri', 1, 0, 0, 0, 'member');
     }
 
     # Staff search for protected person
