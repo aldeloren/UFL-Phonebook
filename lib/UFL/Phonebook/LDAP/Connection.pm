@@ -152,7 +152,7 @@ sub search {
     die 'No user found' unless $self->catalyst_user;
 
     my $auth = Net::LDAP::Control::ProxyAuth->new(
-        authzID  => 'u:' . $self->catalyst_user->id,
+        authzID  => 'u:' . $self->catalyst_user->username,
         critical => 1,
     );
 

@@ -3,9 +3,6 @@
 name:         Phonebook
 default_view: HTML
 
-Controller::Authentication:
-  use_login_form: 0
-
 Controller::People:
   default_query: Search UF People
   filter_values:
@@ -110,6 +107,9 @@ Controller::People:
     - 44609180
     - 72046480
 
+Controller::Root:
+  auto_login: 0
+
 Controller::Search:
   default_source: phonebook
   sources:
@@ -146,6 +146,15 @@ Model::Unit:
   base: ou=Organizations,dc=ufl,dc=edu
   options: *options
   entry_class: UFL::Phonebook::Unit
+
+Plugin::Authentication:
+  default_realm: users
+  realms:
+    users:
+      credential:
+        class: +UFL::Authentication::Credential::GatorLink
+      store:
+        class: Null
 
 View::HTML:
   PRE_CHOMP: 1

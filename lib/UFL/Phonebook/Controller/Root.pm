@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
 
+__PACKAGE__->mk_accessors(qw/auto_login/);
+
 __PACKAGE__->config(namespace => '');
 
 =head1 NAME
@@ -25,15 +27,22 @@ Automatically log in users if configured to do so.
 sub auto : Private {
     my ($self, $c) = @_;
 
-    $c->forward($c->controller('Authentication')->action_for('login'))
-        if $c->controller('Authentication')->auto_login and not $c->user_exists;
+    # Handle public/private versions of phonebook
+    if ($self->auto_login) {
+        $c->authenticate();
+        $c->forward('forbidden') and return 0
+            unless $c->user_exists;
+    }
 
     if ($c->user_exists) {
-        my $mesg = $c->model('Person')->search("uid=" . $c->user->id);
+        my $mesg = $c->model('Person')->search("uid=" . $c->user->username);
         if (my $entry = $mesg->shift_entry) {
             # XXX: Copy a few items (can't store the entry itself in session)
             $c->user->$_($entry->$_)
                 for qw/eduPersonPrimaryAffiliation uflEduUniversityId uri_args/;
+        }
+        else {
+            $c->log->warn("Could not load user information for [" . $c->user->username . "]");
         }
     }
 
@@ -62,7 +71,7 @@ Display the home page.
 sub index : Path('') Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash(template  => 'index.tt');
+    $c->stash(template => 'index.tt');
 }
 
 =head2 affiliations
@@ -74,7 +83,21 @@ Display the home page.
 sub affiliations : Local Args(0) {
     my ($self, $c) = @_;
 
-    $c->stash(template  => 'affiliations.tt');
+    $c->stash(template => 'affiliations.tt');
+}
+
+=head2 forbidden
+
+Display a message stating that the user is not authorized to view the
+requested resource.
+
+=cut
+
+sub forbidden : Private {
+    my ($self, $c) = @_;
+
+    $c->res->status(403);
+    $c->stash(template => 'forbidden.tt');
 }
 
 =head2 render

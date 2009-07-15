@@ -1,5 +1,12 @@
 This file documents the revision history for UFL::Phonebook.
 
+0.31
+        - Switch from ugly UFL::Controller::Authentication to
+          UFL::Authentication::Credential::GatorLink
+        - Move automatic authentication to
+          UFL::Phonebook::Controller::Root/auto (includes
+          configuration changes)
+
 0.30  Sat Mar  7 16:17:42 EST 2009
         - Update list of directories
         - Switch to dir8.osg.ufl.edu at Allen Rout's request
