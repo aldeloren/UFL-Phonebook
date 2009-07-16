@@ -4,10 +4,10 @@ use Test::More tests => 10;
 
 use_ok('UFL::Phonebook::Controller::Units');
 
-my $QUERY = 'oaa';
-my $O     = 'PV-OAA APPLICATION DEVELOP';
-my $PSID  = '02010601';
-my $UFID  = 'UETHHG63';
+my $QUERY = 'web admin';
+my $O     = 'IT-WEB ADMIN OFFICE';
+my $PSID  = '14100100';
+my $UFID  = 'EWAAGGF1';
 
 my $controller = UFL::Phonebook::Controller::Units->new;
 isa_ok($controller, 'UFL::Phonebook::BaseController');

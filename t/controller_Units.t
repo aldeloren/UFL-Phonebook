@@ -5,10 +5,10 @@ use Test::More tests => 25;
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
-my $QUERY = 'oaa';
-my $O     = 'PV-OAA APPLICATION DEVELOP';
-my $PSID  = '02010601';
-my $UFID  = 'UETHHG63';
+my $QUERY = 'web admin';
+my $O     = 'IT-WEB ADMIN OFFICE';
+my $PSID  = '14100100';
+my $UFID  = 'EWAAGGF1';
 
 
 $mech->get_ok('/units/', 'request for units page');

@@ -14,9 +14,9 @@ my $ENCODED_UFID = 'TVJVWHJJW';
 my $EMAIL        = 'attest1@ufl.edu';
 my $O            = 'IT-AT ACADEMIC TECHNOLOGY';
 
-my $UNIT_PSID    = '02010601';
-my $UNIT_UFID    = 'UETHHG63';
-my $UNIT_O       = 'PV-OAA APPLICATION DEVELOP';
+my $UNIT_PSID    = '14100100';
+my $UNIT_UFID    = 'EWAAGGF1';
+my $UNIT_O       = 'IT-WEB ADMIN OFFICE';
 
 
 $mech->get_ok('/people/', 'request for people page');
@@ -147,10 +147,12 @@ $mech->content_like(qr/$UNIT_O/i, 'response looks like results for people in uni
 
 # Test filtering of test LDAP entries
 {
+    my $controller = UFL::Phonebook->controller('People');
+
     # Reset the filter list to get a full view
-    my $filter_key = UFL::Phonebook->controller('People')->filter_key;
-    my $filter_values = UFL::Phonebook->controller('People')->filter_values;
-    UFL::Phonebook->model('People')->filter_values([]);
+    my $filter_key = $controller->filter_key;
+    my $filter_values = $controller->filter_values;
+    $controller->filter_values([]);
 
     $mech->get_ok("/people/search?query=alligator");
     $mech->content_like(qr|/people/WVWNENEVH/|i, 'search results contain record for UFID 09704400');
@@ -159,8 +161,8 @@ $mech->content_like(qr/$UNIT_O/i, 'response looks like results for people in uni
     $mech->get_ok('/people/VTESVTSNJ/', 'found single view for UFID 89074910');
 
     # Set the filter list
-    UFL::Phonebook->model('People')->filter_key('uflEduUniversityId');
-    UFL::Phonebook->model('People')->filter_values([ qw/09704400 89074910/ ]);
+    $controller->filter_key('uflEduUniversityId');
+    $controller->filter_values([ qw/09704400 89074910/ ]);
 
     $mech->get_ok("/people/search?query=alligator");
     $mech->content_unlike(qr|/people/WVWNENEVH/|i, 'search results contain record for UFID 09704400');
@@ -171,6 +173,6 @@ $mech->content_like(qr/$UNIT_O/i, 'response looks like results for people in uni
     is($mech->status, 404, 'single view for UFID 89074910 returned 404');
 
     # Restore the previous filter list
-    UFL::Phonebook->controller('People')->filter_key($filter_key);
-    UFL::Phonebook->model('People')->filter_values($filter_values);
+    $controller->filter_key($filter_key);
+    $controller->filter_values($filter_values);
 }
