@@ -3,7 +3,7 @@ package UFL::Phonebook::BaseModel;
 use strict;
 use warnings;
 use base qw/Catalyst::Model::LDAP/;
-use Class::C3;
+use MRO::Compat;
 
 =head1 NAME
 

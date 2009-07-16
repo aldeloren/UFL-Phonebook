@@ -17,7 +17,7 @@ requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::View::TT';
 requires 'Class::Accessor::Fast';
-requires 'Class::C3';
+requires 'MRO::Compat';
 requires 'Lingua::EN::Numbers';
 requires 'Locale::Country';
 requires 'Net::LDAP::Constant';

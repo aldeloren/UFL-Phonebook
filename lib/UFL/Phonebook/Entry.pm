@@ -3,7 +3,7 @@ package UFL::Phonebook::Entry;
 use strict;
 use warnings;
 use base qw/Catalyst::Model::LDAP::Entry/;
-use Class::C3;
+use MRO::Compat;
 
 our $RELATIONSHIPS = {
     postalAddress            => 'UFL::Phonebook::PostalAddress',

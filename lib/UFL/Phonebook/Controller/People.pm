@@ -3,7 +3,7 @@ package UFL::Phonebook::Controller::People;
 use strict;
 use warnings;
 use base qw/UFL::Phonebook::BaseController/;
-use Class::C3;
+use MRO::Compat;
 use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Util;
 

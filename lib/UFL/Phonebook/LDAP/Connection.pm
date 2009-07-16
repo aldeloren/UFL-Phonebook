@@ -5,7 +5,7 @@ use warnings;
 use base qw/Catalyst::Model::LDAP::Connection/;
 use Authen::SASL qw/Perl/;
 use Carp qw/croak/;
-use Class::C3;
+use MRO::Compat;
 use Net::LDAP::Control::ProxyAuth;
 
 __PACKAGE__->mk_accessors(qw/catalyst_user/);
