@@ -10,7 +10,7 @@ use_ok('UFL::Phonebook::Controller::Authentication');
 
 my $root_controller = UFL::Phonebook->controller('Root');
 my $auth_controller = UFL::Phonebook->controller('Authentication');
-my $can_test_auth   = $ENV{UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX} eq 'private';
+my $can_test_auth   = ($ENV{UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX} and $ENV{UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX} eq 'private');
 
 # Test redirection to protected location
 {
