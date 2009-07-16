@@ -133,8 +133,8 @@ Controller::Units:
     - ST010000
 
 Model::Person:
-#  host: &host ldap.ufl.edu
-  host: &host dir8.osg.ufl.edu
+  # XXX: Needs to be overridden for authenticated instance (#5)
+  host: &host ldap.ufl.edu
   base: ou=People,dc=ufl,dc=edu
   options: &options
     sizelimit: 100

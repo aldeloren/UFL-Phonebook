@@ -4,10 +4,11 @@ This file documents the revision history for UFL::Phonebook.
         - Switch from ugly UFL::Controller::Authentication to
           UFL::Authentication::Credential::GatorLink
         - Move automatic authentication to
-          UFL::Phonebook::Controller::Root/auto (includes
-          configuration changes)
+          UFL::Phonebook::Controller::Root/auto (CONFIGURATION CHANGE)
         - Switch from Class::C3 to MRO::Compat for Perl 5.10
           compatibility
+        - Point majority of searches at ldap.ufl.edu (CONFIGURATION
+          CHANGE, #5)
 
 0.30  Sat Mar  7 16:17:42 EST 2009
         - Update list of directories
