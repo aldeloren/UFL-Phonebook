@@ -1,1 +1,8 @@
 Run script/ufl_phonebook_server.pl to test the application.
+
+To test the private version of the application, you will need the appropriate
+keytab for principal 02010600/app/phonebook and the corresponding configuration
+file.  Name this ufl_phonebook_private.yml and then pass the environment
+variable to the server as below:
+
+UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX=private REMOTE_USER=dwc ./script/*server.pl -r -d
