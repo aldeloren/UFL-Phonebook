@@ -29,9 +29,8 @@ sub auto : Private {
 
     # Handle public/private versions of phonebook
     if ($self->auto_login) {
-        $c->authenticate();
         $c->forward('forbidden') and return 0
-            unless $c->user_exists;
+            unless $c->authenticate();
     }
 
     if ($c->user_exists) {
