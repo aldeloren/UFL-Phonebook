@@ -1,6 +1,6 @@
 This file documents the revision history for UFL::Phonebook.
 
-0.31
+0.31  Wed Aug  5 17:23:14 EDT 2009
         - Switch from ugly UFL::Controller::Authentication to
           Catalyst::Authentication::Credential::Remote
         - Move automatic authentication to
