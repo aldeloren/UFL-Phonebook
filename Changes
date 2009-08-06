@@ -1,6 +1,6 @@
 This file documents the revision history for UFL::Phonebook.
 
-0.32
+0.32  Thu Aug  6 17:48:20 EDT 2009
         - Fix vCard downloads for people who don't have fields like
           'uid' (#50)
         - Improve name sorting to use surname and given name instead
