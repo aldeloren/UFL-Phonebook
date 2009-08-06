@@ -11,7 +11,7 @@ __PACKAGE__->mk_accessors(qw/max_permuted_tokens filter_key filter_values _filte
 
 __PACKAGE__->config(
     model_name          => 'Person',
-    sort_field          => 'cn',
+    sort_fields         => [ 'sn', 'givenName' ],
     max_permuted_tokens => 5,
     filter_key          => 'uflEduUniversityId',
     filter_values       => [],

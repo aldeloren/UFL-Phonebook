@@ -5,7 +5,7 @@ use warnings;
 use base qw/Catalyst::Controller/;
 use Net::LDAP::Constant;
 
-__PACKAGE__->mk_accessors(qw/default_query model_name sort_field/);
+__PACKAGE__->mk_accessors(qw/default_query model_name sort_fields/);
 
 =head1 NAME
 
@@ -80,9 +80,12 @@ sub results : Private {
         $c->res->redirect($c->uri_for($self->action_for('view'), $entry->uri_args, ''));
     }
     elsif (@entries) {
-        my $sort = $c->req->param('sort') || $self->sort_field;
-        if ($sort) {
-            @entries = sort { $a->$sort cmp $b->$sort } @entries;
+        my $sort = $c->req->params->{sort};
+
+        # Sort by e.g. last name, then first name
+        my @sort_fields = @{ $sort ? [ $sort ] : $self->sort_fields };
+        foreach my $sort_field (reverse @sort_fields) {
+            @entries = sort { $a->$sort_field cmp $b->$sort_field } @entries;
         }
 
         $c->stash(

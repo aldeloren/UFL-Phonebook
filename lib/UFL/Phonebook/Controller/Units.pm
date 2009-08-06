@@ -7,8 +7,8 @@ use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Util;
 
 __PACKAGE__->config(
-    model_name => 'Unit',
-    sort_field => 'o',
+    model_name  => 'Unit',
+    sort_fields => [ 'o' ],
 );
 __PACKAGE__->mk_accessors(qw/hide/);
 
