@@ -135,7 +135,8 @@ Display the vCard for a single person.
 sub vcard : PathPart Chained('single') Args(0) {
     my ($self, $c) = @_;
 
-    my $filename = ($c->stash->{entry}->uid || 'vcard') . '.vcf';
+    my $entry = $c->stash->{entry};
+    my $filename = ($entry->can('uid') ? $entry->uid : 'vcard') . '.vcf';
 
     if ($c->req->param('debug')) {
         $c->res->content_type('text/plain');

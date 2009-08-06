@@ -1,5 +1,9 @@
 This file documents the revision history for UFL::Phonebook.
 
+0.32
+        - Fix vCard downloads for people who don't have fields like
+          'uid' (#50)
+
 0.31  Wed Aug  5 17:23:14 EDT 2009
         - Switch from ugly UFL::Controller::Authentication to
           Catalyst::Authentication::Credential::Remote

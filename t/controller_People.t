@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 87;
+use Test::More tests => 98;
 use Text::vCard::Addressbook;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
@@ -108,33 +108,10 @@ $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a ful
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 $mech->content_unlike(qr/--UNKNOWN--/i, 'response does not contain unknown information');
 
-$mech->get_ok("/people/$ENCODED_UFID/vcard/", 'request for vCard');
-is($mech->ct, 'text/x-vcard', 'response Content-Type is a vCard');
-$mech->content_like(qr/NICKNAME:$UID/i, 'response looks like vCard data');
-{
-    my $address_book = Text::vCard::Addressbook->new({ source_text => $mech->content });
+test_vcard_download($mech, $ENCODED_UFID, $CN, $UID, $EMAIL, $O);
 
-    my @vcards = $address_book->vcards;
-    is(@vcards, 1, 'found one vCard');
-
-    my $vcard = $vcards[0];
-    is($vcard->fullname, $CN, 'full name matches');
-    is($vcard->nickname, $UID, 'nickname matches');
-
-    # Email information
-    my @emails = $vcard->get({ node_type => 'email' });
-    is(@emails, 1, 'found an email address');
-    is($emails[0]->value, $EMAIL, 'email address matches');
-
-    # Unit information
-    my @orgs = $vcard->get({ node_type => 'org' });
-    is(@orgs, 1, 'found an organization');
-
-    my @units = $orgs[0]->unit;
-    is(@units, 1, 'found a unit');
-    is($units[0][0], $O, 'unit name matches');
-}
-
+# Test vCard download for person who has no uid
+test_vcard_download($mech, 'SNJHVEWHH', 'Test,Name');
 
 $mech->get_ok("/people/unit/$UNIT_PSID/", 'request for people in unit');
 $mech->title_like(qr/$UNIT_O/i, 'response title looks like results for people in unit');
@@ -175,4 +152,39 @@ $mech->content_like(qr/$UNIT_O/i, 'response looks like results for people in uni
     # Restore the previous filter list
     $controller->filter_key($filter_key);
     $controller->filter_values($filter_values);
+}
+
+sub test_vcard_download {
+    my ($mech, $encoded_ufid, $cn, $uid, $email, $o) = @_;
+
+    $mech->get_ok("/people/$encoded_ufid/vcard/", 'request for vCard');
+    is($mech->ct, 'text/x-vcard', 'response Content-Type is a vCard');
+    $mech->content_like(qr/BEGIN:vCard/i, 'response looks like vCard data');
+
+    my $address_book = Text::vCard::Addressbook->new({ source_text => $mech->content });
+
+    my @vcards = $address_book->vcards;
+    is(@vcards, 1, 'found one vCard');
+
+    my $vcard = $vcards[0];
+    is($vcard->fullname, $cn, 'full name matches');
+    is($vcard->nickname, $uid, 'nickname matches');
+
+    # Email information
+    my @emails = $vcard->get({ node_type => 'email' });
+    is(@emails, 1, 'found an email address');
+    if (defined $emails[0]) {
+        is($emails[0]->value, $email, 'email address matches');
+    }
+    else {
+        is($emails[0], $email, 'we expected no email address');
+    }
+
+    # Unit information
+    my @orgs = $vcard->get({ node_type => 'org' });
+    is(@orgs, 1, 'found an organization');
+
+    my @units = $orgs[0]->unit;
+    is(@units, 1, 'found a unit');
+    is($units[0][0], $o, 'unit name matches');
 }
