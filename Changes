@@ -1,6 +1,6 @@
 This file documents the revision history for UFL::Phonebook.
 
-0.33
+0.33  Mon Aug 10 16:35:11 EDT 2009
         - Switch to shared location for search behavior scripts
 
 0.32  Thu Aug  6 17:48:20 EDT 2009
