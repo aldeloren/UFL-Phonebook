@@ -16,12 +16,6 @@
   @import "[% stylesheet | trim | html %]";
 [% END %]
 </style>
-<script type="text/javascript" src="[% c.uri_for('/static/js/common.js') | html %]"></script>
-<script type="text/javascript" src="[% c.uri_for('/static/js/search.js') | html %]"></script>
-<script type="text/javascript">
-  // Set default for subpages
-  Query.setDefaultValue('phonebook', '[% c.controller('People').default_query | html %]');
-</script>
 </head>
 <body>
 <div id="header"> 
