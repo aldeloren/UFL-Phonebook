@@ -20,6 +20,7 @@
     <li><a href="http://www.webadmin.ufl.edu/policies/internet_privacy/">Privacy Policy</a></li>
     <li><a href="http://search.ufl.edu/">Search</a></li>
   </ul>
+  <p>This page uses <a href="http://www.google.com/analytics/">Google Analytics</a> (<a href="http://www.google.com/intl/en_ALL/privacypolicy.html">Google Privacy Policy</a>)</p>
 </div><!-- #footer -->
 <script type="text/javascript" src="http://assets.webadmin.ufl.edu/js/common/1.0.1/common.min.js"></script>
 <script type="text/javascript" src="http://assets.webadmin.ufl.edu/js/search/1.0.1/search.min.js"></script>
@@ -27,5 +28,6 @@
   // Set default for subpages
   Query.setDefaultValue('phonebook', '[% c.controller('People').default_query | html %]');
 </script>
+[%+ INCLUDE includes/analytics.tt -%]
 </body>
 </html>
