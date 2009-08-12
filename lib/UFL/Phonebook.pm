@@ -6,14 +6,11 @@ use warnings;
 use Catalyst qw/
     ConfigLoader
     Authentication
-    Session
-    Session::State::Cookie
-    Session::Store::File
     StackTrace
     Static::Simple
 /;
 
-our $VERSION = '0.33';
+our $VERSION = '0.34_01';
 
 __PACKAGE__->setup;
 

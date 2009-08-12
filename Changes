@@ -1,5 +1,9 @@
 This file documents the revision history for UFL::Phonebook.
 
+0.34
+        - Remove sessions for authentication so that users don't
+          appear logged in to the public instance
+
 0.33  Mon Aug 10 16:35:11 EDT 2009
         - Switch to shared location for search behavior scripts
 
