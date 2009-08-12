@@ -11,9 +11,6 @@ requires 'Catalyst::Authentication::Credential::Remote';
 requires 'Catalyst::Model::LDAP' => '0.16';
 requires 'Catalyst::Plugin::Authentication' => '0.10003';  # Store::Null
 requires 'Catalyst::Plugin::ConfigLoader';
-requires 'Catalyst::Plugin::Session';
-requires 'Catalyst::Plugin::Session::State::Cookie';
-requires 'Catalyst::Plugin::Session::Store::File';
 requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::View::TT';
