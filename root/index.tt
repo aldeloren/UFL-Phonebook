@@ -8,11 +8,13 @@
     <input type="submit" class="submit" value="Search" />
     <p>Enter a name, email address, or GatorLink ID to find people.</p>
   </form>
+  <p id="login_status">
 [% IF c.user_exists %]
-  <p>You are logged in as <a href="[% c.uri_for(c.controller('People').action_for('view'), c.user.uri_args, '') | html %]">[% c.user.username | html %]</a>. For information on what this means, please read about your <a href="[% c.uri_for(c.controller.action_for('affiliations'), '') | html %]">affiliation</a> with the university.</p>
+    You are logged in as <a href="[% c.uri_for(c.controller('People').action_for('view'), c.user.uri_args, '') | html %]">[% c.user.username | html %]</a>. For information on what this means, please read about your <a href="[% c.uri_for(c.controller.action_for('affiliations'), '') | html %]">affiliation</a> with the university.
 [% ELSE %]
-  <p>For additional access depending on your <a href="[% c.uri_for(c.controller.action_for('affiliations'), '') | html %]">affiliation</a>, please <a href="[% c.uri_for(c.controller('Authentication').action_for('login')) | html %]">login</a> using your GatorLink ID.</p>
+    For additional access depending on your <a href="[% c.uri_for(c.controller.action_for('affiliations'), '') | html %]">affiliation</a>, please <a href="[% c.uri_for(c.controller('Authentication').action_for('login')) | html %]">login</a> using your GatorLink ID.
 [% END %]
+  </p><!-- #login_status -->
 
 [% FILTER indent('  ') -%]
   [% INCLUDE people/includes/tips.tt -%]
