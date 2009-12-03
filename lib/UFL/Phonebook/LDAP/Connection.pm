@@ -91,7 +91,10 @@ Request a Kerberos ticket.
 sub _krb5_login {
     my ($self, %args) = @_;
 
-    my $cred_cache = $ENV{KRB5CCNAME} || "/tmp/krb5cc_$>";
+    # Set a different credential cache for the application
+    my $cred_cache = $ENV{KRB5CCNAME} || "/tmp/krb5cc_$>_ufl_phonebook";
+    $ENV{KRB5CCNAME} = $cred_cache;
+
     my $lifetime   = $args{lifetime};
     die 'You must specify the path to the credential cache' unless $cred_cache;
 

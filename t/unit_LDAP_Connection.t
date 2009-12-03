@@ -53,7 +53,7 @@ SKIP: {
     skip 'set TEST_LDAP_PRINCIPAL to test a SASL bind', 4
         unless $ENV{TEST_LDAP_PRINCIPAL};
 
-    $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
+    $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_ufl_phonebook_tests";
 
     my $principal = $ENV{TEST_LDAP_PRINCIPAL};
     (my $filename = $principal) =~ s|/|_|g;

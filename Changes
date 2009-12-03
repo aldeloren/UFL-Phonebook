@@ -3,6 +3,8 @@ This file documents the revision history for UFL::Phonebook.
 0.35
         - Update to latest version of Catalyst scripts
         - Make default font size more normal
+        - Explicitly set a default KRB5CCNAME for the application to
+          avoid conflicts with the Kerberos default
 
 0.34  Wed Aug 12 14:51:22 EDT 2009
         - Remove sessions for authentication so that users don't

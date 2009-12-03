@@ -74,7 +74,7 @@ SKIP: {
     skip 'set TEST_LDAP_PRINCIPAL to test SASL access', 2 + 8*26 + 2*1
         unless $ENV{TEST_LDAP_PRINCIPAL};
 
-    $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_tests";
+    $ENV{KRB5CCNAME} = "/tmp/krb5cc_$>_ufl_phonebook_tests";
 
     my $principal = $ENV{TEST_LDAP_PRINCIPAL};
     (my $filename = $principal) =~ s|/|_|g;
