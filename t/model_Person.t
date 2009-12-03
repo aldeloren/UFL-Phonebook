@@ -52,7 +52,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 
 # Anonymous search for staff
 {
-    my $mesg = search($anonymous_model, undef, 'asr', 1, 1, 0, 0, 'staff');
+    my $mesg = search($anonymous_model, undef, 'asr', 1, 1, 1, 0, 0, 'staff');
 }
 
 # Anonymous search for student
@@ -62,7 +62,7 @@ isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 
 # Anonymous search for member
 {
-    my $mesg = search($anonymous_model, undef, 'linkatri', 1, 0, 0, 0, 'member');
+    my $mesg = search($anonymous_model, undef, 'linkatri', 1, 0, 0, 0, 0, 'member');
 }
 
 
@@ -96,42 +96,42 @@ SKIP: {
 
     # Protected person search for self
     {
-        my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 'staff');
+        my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 1, 'staff');
     }
 
     # Faculty search for faculty
     {
-        my $mesg = search($authenticated_model, 'manuel81', 'tigrr', 1, 0, 0, 0, 'faculty');
+        my $mesg = search($authenticated_model, 'manuel81', 'tigrr', 1, 1, 0, 0, 0, 'faculty');
     }
 
     # Faculty search for faculty
     {
-        my $mesg = search($authenticated_model, 'tigrr', 'manuel81', 1, 0, 1, 0, 'faculty');
+        my $mesg = search($authenticated_model, 'tigrr', 'manuel81', 1, 1, 0, 1, 0, 'faculty');
     }
 
     # Faculty search for student
     {
-        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 1, 0, 0, 'student');
     }
 
     # Student search for student
     {
-        my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 0, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 0, 0, 0, 'student');
     }
 
     # Student search for student
     {
-        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 0, 0, 'student');
     }
 
     # Staff search for student
     {
-        my $mesg = search($authenticated_model, 'dwc', 'shubha', 1, 1, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'dwc', 'shubha', 1, 1, 1, 0, 0, 'student');
     }
 
     # Staff search for member
     {
-        my $mesg = search($authenticated_model, 'dwc', 'linkatri', 1, 0, 0, 0, 'member');
+        my $mesg = search($authenticated_model, 'dwc', 'linkatri', 1, 0, 0, 0, 0, 'member');
     }
 
     # Staff search for protected person
@@ -141,7 +141,7 @@ SKIP: {
 
     # Search for student with SASL but without proxy authentication
     {
-        eval { search($authenticated_model, undef, 'shubha', 1, 0, 0, 0, 'student') };
+        eval { search($authenticated_model, undef, 'shubha', 1, 1, 0, 0, 0, 'student') };
 
         my $error = $@;
         ok($error, "search for student with SASL but without proxy authentication died ($error)");
@@ -168,29 +168,29 @@ SKIP: {
 
     # Search for protected person
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'dwc', 1, 1, 1, 1, 'staff');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'dwc', 1, 1, 1, 1, 1, 'staff');
     }
 
     # Search for faculty
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'tigrr', 1, 1, 1, 1, 'faculty');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'tigrr', 1, 1, 1, 1, 1, 'faculty');
     }
 
     # Search for faculty
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'asr', 1, 1, 1, 1, 'staff');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'asr', 1, 1, 1, 1, 1, 'staff');
     }
 
     # Search for student
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'shubha', 1, 1, 1, 1, 'student');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'shubha', 1, 1, 1, 1, 1, 'student');
     }
 }
 
 
 # Total: 26 tests
 sub search {
-    my ($model, $requestor, $target, $expected_count, $has_home_phone, $has_home_address, $has_personal, $affiliation) = @_;
+    my ($model, $requestor, $target, $expected_count, $has_phone, $has_home_phone, $has_home_address, $has_personal, $affiliation) = @_;
 
     if ($requestor) {
         diag("$requestor searching for $target");
@@ -209,7 +209,7 @@ sub search {
     is($count, $expected_count, "Found $expected_count result" . ($expected_count == 1 ? '' : 's'));
 
     if ($expected_count > 0) {
-        check_entry($mesg->shift_entry, $target, $has_home_phone, $has_home_address, $has_personal, $affiliation);
+        check_entry($mesg->shift_entry, $target, $has_phone, $has_home_phone, $has_home_address, $has_personal, $affiliation);
     }
 
     $user->remove('username');
@@ -219,7 +219,7 @@ sub search {
 
 # Total: 25 tests
 sub check_entry {
-    my ($entry, $uid, $has_home_phone, $has_home_address, $has_personal, $affiliation) = @_;
+    my ($entry, $uid, $has_phone, $has_home_phone, $has_home_address, $has_personal, $affiliation) = @_;
 
     SKIP: {
         skip 'need an entry to run tests on it', 25 unless $entry;
@@ -244,7 +244,7 @@ sub check_entry {
         ok($entry->exists('givenName'), "basic person identification fields: '$uid' has a given name");
         is($entry->eduPersonPrimaryAffiliation, $affiliation, "basic person identification fields: '$uid' has a primary affiliation of '$affiliation'");
 
-        ok($entry->exists('telephoneNumber'), "primary contact information fields: '$uid' has an official university phone number");
+        ok($entry->exists('telephoneNumber') == $has_phone, "primary contact information fields: '$uid' has an official university phone number");
         ok($entry->exists('street'), "primary contact information fields: '$uid' has an official university street address");
         ok($entry->exists('postalAddress'), "primary contact information fields: '$uid' has an official university postal address");
         ok($entry->exists('registeredAddress'), "primary contact information fields: '$uid' has an official university registered address");
