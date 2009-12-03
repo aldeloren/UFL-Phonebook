@@ -194,7 +194,7 @@ sub search {
 
     if ($requestor) {
         diag("$requestor searching for $target");
-        $user->set_always('id', $requestor);
+        $user->set_always('username', $requestor);
         $c->set_true('user_exists');
     }
     else {
@@ -212,7 +212,7 @@ sub search {
         check_entry($mesg->shift_entry, $target, $has_home_phone, $has_home_address, $has_personal, $affiliation);
     }
 
-    $user->remove('id');
+    $user->remove('username');
 
     return $mesg;
 }
