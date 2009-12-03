@@ -4,7 +4,6 @@ name     'UFL-Phonebook';
 all_from 'lib/UFL/Phonebook.pm';
 
 requires 'Authen::SASL';
-requires 'Carp';
 requires 'Catalyst' => '5.7006';
 requires 'Catalyst::Action::RenderView';
 requires 'Catalyst::Authentication::Credential::Remote';
@@ -26,7 +25,6 @@ requires 'URI';
 requires 'YAML';
 
 build_requires 'File::Spec';
-build_requires 'FindBin';
 build_requires 'Test::MockObject';
 build_requires 'Test::More';
 build_requires 'Test::WWW::Mechanize::Catalyst' => '0.40';
