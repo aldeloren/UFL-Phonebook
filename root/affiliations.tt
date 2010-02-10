@@ -1,10 +1,10 @@
 [% SET
-   title = 'Affiliations'
+   title       = 'Affiliations'
    stylesheets = [ c.uri_for('/static/main.css') ]
 -%]
 
 <div id="affiliations">
-  <h3>Affiliations</h3>
+  <h3>[% title | html %]</h3>
   <p>Information in <a href="http://www.ufl.edu/">UF</a>'s <a href="[% c.user_exists ? c.uri_for(c.controller('Root').action_for('index')) : c.uri_for(c.controller('Authentication').action_for('login')) | html %]">authenticated [% c.config.name | html %]</a> is available depending on your affiliation with the university. Affiliations include:</p>
   <ul>
     <li>Faculty</li>

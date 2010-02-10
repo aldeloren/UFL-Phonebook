@@ -3,5 +3,5 @@
    stylesheets = [ c.uri_for('/static/main.css') ]
 -%]
 
-<h3>Forbidden</h3>
+<h3>[% title | html %]</h3>
 <p>Unfortunately, you don't have access to the requested page.</p>
