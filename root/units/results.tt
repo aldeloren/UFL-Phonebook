@@ -1,6 +1,5 @@
 [% SET
-   title   = c.req.param('query')
-   heading = 'people/includes/search.tt'
+   title = c.req.param('query')
 -%]
 
 [% INCLUDE includes/results_info.tt results = entries, singular = 'unit', plural = 'units' -%]

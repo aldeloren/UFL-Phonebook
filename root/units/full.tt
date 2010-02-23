@@ -1,6 +1,5 @@
 [% SET
-   title   = 'Full LDAP Entry for ' _ entry.o
-   heading = 'people/includes/search.tt'
+   title = 'Full LDAP Entry for ' _ entry.o
 -%]
 
 <div id="ldap">

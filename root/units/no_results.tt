@@ -1,6 +1,5 @@
 [% SET
-   title   = c.req.param('query')
-   heading = 'people/includes/search.tt'
+   title = c.req.param('query')
 -%]
 
 <div id="results_info">

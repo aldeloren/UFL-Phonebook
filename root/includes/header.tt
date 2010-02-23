@@ -1,5 +1,6 @@
 [%- DEFAULT
     stylesheets = [ c.uri_for('/static/sec.css') ]
+    heading     = 'people/includes/search.tt'
 -%]
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -26,10 +27,8 @@
 [% ELSE %]
   <p><a href="[% c.uri_for(c.controller('Authentication').action_for('login')) | html %]">Login</a></p>
 [% END %]
-[% IF heading %]
-  [%+ INCLUDE $heading %]
-[% ELSE %]
-  <h2 class="replace" id="unit"><a href="http://www.ufl.edu/">University of Florida<span></span></a></h2>
-[%+ END -%]
-</div>
+[%+ FILTER indent('  ') %]
+  [% INCLUDE $heading %]
+[% END -%]
+</div><!-- #header -->
 <div id="mainContainer"> 

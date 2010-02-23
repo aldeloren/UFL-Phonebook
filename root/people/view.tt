@@ -1,6 +1,5 @@
 [% SET
-   title   = entry.displayName
-   heading = 'people/includes/search.tt'
+   title = entry.displayName
 -%]
 
 [% IF single %]

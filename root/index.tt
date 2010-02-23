@@ -1,5 +1,6 @@
 [% SET
    stylesheets = [ c.uri_for('/static/pri.css') ]
+   heading     = 'includes/logo.tt'
 -%]
 
 <div id="priSearch">

@@ -1,6 +1,5 @@
 [% SET
-   title   = c.req.param('query') || entry.o
-   heading = 'people/includes/search.tt'
+   title = c.req.param('query') || entry.o
 -%]
 
 [% INCLUDE includes/results_info.tt results = entries, singular = 'person', plural = 'people' -%]
