@@ -1,9 +1,8 @@
 [% SET
-   title       = 'Affiliations'
-   stylesheets = [ c.uri_for('/static/main.css') ]
+   title = 'Affiliations'
 -%]
 
-<div id="affiliations">
+<div id="affiliations" class="about">
   <h3>[% title | html %]</h3>
   <p>Information in <a href="http://www.ufl.edu/">UF</a>'s <a href="[% c.user_exists ? c.uri_for(c.controller('Root').action_for('index')) : c.uri_for(c.controller('Authentication').action_for('login')) | html %]">authenticated [% c.config.name | html %]</a> is available depending on your affiliation with the university. Affiliations include:</p>
   <ul>
@@ -18,4 +17,4 @@
   <h4>Your Affiliation</h4>
   <p>Based on your current directory information, your affiliation is <strong>[% c.user.eduPersonPrimaryAffiliation | html %]</strong>. If you think this is an error, please contact the <a href="http://helpdesk.ufl.edu/">UF Help Desk</a> for assistance.</p>
 [% END %]
-</div><!-- #affiliations -->
+</div><!-- #affiliations .about -->

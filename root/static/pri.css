@@ -1,0 +1,89 @@
+body {
+text-align:center
+}
+
+form {
+padding-top: 20px;
+}
+
+form p {
+margin:2px 0 50px 45px
+}
+
+p,li,dl {
+text-align:left
+}
+
+ul {
+list-style-type:none
+}
+
+.directories {
+float:left;
+margin:15px 0 20px;
+width:18em
+}
+
+.directories li {
+font-size:1.1em
+}
+
+.directories ul {
+list-style:circle;
+margin-left:20px
+}
+
+#directories {
+margin:10px auto;
+width:36em
+}
+
+.directories h3 {
+text-align:left
+}
+
+#phonebook_help {
+margin:15px 0
+}
+
+#phonebook_help dd {
+text-align:right
+}
+
+#phonebook_help dl {
+margin:0 auto;
+width:30em
+}
+
+#phonebook_help dt {
+color:#444;
+float:left;
+text-align:left;
+width:18em
+}
+
+#phonebook_help dt,#phonebook_help dd {
+background:#f1f1f1;
+border-top:3px solid #fff;
+padding:0 5px
+}
+
+#phonebook_help h3,.directories h3 {
+font-size:1.8em
+}
+
+#priSearch, #login {
+margin:0 auto;
+text-align:center;
+width:500px
+}
+
+.query {
+font-size:2.3em;
+padding:3px;
+width:15em;
+}
+
+.submit {
+margin-bottom:5px
+}

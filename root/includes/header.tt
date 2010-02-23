@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="[% c.uri_for('/static/basic.css') | html %]" />
 <link rel="stylesheet" type="text/css" media="print" href="[% c.uri_for('/static/print.css') | html %]" />
 <style type="text/css" media="screen">
+  @import "[% c.uri_for('/static/common.css') | html %]";
 [% FOREACH stylesheet IN stylesheets %]
   @import "[% stylesheet | trim | html %]";
 [% END %]

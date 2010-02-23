@@ -1,7 +1,8 @@
 [% SET
-   title       = 'Forbidden'
-   stylesheets = [ c.uri_for('/static/main.css') ]
+   title = 'Forbidden'
 -%]
 
-<h3>[% title | html %]</h3>
-<p>Unfortunately, you don't have access to the requested page.</p>
+<div class="about">
+  <h3>[% title | html %]</h3>
+  <p>Unfortunately, you don't have access to the requested page.</p>
+</div><!-- .about -->

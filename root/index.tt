@@ -1,5 +1,5 @@
 [% SET
-   stylesheets = [ c.uri_for('/static/main.css') ]
+   stylesheets = [ c.uri_for('/static/pri.css') ]
 -%]
 
 <div id="priSearch">

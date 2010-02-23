@@ -1,0 +1,188 @@
+* {margin:0;padding:0}
+
+body {
+background:#FFF url(images/bg.jpg) repeat-x;
+color:#444;
+font:63.125%/200% 'Trebuchet MS', verdana, geneva, Arial, Helvetica, sans-serif;
+}
+
+a:link,a:visited,a:active {
+border-bottom:1px solid #0045c4;
+color:#0021a5;
+text-decoration:none
+}
+
+a:hover {
+border-bottom:1px solid #ff4a00;
+color:#ff4a00
+}
+
+a.replace {
+display:block
+}
+
+acronym {
+border: 0;
+font-style: normal
+}
+
+h1#logo, h2#unit{
+font-size:14px;
+height:40px;
+/* \*/overflow: hidden;/* */
+}
+
+h1#logo{
+position:relative;
+width: 105px;
+margin-left:30px
+}
+
+h2#unit {
+position:absolute;
+right:30px;
+top:0;
+width:181px
+}
+
+h1#logo a span,h2#unit a span {
+background:url(images/unitHeader.gif) no-repeat;
+cursor:hand;
+display:block;
+height:100%;
+position:absolute;
+top:0;
+left:0;
+width:100%
+}
+
+h2#unit a span {
+background:url(images/universityOfFlorida.gif)
+}
+
+h3 {
+clear:both;
+color:#222;
+font-size:2.4em
+}
+
+h4 {
+background:#fff url(images/bg_dir_heading.gif) bottom repeat-x;
+border:3px double #ccc;
+color:#444;
+font-size:1.6em;
+margin:15px 0 5px;
+padding:5px
+}
+
+p,li,dl {
+font-size:1.2em
+}
+
+#errors {
+background:#c4d6f7;
+border:1px solid #333;
+border-width:1px 0;
+margin:5px auto 25px;
+padding:5px;
+width:60em
+}
+
+#footer {
+border-top:1px solid #d1d1d1;
+clear:both;
+color:#999;
+font-size:.9em; /* sec: 0.7em */
+height:50px;
+padding:10px 0 25px 30px;
+position:relative
+}
+
+#footer a {
+border:0
+}
+
+#footer h3 {
+display:none
+}
+
+#footer li {
+border-right:1px solid #ccc;
+display:inline;
+/*\*/float:left;/**/
+margin-right:4px;
+padding-right:4px
+}
+
+#footer ul,#footer p {
+clear:both;
+float:left;
+line-height:1.5em;
+width:550px
+}
+
+#footerHome span {/*\*/
+width:195px;
+height:54px;
+background:url(http://images.webadmin.ufl.edu/signatures/UF-Signature-Themeline.gif) 0 0 no-repeat;
+position:absolute;
+right:30px;
+top:10px/**/
+}
+
+#header {
+text-align:left
+}
+
+#header p {
+color:#fff;
+font-size:10px;
+left:150px;
+position:absolute;
+top:5px;
+}
+
+#header p a {
+border:none;
+color:#fff;
+padding:2px;
+text-decoration:underline;
+}
+
+#header p a:hover {
+background:#fff;
+color:#000;
+}
+
+#header p a.user {
+font-weight:bold;
+padding:0;
+text-decoration:none;
+}
+
+#header p a.user:hover {
+background:none;
+color:#fff;
+}
+
+#login_status {
+font-size:1.4em;
+}
+
+#mainContainer {
+margin:30px 30px 20px 30px;
+}
+
+#note {
+clear:both;
+margin:0 auto;
+width:40em
+}
+
+.query {
+color:#ccc;
+}
+
+.active {
+color:#000
+}

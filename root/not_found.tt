@@ -1,7 +1,8 @@
 [% SET
-   title       = 'Not Found'
-   stylesheets = [ c.uri_for('/static/main.css') ]
+   title = 'Not Found'
 -%]
 
-<h3>[% title | html %]</h3>
-<p>Unfortunately, the page you were trying to retrieve was not found. Try starting from <a href="[% c.uri_for(c.controller('Root').action_for('index')) | html %]">the home page</a>.</p>
+<div class="about">
+  <h3>[% title | html %]</h3>
+  <p>Unfortunately, the page you were trying to retrieve was not found. Try starting from <a href="[% c.uri_for(c.controller('Root').action_for('index')) | html %]">the home page</a>.</p>
+</div><!-- .about -->
