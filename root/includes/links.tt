@@ -2,9 +2,9 @@
   <div class="directories">
     <h3>UF Directories</h3>
     <ul>
-      <li><a href="http://www.president.ufl.edu/listing.htm">Administrative Council</a></li>
       <li><a href="http://calendar.ufl.edu/">Calendar of Events</a></li>
       <li><a href="http://www.ufl.edu/colleges/">Colleges &amp; Schools</a></li>
+      <li><a href="http://www.ufl.edu/libraries/">Libraries</a></li>
       <li><a href="http://www.ufl.edu/aboutUF/administration.html">Organizational Index</a></li>
       <li><a href="http://www.ufl.edu/websites/">Web Site Listing</a></li>
     </ul>
@@ -13,7 +13,6 @@
     <h3>Other Directories</h3>
     <ul>
       <li><a href="http://www.clas.ufl.edu/au/">American Universities</a></li>
-      <li><a href="http://www.uwaterloo.ca/canu/">Canadian Universities</a></li>
       <li><a href="http://www.utexas.edu/world/comcol/state/">Community Colleges</a></li>
       <li><a href="http://www.flbog.edu/">Florida Board of Governors</a></li>
       <li><a href="http://dlis.dos.state.fl.us/fgils/">Florida Government</a></li>
