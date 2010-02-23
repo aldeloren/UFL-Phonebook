@@ -97,9 +97,7 @@ font-weight:700
 #results_info {
 background:#d1d1d1 url(images/bg_results.gif) bottom repeat-x;
 color:#222;
-margin-left:-30px; /* Shift it back from #mainContainer so it hits the edge */
-margin-top: 13px;
-/*\*/margin-top:-38px;/**/
+margin:-38px -30px 20px -30px; /* Shift it back from #mainContainer so it hits the edge */
 padding:0 0 12px 30px;
 position:relative;
 z-index:500
