@@ -73,9 +73,21 @@ sub index : Path('') Args(0) {
     $c->stash(template => 'index.tt');
 }
 
+=head2 about
+
+Display the about page.
+
+=cut
+
+sub about : Local Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(template => 'about.tt');
+}
+
 =head2 affiliations
 
-Display the home page.
+Display the page about university affiliations.
 
 =cut
 

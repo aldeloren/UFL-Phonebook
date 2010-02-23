@@ -1,0 +1,31 @@
+[% SET
+   title = 'About This Site'
+-%]
+
+<div class="about">
+  <h3>[% title | html %]</h3>
+  <p>The UF [% c.config.name | html %] is the public interface for finding members of the university community.</p>
+
+  <p>Student information does not appear in the public version of the UF [% c.config.name | html %], due to the <a href="http://www.ed.gov/policy/gen/guid/fpco/ferpa/index.html">Family Educational Rights and Privacy Act</a> (FERPA) and other regulations. Members of the university community can <a href="[% c.uri_for(c.controller('Authentication').action_for('login')) | html %]">login</a> using their <a href="http://www.gatorlink.ufl.edu/">GatorLink</a> account for additional access.</p>
+
+  <p>Web site produced and managed by <a href="http://www.webadmin.ufl.edu/">UF Web Administration</a>. Web server managed by <a href="http://www.cns.ufl.edu/">UF Computing and Networking Services</a>' <a href="http://open-systems.ufl.edu/">Open Systems Group</a>.</p>
+
+  <h4>Your Information</h4>
+  <p>You control the information published about yourself on this site. If something is incorrect or missing, or you would like to hide details about yourself, <a href="http://directory.ufl.edu/edit">update your directory profile</a>.</p>
+
+  <p>Please note that faculty and staff are required to have certain information published. This includes your:</p>
+  <ul>
+    <li>name</li>
+    <li>work email address</li>
+    <li>work mailing address</li>
+    <li>work phone number</li>
+  </ul>
+  <p>For more details, read our <a href="http://www.webadmin.ufl.edu/projects/phonebook/phonebook-field-spec.html">associated documentation</a>.</p>
+
+  <p>If you have additional questions, please contact your department's <a href="http://www.bridges.ufl.edu/directory/cordlist.html">directory coordinator</a> or the <a href="http://helpdesk.ufl.edu/">UF Help Desk</a>.</p>
+
+  <h4>Programmatic Access</h4>
+  <p>This Web site queries UF's LDAP server to find people. LDAP is a standards-compliant interface to some of the most commonly accessed data about members of the university community. If you want to include information about people at UF on your Web site, contact the <a href="http://open-systems.ufl.edu/">Open Systems Group</a> for information on LDAP.</p>
+
+  <p>The UF [% c.config.name | html %] also uses the <a href="http://microformats.org/wiki/hcard">hCard</a> microformat to present information on people.</p>
+</div><!-- .about -->

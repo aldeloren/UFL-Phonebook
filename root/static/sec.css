@@ -62,16 +62,6 @@ list-style-type:none
 margin: 40px 0 20px 0;
 }
 
-#affiliations ul {
-list-style:disc;
-margin-left:40px;
-}
-
-#affiliations h4 {
-font-size:14px;
-padding-top:1em;
-}
-
 #ldap dd, #ldap dt {
 border-top: 1px solid #ddd;
 }
@@ -117,6 +107,11 @@ z-index:500
 
 .about p {
 margin-top: 1em;
+}
+
+.about ul {
+list-style:disc;
+margin-left:40px;
 }
 
 .locality {
