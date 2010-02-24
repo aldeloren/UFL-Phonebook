@@ -29,7 +29,7 @@ font-style: normal
 h1#logo, h2#unit{
 font-size:14px;
 height:40px;
-/* \*/overflow: hidden;/* */
+overflow: hidden;
 }
 
 h1#logo{
@@ -109,7 +109,7 @@ display:none
 #footer li {
 border-right:1px solid #ccc;
 display:inline;
-/*\*/float:left;/**/
+float:left;
 margin-right:4px;
 padding-right:4px
 }
@@ -121,13 +121,13 @@ line-height:1.5em;
 width:550px
 }
 
-#footerHome span {/*\*/
+#footerHome span {
 width:195px;
 height:54px;
 background:url(http://images.webadmin.ufl.edu/signatures/UF-Signature-Themeline.gif) 0 0 no-repeat;
 position:absolute;
 right:30px;
-top:10px/**/
+top:10px;
 }
 
 #header {
