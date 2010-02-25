@@ -48,6 +48,10 @@ margin:0 auto;
 width:40em
 }
 
+#phonebook_help dl {
+margin:0 auto;
+}
+
 #priSearch, #login {
 margin:0 auto;
 text-align:center;
