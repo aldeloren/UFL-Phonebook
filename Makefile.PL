@@ -4,7 +4,7 @@ name     'UFL-Phonebook';
 all_from 'lib/UFL/Phonebook.pm';
 
 requires 'Authen::SASL';
-requires 'Catalyst' => '5.7006';
+requires 'Catalyst' => '5.80019';
 requires 'Catalyst::Action::RenderView';
 requires 'Catalyst::Authentication::Credential::Remote';
 requires 'Catalyst::Model::LDAP' => '0.16';
