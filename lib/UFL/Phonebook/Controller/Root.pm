@@ -111,6 +111,20 @@ sub forbidden : Private {
     $c->stash(template => 'forbidden.tt');
 }
 
+=head2 unavailable
+
+Display a message stating that the resource in unavailable due to
+temporary overloading or maintenance.
+
+=cut
+
+sub unavailable : Private {
+    my ($self, $c) = @_;
+
+    $c->res->status(503);
+    $c->stash(template => 'unavailable.tt');
+}
+
 =head2 render
 
 Attempt to render a view, if needed.

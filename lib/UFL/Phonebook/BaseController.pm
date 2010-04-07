@@ -3,9 +3,19 @@ package UFL::Phonebook::BaseController;
 use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
+use Data::Throttler;
+use MRO::Compat;
 use Net::LDAP::Constant;
 
-__PACKAGE__->mk_accessors(qw/default_query model_name sort_fields/);
+__PACKAGE__->config(
+    # Set default limit to one request every two seconds
+    throttler_options => {
+        max_items => 1800,
+        interval  => 3600,
+    },
+);
+
+__PACKAGE__->mk_accessors(qw/default_query model_name sort_fields throttler_options _throttler/);
 
 =head1 NAME
 
@@ -21,6 +31,22 @@ Catalyst controller component for searching the directory via LDAP.
 
 =head1 METHODS
 
+Build a new controller, including a L<Data::Throttler> object for use
+in L</throttle>.
+
+=head2 new
+
+=cut
+
+sub new {
+    my $self = shift->next::method(@_);
+
+    my $throttler = Data::Throttler->new(%{ $self->throttler_options || {} });
+    $self->_throttler($throttler);
+
+    return $self;
+}
+
 =head2 index
 
 Redirect to the L<UFL::Phonebook> home page.
@@ -35,7 +61,7 @@ sub index : Path('') Args(0) {
 
 =head2 search
 
-Search the directory for units.
+Search the directory for objects matching the specified query.
 
 =cut
 
@@ -45,6 +71,9 @@ sub search : Local Args(0) {
     my $query = $c->req->param('query');
     $c->detach('index') if not $query
         or $query eq $self->default_query;
+
+    # Throttle the request before allowing the search
+    $c->forward('throttle');
 
     my $filter = $self->_parse_query($query);
 
@@ -57,8 +86,8 @@ sub search : Local Args(0) {
 
 =head2 results
 
-Display the units from the specified L<Net::LDAP::Message>. If only
-one unit is found, display it directly.
+Display the objects from the specified L<Net::LDAP::Message>. If only
+one object is found, display it directly.
 
 =cut
 
@@ -98,6 +127,18 @@ sub results : Private {
     }
 }
 
+=head2 single
+
+Throttle the request before allowing the user to view the result.
+
+=cut
+
+sub single : Private {
+    my ($self, $c, $ufid) = @_;
+
+    $c->forward('throttle');
+}
+
 =head2 view
 
 Display the stashed entry.
@@ -112,7 +153,7 @@ sub view : PathPart('') Chained('single') Args(0) {
 
 =head2 full
 
-Display the full entry for a single entity.
+Display the full entry for a single object.
 
 =cut
 
@@ -120,6 +161,35 @@ sub full : PathPart Chained('single') Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(template => $self->template('full.tt'));
+}
+
+=head2 throttle
+
+Throttle the user if he or she has made too many requests
+recently. This behavior is configurable per controller, using the
+C<throttler_options> parameter. For example:
+
+  throttler_options:
+    max_items: 100
+    interval:  3600
+
+This allows a given IP address to make 100 requests per hour. If this
+limit is exceeded, a the user receives a 503 Service Unavailable
+response.
+
+For more information on what can go in the C<throttler_options>
+parameter, see the L<Data::Throttler> documentation.
+
+=cut
+
+sub throttle : Private {
+    my ($self, $c) = @_;
+
+    my $ip = $c->req->address;
+    unless ($self->_throttler->try_push(key => $ip)) {
+        $c->log->info("Throttling request from [$ip]");
+        $c->detach('/unavailable');
+    }
 }
 
 =head2 model

@@ -102,6 +102,8 @@ behavior of the person.
 sub single : PathPart('people') Chained('/') CaptureArgs(1) {
     my ($self, $c, $ufid) = @_;
 
+    $self->next::method($c, $ufid);
+
     $ufid = UFL::Phonebook::Util::decode_ufid($ufid);
     $c->detach('/default') unless $ufid;
     $c->log->debug("UFID: $ufid");

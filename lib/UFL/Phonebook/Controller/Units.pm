@@ -10,6 +10,7 @@ __PACKAGE__->config(
     model_name  => 'Unit',
     sort_fields => [ 'o' ],
 );
+
 __PACKAGE__->mk_accessors(qw/hide/);
 
 =head1 NAME
@@ -37,6 +38,8 @@ override the display behavior of the unit.
 
 sub single : PathPart('units') Chained('/') CaptureArgs(1) {
     my ($self, $c, $psid) = @_;
+
+    $self->next::method($c, $psid);
 
     $c->log->debug("PeopleSoft department ID: $psid");
 
