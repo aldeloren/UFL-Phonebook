@@ -9,7 +9,7 @@ use MRO::Compat;
 __PACKAGE__->config(
     # Set default limit to one request every two seconds
     throttler_options => {
-        max_items => 1800,
+        max_items => 2,
         interval  => 3600,
     },
 );
@@ -50,6 +50,42 @@ sub new {
     $self->_throttled_ips({});
 
     return $self;
+}
+
+=head2 index
+
+Display a list of throttled IPs for administrators.
+
+=cut
+
+sub index : Path('') Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(
+        ips      => $self->_throttled_ips,
+        options  => $self->throttler_options,
+        template => 'throttle/index.tt',
+    );
+}
+
+=head2 remove
+
+Remove the specified IP from the list of throttled addresses.
+
+=cut
+
+sub remove : Local {
+    my ($self, $c) = @_;
+
+    if ($c->req->method eq 'POST') {
+        if (my $ip = $c->req->params->{ip}) {
+            $c->log->info("Removing [$ip] from throttle list");
+            $self->_throttler->reset_key(key => $ip);
+            delete $self->_throttled_ips->{$ip};
+        }
+    }
+
+    $c->res->redirect($c->uri_for($self->action_for('index')));
 }
 
 =head2 check
