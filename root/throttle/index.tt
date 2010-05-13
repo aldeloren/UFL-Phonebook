@@ -33,9 +33,11 @@
   <p>There are no IP addresses that have been throttled yet.</p>
 [% END %]
 
+[% SET interval_hours = options.interval / 60 / 60 %]
   <h4>Throttle Configuration</h4>
   <ul>
-    <li><strong>Maximum number of requests</strong>: [% options.max_items | html %]</li>
-    <li><strong>Interval</strong>: [% options.interval | html %] seconds</li
+    <li><strong>Maximum items</strong>: [% options.max_items | html %]</li>
+    <li><strong>Interval</strong>: [% options.interval | html %] seconds</li>
+    <li><strong>Maximum number of requests per hour</strong>: [% options.max_items / interval_hours | html %]</li>
   </ul>
 </div><!-- .about -->
