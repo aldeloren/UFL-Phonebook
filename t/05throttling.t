@@ -17,7 +17,7 @@ my $throttler = Data::Throttler->new(
    interval  => 3600,
 );
 
-UFL::Phonebook->controller('People')->_throttler($throttler);
+UFL::Phonebook->controller('Throttle')->_throttler($throttler);
 
 $mech->get_ok("/people/search?query=$QUERY");
 $mech->get_ok("/people/$UFID/");

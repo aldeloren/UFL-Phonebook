@@ -3,19 +3,9 @@ package UFL::Phonebook::BaseController;
 use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
-use Data::Throttler;
-use MRO::Compat;
 use Net::LDAP::Constant;
 
-__PACKAGE__->config(
-    # Set default limit to one request every two seconds
-    throttler_options => {
-        max_items => 1800,
-        interval  => 3600,
-    },
-);
-
-__PACKAGE__->mk_accessors(qw/default_query model_name sort_fields throttler_options _throttler/);
+__PACKAGE__->mk_accessors(qw/default_query model_name sort_fields/);
 
 =head1 NAME
 
@@ -30,22 +20,6 @@ See L<UFL::Phonebook>.
 Catalyst controller component for searching the directory via LDAP.
 
 =head1 METHODS
-
-Build a new controller, including a L<Data::Throttler> object for use
-in L</throttle>.
-
-=head2 new
-
-=cut
-
-sub new {
-    my $self = shift->next::method(@_);
-
-    my $throttler = Data::Throttler->new(%{ $self->throttler_options || {} });
-    $self->_throttler($throttler);
-
-    return $self;
-}
 
 =head2 index
 
@@ -73,7 +47,7 @@ sub search : Local Args(0) {
         or $query eq $self->default_query;
 
     # Throttle the request before allowing the search
-    $c->forward('throttle');
+    $c->forward('/throttle/check');
 
     my $filter = $self->_parse_query($query);
 
@@ -136,7 +110,7 @@ Throttle the request before allowing the user to view the result.
 sub single : Private {
     my ($self, $c, $ufid) = @_;
 
-    $c->forward('throttle');
+    $c->forward('/throttle/check');
 }
 
 =head2 view
@@ -161,35 +135,6 @@ sub full : PathPart Chained('single') Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(template => $self->template('full.tt'));
-}
-
-=head2 throttle
-
-Throttle the user if he or she has made too many requests
-recently. This behavior is configurable per controller, using the
-C<throttler_options> parameter. For example:
-
-  throttler_options:
-    max_items: 100
-    interval:  3600
-
-This allows a given IP address to make 100 requests per hour. If this
-limit is exceeded, a the user receives a 503 Service Unavailable
-response.
-
-For more information on what can go in the C<throttler_options>
-parameter, see the L<Data::Throttler> documentation.
-
-=cut
-
-sub throttle : Private {
-    my ($self, $c) = @_;
-
-    my $ip = $c->req->address;
-    unless ($self->_throttler->try_push(key => $ip)) {
-        $c->log->info("Throttling request from [$ip]");
-        $c->detach('/unavailable');
-    }
 }
 
 =head2 model
