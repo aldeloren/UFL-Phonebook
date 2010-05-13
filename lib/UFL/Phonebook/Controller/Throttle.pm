@@ -9,7 +9,7 @@ use MRO::Compat;
 __PACKAGE__->config(
     # Set default limit to one request every two seconds
     throttler_options => {
-        max_items => 2,
+        max_items => 1800,
         interval  => 3600,
     },
 );
