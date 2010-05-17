@@ -114,8 +114,10 @@ sub check : Private {
     my $ip = $c->req->address;
     unless ($self->_throttler->try_push(key => $ip)) {
         $c->log->info("Throttling request from [$ip]");
+
         $self->_throttled_ips->{$ip} = DateTime->now(time_zone => 'local')
             unless exists $self->_throttled_ips->{$ip};
+
         $c->detach('/unavailable');
     }
 }
