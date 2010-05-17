@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
 use Data::Throttler;
+use DateTime;
 use MRO::Compat;
 
 __PACKAGE__->config(
@@ -113,7 +114,7 @@ sub check : Private {
     my $ip = $c->req->address;
     unless ($self->_throttler->try_push(key => $ip)) {
         $c->log->info("Throttling request from [$ip]");
-        $self->_throttled_ips->{$ip} = 1;
+        $self->_throttled_ips->{$ip} = DateTime->now(time_zone => 'local');
         $c->detach('/unavailable');
     }
 }

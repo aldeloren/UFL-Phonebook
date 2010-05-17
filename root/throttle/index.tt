@@ -11,6 +11,7 @@
   <thead>
     <tr>
       <th>IP address</th>
+      <th>Throttled since</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -19,6 +20,7 @@
 [% FOREACH ip IN ips.keys %]
     <tr[% IF odd %] class="odd"[% END %]>
       <td>[% ip | html %]</td>
+      <td>[% ips.$ip.iso8601 | html %]</td>
       <td>
         <form action="[% c.uri_for(c.controller.action_for('remove')) | html %]" method="post">
           <input type="hidden" name="ip" value="[% ip | html %]" />
