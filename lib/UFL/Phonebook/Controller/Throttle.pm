@@ -53,6 +53,21 @@ sub new {
     return $self;
 }
 
+=head2 auto
+
+Require authentication for the throttle administration screens.
+
+=cut
+
+sub auto : Private {
+    my ($self, $c) = @_;
+
+    $c->forward('/forbidden') and return 0
+        unless $c->authenticate();
+
+    return 1;
+}
+
 =head2 index
 
 Display a list of throttled IPs for administrators.
