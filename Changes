@@ -1,5 +1,8 @@
 This file documents the revision history for UFL::Phonebook.
 
+0.36
+        - Add request throttling to BaseController (#95)
+
 0.35  Fri Mar  5 09:47:00 EST 2010
         - Update to latest version of Catalyst scripts
         - Make default font size more normal

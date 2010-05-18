@@ -35,7 +35,7 @@ sub index : Path('') Args(0) {
 
 =head2 search
 
-Search the directory for units.
+Search the directory for objects matching the specified query.
 
 =cut
 
@@ -45,6 +45,9 @@ sub search : Local Args(0) {
     my $query = $c->req->param('query');
     $c->detach('index') if not $query
         or $query eq $self->default_query;
+
+    # Throttle the request before allowing the search
+    $c->forward('/throttle/check');
 
     my $filter = $self->_parse_query($query);
 
@@ -57,8 +60,8 @@ sub search : Local Args(0) {
 
 =head2 results
 
-Display the units from the specified L<Net::LDAP::Message>. If only
-one unit is found, display it directly.
+Display the objects from the specified L<Net::LDAP::Message>. If only
+one object is found, display it directly.
 
 =cut
 
@@ -98,6 +101,18 @@ sub results : Private {
     }
 }
 
+=head2 single
+
+Throttle the request before allowing the user to view the result.
+
+=cut
+
+sub single : Private {
+    my ($self, $c, $ufid) = @_;
+
+    $c->forward('/throttle/check');
+}
+
 =head2 view
 
 Display the stashed entry.
@@ -112,7 +127,7 @@ sub view : PathPart('') Chained('single') Args(0) {
 
 =head2 full
 
-Display the full entry for a single entity.
+Display the full entry for a single object.
 
 =cut
 

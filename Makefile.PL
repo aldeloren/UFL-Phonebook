@@ -13,6 +13,8 @@ requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::View::TT';
+requires 'Data::Throttler' => '0.04';  # reset_key
+requires 'DateTime';
 requires 'Class::Accessor::Fast';
 requires 'MRO::Compat';
 requires 'Lingua::EN::Numbers';

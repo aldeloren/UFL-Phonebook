@@ -1,0 +1,8 @@
+[% SET
+   title = 'Service Unavailable'
+-%]
+
+<div class="about">
+  <h3>[% title | html %]</h3>
+  <p>The server is temporarily unable to handle your request.</p>
+</div><!-- .about -->

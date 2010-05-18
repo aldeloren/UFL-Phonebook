@@ -1,0 +1,45 @@
+[% SET
+   title = 'Throttle'
+-%]
+
+<div class="about">
+  <h3>[% title | html %]</h3>
+
+  <h4>Throttle Status[% IF ips.size > 0 %]: [% ips.size | html %] throttled IP address[% ips.size == 1 ? '' : 'es' %][% END %]</h4>
+[% IF ips.size > 0 %]
+<table>
+  <thead>
+    <tr>
+      <th>IP address</th>
+      <th>Throttled since</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+[% SET odd = 1 %]
+[% FOREACH ip IN ips.keys %]
+    <tr[% IF odd %] class="odd"[% END %]>
+      <td>[% ip | html %]</td>
+      <td>[% ips.$ip.iso8601 | html %]</td>
+      <td>
+        <form action="[% c.uri_for(c.controller.action_for('remove')) | html %]" method="post">
+          <input type="hidden" name="ip" value="[% ip | html %]" />
+          <input type="submit" value="Remove" />
+        </form>
+    </tr>
+  [% SET odd = !odd %]
+[% END %]
+  </tbody>
+</table>
+[% ELSE %]
+  <p>There are no IP addresses that have been throttled yet.</p>
+[% END %]
+
+[% SET interval_hours = options.interval / 60 / 60 %]
+  <h4>Throttle Configuration</h4>
+  <ul>
+    <li><strong>Maximum items</strong>: [% options.max_items | html %]</li>
+    <li><strong>Interval</strong>: [% options.interval | html %] seconds</li>
+    <li><strong>Maximum number of requests per hour</strong>: [% options.max_items / interval_hours | html %]</li>
+  </ul>
+</div><!-- .about -->
