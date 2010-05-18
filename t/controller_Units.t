@@ -1,9 +1,13 @@
+#!perl
+
 use strict;
 use warnings;
 use Test::More tests => 25;
 
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
+
+UFL::Phonebook->controller('Throttle')->throttle_enabled(0);
 
 my $QUERY = 'web admin';
 my $O     = 'IT-WEB ADMIN OFFICE';

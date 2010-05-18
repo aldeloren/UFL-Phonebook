@@ -13,10 +13,12 @@ __PACKAGE__->config(
         max_items => 1800,
         interval  => 3600,
     },
+    throttle_enabled => 1,
 );
 
 __PACKAGE__->mk_accessors(qw/
     throttler_options
+    throttle_enabled
     _throttler
     _throttled_ips
 /);
@@ -127,7 +129,7 @@ sub check : Private {
     my ($self, $c) = @_;
 
     my $ip = $c->req->address;
-    unless ($self->_throttler->try_push(key => $ip)) {
+    if ($self->throttle_enabled and not $self->_throttler->try_push(key => $ip)) {
         $c->log->info("Throttling request from [$ip]");
 
         $self->_throttled_ips->{$ip} = DateTime->now(time_zone => 'local')

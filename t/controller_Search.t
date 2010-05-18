@@ -1,3 +1,5 @@
+#!perl
+
 use strict;
 use warnings;
 use Test::More tests => 14;
@@ -5,6 +7,8 @@ use Test::More tests => 14;
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 $mech->allow_external(1);
+
+UFL::Phonebook->controller('Throttle')->throttle_enabled(0);
 
 use_ok('UFL::Phonebook::Controller::Search');
 
