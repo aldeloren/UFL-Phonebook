@@ -20,6 +20,7 @@ my $throttler = Data::Throttler->new(
 
 UFL::Phonebook->controller('Throttle')->_throttler($throttler);
 
+# Do enough searches to reach limit
 $mech->get_ok("/people/search?query=$QUERY");
 $mech->get_ok("/people/$UFID/");
 $mech->get_ok("/people/$UFID/full/");
@@ -28,27 +29,38 @@ $mech->get_ok("/people/search?query=$QUERY");
 $mech->get_ok("/people/$UFID/");
 
 my $dt = DateTime->now(time_zone => 'local');
+my $timestamp = $dt->ymd . 'T' . $dt->strftime('%H:%M');
+
 $mech->get("/people/$UFID/vcard/");
 is($mech->status, 503, 'user has been throttled');
 
 # Check that the user was throttled
-my $timestamp = $dt->ymd . 'T' . $dt->strftime('%H:%M');
-$mech->get_ok('/throttle/');
-$mech->content_like(qr/127.0.0.1/, 'displaying user as throttled');
-$mech->content_like(qr/$timestamp/, 'user was throttled in the last minute');
+{
+    local $ENV{REMOTE_USER} = 'dwc';
 
-# Check that the "throttled since" time is still valid
+    $mech->get_ok('/throttle/');
+    $mech->content_like(qr/127.0.0.1/, 'displaying user as throttled');
+    $mech->content_like(qr/$timestamp/, 'user was throttled in the last minute');
+}
+
 $mech->get("/people/$UFID/vcard/");
 is($mech->status, 503, 'user has been throttled');
 
-$mech->get_ok('/throttle/');
-$mech->content_like(qr/127.0.0.1/, 'displaying user as throttled');
-$mech->content_like(qr/$timestamp/, 'user was throttled in the last minute');
+# Verify the throttle after a subsequent search
+{
+    local $ENV{REMOTE_USER} = 'dwc';
 
-# Reset the throttle
-$mech->form_with_fields(qw/ip/);
-$mech->submit_form_ok({}, 'removing user from throttle list');
+    # Check that the "throttled since" time is still valid
+    $mech->get_ok('/throttle/');
+    $mech->content_like(qr/127.0.0.1/, 'displaying user as throttled');
+    $mech->content_like(qr/$timestamp/, 'user was throttled in the last minute');
 
+    # Reset the throttle
+    $mech->form_with_fields(qw/ip/);
+    $mech->submit_form_ok({}, 'removing user from throttle list');
+}
+
+# Verify the user can search after a reset
 $mech->get_ok("/people/search?query=$QUERY");
 $mech->get_ok("/people/$UFID/");
 $mech->get_ok("/people/$UFID/full/");
