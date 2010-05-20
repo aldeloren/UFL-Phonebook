@@ -15,6 +15,6 @@
   <p>If you are staff or faculty, the information you see depends on who you are looking at and their privacy preferences.</p>
 [% IF c.user_exists %]
   <h4>Your Affiliation</h4>
-  <p>Based on your current directory information, your affiliation is <strong>[% c.user.eduPersonPrimaryAffiliation | html %]</strong>. If you think this is an error, please contact the <a href="http://helpdesk.ufl.edu/">UF Help Desk</a> for assistance.</p>
+  <p>Based on your current directory information, your affiliation is <strong>[% c.user.primary_affiliation | html %]</strong>. If you think this is an error, please contact the <a href="http://helpdesk.ufl.edu/">UF Help Desk</a> for assistance.</p>
 [% END %]
 </div><!-- .about -->

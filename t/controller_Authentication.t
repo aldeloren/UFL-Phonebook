@@ -1,3 +1,5 @@
+#!perl
+
 use strict;
 use warnings;
 use Test::More tests => 17;
@@ -39,14 +41,18 @@ my $can_test_auth   = ($ENV{UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX} and $ENV{UFL_PHON
     $auth_controller->authenticated_uri(undef);
     $auth_controller->logout_uri($logout_uri);
 
-    # Without REMOTE_USER
+    # Without environment
     eval { $mech->get('http://localhost/', 'starting at the home page') };
     is($mech->status, 403, 'request forbidden without username');
 
-    # With REMOTE_USER
-    local $ENV{REMOTE_USER} = 'dwc';
+    # With environment
+    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
+    local $ENV{glid} = 'dwc';
+    local $ENV{ufid} = '13141570';
+    local $ENV{primary_affiliation} = 'staff';
+
     $mech->get_ok('http://localhost/', 'starting at the home page');
-    $mech->content_like(qr|Logged in as <a href[^>]+>dwc</a>|, 'looks like we logged in');
+    $mech->content_like(qr|Logged in as <a href[^>]+>dwc\@ufl\.edu</a>|, 'looks like we logged in');
 
     $mech->get_ok('http://localhost/logout', 'request to logout');
     my $response = $mech->response->previous;
@@ -59,12 +65,20 @@ my $can_test_auth   = ($ENV{UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX} and $ENV{UFL_PHON
 SKIP: {
     skip 'load a configuration using UFL::Phonebook::LDAP::Connection, i.e. UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX=private', 2 unless $can_test_auth;
 
-    local $ENV{REMOTE_USER} = 'dwc';
+    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
+    local $ENV{glid} = 'dwc';
+    local $ENV{ufid} = '13141570';
+    local $ENV{primary_affiliation} = 'staff';
+
     $mech->get_ok("http://localhost/people/WHHVHEWHV/", 'automatically sent to private page on direct request');
     $mech->content_like(qr/Westermann-Clark/i, 'private page contains expected information');
 
-    # Clear REMOTE_USER so we aren't automatically logged in again
+    # Clear environment so we aren't automatically logged in again
     local $ENV{REMOTE_USER} = '';
+    local $ENV{glid} = '';
+    local $ENV{ufid} = '';
+    local $ENV{primary_affiliation} = '';
+
     $mech->get('http://localhost/logout', 'request to logout');
 }
 
@@ -72,11 +86,15 @@ SKIP: {
 SKIP: {
     skip 'load a configuration using UFL::Phonebook::LDAP::Connection, i.e. UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX=private', 2 unless $can_test_auth;
 
-    local $ENV{REMOTE_USER} = 'cr';
+    local $ENV{REMOTE_USER} = 'cr@ufl.edu';
+    local $ENV{glid} = 'cr';
+    local $ENV{ufid} = '13989739';
+    local $ENV{primary_affiliation} = 'student';
+
     $mech->get_ok("http://localhost/people/WHWEWENSN/full/", 'loaded full LDAP entry page');
     $mech->content_unlike(qr/employeeNumber/i, 'page does not contain the employeeNumber field');
 
-    # Clear REMOTE_USER so we aren't automatically logged in again
+    # Clear environment so we aren't automatically logged in again
     local $ENV{REMOTE_USER} = '';
     $mech->get('http://localhost/logout', 'request to logout');
 }

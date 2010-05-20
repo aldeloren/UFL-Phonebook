@@ -152,9 +152,9 @@ Plugin::Authentication:
   realms:
     users:
       credential:
-        class: Remote
+        class: +UFL::Phonebook::Authentication::Credential
       store:
-        class: Null
+        class: +UFL::Phonebook::Authentication::Store
 
 View::HTML:
   PRE_CHOMP: 1

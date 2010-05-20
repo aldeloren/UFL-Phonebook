@@ -33,18 +33,6 @@ sub auto : Private {
             unless $c->authenticate();
     }
 
-    if ($c->user_exists) {
-        my $mesg = $c->model('Person')->search("uid=" . $c->user->username);
-        if (my $entry = $mesg->shift_entry) {
-            # XXX: Copy a few items (can't store the entry itself in session)
-            $c->user->$_($entry->$_)
-                for qw/eduPersonPrimaryAffiliation uflEduUniversityId uri_args/;
-        }
-        else {
-            $c->log->warn("Could not load user information for [" . $c->user->username . "]");
-        }
-    }
-
     return 1;
 }
 

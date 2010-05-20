@@ -36,7 +36,10 @@ is($mech->status, 503, 'user has been throttled');
 
 # Check that the user was throttled
 {
-    local $ENV{REMOTE_USER} = 'dwc';
+    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
+    local $ENV{glid} = 'dwc';
+    local $ENV{ufid} = '13141570';
+    local $ENV{primary_affiliation} = 'staff';
 
     $mech->get_ok('/throttle/');
     $mech->content_like(qr/127.0.0.1/, 'displaying user as throttled');
@@ -48,7 +51,10 @@ is($mech->status, 503, 'user has been throttled');
 
 # Verify the throttle after a subsequent search
 {
-    local $ENV{REMOTE_USER} = 'dwc';
+    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
+    local $ENV{glid} = 'dwc';
+    local $ENV{ufid} = '13141570';
+    local $ENV{primary_affiliation} = 'staff';
 
     # Check that the "throttled since" time is still valid
     $mech->get_ok('/throttle/');
