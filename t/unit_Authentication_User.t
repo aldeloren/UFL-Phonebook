@@ -5,20 +5,17 @@ use warnings;
 use Test::More tests => 15;
 use Test::MockObject;
 
-BEGIN { use_ok 'UFL::Phonebook::Authentication::User' }
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use UFL::Phonebook::TestEnv;
 
-my %ENV = (
-    REMOTE_USER => 'dwc@ufl.edu',
-    glid => 'dwc',
-    ufid => '13141570',
-    primary_affiliation => 'staff',
-);
+BEGIN { use_ok 'UFL::Phonebook::Authentication::User' }
 
 # User without a common name
 {
     my $user = UFL::Phonebook::Authentication::User->new({
         username => 'dwc@ufl.edu',
-        env => \%ENV,
+        env => UFL::Phonebook::TestEnv->get,
     });
 
     isa_ok($user, 'UFL::Phonebook::Authentication::User');
@@ -34,7 +31,7 @@ my %ENV = (
 {
     my $user = UFL::Phonebook::Authentication::User->new({
         username => 'dwc@ufl.edu',
-        env => { %ENV, cn => 'Daniel Westermann-Clark' },
+        env => UFL::Phonebook::TestEnv->get(cn => 'Daniel Westermann-Clark'),
     });
 
     isa_ok($user, 'UFL::Phonebook::Authentication::User');

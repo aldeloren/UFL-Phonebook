@@ -5,19 +5,16 @@ use warnings;
 use Test::More tests => 4;
 use Test::MockObject;
 
-BEGIN { use_ok 'UFL::Phonebook::Authentication::Store' }
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use UFL::Phonebook::TestEnv;
 
-my %ENV = (
-    REMOTE_USER => 'dwc@ufl.edu',
-    glid => 'dwc',
-    ufid => '13141570',
-    primary_affiliation => 'staff',
-);
+BEGIN { use_ok 'UFL::Phonebook::Authentication::Store' }
 
 my $c = Test::MockObject->new;
 my $engine = Test::MockObject->new;
 
-$engine->mock('env', sub { \%ENV });
+$engine->mock('env', sub { UFL::Phonebook::TestEnv->get });
 $c->mock('engine', sub { $engine });
 
 my $store = UFL::Phonebook::Authentication::Store->new({}, $c);

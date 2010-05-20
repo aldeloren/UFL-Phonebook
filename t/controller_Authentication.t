@@ -4,6 +4,10 @@ use strict;
 use warnings;
 use Test::More tests => 17;
 
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use UFL::Phonebook::TestEnv;
+
 use Test::WWW::Mechanize::Catalyst 'UFL::Phonebook';
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 $mech->allow_external(1);
@@ -46,10 +50,7 @@ my $can_test_auth   = ($ENV{UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX} and $ENV{UFL_PHON
     is($mech->status, 403, 'request forbidden without username');
 
     # With environment
-    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
-    local $ENV{glid} = 'dwc';
-    local $ENV{ufid} = '13141570';
-    local $ENV{primary_affiliation} = 'staff';
+    local %ENV = %{ UFL::Phonebook::TestEnv->get };
 
     $mech->get_ok('http://localhost/', 'starting at the home page');
     $mech->content_like(qr|Logged in as <a href[^>]+>dwc\@ufl\.edu</a>|, 'looks like we logged in');
@@ -65,19 +66,13 @@ my $can_test_auth   = ($ENV{UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX} and $ENV{UFL_PHON
 SKIP: {
     skip 'load a configuration using UFL::Phonebook::LDAP::Connection, i.e. UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX=private', 2 unless $can_test_auth;
 
-    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
-    local $ENV{glid} = 'dwc';
-    local $ENV{ufid} = '13141570';
-    local $ENV{primary_affiliation} = 'staff';
+    local %ENV = %{ UFL::Phonebook::TestEnv->get };
 
     $mech->get_ok("http://localhost/people/WHHVHEWHV/", 'automatically sent to private page on direct request');
     $mech->content_like(qr/Westermann-Clark/i, 'private page contains expected information');
 
     # Clear environment so we aren't automatically logged in again
-    local $ENV{REMOTE_USER} = '';
-    local $ENV{glid} = '';
-    local $ENV{ufid} = '';
-    local $ENV{primary_affiliation} = '';
+    local %ENV = %{ UFL::Phonebook::TestEnv->reset };
 
     $mech->get('http://localhost/logout', 'request to logout');
 }
@@ -86,10 +81,15 @@ SKIP: {
 SKIP: {
     skip 'load a configuration using UFL::Phonebook::LDAP::Connection, i.e. UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX=private', 2 unless $can_test_auth;
 
-    local $ENV{REMOTE_USER} = 'cr@ufl.edu';
-    local $ENV{glid} = 'cr';
-    local $ENV{ufid} = '13989739';
-    local $ENV{primary_affiliation} = 'student';
+    local %ENV = %{
+        UFL::Phonebook::TestEnv->get(
+            REMOTE_USER         => 'cr@ufl.edu',
+            glid                => 'cr',
+            ufid                => '13989739',
+            primary_affiliation => 'student',
+        )
+    };
+
 
     $mech->get_ok("http://localhost/people/WHWEWENSN/full/", 'loaded full LDAP entry page');
     $mech->content_unlike(qr/employeeNumber/i, 'page does not contain the employeeNumber field');

@@ -6,12 +6,15 @@ use Test::More tests => 6;
 use Test::MockObject;
 use Catalyst::Authentication::User::Hash;
 
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use UFL::Phonebook::TestEnv;
+
 my $m;
 BEGIN { use_ok($m = 'UFL::Phonebook::Authentication::Credential'); }
 can_ok($m, 'authenticate');
 
 my $engine = Test::MockObject->new;
-$engine->mock('env', sub { return \%ENV });
 
 my $log = Test::MockObject->new;
 $log->mock('debug', sub { diag $_[1] });
@@ -26,24 +29,24 @@ $realm->mock('find_user', sub { return Catalyst::Authentication::User::Hash->new
 
 # Test the default configuration
 {
-    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
+    $engine->mock('env', sub { UFL::Phonebook::TestEnv->get });
 
     my $config = {};
     my $cred = $m->new($config, $c, $realm);
 
     my $user = $cred->authenticate($c, $realm, { id => 1 });
-    is(ref $user, 'Catalyst::Authentication::User::Hash', 'user is an object');
+    is(ref $user, 'Catalyst::Authentication::User::Hash', 'user is an object');  # Use ref check instead of isa_ok because of AUTOLOAD
     is($user->username, 'dwc@ufl.edu', 'user authenticated correctly');
 }
 
 # Test a non-default configuration
 {
-    local $ENV{uid} = 'test';
+    $engine->mock('env', sub { UFL::Phonebook::TestEnv->get(uid => 'test') });
 
     my $config = { source => 'uid' };
     my $cred = $m->new($config, $c, $realm);
 
     my $user = $cred->authenticate($c, $realm, { id => 2 });
-    is(ref $user, 'Catalyst::Authentication::User::Hash', 'user is an object');
+    is(ref $user, 'Catalyst::Authentication::User::Hash', 'user is an object');  # Use ref check instead of isa_ok because of AUTOLOAD
     is($user->username, 'test', 'user authenticated correctly');
 }

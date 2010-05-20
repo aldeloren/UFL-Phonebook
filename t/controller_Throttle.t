@@ -6,6 +6,10 @@ use Data::Throttler;
 use DateTime;
 use Test::More tests => 17;
 
+use FindBin;
+use lib "$FindBin::Bin/lib";
+use UFL::Phonebook::TestEnv;
+
 use Test::WWW::Mechanize::Catalyst "UFL::Phonebook";
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
@@ -36,10 +40,7 @@ is($mech->status, 503, 'user has been throttled');
 
 # Check that the user was throttled
 {
-    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
-    local $ENV{glid} = 'dwc';
-    local $ENV{ufid} = '13141570';
-    local $ENV{primary_affiliation} = 'staff';
+    local %ENV = %{ UFL::Phonebook::TestEnv->get };
 
     $mech->get_ok('/throttle/');
     $mech->content_like(qr/127.0.0.1/, 'displaying user as throttled');
@@ -51,10 +52,7 @@ is($mech->status, 503, 'user has been throttled');
 
 # Verify the throttle after a subsequent search
 {
-    local $ENV{REMOTE_USER} = 'dwc@ufl.edu';
-    local $ENV{glid} = 'dwc';
-    local $ENV{ufid} = '13141570';
-    local $ENV{primary_affiliation} = 'staff';
+    local %ENV = %{ UFL::Phonebook::TestEnv->get };
 
     # Check that the "throttled since" time is still valid
     $mech->get_ok('/throttle/');
