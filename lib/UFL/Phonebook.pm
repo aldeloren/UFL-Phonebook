@@ -6,6 +6,7 @@ use warnings;
 use Catalyst qw/
     ConfigLoader
     Authentication
+    Authorization::Roles
     StackTrace
     Static::Simple
 /;

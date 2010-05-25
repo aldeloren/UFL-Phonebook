@@ -6,9 +6,10 @@ all_from 'lib/UFL/Phonebook.pm';
 requires 'Authen::SASL';
 requires 'Catalyst' => '5.80019';
 requires 'Catalyst::Action::RenderView';
-requires 'Catalyst::Authentication::Credential::Remote';
+requires 'Catalyst::Authentication::User';
 requires 'Catalyst::Model::LDAP' => '0.16';
-requires 'Catalyst::Plugin::Authentication' => '0.10003';  # Store::Null
+requires 'Catalyst::Plugin::Authentication';
+requires 'Catalyst::Plugin::Authorization::Roles';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::Plugin::Static::Simple';
@@ -16,6 +17,7 @@ requires 'Catalyst::View::TT';
 requires 'Data::Throttler' => '0.04';  # reset_key
 requires 'DateTime';
 requires 'Class::Accessor::Fast';
+requires 'Moose';
 requires 'MRO::Compat';
 requires 'Lingua::EN::Numbers';
 requires 'Locale::Country';
@@ -26,6 +28,7 @@ requires 'Tree::Simple';
 requires 'URI';
 requires 'YAML';
 
+build_requires 'Catalyst::Authentication::User::Hash';
 build_requires 'File::Spec';
 build_requires 'Test::MockObject';
 build_requires 'Test::More';

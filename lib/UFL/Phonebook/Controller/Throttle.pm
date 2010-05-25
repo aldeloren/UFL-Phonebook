@@ -65,7 +65,7 @@ sub auto : Private {
     my ($self, $c) = @_;
 
     $c->forward('/forbidden') and return 0
-        unless $c->authenticate();
+        unless $c->authenticate() and $c->check_user_roles('admin');
 
     return 1;
 }

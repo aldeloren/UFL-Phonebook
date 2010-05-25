@@ -11,7 +11,10 @@ UFL::Phonebook::Authentication::User - Catalyst::Plugin::Authentication user for
 
 =head1 SYNOPSIS
 
-    my $user = UFL::Phonebook::Authentication::User->new({ username => 'dwc@ufl.edu', env => $c->engine->env });
+    my $user = UFL::Phonebook::Authentication::User->new({
+        username => 'dwc@ufl.edu',
+        env      => $c->engine->env,
+    });
 
 =head1 DESCRIPTION
 
@@ -29,10 +32,15 @@ The user's normal identifier, e.g. C<dwc@ufl.edu>.
 
 Stores the user's environment as of login time.
 
+=head2 roles
+
+A list of roles granted to the user.
+
 =cut
 
 has 'username' => (is => 'rw', isa => 'Str', required => 1);
 has 'env'      => (is => 'rw', isa => 'HashRef', required => 1);
+has 'roles'    => (is => 'rw', isa => 'ArrayRef', default => sub { [] }, auto_deref => 1);
 
 =head1 METHODS
 
@@ -47,6 +55,18 @@ override 'id' => sub {
 
     return $self->username;
 };
+
+=head2 supported_features
+
+Return the set of features supported by this class.
+
+=cut
+
+sub supported_features {
+    my $self = shift;
+
+    return { roles => 1 };
+}
 
 =head2 ldap_username
 

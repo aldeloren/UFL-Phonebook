@@ -3,8 +3,6 @@ package UFL::Phonebook::Authentication::Store;
 use Moose;
 use UFL::Phonebook::Authentication::User;
 
-extends 'Catalyst::Authentication::Store::Null';
-
 =head1 NAME
 
 UFL::Phonebook::Authentication::Store - Catalyst::Plugin::Authentication store for UF Shibboleth
@@ -15,11 +13,40 @@ UFL::Phonebook::Authentication::Store - Catalyst::Plugin::Authentication store f
 
 =head1 DESCRIPTION
 
-This is a simple wrapper for L<Catalyst::Authentication::Store::Null>
-that allows us to create user objects using our own class,
-L<UFL::Phonebook::Authentication::User>.
+A C<Catalyst::Authentication::Store> that returns
+L<UFL::Phonebook::Authentication::User> objects, possibly with
+additional information applied.
+
+=head1 ATTRIBUTES
+
+=head2 extra_authinfo
+
+Additional authentication information that should be applied to users
+who login. For example:
+
+    $store->extra_authinfo({
+        'dwc@ufl.edu' => { roles => [ qw/admin/ ] },
+    });
+
+This would add the C<admin> role to the
+L<UFL::Phonebook::Authentication::User> object corresponding to
+C<dwc@ufl.edu>.
+
+=cut
+
+has 'extra_authinfo' => (is => 'rw', isa => 'HashRef', default => sub { {} });
 
 =head1 METHODS
+
+=head2 BUILDARGS
+
+=cut
+
+around 'BUILDARGS' => sub {
+    my ($orig, $class, $config, $c, $realm) = @_;
+
+    return $class->$orig(%{ $config });
+};
 
 =head2 find_user
 
@@ -28,16 +55,44 @@ information.
 
 =cut
 
-around 'find_user' => sub {
-    my ($orig, $self, $authinfo, $c) = @_;
+sub find_user {
+    my ($self, $authinfo, $c) = @_;
 
     my %authinfo = %$authinfo;
     $authinfo{env} = $c->engine->env;
 
+    if (my $extra_authinfo = $self->extra_authinfo->{$authinfo{username}}) {
+        @authinfo{keys %$extra_authinfo} = values %$extra_authinfo;
+    }
+
     my $user = UFL::Phonebook::Authentication::User->new(\%authinfo);
 
     return $user;
-};
+}
+
+=head2 for_session
+
+Return a serializable user object.
+
+=cut
+
+sub for_session {
+    my ($self, $c, $user) = @_;
+
+    return $user;
+}
+
+=head2 from_session
+
+Restore a user object from serialized data.
+
+=cut
+
+sub from_session {
+    my ($self, $c, $user) = @_;
+
+    return $user;
+}
 
 =head1 AUTHOR
 

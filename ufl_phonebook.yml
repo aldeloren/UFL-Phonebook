@@ -155,6 +155,17 @@ Plugin::Authentication:
         class: +UFL::Phonebook::Authentication::Credential
       store:
         class: +UFL::Phonebook::Authentication::Store
+        extra_authinfo:
+          bfloyd@ufl.edu:
+            roles: [ admin ]
+          cschoaf@ufl.edu:
+            roles: [ admin ]
+          danshields@ufl.edu:
+            roles: [ admin ]
+          dwc@ufl.edu:
+            roles: [ admin ]
+          spooner@ufl.edu:
+            roles: [ admin ]
 
 View::HTML:
   PRE_CHOMP: 1
