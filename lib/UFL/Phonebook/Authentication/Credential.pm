@@ -1,9 +1,7 @@
 package UFL::Phonebook::Authentication::Credential;
 
 use Moose;
-
-has 'source' => (is => 'rw', isa => 'Str', default => 'REMOTE_USER');
-has 'realm'  => (is => 'rw', isa => 'Ref');
+use namespace::autoclean;
 
 =head1 NAME
 
@@ -80,6 +78,11 @@ that contains the username.
 
 The C<Catalyst::Authentication::Realm> object used to find users.
 
+=cut
+
+has 'source' => (is => 'rw', isa => 'Str', default => 'REMOTE_USER');
+has 'realm'  => (is => 'rw', isa => 'Ref');
+
 =head1 METHODS
 
 =head2 BUILDARGS
@@ -131,5 +134,7 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
+
+__PACKAGE__->meta->make_immutable;
 
 1;

@@ -1,6 +1,7 @@
 package UFL::Phonebook::Authentication::User;
 
 use Moose;
+use namespace::autoclean;
 use UFL::Phonebook::Util;
 
 extends 'Catalyst::Authentication::User';
@@ -34,7 +35,8 @@ Stores the user's environment as of login time.
 
 =head2 roles
 
-A list of roles granted to the user.
+A list of roles granted to the user. Automatically dereferenced for
+L<Catalyst::Plugin::Authorization::Roles>.
 
 =cut
 
@@ -128,5 +130,8 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
+
+# Avoid a warning due to Catalyst::Authentication::User's AUTOLOAD
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 1;

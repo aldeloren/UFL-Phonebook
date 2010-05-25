@@ -1,6 +1,7 @@
 package UFL::Phonebook::Authentication::Store;
 
 use Moose;
+use namespace::autoclean;
 use UFL::Phonebook::Authentication::User;
 
 =head1 NAME
@@ -39,6 +40,8 @@ has 'extra_authinfo' => (is => 'rw', isa => 'HashRef', default => sub { {} });
 =head1 METHODS
 
 =head2 BUILDARGS
+
+Use the configuration information as the constructor arguments.
 
 =cut
 
@@ -104,5 +107,7 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
+
+__PACKAGE__->meta->make_immutable;
 
 1;
