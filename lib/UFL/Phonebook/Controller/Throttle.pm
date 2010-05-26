@@ -5,23 +5,10 @@ use warnings;
 use base qw/Catalyst::Controller/;
 use Data::Throttler;
 use DateTime;
-use MRO::Compat;
 
-__PACKAGE__->config(
-    # Set default limit to one request every two seconds
-    throttler_options => {
-        max_items => 1800,
-        interval  => 3600,
-    },
-    throttle_enabled => 1,
-);
+__PACKAGE__->mk_accessors(qw/throttle_enabled/);
 
-__PACKAGE__->mk_accessors(qw/
-    throttler_options
-    throttle_enabled
-    _throttler
-    _throttled_ips
-/);
+__PACKAGE__->config(throttle_enabled => 1);
 
 =head1 NAME
 
@@ -36,24 +23,6 @@ See L<UFL::Phonebook>.
 Catalyst controller component for managing throttled IP addresses.
 
 =head1 METHODS
-
-=head2 new
-
-Build a new controller, including a L<Data::Throttler> object for use
-in L</throttle>.
-
-=cut
-
-sub new {
-    my $self = shift->next::method(@_);
-
-    my $throttler = Data::Throttler->new(%{ $self->throttler_options || {} });
-    $self->_throttler($throttler);
-
-    $self->_throttled_ips({});
-
-    return $self;
-}
 
 =head2 auto
 
@@ -80,8 +49,8 @@ sub index : Path('') Args(0) {
     my ($self, $c) = @_;
 
     $c->stash(
-        ips      => $self->_throttled_ips,
-        options  => $self->throttler_options,
+        ips      => $c->model('Throttle')->throttled_ips,
+        options  => $c->model('Throttle')->throttler_options,
         template => 'throttle/index.tt',
     );
 }
@@ -98,8 +67,7 @@ sub remove : Local {
     if ($c->req->method eq 'POST') {
         if (my $ip = $c->req->params->{ip}) {
             $c->log->info("Removing [$ip] from throttle list");
-            $self->_throttler->reset_key(key => $ip);
-            delete $self->_throttled_ips->{$ip};
+            $c->model('Throttle')->remove($ip);
         }
     }
 
@@ -109,19 +77,11 @@ sub remove : Local {
 =head2 check
 
 Throttle the user if he or she has made too many requests
-recently. This behavior is configurable per controller, using the
-C<throttler_options> parameter. For example:
+recently. This behavior is configurable using
+L<UFL::Phonebook::Model::Throttle>.
 
-  throttler_options:
-    max_items: 100
-    interval:  3600
-
-This allows a given IP address to make 100 requests per hour. If this
-limit is exceeded, a the user receives a 503 Service Unavailable
-response.
-
-For more information on what can go in the C<throttler_options>
-parameter, see the L<Data::Throttler> documentation.
+If the configured limit is exceeded, a the user receives a 503 Service
+Unavailable response.
 
 =cut
 
@@ -129,12 +89,8 @@ sub check : Private {
     my ($self, $c) = @_;
 
     my $ip = $c->req->address;
-    if ($self->throttle_enabled and not $self->_throttler->try_push(key => $ip)) {
+    if ($self->throttle_enabled and not $c->model('Throttle')->allow($ip)) {
         $c->log->info("Throttling request from [$ip]");
-
-        $self->_throttled_ips->{$ip} = DateTime->now(time_zone => 'local')
-            unless exists $self->_throttled_ips->{$ip};
-
         $c->detach('/unavailable');
     }
 }

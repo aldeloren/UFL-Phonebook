@@ -22,7 +22,7 @@ my $throttler = Data::Throttler->new(
    interval  => 3600,
 );
 
-UFL::Phonebook->controller('Throttle')->_throttler($throttler);
+UFL::Phonebook->model('Throttle')->_throttler($throttler);
 
 # Do enough searches to reach limit
 $mech->get_ok("/people/search?query=$QUERY");
