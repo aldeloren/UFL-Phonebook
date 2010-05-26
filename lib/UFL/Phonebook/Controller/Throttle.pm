@@ -37,10 +37,10 @@ Catalyst controller component for managing throttled IP addresses.
 
 =head1 METHODS
 
+=head2 new
+
 Build a new controller, including a L<Data::Throttler> object for use
 in L</throttle>.
-
-=head2 new
 
 =cut
 
