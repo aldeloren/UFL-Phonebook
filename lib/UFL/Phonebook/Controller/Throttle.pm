@@ -3,8 +3,6 @@ package UFL::Phonebook::Controller::Throttle;
 use strict;
 use warnings;
 use base qw/Catalyst::Controller/;
-use Data::Throttler;
-use DateTime;
 
 __PACKAGE__->mk_accessors(qw/throttle_enabled/);
 

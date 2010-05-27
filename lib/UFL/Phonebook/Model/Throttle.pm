@@ -3,6 +3,7 @@ package UFL::Phonebook::Model::Throttle;
 use strict;
 use warnings;
 use Data::Throttler;
+use DateTime;
 use Moose;
 use namespace::autoclean;
 
