@@ -1,6 +1,6 @@
 This file documents the revision history for UFL::Phonebook.
 
-0.36
+0.36  Wed Jun  2 16:07:17 EDT 2010
         - Add request throttling to BaseController (#95)
         - Update authentication to make better use of Shibboleth
 
