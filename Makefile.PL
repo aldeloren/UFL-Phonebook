@@ -14,13 +14,13 @@ requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::View::TT';
+requires 'Class::Accessor::Fast';
 requires 'Data::Throttler' => '0.04';  # reset_key
 requires 'DateTime';
-requires 'Class::Accessor::Fast';
-requires 'Moose';
-requires 'MRO::Compat';
 requires 'Lingua::EN::Numbers';
 requires 'Locale::Country';
+requires 'MRO::Compat';
+requires 'Moose';
 requires 'Net::LDAP::Constant';
 requires 'Net::LDAP::Control::ProxyAuth';
 requires 'Scalar::Util';
