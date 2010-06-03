@@ -2,6 +2,7 @@ This file documents the revision history for UFL::Phonebook.
 
 0.37
         - Add mappings of affiliation codes for display
+        - Add page to display request environment
 
 0.36  Wed Jun  2 16:07:17 EDT 2010
         - Add request throttling to BaseController (#95)

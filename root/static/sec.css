@@ -32,8 +32,9 @@ text-align: left;
 font-size:1.3em;
 }
 
-th, td {
-padding:8px 15px 8px 10px;
+thead tr {
+border: none;
+background: none;
 }
 
 tr {
@@ -45,13 +46,21 @@ tr.odd {
 background:#eee
 }
 
-td {
+th, td {
+padding:8px 15px 8px 10px;
+}
+
+th {
+text-align:left;
+}
+
+td, tbody th {
 border-right: 1px solid #e1e1e1;
 }
 
-thead tr {
-border: none;
-background: none;
+td .env {
+overflow:auto;
+width:700px;
 }
 
 ul {

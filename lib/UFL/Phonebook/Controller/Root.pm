@@ -85,6 +85,18 @@ sub affiliations : Local Args(0) {
     $c->stash(template => 'affiliations.tt');
 }
 
+=head2 env
+
+Display the page displaying the user's environment.
+
+=cut
+
+sub env : Local Args(0) {
+    my ($self, $c) = @_;
+
+    $c->stash(template => 'env.tt');
+}
+
 =head2 forbidden
 
 Display a message stating that the user is not authorized to view the
