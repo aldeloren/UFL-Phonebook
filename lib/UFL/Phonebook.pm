@@ -11,7 +11,7 @@ use Catalyst qw/
     Static::Simple
 /;
 
-our $VERSION = '0.37_01';
+our $VERSION = '0.37';
 
 __PACKAGE__->setup;
 
