@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 15;
+use Test::More tests => 17;
 use Test::MockObject;
 
 use FindBin;
@@ -23,6 +23,7 @@ BEGIN { use_ok 'UFL::Phonebook::Authentication::User' }
     is($user->id, 'dwc@ufl.edu', 'id accessor returns username');
     is($user->ldap_username, 'dwc', 'LDAP username is correct');
     is($user->display_name, 'dwc@ufl.edu', 'Display name is correct');
+    is($user->primary_affiliation_code, 'T', 'Primary affiliation code is correct');
     is($user->primary_affiliation, 'staff', 'Primary affiliation is correct');
     is_deeply($user->uri_args, [ qw/WHHVHEWHV/ ], 'URL path arguments are correct');
 }
@@ -39,6 +40,7 @@ BEGIN { use_ok 'UFL::Phonebook::Authentication::User' }
     is($user->id, 'dwc@ufl.edu', 'id accessor returns username');
     is($user->ldap_username, 'dwc', 'LDAP username is correct');
     is($user->display_name, 'Daniel Westermann-Clark', 'Display name is correct');
+    is($user->primary_affiliation_code, 'T', 'Primary affiliation code is correct');
     is($user->primary_affiliation, 'staff', 'Primary affiliation is correct');
     is_deeply($user->uri_args, [ qw/WHHVHEWHV/ ], 'URL path arguments are correct');
 }

@@ -10,7 +10,7 @@ sub get {
         REMOTE_USER         => 'dwc@ufl.edu',
         glid                => 'dwc',
         ufid                => '13141570',
-        primary_affiliation => 'staff',
+        primary_affiliation => 'T',
         %overrides,
     );
 

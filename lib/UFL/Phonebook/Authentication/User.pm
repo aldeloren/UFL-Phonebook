@@ -44,6 +44,22 @@ has 'username' => (is => 'rw', isa => 'Str', required => 1);
 has 'env'      => (is => 'rw', isa => 'HashRef', required => 1);
 has 'roles'    => (is => 'rw', isa => 'ArrayRef', default => sub { [] }, auto_deref => 1);
 
+has 'primary_affiliation_mappings' => (
+    is      => 'rw',
+    isa     => 'HashRef',
+    lazy    => 1,
+    default => sub { {
+        F => 'faculty',
+        T => 'staff',
+        S => 'student',
+        E => 'employee',
+        M => 'member',
+        A => 'alumni',
+        L => 'affiliate',
+        P => 'pre–applicant',
+    } },
+);
+
 =head1 METHODS
 
 =head2 id
@@ -103,6 +119,23 @@ Return the user's primary affiliation, e.g. student or faculty.
 =cut
 
 sub primary_affiliation {
+    my ($self) = @_;
+
+    my $code = $self->primary_affiliation_code;
+
+    return $self->primary_affiliation_mappings->{$code};
+}
+
+=head2 primary_affiliation_code
+
+Return the user's primary affiliation code, per the UF Directory
+specification.
+
+http://www.bridges.ufl.edu/directory/affiliations.html
+
+=cut
+
+sub primary_affiliation_code {
     my ($self) = @_;
 
     return $self->env->{primary_affiliation};
