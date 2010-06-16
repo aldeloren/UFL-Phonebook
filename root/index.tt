@@ -20,6 +20,6 @@
 [% FILTER indent('  ') -%]
   [% INCLUDE people/includes/tips.tt -%]
 [% END -%]
-</div>
+</div><!-- #priSearch -->
 
 [% INCLUDE includes/links.tt -%]
