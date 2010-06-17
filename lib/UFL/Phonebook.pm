@@ -7,6 +7,7 @@ use Catalyst qw/
     ConfigLoader
     Authentication
     Authorization::Roles
+    ErrorCatcher
     StackTrace
     Static::Simple
 /;
@@ -33,6 +34,34 @@ L<http://www.bridges.ufl.edu/directory/>
 L<http://open-systems.ufl.edu/services/LDAP/>
 
 It is written using the L<Catalyst> framework.
+
+=head1 METHODS
+
+=head2 finalize_error
+
+Output a more friendly error page. This is based loosely on
+L<Catalyst::Plugin::CustomErrorMessage>.
+
+=cut
+
+sub finalize_error {
+    my $c = shift;
+
+    # Allow ErrorCatcher to run
+    $c->next::method(@_);
+
+    # Allow StackTrace to take over in debug mode
+    return if $c->debug;
+
+    # Forward to the more friendly error page
+    eval {
+        $c->res->body($c->view('HTML')->render($c, 'error.tt'));
+    };
+    if ($@) {
+        # Handle view-level errors by logging them
+        $c->log->error($@);
+    }
+}
 
 =head1 AUTHOR
 
