@@ -168,6 +168,18 @@ Plugin::Authentication:
             roles: [ admin ]
 
 Plugin::ErrorCatcher:
+  enable:      1
+  emit_module: Catalyst::Plugin::ErrorCatcher::Email
+
+Plugin::ErrorCatcher::Email:
+  to:   webmaster@ufl.edu
+  from: webmaster@ufl.edu
+  send:
+    type: smtp
+    args: [ smtp.ufl.edu ]
+
+# Enable stacktrace to get better ErrorCatcher messages
+stacktrace:
   enable: 1
 
 View::HTML:

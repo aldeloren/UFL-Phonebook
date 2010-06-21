@@ -2,6 +2,7 @@ This file documents the revision history for UFL::Phonebook.
 
 0.38
         - Fix CSS on error page
+        - Add Catalyst::Plugin::ErrorCatcher
 
 0.37  Thu Jun  3 15:03:32 EDT 2010
         - Add mappings of affiliation codes for display

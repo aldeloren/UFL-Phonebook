@@ -12,6 +12,7 @@ requires 'Catalyst::Plugin::Authentication';
 requires 'Catalyst::Plugin::Authorization::Roles';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::ErrorCatcher';
+requires 'Catalyst::Plugin::ErrorCatcher::Email';
 requires 'Catalyst::Plugin::StackTrace';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::View::TT';
