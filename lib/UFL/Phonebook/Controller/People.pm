@@ -285,8 +285,16 @@ sub _parse_query {
         # One token: last name or username
         my $name = $tokens[0];
 
-        $filter->add('cn',    '=', qq[*$name*]);
-        $filter->add('sn',    '=', qq[*$name*]);
+        # LDAP is very slow for short queries with a wildcard at front
+        if (length $name <= 3) {
+            $filter->add('cn', '=', qq[$name*]);
+            $filter->add('sn', '=', qq[$name*]);
+        }
+        else {
+            $filter->add('cn', '=', qq[*$name*]);
+            $filter->add('sn', '=', qq[*$name*]);
+        }
+
         $filter->add('uid',   '=', $name);
         $filter->add('mail',  '=', qq[$name@*]);
         # TODO: Searching title seems slow
@@ -300,7 +308,9 @@ sub _parse_query {
         my $name_filter = $self->_get_name_filter($first, $last);
         $filter->add($name_filter);
 
-        $filter->add('cn',    '=', qq[*$query*]);
+        # LDAP is very slow for short queries with a wildcard at front
+        $filter->add('cn', '=', (length $query <= 3 ? '' : '*') . qq[$query*]);
+
         $filter->add('cn',    '=', qq[$last*, $first*]);
         $filter->add('cn',    '=', qq[$last*,$first*]);
         $filter->add('mail',  '=', qq[$first$last@*]);
@@ -310,8 +320,10 @@ sub _parse_query {
     }
     else {
         # Three or more tokens: default to simple query
-        $filter->add('cn', '=', qq[*$query*]);
         $filter->add('sn', '=', qq[$query*]);
+
+        # LDAP is very slow for short queries with a wildcard at front
+        $filter->add('cn', '=', (length $query <= 3 ? '' : '*') . qq[$query*]);
 
         # Limit number of permutations
         if (@tokens <= $self->max_permuted_tokens) {
@@ -327,8 +339,8 @@ sub _parse_query {
                 my $name_filter = $self->_get_name_filter($first, $last);
                 $filter->add($name_filter);
 
-                $filter->add('cn',   '=', qq[$last*, *$first*]);
-                $filter->add('cn',   '=', qq[$last*,*$first*]);
+                $filter->add('cn',   '=', qq[$last*, $first*]);
+                $filter->add('cn',   '=', qq[$last*,$first*]);
                 $filter->add('mail', '=', qq[$first$last@*]);
                 $filter->add('mail', '=', qq[$first-$last@*]);
             }
@@ -350,8 +362,10 @@ sub _get_name_filter {
     my ($self, $first, $last) = @_;
 
     my $filter = UFL::Phonebook::Filter::Abstract->new('&');
-    $filter->add('givenName', '=', qq[*$first*]);
-    $filter->add('sn',        '=', qq[$last*]);
+    $filter->add('sn', '=', qq[$last*]);
+
+    # LDAP is very slow for short queries with a wildcard at front
+    $filter->add('givenName', '=', (length $first <= 3 ? '' : '*') . qq[$first*]);
 
     return $filter;
 }
