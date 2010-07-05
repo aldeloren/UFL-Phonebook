@@ -341,6 +341,13 @@ sub _parse_query {
 
                 $filter->add('cn',   '=', qq[$last*, $first*]);
                 $filter->add('cn',   '=', qq[$last*,$first*]);
+
+                # Remove spaces added above for email address search
+                for ($first, $last) {
+                    s/\s+//g;
+                }
+                warn "first = [$first], last = [$last]";
+
                 $filter->add('mail', '=', qq[$first$last@*]);
                 $filter->add('mail', '=', qq[$first-$last@*]);
             }
