@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Data::Throttler;
 use DateTime;
-use Test::More tests => 22;
+use Test::More tests => 24;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -76,10 +76,19 @@ $mech->get_ok("/people/$UFID/full/");
     $mech->get_ok('/throttle/');
     $mech->content_unlike(qr/192.168.42.1/, 'not displaying user as throttled');
 
+    # Add user to throttle list
     $mech->form_name('add');
-    $mech->field('ip', '192.168.42.1');
+    $mech->field('ip', '127.0.0.1');
     $mech->submit_form_ok({}, 'adding user to throttle list');
 
     $mech->get_ok('/throttle/');
-    $mech->content_like(qr/192.168.42.1/, 'displaying user as throttled');
+    $mech->content_like(qr/127.0.0.1/, 'displaying user as throttled');
+
+    # Check that the user is throttled
+    $mech->get("/people/$UFID/");
+    is($mech->status, 503, 'user has been throttled');
+
+    # Reset the throttle
+    $mech->form_name('remove');
+    $mech->submit_form_ok({}, 'removing user from throttle list');
 }

@@ -64,7 +64,7 @@ sub add : Local {
 
     if ($c->req->method eq 'POST') {
         if (my $ip = $c->req->params->{ip}) {
-            $c->log->info("Adding [$ip] to throttle list at the request of " . $c->user->id);
+            $c->log->info("Adding [$ip] to throttle list at the request of [" . $c->user->id . "]");
             $c->model('Throttle')->add($ip);
         }
     }
