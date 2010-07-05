@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Data::Throttler;
 use DateTime;
-use Test::More tests => 17;
+use Test::More tests => 22;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
@@ -60,7 +60,7 @@ is($mech->status, 503, 'user has been throttled');
     $mech->content_like(qr/$timestamp/, 'user was throttled in the last minute');
 
     # Reset the throttle
-    $mech->form_with_fields(qw/ip/);
+    $mech->form_name('remove');
     $mech->submit_form_ok({}, 'removing user from throttle list');
 }
 
@@ -68,3 +68,18 @@ is($mech->status, 503, 'user has been throttled');
 $mech->get_ok("/people/search?query=$QUERY");
 $mech->get_ok("/people/$UFID/");
 $mech->get_ok("/people/$UFID/full/");
+
+# Add a specific IP
+{
+    local %ENV = %{ UFL::Phonebook::TestEnv->get };
+
+    $mech->get_ok('/throttle/');
+    $mech->content_unlike(qr/192.168.42.1/, 'not displaying user as throttled');
+
+    $mech->form_name('add');
+    $mech->field('ip', '192.168.42.1');
+    $mech->submit_form_ok({}, 'adding user to throttle list');
+
+    $mech->get_ok('/throttle/');
+    $mech->content_like(qr/192.168.42.1/, 'displaying user as throttled');
+}

@@ -103,13 +103,26 @@ parameter, see the L<Data::Throttler> documentation.
 sub allow {
     my ($self, $ip) = @_;
 
-    return 1 if $self->_throttler->try_push(key => $ip);
+    return 1 if $self->_throttler->try_push(key => $ip)
+        and not exists $self->throttled_ips->{$ip};
 
     # User is throttled
-    $self->throttled_ips->{$ip} = DateTime->now(time_zone => 'local')
-        unless exists $self->throttled_ips->{$ip};
+    $self->add($ip);
 
     return 0;
+}
+
+=head2 add
+
+Add the specified IP address to the list of throttled IPs.
+
+=cut
+
+sub add {
+    my ($self, $ip) = @_;
+
+    $self->throttled_ips->{$ip} = DateTime->now(time_zone => 'local')
+        unless exists $self->throttled_ips->{$ip};
 }
 
 =head2 remove

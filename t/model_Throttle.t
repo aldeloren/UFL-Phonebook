@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use DateTime;
-use Test::More tests => 11;
+use Test::More tests => 13;
 
 BEGIN { use_ok('UFL::Phonebook::Model::Throttle') }
 
@@ -22,9 +22,13 @@ ok($model->allow('127.0.0.1'), 'allowing localhost on second try');
 ok($model->allow('127.0.0.1'), 'allowing localhost on third try');
 ok($model->allow('127.0.0.1'), 'allowing localhost on fourth try');
 ok($model->allow('127.0.0.1'), 'allowing localhost on fifth try');
-ok(! $model->allow('127.0.0.1'), 'allowing localhost on sixth try');
+ok(! $model->allow('127.0.0.1'), 'not allowing localhost on sixth try');
 
 ok($model->allow('192.168.1.1'), 'allowing a different IP address');
 
 $model->remove('127.0.0.1');
 ok($model->allow('127.0.0.1'), 'removed localhost to allow subsequent requests');
+
+ok($model->allow('192.168.42.1'), 'allowing a different IP address');
+$model->add('192.168.42.1');
+ok(! $model->allow('192.168.42.1'), 'not allowing IP after add');

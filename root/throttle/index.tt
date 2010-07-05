@@ -22,7 +22,7 @@
       <td>[% ip | html %]</td>
       <td>[% ips.$ip.iso8601 | html %]</td>
       <td>
-        <form action="[% c.uri_for(c.controller.action_for('remove')) | html %]" method="post">
+        <form action="[% c.uri_for(c.controller.action_for('remove')) | html %]" name="remove" method="post">
           <input type="hidden" name="ip" value="[% ip | html %]" />
           <input type="submit" value="Remove" />
         </form>
@@ -34,6 +34,12 @@
 [% ELSE %]
   <p>There are no IP addresses that have been throttled yet.</p>
 [% END %]
+
+  <h4>Add IP</h4>
+  <form action="[% c.uri_for(c.controller.action_for('add')) | html %]" name="add" method="post">
+    <input type="text" name="ip" />
+    <input type="submit" value="Add" />
+  </form>
 
 [% SET interval_hours = options.interval / 60 / 60 %]
   <h4>Throttle Configuration</h4>

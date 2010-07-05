@@ -53,6 +53,25 @@ sub index : Path('') Args(0) {
     );
 }
 
+=head2 add
+
+Add the specified IP to the list of throttled addresses.
+
+=cut
+
+sub add : Local {
+    my ($self, $c) = @_;
+
+    if ($c->req->method eq 'POST') {
+        if (my $ip = $c->req->params->{ip}) {
+            $c->log->info("Adding [$ip] to throttle list at the request of " . $c->user->id);
+            $c->model('Throttle')->add($ip);
+        }
+    }
+
+    $c->res->redirect($c->uri_for($self->action_for('index')));
+}
+
 =head2 remove
 
 Remove the specified IP from the list of throttled addresses.
