@@ -4,6 +4,7 @@ This file documents the revision history for UFL::Phonebook.
         - Remove wildcard at front for short query terms because it
           hurts LDAP
         - Add ability to add specific IP addresses to throttle list
+        - Reduce maximum number of queries per hour to 900
 
 0.38  Mon Jun 21 15:24:07 EDT 2010
         - Fix CSS on error page
