@@ -346,7 +346,6 @@ sub _parse_query {
                 for ($first, $last) {
                     s/\s+//g;
                 }
-                warn "first = [$first], last = [$last]";
 
                 $filter->add('mail', '=', qq[$first$last@*]);
                 $filter->add('mail', '=', qq[$first-$last@*]);
