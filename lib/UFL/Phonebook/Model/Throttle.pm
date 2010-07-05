@@ -12,7 +12,7 @@ extends 'Catalyst::Model';
 __PACKAGE__->config(
     # Set default limit to one request every two seconds
     throttler_options => {
-        max_items => 1800,
+        max_items => 900,
         interval  => 3600,
     },
 );
