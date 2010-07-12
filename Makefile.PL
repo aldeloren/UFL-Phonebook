@@ -28,6 +28,7 @@ requires 'Net::LDAP::Control::ProxyAuth';
 requires 'Scalar::Util';
 requires 'Tree::Simple';
 requires 'URI';
+requires 'URI::Escape';
 requires 'YAML::XS';
 
 build_requires 'Catalyst::Authentication::User::Hash';

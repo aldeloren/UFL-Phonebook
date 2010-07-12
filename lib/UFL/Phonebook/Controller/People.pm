@@ -6,6 +6,7 @@ use base qw/UFL::Phonebook::BaseController/;
 use MRO::Compat;
 use UFL::Phonebook::Filter::Abstract;
 use UFL::Phonebook::Util;
+use URI::Escape ();
 
 __PACKAGE__->mk_accessors(qw/max_permuted_tokens filter_key filter_values _filter_values_hash/);
 
@@ -182,7 +183,7 @@ application, which displayed a single person.
 sub redirect_show_cgi : Path('/show.cgi') Args(0) {
     my ($self, $c) = @_;
 
-    my $query = $c->req->uri->query;
+    my $query = URI::Escape::uri_unescape($c->req->uri->query);
     return $c->res->redirect($c->uri_for($c->controller('Root')->action_for('index')), 301)
         unless $query;
 
@@ -198,7 +199,7 @@ sub redirect_show_cgi : Path('/show.cgi') Args(0) {
         $action = $self->action_for('full');
     }
 
-    return $c->res->redirect($c->uri_for($action, $entry->uri_args), 301);
+    return $c->res->redirect($c->uri_for($action, $entry->uri_args, ''), 301);
 }
 
 =head2 redirect_show_full_cgi
