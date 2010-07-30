@@ -1,6 +1,6 @@
 This file documents the revision history for UFL::Phonebook.
 
-0.40
+0.40  Fri Jul 30 12:18:43 EDT 2010
         - Handle escaped query strings in show.cgi redirects (#120)
 
 0.39  Mon Jul  5 12:06:46 EDT 2010
