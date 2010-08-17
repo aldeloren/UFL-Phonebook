@@ -393,7 +393,7 @@ sub _get_show_cgi_filter {
     if (my $ufid = UFL::Phonebook::Util::decode_ufid($query)) {
         $filter->add('uflEduUniversityId', '=', $ufid);
     }
-    elsif ($query =~ /^[a-z][-a-z0-9]*$/) {
+    elsif ($query =~ /^[a-z][-a-z0-9]*$/i) {
         $filter->add('uid', '=', $query);
     }
     elsif ($query =~ /\+/) {

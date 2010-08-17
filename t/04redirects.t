@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 32;
+use Test::More tests => 35;
 
 use Test::WWW::Mechanize::Catalyst "UFL::Phonebook";
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -37,6 +37,10 @@ $mech->title_like(qr/${CN}'s Full LDAP Entry/i, 'response title looks like a ful
 $mech->content_like(qr/LDAP Entry/i, 'response looks like a full LDAP entry');
 
 $mech->get_ok("/show.cgi?$UID", 'request for a single person by uid');
+$mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
+$mech->content_like(qr/general information/i, 'response looks like a single person entry');
+
+$mech->get_ok("/show.cgi?" . uc($UID), 'request for a single person by uppercase uid');
 $mech->title_like(qr/$CN/i, 'response title looks like a single person entry');
 $mech->content_like(qr/general information/i, 'response looks like a single person entry');
 
