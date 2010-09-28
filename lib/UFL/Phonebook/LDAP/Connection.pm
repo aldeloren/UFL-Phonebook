@@ -46,9 +46,9 @@ do so.
     $conn->bind(
         host => 'ldap.ufl.edu',
         krb5 => {
-            principal  => 'user@ufl.edu',
-            keytab     => '/home/user/keytab',
-            lifetime   => 86400,  # 1 day
+            principal => 'user@ufl.edu',
+            keytab    => '/home/user/keytab',
+            lifetime  => 86400,  # 1 day
         },
         sasl => {
             service => 'user@ufl.edu',
@@ -81,9 +81,9 @@ sub bind {
 Request a Kerberos ticket.
 
     $self->_krb5_login(
-        principal  => 'user@ufl.edu',
-        keytab     => '/home/user/keytab',
-        lifetime   => 86400,  # 1 day
+        principal => 'user@ufl.edu',
+        keytab    => '/home/user/keytab',
+        lifetime  => 86400,  # 1 day
     );
 
 =cut
@@ -95,7 +95,7 @@ sub _krb5_login {
     my $cred_cache = $ENV{KRB5CCNAME} || "/tmp/krb5cc_$>_ufl_phonebook";
     $ENV{KRB5CCNAME} = $cred_cache;
 
-    my $lifetime   = $args{lifetime};
+    my $lifetime = $args{lifetime};
     die 'You must specify the path to the credential cache' unless $cred_cache;
 
     my $mtime = (stat $cred_cache)[9];
@@ -109,10 +109,10 @@ sub _krb5_login {
 Request a Kerberos ticket using C<kinit>.
 
     $self->_krb5_login_via_kinit(
-        principal  => 'user@ufl.edu',
-        keytab     => '/home/user/keytab',
-        lifetime   => 86400,  # 1 day
-        command    => '/usr/local/bin/kinit',
+        principal => 'user@ufl.edu',
+        keytab    => '/home/user/keytab',
+        lifetime  => 86400,  # 1 day
+        command   => '/usr/local/bin/kinit',
     );
 
 Note: You probably want to use L</_krb5_login> instead.
@@ -122,10 +122,10 @@ Note: You probably want to use L</_krb5_login> instead.
 sub _krb5_login_via_kinit {
     my ($self, %args) = @_;
 
-    my $principal  = $args{principal};
-    my $keytab     = $args{keytab};
-    my $lifetime   = $args{lifetime};
-    my $command    = $args{command};
+    my $principal = $args{principal};
+    my $keytab    = $args{keytab};
+    my $lifetime  = $args{lifetime};
+    my $command   = $args{command};
 
     die 'You must specify the principal' unless $principal;
     die 'No keytab found' unless $keytab and -f $keytab;
