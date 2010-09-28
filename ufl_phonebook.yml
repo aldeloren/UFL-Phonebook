@@ -2,6 +2,8 @@
 # Do not use tabs for indentation or label/value separation!
 name:         Phonebook
 default_view: HTML
+analytics:
+  profile: UA-3703196-32
 
 Controller::People:
   default_query: Search UF People
