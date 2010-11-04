@@ -8,8 +8,8 @@
 <head>
 <title>[% IF title %][% title | trim | html %] - [% END %]University of Florida [% c.config.name | html %]</title>
 <meta name="generator" content="University of Florida [% "${c.config.name} ${c.VERSION}" | html %]" />
-<link rel="icon" type="image/x-icon" href="[% c.uri_for('/favicon.ico') | html %]" />
-<link rel="shortcut icon" type="image/x-icon" href="[% c.uri_for('/favicon.ico') | html %]" />
+<link rel="icon" type="image/x-icon" href="//assets.webadmin.ufl.edu/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="//assets.webadmin.ufl.edu/favicon.ico" />
 <link rel="stylesheet" type="text/css" media="screen" href="[% c.uri_for('/static/basic.css') | html %]" />
 <link rel="stylesheet" type="text/css" media="print" href="[% c.uri_for('/static/print.css') | html %]" />
 <style type="text/css" media="screen">
