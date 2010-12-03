@@ -5,4 +5,4 @@ keytab for principal 02010600/app/phonebook and the corresponding configuration
 file.  Name this ufl_phonebook_private.yml and then pass the environment
 variable to the server as below:
 
-UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX=private REMOTE_USER=dwc ./script/*server.pl -r -d
+UFL_PHONEBOOK_CONFIG_LOCAL_SUFFIX=private REMOTE_USER=dwc@ufl.edu glid=dwc ufid=12345678 cn="Daniel Westermann-Clark" ./script/*server.pl -r -d
