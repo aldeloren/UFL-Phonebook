@@ -7,7 +7,8 @@ use Scalar::Util;
 use Tree::Simple;
 use overload
     '""' => \&as_string,
-    'eq' => \&equals;
+    'eq' => \&equals,
+    'ne' => \&not_equals;
 
 =head1 NAME
 
@@ -110,6 +111,20 @@ sub equals {
     my ($self, $other) = @_;
 
     return $self->as_string eq $other;
+}
+
+=head2 not_equals
+
+Test whether this LDAP filter is not the same as the specified one. The
+object of the comparison can be a L<UFL::Phonebook::Filter::Abstract>
+instance or a string.
+
+=cut
+
+sub not_equals {
+    my ($self, $other) = @_;
+
+    return $self->as_string ne $other;
 }
 
 =head2 _node

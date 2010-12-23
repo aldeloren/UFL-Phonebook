@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 12;
+use Test::More tests => 13;
 
 use_ok('UFL::Phonebook::Filter::Abstract');
 
@@ -45,3 +45,6 @@ my $obj_eq2 = UFL::Phonebook::Filter::Abstract->new('|');
 $obj_eq2->add(qw/objectClass = person/);
 
 is($obj_eq1, $obj_eq2, 'string equality via overload');
+
+$obj_eq2->add(qw/cn = Smith/);
+isnt($obj_eq1, $obj_eq2, 'string inequality via overload');
