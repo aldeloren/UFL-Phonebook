@@ -6,7 +6,8 @@ use UFL::Phonebook::Filter::Abstract::Predicate;
 use Scalar::Util;
 use Tree::Simple;
 use overload
-    '""' => \&as_string;
+    '""' => \&as_string,
+    'eq' => \&equals;
 
 =head1 NAME
 
@@ -95,6 +96,20 @@ sub as_string {
     my $string = $self->{root}->as_string;
 
     return $string;
+}
+
+=head2 equals
+
+Test whether this LDAP filter is the same as the specified one. The
+object of the comparison can be a L<UFL::Phonebook::Filter::Abstract>
+instance or a string.
+
+=cut
+
+sub equals {
+    my ($self, $other) = @_;
+
+    return $self->as_string eq $other;
 }
 
 =head2 _node

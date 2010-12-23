@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 11;
+use Test::More tests => 12;
 
 use_ok('UFL::Phonebook::Filter::Abstract');
 
@@ -36,3 +36,12 @@ $filter->add($filter3);
 my $complex = '(&(objectClass=person)(!(telephoneNumber=*))(|(cn=*a*b*)(cn=*b*a*)))';
 is($filter->as_string, $complex, 'complex filter');
 is($filter, $complex, 'complex filter with auto-stringify');
+
+# Test object string equality via overload
+my $obj_eq1 = UFL::Phonebook::Filter::Abstract->new('|');
+$obj_eq1->add(qw/objectClass = person/);
+
+my $obj_eq2 = UFL::Phonebook::Filter::Abstract->new('|');
+$obj_eq2->add(qw/objectClass = person/);
+
+is($obj_eq1, $obj_eq2, 'string equality via overload');
