@@ -1,3 +1,5 @@
+#!perl
+
 use strict;
 use warnings;
 use FindBin;
@@ -14,6 +16,14 @@ my %config = (
     base => 'ou=People,dc=ufl,dc=edu',
 );
 
+unless ($ENV{TEST_LDAP_NO_TLS}) {
+    $config{start_tls} = 1;
+    $config{start_tls_options} = {
+        verify => 'require',
+        capath => $ENV{TEST_LDAP_TLS_CAPATH} || '/etc/ssl/certs',
+    };
+}
+
 # Anonymous bind
 {
     diag("Doing anonymous bind against $config{host}");
@@ -26,6 +36,7 @@ my %config = (
     my $mesg = $conn->bind;
 
     ok(! $mesg->is_error, 'Anonymous bind completed successfully');
+    diag($mesg->error) if $mesg->is_error;
 }
 
 # Simple bind
@@ -46,6 +57,7 @@ SKIP: {
     );
 
     ok(! $mesg->is_error, 'Simple bind completed successfully');
+    diag($mesg->error) if $mesg->is_error;
 }
 
 # SASL bind
@@ -77,4 +89,5 @@ SKIP: {
     );
 
     ok(! $mesg->is_error, 'SASL bind completed successfully');
+    diag($mesg->error) if $mesg->is_error;
 }
