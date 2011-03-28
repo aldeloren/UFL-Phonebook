@@ -53,7 +53,7 @@ TODO: {
 
 # Anonymous search for staff
 {
-    my $mesg = search($anonymous_model, undef, 'asr', 1, 1, 1, 0, 0, 'staff');
+    my $mesg = search($anonymous_model, undef, 'asr', 1, 1, 0, 0, 0, 'staff');
 }
 
 # Anonymous search for student
@@ -108,27 +108,27 @@ SKIP: {
 
     # Faculty search for faculty
     {
-        my $mesg = search($authenticated_model, 'tigrr', 'manuel81', 1, 1, 0, 1, 0, 'faculty');
+        my $mesg = search($authenticated_model, 'tigrr', 'manuel81', 1, 1, 0, 0, 0, 'faculty');
     }
 
     # Faculty search for student
     {
-        my $mesg = search($authenticated_model, 'manuel81', 'shubha', 1, 1, 1, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'manuel81', 'egoldsmith', 1, 1, 0, 0, 0, 'student');
     }
 
     # Student search for student
     {
-        my $mesg = search($authenticated_model, 'shubha', 'cleves', 1, 1, 0, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'egoldsmith', 'lesleebh08', 1, 1, 0, 0, 0, 'student');
     }
 
     # Student search for student
     {
-        my $mesg = search($authenticated_model, 'cleves', 'shubha', 1, 1, 1, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'lesleebh08', 'egoldsmith', 1, 1, 0, 0, 0, 'student');
     }
 
     # Staff search for student
     {
-        my $mesg = search($authenticated_model, 'dwc', 'shubha', 1, 1, 1, 0, 0, 'student');
+        my $mesg = search($authenticated_model, 'dwc', 'egoldsmith', 1, 1, 0, 0, 0, 'student');
     }
 
     # Staff search for member
@@ -144,7 +144,7 @@ SKIP: {
 
     # Search for student with SASL but without proxy authentication
     {
-        eval { search($authenticated_model, undef, 'shubha', 1, 1, 0, 0, 0, 'student') };
+        eval { search($authenticated_model, undef, 'egoldsmith', 1, 1, 0, 0, 0, 'student') };
 
         my $error = $@;
         ok($error, "search for student with SASL but without proxy authentication died ($error)");
@@ -187,7 +187,7 @@ SKIP: {
 
     # Search for student
     {
-        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'shubha', 1, 1, 1, 1, 1, 'student');
+        my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'egoldsmith', 1, 1, 1, 1, 1, 'student');
     }
 }
 
