@@ -46,7 +46,8 @@ isa_ok($anonymous_model, 'UFL::Phonebook::Model::Person');
 isa_ok($anonymous_model, 'Catalyst::Model::LDAP');
 
 # Anonymous search for protected person
-{
+TODO: {
+    todo_skip('Need to find another protected person', 1);
     my $mesg = search($anonymous_model, undef, 'dwc', 0);
 }
 
@@ -95,7 +96,8 @@ SKIP: {
     isa_ok($authenticated_model, 'Catalyst::Model::LDAP');
 
     # Protected person search for self
-    {
+    TODO: {
+        todo_skip('Need to find another protected person', 26);
         my $mesg = search($authenticated_model, 'dwc', 'dwc', 1, 1, 1, 1, 1, 'staff');
     }
 
@@ -135,7 +137,8 @@ SKIP: {
     }
 
     # Staff search for protected person
-    {
+    TODO: {
+        todo_skip('Need to find another protected person', 1);
         my $mesg = search($authenticated_model, 'asr', 'dwc', 0);
     }
 
@@ -167,7 +170,8 @@ SKIP: {
     isa_ok($admin_model, 'Catalyst::Model::LDAP');
 
     # Search for protected person
-    {
+    TODO: {
+        todo_skip('Need to find another protected person', 26);
         my $mesg = search($admin_model, $ENV{TEST_LDAP_BINDDN}, 'dwc', 1, 1, 1, 1, 1, 'staff');
     }
 
