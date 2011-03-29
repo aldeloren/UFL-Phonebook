@@ -19,7 +19,7 @@ my %config = (
     entry_class => 'UFL::Phonebook::Person',
 );
 
-unless ($ENV{TEST_LDAP_START_NO_TLS}) {
+unless ($ENV{TEST_LDAP_NO_TLS}) {
     $config{start_tls} = 1;
     $config{start_tls_options} = {
         verify => 'require',
