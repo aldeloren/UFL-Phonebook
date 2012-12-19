@@ -65,7 +65,7 @@ sub bind {
 
     if (%krb5_args and %sasl_args) {
         $krb5_args{lifetime} ||= 3600;
-        $krb5_args{command}  ||= '/usr/bin/kinit';
+        $krb5_args{command}  ||= '/usr/kerberos/bin/kinit';
 
         $self->_krb5_login(%krb5_args);
 
